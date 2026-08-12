@@ -390,6 +390,63 @@
     }
     .cta-section .btn-primary { position: relative; font-size: 20px; padding: 18px 56px; }
 
+    /* ── TEAMS ── */
+    .teams-section { background: var(--dark); padding: 100px 48px; }
+    .teams-section h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .teams-sub { font-size: 16px; color: var(--light); font-weight: 300; margin-bottom: 56px; }
+    .teams-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+      margin-bottom: 32px;
+    }
+    .team-card {
+      background: var(--dark2); padding: 32px 28px;
+      display: flex; align-items: center; gap: 24px;
+      transition: background 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .team-card::after {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 0; background: var(--yellow);
+      transition: height 0.3s;
+    }
+    .team-card:hover { background: var(--dark3); }
+    .team-card:hover::after { height: 100%; }
+    .team-logo-wrap {
+      width: 80px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      height: 64px;
+    }
+    .team-logo { max-width: 80px; max-height: 56px; object-fit: contain; filter: brightness(1.1); }
+    .spire-logo { filter: invert(1) brightness(2); }
+    .team-info { flex: 1; min-width: 0; }
+    .team-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.04em; color: var(--white); margin-bottom: 2px;
+    }
+    .team-make { font-size: 12px; color: var(--gray); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+    .team-drivers { display: flex; flex-wrap: wrap; gap: 6px; }
+    .driver-pill {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+      background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.2);
+      color: var(--yellow); padding: 3px 10px; border-radius: 2px;
+      white-space: nowrap;
+    }
+    .teams-note { font-size: 14px; color: var(--gray); text-align: center; font-weight: 300; }
+
+    /* ── RESPONSIVE TEAMS ── */
+    @media (max-width: 1024px) {
+      .teams-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .teams-grid { grid-template-columns: 1fr; }
+      .team-card { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+
     /* ── FOOTER ── */
     footer {
       background: var(--dark); border-top: 1px solid rgba(255,215,0,0.1);
@@ -629,6 +686,122 @@
     <p class="reveal" style="color:rgba(0,0,0,0.55); font-size:14px;">$60 for the game + ~$15 buy-in. No gas, no tires, no broken parts, no towing.</p>
     <br>
     <a href="#join" class="btn-dark reveal">Claim Your Spot →</a>
+  </section>
+
+  <!-- TEAMS -->
+  <section class="teams-section">
+    <div class="section-label reveal">The Teams</div>
+    <h2 class="reveal">Pick Your Team.<br>Win the Championship.</h2>
+    <p class="teams-sub reveal">7 real NASCAR teams. 3 drivers per roster. One snake draft to decide who goes where.</p>
+    <div class="teams-grid">
+
+      <div class="team-card reveal">
+        <div class="team-logo-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Hendrick_Motorsports_Logo.svg/250px-Hendrick_Motorsports_Logo.svg.png" alt="Hendrick Motorsports" class="team-logo">
+        </div>
+        <div class="team-info">
+          <div class="team-name">Hendrick Motorsports</div>
+          <div class="team-make">Chevrolet</div>
+          <div class="team-drivers">
+            <span class="driver-pill">#5 Kyle Larson</span>
+            <span class="driver-pill">#9 Chase Elliott</span>
+            <span class="driver-pill">#24 William Byron</span>
+            <span class="driver-pill">#48 Alex Bowman</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-card reveal reveal-d1">
+        <div class="team-logo-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Joe_Gibbs_Racing_logo.png" alt="Joe Gibbs Racing" class="team-logo">
+        </div>
+        <div class="team-info">
+          <div class="team-name">Joe Gibbs Racing</div>
+          <div class="team-make">Toyota</div>
+          <div class="team-drivers">
+            <span class="driver-pill">#11 Denny Hamlin</span>
+            <span class="driver-pill">#19 Martin Truex Jr.</span>
+            <span class="driver-pill">#20 Christopher Bell</span>
+            <span class="driver-pill">#45 Tyler Reddick</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-card reveal reveal-d2">
+        <div class="team-logo-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Team_Penske_logo.svg/250px-Team_Penske_logo.svg.png" alt="Team Penske" class="team-logo">
+        </div>
+        <div class="team-info">
+          <div class="team-name">Team Penske</div>
+          <div class="team-make">Ford</div>
+          <div class="team-drivers">
+            <span class="driver-pill">#2 Austin Cindric</span>
+            <span class="driver-pill">#12 Ryan Blaney</span>
+            <span class="driver-pill">#22 Joey Logano</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-card reveal">
+        <div class="team-logo-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/23XI_racing_logo_%282023%29.png/250px-23XI_racing_logo_%282023%29.png" alt="23XI Racing" class="team-logo">
+        </div>
+        <div class="team-info">
+          <div class="team-name">23XI Racing</div>
+          <div class="team-make">Toyota</div>
+          <div class="team-drivers">
+            <span class="driver-pill">#23 Bubba Wallace</span>
+            <span class="driver-pill">#45 Tyler Reddick</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-card reveal reveal-d1">
+        <div class="team-logo-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/RFK_logo.png/500px-RFK_logo.png" alt="RFK Racing" class="team-logo">
+        </div>
+        <div class="team-info">
+          <div class="team-name">RFK Racing</div>
+          <div class="team-make">Ford</div>
+          <div class="team-drivers">
+            <span class="driver-pill">#6 Brad Keselowski</span>
+            <span class="driver-pill">#17 Chris Buescher</span>
+            <span class="driver-pill">#60 Ryan Preece</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-card reveal reveal-d2">
+        <div class="team-logo-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Spire_Motorsports_yellow_logo.png/250px-Spire_Motorsports_yellow_logo.png" alt="Spire Motorsports" class="team-logo spire-logo">
+        </div>
+        <div class="team-info">
+          <div class="team-name">Spire Motorsports</div>
+          <div class="team-make">Chevrolet</div>
+          <div class="team-drivers">
+            <span class="driver-pill">#7 Daniel Suárez</span>
+            <span class="driver-pill">#71 Michael McDowell</span>
+            <span class="driver-pill">#77 Carson Hocevar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="team-card reveal">
+        <div class="team-logo-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/en/d/d2/Trackhouse_Racing_Logo.png" alt="Trackhouse Racing" class="team-logo">
+        </div>
+        <div class="team-info">
+          <div class="team-name">Trackhouse Racing</div>
+          <div class="team-make">Chevrolet</div>
+          <div class="team-drivers">
+            <span class="driver-pill">#1 Ross Chastain</span>
+            <span class="driver-pill">#88 Shane van Gisbergen</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <p class="teams-note reveal">Teams assigned via live snake draft. 3 drivers per roster max. Your manager picks you — then you race for them all season.</p>
   </section>
 
   <!-- CTA / JOIN -->
