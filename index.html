@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NASCAR 26 Racing League — You In?</title>
+  <meta name="description" content="A real racing league. Real points. Real teams. Real trophy. Built on NASCAR 26. Season 1 starting soon.">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --yellow: #FFD700;
+      --yellow-dim: #CCac00;
+      --black: #0a0a0a;
+      --dark: #111111;
+      --dark2: #1a1a1a;
+      --dark3: #222222;
+      --gray: #666;
+      --light: #aaa;
+      --white: #f5f5f5;
+      --red: #C8102E;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Barlow', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 60px;
+      background: rgba(10,10,10,0.95);
+      border-bottom: 1px solid rgba(255,215,0,0.15);
+      backdrop-filter: blur(10px);
+    }
+    .nav-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px; font-weight: 900;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--yellow);
+    }
+    .nav-logo span { color: var(--white); }
+    .nav-cta {
+      background: var(--yellow); color: var(--black);
+      padding: 8px 22px; font-size: 13px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      text-decoration: none; border-radius: 2px;
+      transition: background 0.15s;
+    }
+    .nav-cta:hover { background: #ffe033; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 100px 48px 80px;
+      position: relative; overflow: hidden;
+      background: var(--black);
+    }
+
+    /* Checkered flag texture via CSS */
+    .hero::before {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 55%; height: 100%;
+      background:
+        repeating-conic-gradient(rgba(255,215,0,0.04) 0% 25%, transparent 0% 50%)
+        0 0 / 32px 32px;
+      mask-image: linear-gradient(to left, rgba(0,0,0,0.8) 0%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.8) 0%, transparent 100%);
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--yellow);
+      margin-bottom: 28px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block; width: 32px; height: 2px;
+      background: var(--yellow);
+    }
+
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(64px, 10vw, 130px);
+      font-weight: 900; line-height: 0.92;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--white);
+      max-width: 780px;
+      margin-bottom: 32px;
+    }
+    .hero h1 em { font-style: normal; color: var(--yellow); }
+
+    .hero-sub {
+      font-size: 18px; font-weight: 300;
+      color: var(--light); line-height: 1.6;
+      max-width: 520px; margin-bottom: 48px;
+    }
+
+    .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 80px; }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--yellow); color: var(--black);
+      padding: 16px 40px; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      border-radius: 2px; transition: background 0.15s, transform 0.1s;
+    }
+    .btn-primary:hover { background: #ffe033; transform: translateY(-1px); }
+
+    .btn-ghost {
+      display: inline-block; color: var(--white);
+      padding: 16px 32px; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 2px; transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--yellow); color: var(--yellow); }
+
+    .hero-stats {
+      display: flex; gap: 48px; flex-wrap: wrap;
+    }
+    .hero-stat .n {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 48px; font-weight: 900; line-height: 1;
+      color: var(--yellow); display: block;
+    }
+    .hero-stat .l {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gray);
+    }
+
+    /* ── DIVIDER ── */
+    .flag-bar {
+      height: 6px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--yellow) 0px, var(--yellow) 16px,
+        var(--black) 16px, var(--black) 32px
+      );
+    }
+
+    /* ── HOOK SECTION ── */
+    .hook {
+      background: var(--dark); padding: 100px 48px;
+      border-bottom: 1px solid rgba(255,215,0,0.1);
+    }
+    .hook-inner {
+      max-width: 900px; margin: 0 auto; text-align: center;
+    }
+    .hook h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 900; text-transform: uppercase;
+      line-height: 1; margin-bottom: 24px;
+    }
+    .hook h2 em { font-style: normal; color: var(--yellow); }
+    .hook p {
+      font-size: 18px; font-weight: 300; color: var(--light);
+      max-width: 640px; margin: 0 auto 16px;
+    }
+    .hook .highlight {
+      display: inline-block; margin-top: 24px;
+      background: rgba(255,215,0,0.08);
+      border: 1px solid rgba(255,215,0,0.25);
+      color: var(--yellow);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px; font-weight: 700; letter-spacing: 0.06em;
+      padding: 12px 28px; border-radius: 2px;
+    }
+
+    /* ── WHY YOU'LL GET HOOKED ── */
+    .hooks-section { background: var(--black); padding: 100px 48px; }
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--yellow);
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+    }
+    .section-label::before {
+      content: ''; display: block; width: 24px; height: 2px; background: var(--yellow);
+    }
+    .hooks-section h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900; text-transform: uppercase;
+      line-height: 1.05; margin-bottom: 64px;
+      max-width: 600px;
+    }
+    .hooks-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px;
+    }
+    .hook-card {
+      background: var(--dark2); padding: 48px 40px;
+      position: relative; overflow: hidden;
+    }
+    .hook-card::after {
+      content: ''; position: absolute;
+      top: 0; left: 0; width: 4px; height: 0;
+      background: var(--yellow);
+      transition: height 0.3s ease;
+    }
+    .hook-card:hover::after { height: 100%; }
+    .hook-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 80px; font-weight: 900;
+      color: rgba(255,215,0,0.07); line-height: 1;
+      position: absolute; top: 16px; right: 24px;
+    }
+    .hook-card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 24px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      color: var(--white); margin-bottom: 12px;
+    }
+    .hook-card p { font-size: 15px; color: var(--light); line-height: 1.65; font-weight: 300; }
+
+    /* ── HOW IT WORKS ── */
+    .how { background: var(--dark); padding: 100px 48px; }
+    .how h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900; text-transform: uppercase;
+      margin-bottom: 64px;
+    }
+    .how-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+      position: relative;
+    }
+    .how-grid::before {
+      content: '';
+      position: absolute; top: 28px; left: 12.5%; right: 12.5%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--yellow-dim), var(--yellow), var(--yellow-dim), transparent);
+    }
+    .how-step { padding: 0 28px; text-align: center; }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--dark2); border: 2px solid var(--yellow);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 22px; font-weight: 900; color: var(--yellow);
+      margin: 0 auto 24px; position: relative; z-index: 1;
+    }
+    .how-step h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.06em; margin-bottom: 8px;
+    }
+    .how-step p { font-size: 14px; color: var(--light); line-height: 1.6; font-weight: 300; }
+
+    /* ── POINTS / FORMAT ── */
+    .format { background: var(--black); padding: 100px 48px; }
+    .format-inner { max-width: 1100px; margin: 0 auto; }
+    .format h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900; text-transform: uppercase; margin-bottom: 64px;
+    }
+    .format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .format-block { background: var(--dark2); padding: 40px; }
+    .format-block h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 20px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--yellow); margin-bottom: 20px;
+    }
+    .format-block ul { list-style: none; }
+    .format-block li {
+      font-size: 15px; color: var(--light); font-weight: 300;
+      padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    .format-block li::before {
+      content: '▶'; color: var(--yellow); font-size: 8px;
+      margin-top: 5px; flex-shrink: 0;
+    }
+    .format-block li strong { color: var(--white); font-weight: 600; }
+
+    /* ── HARDWARE ── */
+    .hardware { background: var(--dark); padding: 100px 48px; }
+    .hardware-inner {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px;
+      align-items: center;
+    }
+    .hardware h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(36px, 4.5vw, 60px);
+      font-weight: 900; text-transform: uppercase;
+      line-height: 1; margin-bottom: 20px;
+    }
+    .hardware h2 em { font-style: normal; color: var(--yellow); }
+    .hardware p { font-size: 16px; color: var(--light); line-height: 1.7; font-weight: 300; margin-bottom: 16px; }
+    .trophy-block { display: flex; flex-direction: column; gap: 16px; }
+    .trophy-item {
+      background: var(--dark2); border: 1px solid rgba(255,215,0,0.12);
+      padding: 24px 28px;
+    }
+    .trophy-item .t-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 18px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--yellow); margin-bottom: 4px;
+    }
+    .trophy-item p { font-size: 14px; color: var(--light); margin: 0; font-weight: 300; }
+
+    /* ── COST ── */
+    .cost { background: var(--yellow); padding: 80px 48px; text-align: center; }
+    .cost h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 900; text-transform: uppercase;
+      color: var(--black); line-height: 1; margin-bottom: 16px;
+    }
+    .cost p { font-size: 18px; color: rgba(0,0,0,0.65); max-width: 520px; margin: 0 auto 32px; font-weight: 400; }
+    .cost-compare {
+      display: inline-flex; gap: 0; margin-bottom: 40px;
+    }
+    .cost-item {
+      padding: 28px 48px; text-align: center;
+    }
+    .cost-item.theirs { background: rgba(0,0,0,0.1); }
+    .cost-item.ours { background: var(--black); }
+    .cost-item .amount {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 52px; font-weight: 900; line-height: 1; display: block;
+    }
+    .cost-item.theirs .amount { color: var(--black); }
+    .cost-item.ours .amount { color: var(--yellow); }
+    .cost-item .label {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; margin-top: 4px;
+    }
+    .cost-item.theirs .label { color: rgba(0,0,0,0.5); }
+    .cost-item.ours .label { color: var(--gray); }
+    .cost-vs {
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 24px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px; font-weight: 700; letter-spacing: 0.1em;
+      color: rgba(0,0,0,0.35); text-transform: uppercase;
+    }
+    .btn-dark {
+      display: inline-block;
+      background: var(--black); color: var(--yellow);
+      padding: 16px 40px; font-family: 'Barlow Condensed', sans-serif;
+      font-size: 17px; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      border-radius: 2px; transition: background 0.15s;
+    }
+    .btn-dark:hover { background: #1a1a1a; }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--black); padding: 120px 48px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-conic-gradient(rgba(255,215,0,0.025) 0% 25%, transparent 0% 50%)
+        0 0 / 40px 40px;
+    }
+    .cta-section h2 {
+      position: relative;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(48px, 8vw, 100px);
+      font-weight: 900; text-transform: uppercase;
+      line-height: 0.95; margin-bottom: 24px;
+    }
+    .cta-section h2 em { font-style: normal; color: var(--yellow); }
+    .cta-section p {
+      position: relative;
+      font-size: 17px; color: var(--light); max-width: 480px;
+      margin: 0 auto 48px; font-weight: 300;
+    }
+    .cta-section .btn-primary { position: relative; font-size: 20px; padding: 18px 56px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark); border-top: 1px solid rgba(255,215,0,0.1);
+      padding: 32px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+    footer .logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 16px; font-weight: 900; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--yellow);
+    }
+    footer p { font-size: 13px; color: var(--gray); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.08s; }
+    .reveal-d2 { transition-delay: 0.16s; }
+    .reveal-d3 { transition-delay: 0.24s; }
+    .reveal-d4 { transition-delay: 0.32s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .hero, .hook, .hooks-section, .how, .format, .hardware, .cost, .cta-section { padding: 80px 24px; }
+      .hooks-grid, .format-grid { grid-template-columns: 1fr; }
+      .hardware-inner { grid-template-columns: 1fr; gap: 40px; }
+      .how-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+      .how-grid::before { display: none; }
+      .cost-compare { flex-direction: column; }
+      footer { padding: 24px; flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 56px; }
+      .hero-stats { gap: 28px; }
+      .how-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">N26 <span>Racing League</span></div>
+    <a href="#join" class="nav-cta">I'm In</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">Season 1 — Starting Soon</div>
+    <h1>The <em>Realest</em><br>Racing League<br>You'll Ever Join</h1>
+    <p class="hero-sub">Built on NASCAR 26. Real points. Real teams. Real playoffs. A real trophy with your name on it. For the price of a video game.</p>
+    <div class="hero-actions">
+      <a href="#join" class="btn-primary">Claim Your Seat</a>
+      <a href="#how" class="btn-ghost">How It Works</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="n">18</span>
+        <span class="l">Drivers — Season 1</span>
+      </div>
+      <div class="hero-stat">
+        <span class="n">6</span>
+        <span class="l">Teams</span>
+      </div>
+      <div class="hero-stat">
+        <span class="n">10</span>
+        <span class="l">Race Season</span>
+      </div>
+      <div class="hero-stat">
+        <span class="n">$75</span>
+        <span class="l">All-In Cost</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="flag-bar"></div>
+
+  <!-- HOOK -->
+  <section class="hook">
+    <div class="hook-inner reveal">
+      <h2>Real racing costs<br><em>over $1,000</em> before<br>you turn a lap.</h2>
+      <p>Gas. Tires. Kart rental. Gear. And that's just to show up. This league gives you the same competition, the same bragging rights, and a trophy you can actually win — for $75 total.</p>
+      <p>Same rush. Same stakes. Same trash talk. Different price tag.</p>
+      <div class="highlight">🏁 &nbsp; One game. One buy-in. One shot at the championship.</div>
+    </div>
+  </section>
+
+  <!-- WHY YOU'LL GET HOOKED -->
+  <section class="hooks-section">
+    <div class="section-label reveal">Why You'll Get Hooked</div>
+    <h2 class="reveal">Even If You've Never<br>Watched a Race</h2>
+    <div class="hooks-grid">
+      <div class="hook-card reveal">
+        <span class="hook-num">01</span>
+        <h3>You're Not Just Racing. You're On a Team.</h3>
+        <p>Before the season starts, we hold a live draft night. Team managers pick their rosters like a fantasy football draft. Someone picked YOU. Now your finishes matter to more people than just you.</p>
+      </div>
+      <div class="hook-card reveal reveal-d1">
+        <span class="hook-num">02</span>
+        <h3>Every Single Lap Counts.</h3>
+        <p>This is not "winner takes everything and 15th means nothing." Every position pays points every week. Finish 12th instead of 15th? That matters. Steal stage points mid-race? That matters. You're never out of it.</p>
+      </div>
+      <div class="hook-card reveal reveal-d2">
+        <span class="hook-num">03</span>
+        <h3>The Trash Talk Writes Itself.</h3>
+        <p>Weekly standings. Team rivalries. A playoff Chase where the top 10 battle it out over the final three races. Your group chat will never be the same after week one.</p>
+      </div>
+      <div class="hook-card reveal reveal-d3">
+        <span class="hook-num">04</span>
+        <h3>It Ends With Hardware.</h3>
+        <p>Champions get trophies. Not a screenshot. Not a shoutout. An actual trophy with your name engraved on it that you can put on your shelf and point at when people come over.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="section-label reveal">How It Works</div>
+    <h2 class="reveal">From Draft Night<br>to Champion</h2>
+    <div class="how-grid">
+      <div class="how-step reveal">
+        <div class="step-num">1</div>
+        <h3>Draft Night</h3>
+        <p>Live snake draft. Team managers build their rosters. Your name gets called. Season starts.</p>
+      </div>
+      <div class="how-step reveal reveal-d1">
+        <div class="step-num">2</div>
+        <h3>10-Week Season</h3>
+        <p>One race per week. Real NASCAR points. Stage breaks mid-race. Every position pays.</p>
+      </div>
+      <div class="how-step reveal reveal-d2">
+        <div class="step-num">3</div>
+        <h3>The Chase</h3>
+        <p>Top 10 drivers after Race 7 advance to the Championship Chase. Final 3 races decide everything.</p>
+      </div>
+      <div class="how-step reveal reveal-d3">
+        <div class="step-num">4</div>
+        <h3>Champions Crowned</h3>
+        <p>Driver Champion. Owner Champion. Trophies engraved. Bragging rights permanent.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMAT DETAILS -->
+  <section class="format">
+    <div class="format-inner">
+      <div class="section-label reveal">The Details</div>
+      <h2 class="reveal">Built Like the<br>Real Thing</h2>
+      <div class="format-grid">
+        <div class="format-block reveal">
+          <h3>Points System</h3>
+          <ul>
+            <li><strong>40 points</strong> for the win, scaling down to 1st for 40th place</li>
+            <li><strong>Win bonus</strong> — winner gets 44 total (40 + 4 bonus)</li>
+            <li><strong>Stage points</strong> — top 10 at each stage break earn 10-to-1 bonus points</li>
+            <li><strong>Two championships</strong> — Driver and Owner (Team) run simultaneously</li>
+            <li><strong>Owner points</strong> — sum of all 3 team drivers each race</li>
+          </ul>
+        </div>
+        <div class="format-block reveal reveal-d1">
+          <h3>Teams & Draft</h3>
+          <ul>
+            <li><strong>6 teams</strong> of 3 drivers each — Season 1 target</li>
+            <li><strong>Real NASCAR team identities</strong> — 23XI, Hendrick, Penske, Front Row, and more</li>
+            <li><strong>Live snake draft</strong> before every season — order reverses each round</li>
+            <li><strong>Team Managers</strong> recruit, mentor, and find subs when life happens</li>
+            <li><strong>Subs are welcome</strong> — a car on track is a car on track</li>
+          </ul>
+        </div>
+        <div class="format-block reveal">
+          <h3>The Chase (Playoffs)</h3>
+          <ul>
+            <li><strong>Top 10 drivers</strong> after Race 7 advance to the Championship Chase</li>
+            <li><strong>Regular season leader</strong> carries a bonus into the Chase</li>
+            <li><strong>Final 3 races</strong> determine the champion</li>
+            <li><strong>75% attendance</strong> required to qualify — 6 of 7 regular season races</li>
+            <li>Can't make a race? Your team finds you a sub. No excuses needed.</li>
+          </ul>
+        </div>
+        <div class="format-block reveal reveal-d1">
+          <h3>The Season Cycle</h3>
+          <ul>
+            <li><strong>~10 weeks per season</strong> — short enough to stay intense</li>
+            <li><strong>Multiple seasons per year</strong> — fresh draft, new rivalries</li>
+            <li><strong>Results posted within 24 hours</strong> of every race</li>
+            <li><strong>Live standings</strong> updated all season on the league website</li>
+            <li><strong>Scales to 40 drivers</strong> — built for growth from day one</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HARDWARE -->
+  <section class="hardware">
+    <div class="hardware-inner">
+      <div class="reveal">
+        <div class="section-label">The Hardware</div>
+        <h2>Real<br><em>Trophies.</em><br>Engraved.</h2>
+        <p>Not a screenshot. Not a digital badge. An actual physical trophy with your name on it.</p>
+        <p>The traveling championship trophy gets a new name engraved after every season. Ten years from now, that thing is a piece of history.</p>
+      </div>
+      <div class="trophy-block reveal reveal-d1">
+        <div class="trophy-item">
+          <div class="t-name">🏆 Driver Championship</div>
+          <p>Individual glory. Your name engraved. Held until someone takes it from you.</p>
+        </div>
+        <div class="trophy-item">
+          <div class="t-name">🏆 Owner Championship</div>
+          <p>Team trophy for the winning 3-man squad. Best team all season.</p>
+        </div>
+        <div class="trophy-item">
+          <div class="t-name">🏆 Traveling Trophy</div>
+          <p>One permanent trophy. Every season's champion engraved on it. Building league history one season at a time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COST -->
+  <section class="cost">
+    <h2 class="reveal">The Math<br>Is Easy</h2>
+    <p class="reveal">This is the cheapest real competition you will ever enter.</p>
+    <div class="cost-compare reveal">
+      <div class="cost-item theirs">
+        <span class="amount">$1,000+</span>
+        <div class="label">Kart Racing Setup</div>
+      </div>
+      <div class="cost-vs">vs</div>
+      <div class="cost-item ours">
+        <span class="amount">$75</span>
+        <div class="label">This League, All-In</div>
+      </div>
+    </div>
+    <p class="reveal" style="color:rgba(0,0,0,0.55); font-size:14px;">$60 for the game + ~$15 buy-in. No gas, no tires, no broken parts, no towing.</p>
+    <br>
+    <a href="#join" class="btn-dark reveal">Claim Your Spot →</a>
+  </section>
+
+  <!-- CTA / JOIN -->
+  <section class="cta-section" id="join">
+    <h2 class="reveal">The Grid<br>Is <em>Almost Full.</em></h2>
+    <p class="reveal">Season 1 is limited to 18 drivers. Once the spots are gone, you're waiting for Season 2. The draft order is coming. The trophy is real.</p>
+    <a href="mailto:?subject=NASCAR%2026%20Racing%20League%20%E2%80%94%20I%27m%20In&body=Count%20me%20in%20for%20Season%201." class="btn-primary reveal">I'm In — Count Me</a>
+    <p class="reveal" style="margin-top:24px; font-size:13px; color:var(--gray);">Reply to this invite or text the commissioner to lock your spot.</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">N26 Racing League</div>
+    <p>Season 1 — Built on NASCAR 26 &nbsp;·&nbsp; Real Points. Real Teams. Real Trophies.</p>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }});
+    }, { threshold: 0.08 });
+    reveals.forEach(el => obs.observe(el));
+
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      nav.style.borderBottomColor = window.scrollY > 50
+        ? 'rgba(255,215,0,0.3)' : 'rgba(255,215,0,0.15)';
+    });
+  </script>
+
+</body>
+</html>
