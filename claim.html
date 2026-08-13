@@ -1,831 +1,831 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Claim Your Car — N26 Racing League</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg:       #0e0e0e;
-      --surface:  #171717;
-      --surface2: #1f1f1f;
-      --surface3: #272727;
-      --border:   rgba(255,255,255,0.07);
-      --border2:  rgba(255,255,255,0.13);
-      --white:    #f0ece4;
-      --muted:    #7a7368;
-      --muted2:   #4a4640;
-      --yellow:   #FFC200;
-      --red:      #C8102E;
-      --green:    #00843D;
-    }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-    body {
-      background: var(--bg);
-      color: var(--white);
-      font-family: var(--font);
-      font-size: 15px;
-      line-height: 1.55;
-      overflow-x: hidden;
-    }
-    a { text-decoration: none; color: inherit; }
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Claim Your Car — N26 Racing League</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+ <style>
+ :root {
+ --bg: #0e0e0e;
+ --surface: #171717;
+ --surface2: #1f1f1f;
+ --surface3: #272727;
+ --border: rgba(255,255,255,0.07);
+ --border2: rgba(255,255,255,0.13);
+ --white: #f0ece4;
+ --muted: #7a7368;
+ --muted2: #4a4640;
+ --yellow: #FFC200;
+ --red: #C8102E;
+ --green: #00843D;
+ }
+ *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+ html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+ body {
+ background: var(--bg);
+ color: var(--white);
+ font-family: var(--font);
+ font-size: 15px;
+ line-height: 1.55;
+ overflow-x: hidden;
+ }
+ a { text-decoration: none; color: inherit; }
 
-    /* NAV */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(14,14,14,0.96);
-      backdrop-filter: blur(16px);
-      border-bottom: 2px solid var(--yellow);
-      padding: 0 20px;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    .nav-logo {
-      font-family: var(--font);
-      font-size: 22px; font-weight: 900;
-      letter-spacing: -0.01em; text-transform: uppercase;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .nav-flag {
-      display: grid; grid-template-columns: repeat(3,5px);
-      grid-template-rows: repeat(3,5px); gap: 1px;
-    }
-    .nav-flag span { display: block; }
-    .nav-flag span:nth-child(odd)  { background: var(--yellow); }
-    .nav-flag span:nth-child(even) { background: rgba(255,255,255,0.15); }
-    .nav-back {
-      font-family: var(--font);
-      font-size: 13px; font-weight: 700;
-      letter-spacing: -0.01em; text-transform: uppercase;
-      color: var(--muted); transition: color 0.15s;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .nav-back:hover { color: var(--white); }
+ /* NAV */
+ nav {
+ position: sticky; top: 0; z-index: 100;
+ background: rgba(14,14,14,0.96);
+ backdrop-filter: blur(16px);
+ border-bottom: 2px solid var(--yellow);
+ padding: 0 20px;
+ height: 52px;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ gap: 16px;
+ }
+ .nav-logo {
+ font-family: var(--font);
+ font-size: 22px; font-weight: 900;
+ letter-spacing: -0.01em; text-transform: uppercase;
+ display: flex; align-items: center; gap: 8px;
+ }
+ .nav-flag {
+ display: grid; grid-template-columns: repeat(3,5px);
+ grid-template-rows: repeat(3,5px); gap: 1px;
+ }
+ .nav-flag span { display: block; }
+ .nav-flag span:nth-child(odd) { background: var(--yellow); }
+ .nav-flag span:nth-child(even) { background: rgba(255,255,255,0.15); }
+ .nav-back {
+ font-family: var(--font);
+ font-size: 13px; font-weight: 700;
+ letter-spacing: -0.01em; text-transform: uppercase;
+ color: var(--muted); transition: color 0.15s;
+ display: flex; align-items: center; gap: 5px;
+ }
+ .nav-back:hover { color: var(--white); }
 
-    /* PAGE */
-    .page { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+ /* PAGE */
+ .page { max-width: 720px; margin: 0 auto; padding: 0 20px; }
 
-    /* HERO */
-    .hero { padding: 40px 20px 32px; max-width: 720px; margin: 0 auto; }
-    .eyebrow {
-      font-family: var(--font);
-      font-size: 11px; font-weight: 700;
-      letter-spacing: -0.01em; text-transform: uppercase;
-      color: var(--yellow);
-      display: flex; align-items: center; gap: 8px;
-      margin-bottom: 12px;
-    }
-    .eyebrow::before { content:''; display:block; width:16px; height:2px; background:var(--yellow); }
-    .hero h1 {
-      font-family: var(--font);
-      font-size: clamp(44px,11vw,72px); font-weight: 900;
-      text-transform: uppercase; line-height: 0.95;
-      letter-spacing: -0.01em; margin-bottom: 14px;
-    }
-    .hero h1 em { font-style: normal; color: var(--yellow); }
-    .hero-sub { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 480px; margin-bottom: 24px; }
+ /* HERO */
+ .hero { padding: 40px 20px 32px; max-width: 720px; margin: 0 auto; }
+ .eyebrow {
+ font-family: var(--font);
+ font-size: 11px; font-weight: 700;
+ letter-spacing: -0.01em; text-transform: uppercase;
+ color: var(--yellow);
+ display: flex; align-items: center; gap: 8px;
+ margin-bottom: 12px;
+ }
+ .eyebrow::before { content:''; display:block; width:16px; height:2px; background:var(--yellow); }
+ .hero h1 {
+ font-family: var(--font);
+ font-size: clamp(44px,11vw,72px); font-weight: 900;
+ text-transform: uppercase; line-height: 0.95;
+ letter-spacing: -0.01em; margin-bottom: 14px;
+ }
+ .hero h1 em { font-style: normal; color: var(--yellow); }
+ .hero-sub { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 480px; margin-bottom: 24px; }
 
-    /* RULES STRIP */
-    .rules-strip {
-      display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
-      margin-bottom: 36px;
-    }
-    .rule-pill {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
-      text-align: center;
-    }
-    .rule-pill .rn {
-      font-family: var(--font);
-      font-size: 22px; font-weight: 900; color: var(--yellow);
-      display: block; line-height: 1; margin-bottom: 3px;
-    }
-    .rule-pill .rl {
-      font-size: 10px; color: var(--muted); text-transform: uppercase;
-      letter-spacing: -0.01em; font-weight: 600;
-    }
+ /* RULES STRIP */
+ .rules-strip {
+ display: grid; grid-template-columns: repeat(3,1fr); gap: 8px;
+ margin-bottom: 36px;
+ }
+ .rule-pill {
+ background: var(--surface);
+ border: 1px solid var(--border);
+ border-radius: 10px;
+ padding: 12px 14px;
+ text-align: center;
+ }
+ .rule-pill .rn {
+ font-family: var(--font);
+ font-size: 22px; font-weight: 900; color: var(--yellow);
+ display: block; line-height: 1; margin-bottom: 3px;
+ }
+ .rule-pill .rl {
+ font-size: 10px; color: var(--muted); text-transform: uppercase;
+ letter-spacing: -0.01em; font-weight: 600;
+ }
 
-    /* SECTION LABEL */
-    .s-label {
-      font-family: var(--font);
-      font-size: 11px; font-weight: 700;
-      letter-spacing: -0.01em; text-transform: uppercase;
-      color: var(--yellow);
-      display: flex; align-items: center; gap: 8px;
-      margin-bottom: 6px;
-    }
-    .s-label::before { content:''; display:block; width:16px; height:2px; background:var(--yellow); }
-    .s-title {
-      font-family: var(--font);
-      font-size: clamp(24px,5vw,38px); font-weight: 900;
-      text-transform: uppercase; letter-spacing: -0.01em;
-      margin-bottom: 20px;
-    }
+ /* SECTION LABEL */
+ .s-label {
+ font-family: var(--font);
+ font-size: 11px; font-weight: 700;
+ letter-spacing: -0.01em; text-transform: uppercase;
+ color: var(--yellow);
+ display: flex; align-items: center; gap: 8px;
+ margin-bottom: 6px;
+ }
+ .s-label::before { content:''; display:block; width:16px; height:2px; background:var(--yellow); }
+ .s-title {
+ font-family: var(--font);
+ font-size: clamp(24px,5vw,38px); font-weight: 900;
+ text-transform: uppercase; letter-spacing: -0.01em;
+ margin-bottom: 20px;
+ }
 
-    /* TEAM SECTIONS */
-    .teams-wrap { display: flex; flex-direction: column; gap: 28px; margin-bottom: 48px; }
+ /* TEAM SECTIONS */
+ .teams-wrap { display: flex; flex-direction: column; gap: 28px; margin-bottom: 48px; }
 
-    .team-block {}
-    .team-hdr {
-      display: flex; align-items: center; gap: 12px;
-      margin-bottom: 12px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-    .team-logo-sm {
-      height: 28px; max-width: 60px; object-fit: contain;
-      filter: brightness(0.85);
-    }
-    .spire-sm { filter: invert(1) brightness(0.7); }
-    .team-name-lbl {
-      font-family: var(--font);
-      font-size: 16px; font-weight: 800;
-      text-transform: uppercase; letter-spacing: -0.01em;
-      color: var(--white);
-    }
-    .team-slots {
-      font-size: 11px; color: var(--muted);
-      font-family: var(--font);
-      font-weight: 700; letter-spacing: -0.01em;
-      text-transform: uppercase; margin-left: auto;
-    }
+ .team-block {}
+ .team-hdr {
+ display: flex; align-items: center; gap: 12px;
+ margin-bottom: 12px;
+ padding-bottom: 10px;
+ border-bottom: 1px solid var(--border);
+ }
+ .team-logo-sm {
+ height: 28px; max-width: 60px; object-fit: contain;
+ filter: brightness(0.85);
+ }
+ .spire-sm { filter: invert(1) brightness(0.7); }
+ .team-name-lbl {
+ font-family: var(--font);
+ font-size: 16px; font-weight: 800;
+ text-transform: uppercase; letter-spacing: -0.01em;
+ color: var(--white);
+ }
+ .team-slots {
+ font-size: 11px; color: var(--muted);
+ font-family: var(--font);
+ font-weight: 700; letter-spacing: -0.01em;
+ text-transform: uppercase; margin-left: auto;
+ }
 
-    .cars-row { display: flex; flex-wrap: wrap; gap: 10px; }
+ .cars-row { display: flex; flex-wrap: wrap; gap: 10px; }
 
-    /* CAR CARD */
-    .car-card {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 6px; cursor: pointer;
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 12px 10px;
-      width: calc(33.333% - 7px);
-      min-width: 100px;
-      transition: border-color 0.2s, background 0.2s, transform 0.15s;
-      position: relative;
-      user-select: none;
-    }
-    @media (min-width: 520px) {
-      .car-card { width: auto; min-width: 120px; flex: 0 0 auto; }
-    }
-    .car-card:hover:not(.claimed) {
-      border-color: var(--yellow);
-      background: var(--surface2);
-      transform: translateY(-2px);
-    }
-    .car-card.selected {
-      border-color: var(--yellow);
-      background: rgba(255,194,0,0.06);
-    }
-    .car-card.claimed {
-      opacity: 0.38;
-      cursor: not-allowed;
-      filter: grayscale(0.6);
-    }
-    .car-card.claimed::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(14,14,14,0.5);
-      border-radius: 11px;
-      pointer-events: none;
-    }
-    .car-claimer {
-      font-family: var(--font);
-      font-size: 11px; font-weight: 800;
-      text-transform: uppercase; letter-spacing: -0.01em;
-      color: var(--yellow);
-      text-align: center;
-      line-height: 1.2;
-      word-break: break-all;
-      position: relative; z-index: 1;
-    }
-    .car-num-img {
-      width: 64px; height: 52px; object-fit: contain;
-    }
-    .car-driver-name {
-      font-family: var(--font);
-      font-size: 12px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: -0.01em;
-      color: var(--muted); text-align: center;
-      line-height: 1.2;
-    }
-    .car-card.selected .car-driver-name { color: var(--yellow); }
+ /* CAR CARD */
+ .car-card {
+ display: flex; flex-direction: column; align-items: center;
+ gap: 6px; cursor: pointer;
+ background: var(--surface);
+ border: 1.5px solid var(--border);
+ border-radius: 12px;
+ padding: 14px 12px 10px;
+ width: calc(33.333% - 7px);
+ min-width: 100px;
+ transition: border-color 0.2s, background 0.2s, transform 0.15s;
+ position: relative;
+ user-select: none;
+ }
+ @media (min-width: 520px) {
+ .car-card { width: auto; min-width: 120px; flex: 0 0 auto; }
+ }
+ .car-card:hover:not(.claimed) {
+ border-color: var(--yellow);
+ background: var(--surface2);
+ transform: translateY(-2px);
+ }
+ .car-card.selected {
+ border-color: var(--yellow);
+ background: rgba(255,194,0,0.06);
+ }
+ .car-card.claimed {
+ opacity: 0.38;
+ cursor: not-allowed;
+ filter: grayscale(0.6);
+ }
+ .car-card.claimed::after {
+ content: '';
+ position: absolute;
+ inset: 0;
+ background: rgba(14,14,14,0.5);
+ border-radius: 11px;
+ pointer-events: none;
+ }
+ .car-claimer {
+ font-family: var(--font);
+ font-size: 11px; font-weight: 800;
+ text-transform: uppercase; letter-spacing: -0.01em;
+ color: var(--yellow);
+ text-align: center;
+ line-height: 1.2;
+ word-break: break-all;
+ position: relative; z-index: 1;
+ }
+ .car-num-img {
+ width: 64px; height: 52px; object-fit: contain;
+ }
+ .car-driver-name {
+ font-family: var(--font);
+ font-size: 12px; font-weight: 700;
+ text-transform: uppercase; letter-spacing: -0.01em;
+ color: var(--muted); text-align: center;
+ line-height: 1.2;
+ }
+ .car-card.selected .car-driver-name { color: var(--yellow); }
 
-    /* SELECTION CONFIRM BANNER */
-    .selection-banner {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
-      background: var(--surface);
-      border-top: 2px solid var(--yellow);
-      padding: 14px 20px;
-      display: flex; align-items: center; gap: 14px;
-      transform: translateY(100%);
-      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
-    }
-    .selection-banner.visible { transform: translateY(0); }
-    .sel-num-img { width: 52px; height: 42px; object-fit: contain; flex-shrink: 0; }
-    .sel-info { flex: 1; min-width: 0; }
-    .sel-label {
-      font-size: 10px; color: var(--muted);
-      text-transform: uppercase; letter-spacing: -0.01em;
-      font-family: var(--font); font-weight: 700;
-    }
-    .sel-name {
-      font-family: var(--font);
-      font-size: 20px; font-weight: 900;
-      text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.1;
-    }
-    .sel-team { font-size: 11px; color: var(--muted); }
-    .btn-claim {
-      background: var(--yellow); color: #000;
-      font-family: var(--font);
-      font-size: 15px; font-weight: 900;
-      letter-spacing: -0.01em; text-transform: uppercase;
-      padding: 12px 22px; border-radius: 8px;
-      border: none; cursor: pointer; white-space: nowrap;
-      flex-shrink: 0; transition: background 0.15s;
-    }
-    .btn-claim:hover { background: #ffd033; }
+ /* SELECTION CONFIRM BANNER */
+ .selection-banner {
+ position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+ background: var(--surface);
+ border-top: 2px solid var(--yellow);
+ padding: 14px 20px;
+ display: flex; align-items: center; gap: 14px;
+ transform: translateY(100%);
+ transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+ }
+ .selection-banner.visible { transform: translateY(0); }
+ .sel-num-img { width: 52px; height: 42px; object-fit: contain; flex-shrink: 0; }
+ .sel-info { flex: 1; min-width: 0; }
+ .sel-label {
+ font-size: 10px; color: var(--muted);
+ text-transform: uppercase; letter-spacing: -0.01em;
+ font-family: var(--font); font-weight: 700;
+ }
+ .sel-name {
+ font-family: var(--font);
+ font-size: 20px; font-weight: 900;
+ text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.1;
+ }
+ .sel-team { font-size: 11px; color: var(--muted); }
+ .btn-claim {
+ background: var(--yellow); color: #000;
+ font-family: var(--font);
+ font-size: 15px; font-weight: 900;
+ letter-spacing: -0.01em; text-transform: uppercase;
+ padding: 12px 22px; border-radius: 8px;
+ border: none; cursor: pointer; white-space: nowrap;
+ flex-shrink: 0; transition: background 0.15s;
+ }
+ .btn-claim:hover { background: #ffd033; }
 
-    /* MODAL */
-    .modal-overlay {
-      position: fixed; inset: 0; z-index: 300;
-      background: rgba(0,0,0,0.85);
-      display: flex; align-items: flex-end; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.2s;
-    }
-    .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal {
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: 20px 20px 0 0;
-      width: 100%; max-width: 520px;
-      padding: 28px 24px 40px;
-      transform: translateY(40px);
-      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
-      max-height: 92vh; overflow-y: auto;
-    }
-    .modal-overlay.open .modal { transform: translateY(0); }
+ /* MODAL */
+ .modal-overlay {
+ position: fixed; inset: 0; z-index: 300;
+ background: rgba(0,0,0,0.85);
+ display: flex; align-items: flex-end; justify-content: center;
+ opacity: 0; pointer-events: none;
+ transition: opacity 0.2s;
+ }
+ .modal-overlay.open { opacity: 1; pointer-events: all; }
+ .modal {
+ background: var(--surface);
+ border: 1px solid var(--border2);
+ border-radius: 20px 20px 0 0;
+ width: 100%; max-width: 520px;
+ padding: 28px 24px 40px;
+ transform: translateY(40px);
+ transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+ max-height: 92vh; overflow-y: auto;
+ }
+ .modal-overlay.open .modal { transform: translateY(0); }
 
-    .modal-pill {
-      width: 36px; height: 4px;
-      background: var(--border2); border-radius: 2px;
-      margin: 0 auto 20px;
-    }
-    .modal-car-hdr {
-      display: flex; align-items: center; gap: 14px;
-      margin-bottom: 20px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .modal-num-img { width: 72px; height: 58px; object-fit: contain; }
-    .modal-car-info {}
-    .modal-car-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: -0.01em; font-family: var(--font); font-weight: 700; margin-bottom: 2px; }
-    .modal-car-driver {
-      font-family: var(--font);
-      font-size: 26px; font-weight: 900;
-      text-transform: uppercase; letter-spacing: -0.01em; line-height: 1;
-    }
-    .modal-car-team { font-size: 12px; color: var(--muted); margin-top: 3px; }
+ .modal-pill {
+ width: 36px; height: 4px;
+ background: var(--border2); border-radius: 2px;
+ margin: 0 auto 20px;
+ }
+ .modal-car-hdr {
+ display: flex; align-items: center; gap: 14px;
+ margin-bottom: 20px;
+ padding-bottom: 16px;
+ border-bottom: 1px solid var(--border);
+ }
+ .modal-num-img { width: 72px; height: 58px; object-fit: contain; }
+ .modal-car-info {}
+ .modal-car-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: -0.01em; font-family: var(--font); font-weight: 700; margin-bottom: 2px; }
+ .modal-car-driver {
+ font-family: var(--font);
+ font-size: 26px; font-weight: 900;
+ text-transform: uppercase; letter-spacing: -0.01em; line-height: 1;
+ }
+ .modal-car-team { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
-    /* FORM */
-    .form-group { margin-bottom: 16px; }
-    label {
-      display: block;
-      font-family: var(--font);
-      font-size: 12px; font-weight: 700;
-      letter-spacing: -0.01em; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 6px;
-    }
-    label span { color: var(--yellow); }
-    input[type="text"], input[type="tel"], input[type="email"] {
-      width: 100%;
-      background: var(--surface2);
-      border: 1.5px solid var(--border2);
-      border-radius: 8px;
-      color: var(--white);
-      font-family: var(--font);
-      font-size: 16px; font-weight: 500;
-      padding: 13px 14px;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-    input:focus { border-color: var(--yellow); }
-    input::placeholder { color: var(--muted2); }
+ /* FORM */
+ .form-group { margin-bottom: 16px; }
+ label {
+ display: block;
+ font-family: var(--font);
+ font-size: 12px; font-weight: 700;
+ letter-spacing: -0.01em; text-transform: uppercase;
+ color: var(--muted); margin-bottom: 6px;
+ }
+ label span { color: var(--yellow); }
+ input[type="text"], input[type="tel"], input[type="email"] {
+ width: 100%;
+ background: var(--surface2);
+ border: 1.5px solid var(--border2);
+ border-radius: 8px;
+ color: var(--white);
+ font-family: var(--font);
+ font-size: 16px; font-weight: 500;
+ padding: 13px 14px;
+ outline: none;
+ transition: border-color 0.15s;
+ }
+ input:focus { border-color: var(--yellow); }
+ input::placeholder { color: var(--muted2); }
 
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+ .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-    .btn-submit {
-      width: 100%;
-      background: var(--yellow); color: #000;
-      font-family: var(--font);
-      font-size: 18px; font-weight: 900;
-      letter-spacing: -0.01em; text-transform: uppercase;
-      padding: 16px; border-radius: 8px;
-      border: none; cursor: pointer;
-      transition: background 0.15s; margin-top: 8px;
-    }
-    .btn-submit:hover { background: #ffd033; }
-    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+ .btn-submit {
+ width: 100%;
+ background: var(--yellow); color: #000;
+ font-family: var(--font);
+ font-size: 18px; font-weight: 900;
+ letter-spacing: -0.01em; text-transform: uppercase;
+ padding: 16px; border-radius: 8px;
+ border: none; cursor: pointer;
+ transition: background 0.15s; margin-top: 8px;
+ }
+ .btn-submit:hover { background: #ffd033; }
+ .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .form-fine {
-      font-size: 11px; color: var(--muted2);
-      text-align: center; margin-top: 10px; line-height: 1.5;
-    }
+ .form-fine {
+ font-size: 11px; color: var(--muted2);
+ text-align: center; margin-top: 10px; line-height: 1.5;
+ }
 
-    /* SUCCESS STATE */
-    .success-state {
-      text-align: center; padding: 20px 0;
-      display: none;
-    }
-    .success-icon {
-      font-size: 52px; margin-bottom: 12px; display: block;
-    }
-    .success-state h2 {
-      font-family: var(--font);
-      font-size: 36px; font-weight: 900;
-      text-transform: uppercase; letter-spacing: -0.01em;
-      color: var(--yellow); margin-bottom: 8px; line-height: 1;
-    }
-    .success-state p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+ /* SUCCESS STATE */
+ .success-state {
+ text-align: center; padding: 20px 0;
+ display: none;
+ }
+ .success-icon {
+ font-size: 52px; margin-bottom: 12px; display: block;
+ }
+ .success-state h2 {
+ font-family: var(--font);
+ font-size: 36px; font-weight: 900;
+ text-transform: uppercase; letter-spacing: -0.01em;
+ color: var(--yellow); margin-bottom: 8px; line-height: 1;
+ }
+ .success-state p { font-size: 14px; color: var(--muted); line-height: 1.7; }
 
-    /* FOOTER */
-    .page-footer {
-      border-top: 1px solid var(--border);
-      margin-top: 20px; padding: 24px 20px;
-      text-align: center;
-      font-size: 11px; color: var(--muted2);
-      font-family: var(--font);
-      letter-spacing: -0.01em; text-transform: uppercase;
-    }
+ /* FOOTER */
+ .page-footer {
+ border-top: 1px solid var(--border);
+ margin-top: 20px; padding: 24px 20px;
+ text-align: center;
+ font-size: 11px; color: var(--muted2);
+ font-family: var(--font);
+ letter-spacing: -0.01em; text-transform: uppercase;
+ }
 
-    @media (max-width: 520px) {
-      .rules-strip { grid-template-columns: repeat(3,1fr); gap: 6px; }
-      .car-card { padding: 10px 8px 8px; }
-      .car-num-img { width: 52px; height: 42px; }
-      .form-row { grid-template-columns: 1fr; }
-    }
-  </style>
-  <link rel="stylesheet" href="n26.css">
+ @media (max-width: 520px) {
+ .rules-strip { grid-template-columns: repeat(3,1fr); gap: 6px; }
+ .car-card { padding: 10px 8px 8px; }
+ .car-num-img { width: 52px; height: 42px; }
+ .form-row { grid-template-columns: 1fr; }
+ }
+ </style>
+ <link rel="stylesheet" href="n26.css">
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="nav">
-  <a href="index.html" class="nav-logo">N26<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="standings.html">Standings</a></li>
-    <li><a href="results.html">Results</a></li>
-    <li><a href="schedule.html">Schedule</a></li>
-    <li><a href="rules.html">Rules</a></li>
-    <li><a href="claim.html" class="active">Roster</a></li>
-  </ul>
-  <a href="claim.html" class="nav-cta">Claim a Car →</a>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </div>
+ <a href="index.html" class="nav-logo">N26<span>.</span></a>
+ <ul class="nav-links">
+ <li><a href="index.html">Home</a></li>
+ <li><a href="standings.html">Standings</a></li>
+ <li><a href="results.html">Results</a></li>
+ <li><a href="schedule.html">Schedule</a></li>
+ <li><a href="rules.html">Rules</a></li>
+ <li><a href="claim.html" class="active">Roster</a></li>
+ </ul>
+ <a href="claim.html" class="nav-cta">Claim a Car →</a>
+ <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+ <span></span><span></span><span></span>
+ </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="eyebrow">Season 1 — Claim Your Car</div>
-  <h1>Pick Your<br><em>Number.</em></h1>
-  <p class="hero-sub">First come, first served. Click a car, fill out the form, and that number is yours for the season. Once it's gone, it's gone.</p>
+ <div class="eyebrow">Season 1 — Claim Your Car</div>
+ <h1>Pick Your<br><em>Number.</em></h1>
+ <p class="hero-sub">First come, first served. Click a car, fill out the form, and that number is yours for the season. Once it's gone, it's gone.</p>
 
-  <div class="rules-strip">
-    <div class="rule-pill"><span class="rn">1</span><span class="rl">Car per person</span></div>
-    <div class="rule-pill"><span class="rn">3</span><span class="rl">Max per team</span></div>
-    <div class="rule-pill"><span class="rn">21</span><span class="rl">Total spots</span></div>
-  </div>
+ <div class="rules-strip">
+ <div class="rule-pill"><span class="rn">1</span><span class="rl">Car per person</span></div>
+ <div class="rule-pill"><span class="rn">3</span><span class="rl">Max per team</span></div>
+ <div class="rule-pill"><span class="rn">21</span><span class="rl">Total spots</span></div>
+ </div>
 </div>
 
 <!-- CARS GRID -->
 <div class="page">
-  <div class="s-label">Choose Your Car</div>
-  <div class="s-title">Available Cars</div>
+ <div class="s-label">Choose Your Car</div>
+ <div class="s-title">Available Cars</div>
 
-  <div class="teams-wrap" id="teamsWrap">
+ <div class="teams-wrap" id="teamsWrap">
 
-    <!-- HENDRICK -->
-    <div class="team-block" id="team-hms">
-      <div class="team-hdr">
-        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Hendrick_Motorsports_Logo.svg/250px-Hendrick_Motorsports_Logo.svg.png" alt="HMS" class="team-logo-sm">
-        <span class="team-name-lbl">Hendrick Motorsports</span>
-        <span class="team-slots" id="slots-hms">3 spots open</span>
-      </div>
-      <div class="cars-row">
-        <div class="car-card" data-car="5"  data-driver="Kyle Larson"    data-team="Hendrick Motorsports" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/5.png"  class="car-num-img" alt="#5">
-        </div>
-        <div class="car-card" data-car="9"  data-driver="Chase Elliott"  data-team="Hendrick Motorsports" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/9.png"  class="car-num-img" alt="#9">
-        </div>
-        <div class="car-card" data-car="24" data-driver="William Byron"  data-team="Hendrick Motorsports" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/24.png" class="car-num-img" alt="#24">
-        </div>
-        <div class="car-card" data-car="48" data-driver="Alex Bowman"    data-team="Hendrick Motorsports" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/48.png" class="car-num-img" alt="#48">
-        </div>
-      </div>
-    </div>
+ <!-- HENDRICK -->
+ <div class="team-block" id="team-hms">
+ <div class="team-hdr">
+ <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Hendrick_Motorsports_Logo.svg/250px-Hendrick_Motorsports_Logo.svg.png" alt="HMS" class="team-logo-sm">
+ <span class="team-name-lbl">Hendrick Motorsports</span>
+ <span class="team-slots" id="slots-hms">3 spots open</span>
+ </div>
+ <div class="cars-row">
+ <div class="car-card" data-car="5" data-driver="Kyle Larson" data-team="Hendrick Motorsports" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/5.png" class="car-num-img" alt="#5">
+ </div>
+ <div class="car-card" data-car="9" data-driver="Chase Elliott" data-team="Hendrick Motorsports" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/9.png" class="car-num-img" alt="#9">
+ </div>
+ <div class="car-card" data-car="24" data-driver="William Byron" data-team="Hendrick Motorsports" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/24.png" class="car-num-img" alt="#24">
+ </div>
+ <div class="car-card" data-car="48" data-driver="Alex Bowman" data-team="Hendrick Motorsports" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/48.png" class="car-num-img" alt="#48">
+ </div>
+ </div>
+ </div>
 
-    <!-- JGR -->
-    <div class="team-block" id="team-jgr">
-      <div class="team-hdr">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Joe_Gibbs_Racing_logo.png" alt="JGR" class="team-logo-sm">
-        <span class="team-name-lbl">Joe Gibbs Racing</span>
-        <span class="team-slots" id="slots-jgr">3 spots open</span>
-      </div>
-      <div class="cars-row">
-        <div class="car-card" data-car="11" data-driver="Denny Hamlin"   data-team="Joe Gibbs Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/11.png" class="car-num-img" alt="#11">
-        </div>
-        <div class="car-card" data-car="19" data-driver="Martin Truex Jr" data-team="Joe Gibbs Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/19.png" class="car-num-img" alt="#19">
-        </div>
-        <div class="car-card" data-car="20" data-driver="Christopher Bell" data-team="Joe Gibbs Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/20.png" class="car-num-img" alt="#20">
-        </div>
-        <div class="car-card" data-car="54" data-driver="Ty Gibbs"        data-team="Joe Gibbs Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/54.png" class="car-num-img" alt="#54">
-        </div>
-      </div>
-    </div>
+ <!-- JGR -->
+ <div class="team-block" id="team-jgr">
+ <div class="team-hdr">
+ <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Joe_Gibbs_Racing_logo.png" alt="JGR" class="team-logo-sm">
+ <span class="team-name-lbl">Joe Gibbs Racing</span>
+ <span class="team-slots" id="slots-jgr">3 spots open</span>
+ </div>
+ <div class="cars-row">
+ <div class="car-card" data-car="11" data-driver="Denny Hamlin" data-team="Joe Gibbs Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/11.png" class="car-num-img" alt="#11">
+ </div>
+ <div class="car-card" data-car="19" data-driver="Martin Truex Jr" data-team="Joe Gibbs Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/19.png" class="car-num-img" alt="#19">
+ </div>
+ <div class="car-card" data-car="20" data-driver="Christopher Bell" data-team="Joe Gibbs Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/20.png" class="car-num-img" alt="#20">
+ </div>
+ <div class="car-card" data-car="54" data-driver="Ty Gibbs" data-team="Joe Gibbs Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/54.png" class="car-num-img" alt="#54">
+ </div>
+ </div>
+ </div>
 
-    <!-- PENSKE -->
-    <div class="team-block" id="team-penske">
-      <div class="team-hdr">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Team_Penske_logo.svg/250px-Team_Penske_logo.svg.png" alt="Penske" class="team-logo-sm">
-        <span class="team-name-lbl">Team Penske</span>
-        <span class="team-slots" id="slots-penske">3 spots open</span>
-      </div>
-      <div class="cars-row">
-        <div class="car-card" data-car="2"  data-driver="Austin Cindric"  data-team="Team Penske" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/2.png"  class="car-num-img" alt="#2">
-        </div>
-        <div class="car-card" data-car="12" data-driver="Ryan Blaney"     data-team="Team Penske" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/12.png" class="car-num-img" alt="#12">
-        </div>
-        <div class="car-card" data-car="22" data-driver="Joey Logano"     data-team="Team Penske" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/22.png" class="car-num-img" alt="#22">
-        </div>
-      </div>
-    </div>
+ <!-- PENSKE -->
+ <div class="team-block" id="team-penske">
+ <div class="team-hdr">
+ <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Team_Penske_logo.svg/250px-Team_Penske_logo.svg.png" alt="Penske" class="team-logo-sm">
+ <span class="team-name-lbl">Team Penske</span>
+ <span class="team-slots" id="slots-penske">3 spots open</span>
+ </div>
+ <div class="cars-row">
+ <div class="car-card" data-car="2" data-driver="Austin Cindric" data-team="Team Penske" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/2.png" class="car-num-img" alt="#2">
+ </div>
+ <div class="car-card" data-car="12" data-driver="Ryan Blaney" data-team="Team Penske" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/12.png" class="car-num-img" alt="#12">
+ </div>
+ <div class="car-card" data-car="22" data-driver="Joey Logano" data-team="Team Penske" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/22.png" class="car-num-img" alt="#22">
+ </div>
+ </div>
+ </div>
 
-    <!-- 23XI -->
-    <div class="team-block" id="team-23xi">
-      <div class="team-hdr">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/23XI_racing_logo_%282023%29.png/250px-23XI_racing_logo_%282023%29.png" alt="23XI" class="team-logo-sm">
-        <span class="team-name-lbl">23XI Racing</span>
-        <span class="team-slots" id="slots-23xi">3 spots open</span>
-      </div>
-      <div class="cars-row">
-        <div class="car-card" data-car="23" data-driver="Bubba Wallace"   data-team="23XI Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/23.png" class="car-num-img" alt="#23">
-        </div>
-        <div class="car-card" data-car="35" data-driver="Todd Gilliland"  data-team="23XI Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/35.png" class="car-num-img" alt="#35">
-        </div>
-        <div class="car-card" data-car="45" data-driver="Tyler Reddick"   data-team="23XI Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/45.png" class="car-num-img" alt="#45">
-        </div>
-      </div>
-    </div>
+ <!-- 23XI -->
+ <div class="team-block" id="team-23xi">
+ <div class="team-hdr">
+ <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/23XI_racing_logo_%282023%29.png/250px-23XI_racing_logo_%282023%29.png" alt="23XI" class="team-logo-sm">
+ <span class="team-name-lbl">23XI Racing</span>
+ <span class="team-slots" id="slots-23xi">3 spots open</span>
+ </div>
+ <div class="cars-row">
+ <div class="car-card" data-car="23" data-driver="Bubba Wallace" data-team="23XI Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/23.png" class="car-num-img" alt="#23">
+ </div>
+ <div class="car-card" data-car="35" data-driver="Todd Gilliland" data-team="23XI Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/35.png" class="car-num-img" alt="#35">
+ </div>
+ <div class="car-card" data-car="45" data-driver="Tyler Reddick" data-team="23XI Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/45.png" class="car-num-img" alt="#45">
+ </div>
+ </div>
+ </div>
 
-    <!-- RFK -->
-    <div class="team-block" id="team-rfk">
-      <div class="team-hdr">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/RFK_logo.png/500px-RFK_logo.png" alt="RFK" class="team-logo-sm">
-        <span class="team-name-lbl">RFK Racing</span>
-        <span class="team-slots" id="slots-rfk">3 spots open</span>
-      </div>
-      <div class="cars-row">
-        <div class="car-card" data-car="6"  data-driver="Brad Keselowski" data-team="RFK Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/6.png"  class="car-num-img" alt="#6">
-        </div>
-        <div class="car-card" data-car="17" data-driver="Chris Buescher"  data-team="RFK Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/17.png" class="car-num-img" alt="#17">
-        </div>
-        <div class="car-card" data-car="60" data-driver="Ryan Newman"     data-team="RFK Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/60.png" class="car-num-img" alt="#60">
-        </div>
-      </div>
-    </div>
+ <!-- RFK -->
+ <div class="team-block" id="team-rfk">
+ <div class="team-hdr">
+ <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/RFK_logo.png/500px-RFK_logo.png" alt="RFK" class="team-logo-sm">
+ <span class="team-name-lbl">RFK Racing</span>
+ <span class="team-slots" id="slots-rfk">3 spots open</span>
+ </div>
+ <div class="cars-row">
+ <div class="car-card" data-car="6" data-driver="Brad Keselowski" data-team="RFK Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/6.png" class="car-num-img" alt="#6">
+ </div>
+ <div class="car-card" data-car="17" data-driver="Chris Buescher" data-team="RFK Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/17.png" class="car-num-img" alt="#17">
+ </div>
+ <div class="car-card" data-car="60" data-driver="Ryan Newman" data-team="RFK Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/60.png" class="car-num-img" alt="#60">
+ </div>
+ </div>
+ </div>
 
-    <!-- SPIRE -->
-    <div class="team-block" id="team-spire">
-      <div class="team-hdr">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Spire_Motorsports_yellow_logo.png/250px-Spire_Motorsports_yellow_logo.png" alt="Spire" class="team-logo-sm spire-sm">
-        <span class="team-name-lbl">Spire Motorsports</span>
-        <span class="team-slots" id="slots-spire">3 spots open</span>
-      </div>
-      <div class="cars-row">
-        <div class="car-card" data-car="7"  data-driver="Corey LaJoie"    data-team="Spire Motorsports" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/7.png"  class="car-num-img" alt="#7">
-        </div>
-        <div class="car-card" data-car="71" data-driver="Zane Smith"       data-team="Spire Motorsports" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/71.png" class="car-num-img" alt="#71">
-        </div>
-        <div class="car-card" data-car="77" data-driver="Carson Hocevar"   data-team="Spire Motorsports" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/77.png" class="car-num-img" alt="#77">
-        </div>
-      </div>
-    </div>
+ <!-- SPIRE -->
+ <div class="team-block" id="team-spire">
+ <div class="team-hdr">
+ <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Spire_Motorsports_yellow_logo.png/250px-Spire_Motorsports_yellow_logo.png" alt="Spire" class="team-logo-sm spire-sm">
+ <span class="team-name-lbl">Spire Motorsports</span>
+ <span class="team-slots" id="slots-spire">3 spots open</span>
+ </div>
+ <div class="cars-row">
+ <div class="car-card" data-car="7" data-driver="Corey LaJoie" data-team="Spire Motorsports" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/7.png" class="car-num-img" alt="#7">
+ </div>
+ <div class="car-card" data-car="71" data-driver="Zane Smith" data-team="Spire Motorsports" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/71.png" class="car-num-img" alt="#71">
+ </div>
+ <div class="car-card" data-car="77" data-driver="Carson Hocevar" data-team="Spire Motorsports" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/77.png" class="car-num-img" alt="#77">
+ </div>
+ </div>
+ </div>
 
-    <!-- TRACKHOUSE -->
-    <div class="team-block" id="team-trackhouse">
-      <div class="team-hdr">
-        <img src="https://upload.wikimedia.org/wikipedia/en/d/d2/Trackhouse_Racing_Logo.png" alt="Trackhouse" class="team-logo-sm">
-        <span class="team-name-lbl">Trackhouse Racing</span>
-        <span class="team-slots" id="slots-trackhouse">3 spots open</span>
-      </div>
-      <div class="cars-row">
-        <div class="car-card" data-car="1"  data-driver="Ross Chastain"   data-team="Trackhouse Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/1.png"  class="car-num-img" alt="#1">
-        </div>
-        <div class="car-card" data-car="88" data-driver="Shane van Gisbergen" data-team="Trackhouse Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/88.png" class="car-num-img" alt="#88">
-        </div>
-        <div class="car-card" data-car="97" data-driver="Daniel Suárez"   data-team="Trackhouse Racing" onclick="selectCar(this)">
-          <img src="https://cf.nascar.com/data/images/carbadges/1/97.png" class="car-num-img" alt="#97">
-        </div>
-      </div>
-    </div>
+ <!-- TRACKHOUSE -->
+ <div class="team-block" id="team-trackhouse">
+ <div class="team-hdr">
+ <img src="https://upload.wikimedia.org/wikipedia/en/d/d2/Trackhouse_Racing_Logo.png" alt="Trackhouse" class="team-logo-sm">
+ <span class="team-name-lbl">Trackhouse Racing</span>
+ <span class="team-slots" id="slots-trackhouse">3 spots open</span>
+ </div>
+ <div class="cars-row">
+ <div class="car-card" data-car="1" data-driver="Ross Chastain" data-team="Trackhouse Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/1.png" class="car-num-img" alt="#1">
+ </div>
+ <div class="car-card" data-car="88" data-driver="Shane van Gisbergen" data-team="Trackhouse Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/88.png" class="car-num-img" alt="#88">
+ </div>
+ <div class="car-card" data-car="97" data-driver="Daniel Suárez" data-team="Trackhouse Racing" onclick="selectCar(this)">
+ <img src="https://cf.nascar.com/data/images/carbadges/1/97.png" class="car-num-img" alt="#97">
+ </div>
+ </div>
+ </div>
 
-  </div>
+ </div>
 </div>
 
 <!-- SELECTION BANNER -->
 <div class="selection-banner" id="selBanner">
-  <img id="selNumImg" class="sel-num-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
-  <div class="sel-info">
-    <div class="sel-label">Selected</div>
-    <div class="sel-name" id="selName">—</div>
-    <div class="sel-team" id="selTeam">—</div>
-  </div>
-  <button class="btn-claim" onclick="openModal()">Claim This Car →</button>
+ <img id="selNumImg" class="sel-num-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
+ <div class="sel-info">
+ <div class="sel-label">Selected</div>
+ <div class="sel-name" id="selName">—</div>
+ <div class="sel-team" id="selTeam">—</div>
+ </div>
+ <button class="btn-claim" onclick="openModal()">Claim This Car →</button>
 </div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
-  <div class="modal" id="modal">
-    <div class="modal-pill"></div>
+ <div class="modal" id="modal">
+ <div class="modal-pill"></div>
 
-    <div class="modal-car-hdr">
-      <img id="modalNumImg" class="modal-num-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
-      <div class="modal-car-info">
-        <div class="modal-car-lbl">You're claiming</div>
-        <div class="modal-car-driver" id="modalDriver">—</div>
-        <div class="modal-car-team" id="modalTeam">—</div>
-      </div>
-    </div>
+ <div class="modal-car-hdr">
+ <img id="modalNumImg" class="modal-num-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="">
+ <div class="modal-car-info">
+ <div class="modal-car-lbl">You're claiming</div>
+ <div class="modal-car-driver" id="modalDriver">—</div>
+ <div class="modal-car-team" id="modalTeam">—</div>
+ </div>
+ </div>
 
-    <!-- FORM -->
-    <div id="claimForm">
-      <!-- Formspree — replace YOUR_FORM_ID below -->
-      <form id="theForm" onsubmit="handleSubmit(event)">
-        <input type="hidden" name="car_number"   id="hiddenCar">
-        <input type="hidden" name="driver_name"  id="hiddenDriver">
-        <input type="hidden" name="team_name"    id="hiddenTeam">
+ <!-- FORM -->
+ <div id="claimForm">
+ <!-- Formspree — replace YOUR_FORM_ID below -->
+ <form id="theForm" onsubmit="handleSubmit(event)">
+ <input type="hidden" name="car_number" id="hiddenCar">
+ <input type="hidden" name="driver_name" id="hiddenDriver">
+ <input type="hidden" name="team_name" id="hiddenTeam">
 
-        <div class="form-group">
-          <label>Gamer Tag <span>*</span></label>
-          <input type="text" name="gamertag" placeholder="Your Xbox/PSN gamertag" required autocomplete="off">
-        </div>
+ <div class="form-group">
+ <label>Gamer Tag <span>*</span></label>
+ <input type="text" name="gamertag" placeholder="Your Xbox/PSN gamertag" required autocomplete="off">
+ </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>First Name <span>*</span></label>
-            <input type="text" name="first_name" placeholder="First" required>
-          </div>
-          <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" name="last_name" placeholder="Last">
-          </div>
-        </div>
+ <div class="form-row">
+ <div class="form-group">
+ <label>First Name <span>*</span></label>
+ <input type="text" name="first_name" placeholder="First" required>
+ </div>
+ <div class="form-group">
+ <label>Last Name</label>
+ <input type="text" name="last_name" placeholder="Last">
+ </div>
+ </div>
 
-        <div class="form-group">
-          <label>Phone Number <span>*</span></label>
-          <input type="tel" name="phone" placeholder="(555) 867-5309" required>
-        </div>
+ <div class="form-group">
+ <label>Phone Number <span>*</span></label>
+ <input type="tel" name="phone" placeholder="(555) 867-5309" required>
+ </div>
 
-        <button type="submit" class="btn-submit" id="submitBtn">
-          🏁 Lock In My Car
-        </button>
-        <p class="form-fine">Submissions go straight to the commissioner. You'll get a confirmation text once it's official.</p>
-      </form>
-    </div>
+ <button type="submit" class="btn-submit" id="submitBtn">
+ Lock In My Car
+ </button>
+ <p class="form-fine">Submissions go straight to the commissioner. You'll get a confirmation text once it's official.</p>
+ </form>
+ </div>
 
-    <div class="success-state" id="successState">
-      <span class="success-icon">🏁</span>
-      <h2>You're In!</h2>
-      <p>Your claim has been sent to the commissioner.<br>Expect a confirmation text soon.<br><br>Welcome to N26 League.</p>
-    </div>
-  </div>
+ <div class="success-state" id="successState">
+ <span class="success-icon"></span>
+ <h2>You're In!</h2>
+ <p>Your claim has been sent to the commissioner.<br>Expect a confirmation text soon.<br><br>Welcome to N26 League.</p>
+ </div>
+ </div>
 </div>
 
 <div class="page-footer">
-  N26 Racing League · Season 1 · <a href="index.html" style="color:var(--yellow)">← Back to Home</a>
+ N26 Racing League · Season 1 · <a href="index.html" style="color:var(--yellow)">← Back to Home</a>
 </div>
 
 <script>
-  // ─── CONFIG ─────────────────────────────────────────────
-  const SUPABASE_URL  = 'https://vvujhkryqzhmemojedxs.supabase.co';
-  const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
+ // ─── CONFIG ─────────────────────────────────────────────
+ const SUPABASE_URL = 'https://vvujhkryqzhmemojedxs.supabase.co';
+ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
 
-  // Team slot tracking (max 3 per team)
-  const TEAM_MAP = {
-    'hms':        ['5','9','24','48'],
-    'jgr':        ['11','19','20','54'],
-    'penske':     ['2','12','22'],
-    '23xi':       ['23','35','45'],
-    'rfk':        ['6','17','60'],
-    'spire':      ['7','71','77'],
-    'trackhouse': ['1','88','97'],
-  };
+ // Team slot tracking (max 3 per team)
+ const TEAM_MAP = {
+ 'hms': ['5','9','24','48'],
+ 'jgr': ['11','19','20','54'],
+ 'penske': ['2','12','22'],
+ '23xi': ['23','35','45'],
+ 'rfk': ['6','17','60'],
+ 'spire': ['7','71','77'],
+ 'trackhouse': ['1','88','97'],
+ };
 
-  // ─── STATE ───────────────────────────────────────────────
-  let claimedCars  = []; // { car_number, gamertag }
-  let selectedCard = null;
+ // ─── STATE ───────────────────────────────────────────────
+ let claimedCars = []; // { car_number, gamertag }
+ let selectedCard = null;
 
-  // ─── SUPABASE HELPERS ────────────────────────────────────
-  async function sbFetch(path, opts = {}) {
-    return fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-      ...opts,
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation',
-        ...(opts.headers || {})
-      }
-    });
-  }
+ // ─── SUPABASE HELPERS ────────────────────────────────────
+ async function sbFetch(path, opts = {}) {
+ return fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+ ...opts,
+ headers: {
+ 'apikey': SUPABASE_KEY,
+ 'Authorization': `Bearer ${SUPABASE_KEY}`,
+ 'Content-Type': 'application/json',
+ 'Prefer': 'return=representation',
+ ...(opts.headers || {})
+ }
+ });
+ }
 
-  // ─── INIT ────────────────────────────────────────────────
-  async function init() {
-    try {
-      const res = await sbFetch('n26_claims?select=car_number,gamertag');
-      if (res.ok) {
-        claimedCars = await res.json();
-      }
-    } catch(e) { console.warn('Could not load claims', e); }
+ // ─── INIT ────────────────────────────────────────────────
+ async function init() {
+ try {
+ const res = await sbFetch('n26_claims?select=car_number,gamertag');
+ if (res.ok) {
+ claimedCars = await res.json();
+ }
+ } catch(e) { console.warn('Could not load claims', e); }
 
-    claimedCars.forEach(({ car_number, gamertag }) => {
-      const el = document.querySelector(`[data-car="${car_number}"]`);
-      if (el) {
-        el.classList.add('claimed');
-        // Show gamertag under the number
-        const tag = document.createElement('span');
-        tag.className = 'car-claimer';
-        tag.textContent = gamertag;
-        el.appendChild(tag);
-      }
-    });
-    updateAllSlotCounts();
-  }
+ claimedCars.forEach(({ car_number, gamertag }) => {
+ const el = document.querySelector(`[data-car="${car_number}"]`);
+ if (el) {
+ el.classList.add('claimed');
+ // Show gamertag under the number
+ const tag = document.createElement('span');
+ tag.className = 'car-claimer';
+ tag.textContent = gamertag;
+ el.appendChild(tag);
+ }
+ });
+ updateAllSlotCounts();
+ }
 
-  function updateAllSlotCounts() {
-    Object.entries(TEAM_MAP).forEach(([team, cars]) => {
-      const claimed = cars.filter(c => claimedCars.find(x => x.car_number === c)).length;
-      const open = Math.max(0, 3 - claimed);
-      const el = document.getElementById(`slots-${team}`);
-      if (el) el.textContent = open === 0 ? 'FULL' : `${open} spot${open !== 1 ? 's' : ''} open`;
-    });
-  }
+ function updateAllSlotCounts() {
+ Object.entries(TEAM_MAP).forEach(([team, cars]) => {
+ const claimed = cars.filter(c => claimedCars.find(x => x.car_number === c)).length;
+ const open = Math.max(0, 3 - claimed);
+ const el = document.getElementById(`slots-${team}`);
+ if (el) el.textContent = open === 0 ? 'FULL' : `${open} spot${open !== 1 ? 's' : ''} open`;
+ });
+ }
 
-  // ─── SELECT ──────────────────────────────────────────────
-  function selectCar(card) {
-    if (card.classList.contains('claimed')) return;
+ // ─── SELECT ──────────────────────────────────────────────
+ function selectCar(card) {
+ if (card.classList.contains('claimed')) return;
 
-    // Check team slot limit
-    const team = Object.keys(TEAM_MAP).find(t => TEAM_MAP[t].includes(card.dataset.car));
-    const teamClaimed = TEAM_MAP[team].filter(c => claimedCars.find(x => x.car_number === c)).length;
-    if (teamClaimed >= 3) { alert('This team is full (3 drivers max).'); return; }
+ // Check team slot limit
+ const team = Object.keys(TEAM_MAP).find(t => TEAM_MAP[t].includes(card.dataset.car));
+ const teamClaimed = TEAM_MAP[team].filter(c => claimedCars.find(x => x.car_number === c)).length;
+ if (teamClaimed >= 3) { alert('This team is full (3 drivers max).'); return; }
 
-    // Deselect previous
-    if (selectedCard) selectedCard.classList.remove('selected');
-    if (selectedCard === card) {
-      selectedCard = null;
-      hideBanner();
-      return;
-    }
+ // Deselect previous
+ if (selectedCard) selectedCard.classList.remove('selected');
+ if (selectedCard === card) {
+ selectedCard = null;
+ hideBanner();
+ return;
+ }
 
-    card.classList.add('selected');
-    selectedCard = card;
-    showBanner(card);
-  }
+ card.classList.add('selected');
+ selectedCard = card;
+ showBanner(card);
+ }
 
-  function showBanner(card) {
-    document.getElementById('selNumImg').src = card.querySelector('img').src;
-    document.getElementById('selName').textContent = `#${card.dataset.car} — ${card.dataset.driver}`;
-    document.getElementById('selTeam').textContent = card.dataset.team;
-    document.getElementById('selBanner').classList.add('visible');
-  }
+ function showBanner(card) {
+ document.getElementById('selNumImg').src = card.querySelector('img').src;
+ document.getElementById('selName').textContent = `#${card.dataset.car} — ${card.dataset.driver}`;
+ document.getElementById('selTeam').textContent = card.dataset.team;
+ document.getElementById('selBanner').classList.add('visible');
+ }
 
-  function hideBanner() {
-    document.getElementById('selBanner').classList.remove('visible');
-  }
+ function hideBanner() {
+ document.getElementById('selBanner').classList.remove('visible');
+ }
 
-  // ─── MODAL ───────────────────────────────────────────────
-  function openModal() {
-    if (!selectedCard) return;
-    const card = selectedCard;
-    document.getElementById('modalNumImg').src  = card.querySelector('img').src;
-    document.getElementById('modalDriver').textContent = `#${card.dataset.car} — ${card.dataset.driver}`;
-    document.getElementById('modalTeam').textContent   = card.dataset.team;
-    document.getElementById('hiddenCar').value    = card.dataset.car;
-    document.getElementById('hiddenDriver').value = card.dataset.driver;
-    document.getElementById('hiddenTeam').value   = card.dataset.team;
-    document.getElementById('claimForm').style.display = 'block';
-    document.getElementById('successState').style.display = 'none';
-    document.getElementById('modalOverlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
+ // ─── MODAL ───────────────────────────────────────────────
+ function openModal() {
+ if (!selectedCard) return;
+ const card = selectedCard;
+ document.getElementById('modalNumImg').src = card.querySelector('img').src;
+ document.getElementById('modalDriver').textContent = `#${card.dataset.car} — ${card.dataset.driver}`;
+ document.getElementById('modalTeam').textContent = card.dataset.team;
+ document.getElementById('hiddenCar').value = card.dataset.car;
+ document.getElementById('hiddenDriver').value = card.dataset.driver;
+ document.getElementById('hiddenTeam').value = card.dataset.team;
+ document.getElementById('claimForm').style.display = 'block';
+ document.getElementById('successState').style.display = 'none';
+ document.getElementById('modalOverlay').classList.add('open');
+ document.body.style.overflow = 'hidden';
+ }
 
-  function closeModal() {
-    document.getElementById('modalOverlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
+ function closeModal() {
+ document.getElementById('modalOverlay').classList.remove('open');
+ document.body.style.overflow = '';
+ }
 
-  function closeModalOutside(e) {
-    if (e.target === document.getElementById('modalOverlay')) closeModal();
-  }
+ function closeModalOutside(e) {
+ if (e.target === document.getElementById('modalOverlay')) closeModal();
+ }
 
-  // ─── SUBMIT ──────────────────────────────────────────────
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
+ // ─── SUBMIT ──────────────────────────────────────────────
+ async function handleSubmit(e) {
+ e.preventDefault();
+ const btn = document.getElementById('submitBtn');
+ btn.disabled = true;
+ btn.textContent = 'Sending…';
 
-    const form = e.target;
-    const data = {
-      car_number:  document.getElementById('hiddenCar').value,
-      driver_name: document.getElementById('hiddenDriver').value,
-      team_name:   document.getElementById('hiddenTeam').value,
-      gamertag:    form.gamertag.value.trim(),
-      first_name:  form.first_name.value.trim(),
-      last_name:   form.last_name.value.trim(),
-      phone:       form.phone.value.trim(),
-    };
+ const form = e.target;
+ const data = {
+ car_number: document.getElementById('hiddenCar').value,
+ driver_name: document.getElementById('hiddenDriver').value,
+ team_name: document.getElementById('hiddenTeam').value,
+ gamertag: form.gamertag.value.trim(),
+ first_name: form.first_name.value.trim(),
+ last_name: form.last_name.value.trim(),
+ phone: form.phone.value.trim(),
+ };
 
-    try {
-      const res = await sbFetch('n26_claims', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { 'Prefer': 'return=minimal' }
-      });
+ try {
+ const res = await sbFetch('n26_claims', {
+ method: 'POST',
+ body: JSON.stringify(data),
+ headers: { 'Prefer': 'return=minimal' }
+ });
 
-      if (res.ok || res.status === 201) {
-        // Update local state
-        claimedCars.push({ car_number: data.car_number, gamertag: data.gamertag });
+ if (res.ok || res.status === 201) {
+ // Update local state
+ claimedCars.push({ car_number: data.car_number, gamertag: data.gamertag });
 
-        // Update UI — gray out card and show gamertag
-        if (selectedCard) {
-          selectedCard.classList.add('claimed');
-          selectedCard.classList.remove('selected');
-          const tag = document.createElement('span');
-          tag.className = 'car-claimer';
-          tag.textContent = data.gamertag;
-          selectedCard.appendChild(tag);
-          selectedCard = null;
-        }
-        hideBanner();
-        updateAllSlotCounts();
+ // Update UI — gray out card and show gamertag
+ if (selectedCard) {
+ selectedCard.classList.add('claimed');
+ selectedCard.classList.remove('selected');
+ const tag = document.createElement('span');
+ tag.className = 'car-claimer';
+ tag.textContent = data.gamertag;
+ selectedCard.appendChild(tag);
+ selectedCard = null;
+ }
+ hideBanner();
+ updateAllSlotCounts();
 
-        document.getElementById('claimForm').style.display = 'none';
-        document.getElementById('successState').style.display = 'block';
-      } else {
-        const err = await res.json().catch(() => ({}));
-        // Handle duplicate (car already claimed between page load and submit)
-        if (res.status === 409 || (err.code === '23505')) {
-          alert('That car was just claimed by someone else. Pick another one!');
-          location.reload();
-        } else {
-          btn.disabled = false;
-          btn.textContent = '🏁 Lock In My Car';
-          alert('Something went wrong. Try again.');
-        }
-      }
-    } catch (err) {
-      btn.disabled = false;
-      btn.textContent = '🏁 Lock In My Car';
-      alert('Network error. Check your connection and try again.');
-    }
-  }
+ document.getElementById('claimForm').style.display = 'none';
+ document.getElementById('successState').style.display = 'block';
+ } else {
+ const err = await res.json().catch(() => ({}));
+ // Handle duplicate (car already claimed between page load and submit)
+ if (res.status === 409 || (err.code === '23505')) {
+ alert('That car was just claimed by someone else. Pick another one!');
+ location.reload();
+ } else {
+ btn.disabled = false;
+ btn.textContent = ' Lock In My Car';
+ alert('Something went wrong. Try again.');
+ }
+ }
+ } catch (err) {
+ btn.disabled = false;
+ btn.textContent = ' Lock In My Car';
+ alert('Network error. Check your connection and try again.');
+ }
+ }
 
-  init();
+ init();
 </script>
 
 </body>

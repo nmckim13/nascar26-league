@@ -1,238 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Standings | N26 Racing League</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="n26.css">
-  <style>
-    .chase-row td:first-child { border-left: 2px solid var(--yellow); }
-    .chase-cutoff-row td { padding: 4px 12px; }
-    .chase-cutoff-label {
-      font-family: var(--font-cond);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      text-transform: uppercase;
-      color: var(--red);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .chase-cutoff-label::before, .chase-cutoff-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(224,25,43,0.3);
-    }
-  </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Standings | N26 Racing League</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="n26.css">
+ <style>
+ .chase-row td:first-child { border-left: 2px solid var(--yellow); }
+ .chase-cutoff-row td { padding: 4px 12px; }
+ .chase-cutoff-label {
+ font-family: var(--font-cond);
+ font-size: 10px;
+ font-weight: 700;
+ letter-spacing: -0.01em;
+ text-transform: uppercase;
+ color: var(--red);
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ }
+ .chase-cutoff-label::before, .chase-cutoff-label::after {
+ content: '';
+ flex: 1;
+ height: 1px;
+ background: rgba(224,25,43,0.3);
+ }
+ </style>
 </head>
 <body>
 
 <div class="ticker">
-  <span class="ticker-label yellow">Standings</span>
-  <span id="ticker-text">Season 1 · N26 Racing League</span>
+ <span class="ticker-label yellow">Standings</span>
+ <span id="ticker-text">Season 1 · N26 Racing League</span>
 </div>
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">N26<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="standings.html" class="active">Standings</a></li>
-    <li><a href="results.html">Results</a></li>
-    <li><a href="schedule.html">Schedule</a></li>
-    <li><a href="rules.html">Rules</a></li>
-    <li><a href="claim.html">Roster</a></li>
-  </ul>
-  <a href="claim.html" class="nav-cta">Claim a Car →</a>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </div>
+ <a href="index.html" class="nav-logo">N26<span>.</span></a>
+ <ul class="nav-links">
+ <li><a href="index.html">Home</a></li>
+ <li><a href="standings.html" class="active">Standings</a></li>
+ <li><a href="results.html">Results</a></li>
+ <li><a href="schedule.html">Schedule</a></li>
+ <li><a href="rules.html">Rules</a></li>
+ <li><a href="claim.html">Roster</a></li>
+ </ul>
+ <a href="claim.html" class="nav-cta">Claim a Car →</a>
+ <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+ <span></span><span></span><span></span>
+ </div>
 </nav>
 
 <div class="page-wrap">
-  <div class="page-header">
-    <div>
-      <h1>Standings</h1>
-      <p>Season 1 — updated after every race</p>
-    </div>
-    <div class="page-tag" id="races-run-label"></div>
-  </div>
+ <div class="page-header">
+ <div>
+ <h1>Standings</h1>
+ <p>Season 1 — updated after every race</p>
+ </div>
+ <div class="page-tag" id="races-run-label"></div>
+ </div>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('driver',this)">Driver Championship</button>
-    <button class="tab-btn" onclick="showTab('owner',this)">Owner Championship</button>
-  </div>
+ <div class="tabs">
+ <button class="tab-btn active" onclick="showTab('driver',this)">Driver Championship</button>
+ <button class="tab-btn" onclick="showTab('owner',this)">Owner Championship</button>
+ </div>
 
-  <div id="tab-driver">
-    <div class="table-wrap"><table class="data-table">
-      <thead>
-        <tr>
-          <th style="width:40px">Pos</th>
-          <th>Driver</th>
-          <th class="c hide-mobile">Starts</th>
-          <th class="c">Wins</th>
-          <th class="c hide-mobile">Top 5</th>
-          <th class="c hide-mobile">Top 10</th>
-          <th class="c hide-mobile">Race Pts</th>
-          <th class="c hide-mobile">Stage Pts</th>
-          <th class="c">Total</th>
-          <th class="c">Behind</th>
-          <th class="c hide-mobile">Playoff Pts</th>
-        </tr>
-      </thead>
-      <tbody id="driver-tbody">
-        <tr><td colspan="11"><div class="loading">Loading...</div></td></tr>
-      </tbody>
-    </table>
+ <div id="tab-driver">
+ <div class="table-wrap"><table class="data-table">
+ <thead>
+ <tr>
+ <th style="width:40px">Pos</th>
+ <th>Driver</th>
+ <th class="c hide-mobile">Starts</th>
+ <th class="c">Wins</th>
+ <th class="c hide-mobile">Top 5</th>
+ <th class="c hide-mobile">Top 10</th>
+ <th class="c hide-mobile">Race Pts</th>
+ <th class="c hide-mobile">Stage Pts</th>
+ <th class="c">Total</th>
+ <th class="c">Behind</th>
+ <th class="c hide-mobile">Playoff Pts</th>
+ </tr>
+ </thead>
+ <tbody id="driver-tbody">
+ <tr><td colspan="11"><div class="loading">Loading...</div></td></tr>
+ </tbody>
+ </table>
 </div>
-  </div>
+ </div>
 
-  <div id="tab-owner" style="display:none">
-    <div style="padding:8px 12px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border2);">
-      Full-season players only. Mid-season joiners do not count toward team totals.
-    </div>
-    <div class="table-wrap"><table class="data-table">
-      <thead>
-        <tr>
-          <th style="width:40px">Pos</th>
-          <th>Team</th>
-          <th>Cars</th>
-          <th class="c">Wins</th>
-          <th class="c">Total Pts</th>
-          <th class="c">Behind</th>
-        </tr>
-      </thead>
-      <tbody id="owner-tbody">
-        <tr><td colspan="6"><div class="loading">Loading...</div></td></tr>
-      </tbody>
-    </table>
+ <div id="tab-owner" style="display:none">
+ <div style="padding:8px 12px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border2);">
+ Full-season players only. Mid-season joiners do not count toward team totals.
+ </div>
+ <div class="table-wrap"><table class="data-table">
+ <thead>
+ <tr>
+ <th style="width:40px">Pos</th>
+ <th>Team</th>
+ <th>Cars</th>
+ <th class="c">Wins</th>
+ <th class="c">Total Pts</th>
+ <th class="c">Behind</th>
+ </tr>
+ </thead>
+ <tbody id="owner-tbody">
+ <tr><td colspan="6"><div class="loading">Loading...</div></td></tr>
+ </tbody>
+ </table>
 </div>
-  </div>
+ </div>
 </div>
 
 <footer class="footer">
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="standings.html">Standings</a>
-    <a href="results.html">Results</a>
-    <a href="schedule.html">Schedule</a>
-    <a href="rules.html">Rules</a>
-    <a href="claim.html">Roster</a>
-  </div>
-  N26 Racing League · Season 1 · Real Points. Real Teams. Real Trophies.
+ <div class="footer-links">
+ <a href="index.html">Home</a>
+ <a href="standings.html">Standings</a>
+ <a href="results.html">Results</a>
+ <a href="schedule.html">Schedule</a>
+ <a href="rules.html">Rules</a>
+ <a href="claim.html">Roster</a>
+ </div>
+ N26 Racing League · Season 1 · Real Points. Real Teams. Real Trophies.
 </footer>
 
 <script>
-  const SB_URL = 'https://vvujhkryqzhmemojedxs.supabase.co';
-  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
-  const H = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
-  const TEAM_MAP = {'5':'Hendrick','9':'Hendrick','24':'Hendrick','48':'Hendrick','11':'JGR','19':'JGR','20':'JGR','54':'JGR','2':'Penske','12':'Penske','22':'Penske','23':'23XI','35':'23XI','45':'23XI','6':'RFK','17':'RFK','60':'RFK','7':'Spire','71':'Spire','77':'Spire','1':'Trackhouse','88':'Trackhouse','97':'Trackhouse'};
+ const SB_URL = 'https://vvujhkryqzhmemojedxs.supabase.co';
+ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
+ const H = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
+ const TEAM_MAP = {'5':'Hendrick','9':'Hendrick','24':'Hendrick','48':'Hendrick','11':'JGR','19':'JGR','20':'JGR','54':'JGR','2':'Penske','12':'Penske','22':'Penske','23':'23XI','35':'23XI','45':'23XI','6':'RFK','17':'RFK','60':'RFK','7':'Spire','71':'Spire','77':'Spire','1':'Trackhouse','88':'Trackhouse','97':'Trackhouse'};
 
-  async function get(path) { return (await fetch(SB_URL+path,{headers:H})).json(); }
+ async function get(path) { return (await fetch(SB_URL+path,{headers:H})).json(); }
 
-  async function load() {
-    const [races, claims, results] = await Promise.all([
-      get('/rest/v1/n26_races?select=id,race_number,track_short,status&order=race_number.asc'),
-      get('/rest/v1/n26_claims?select=car_number,gamertag'),
-      get('/rest/v1/n26_results?select=*')
-    ]);
+ async function load() {
+ const [races, claims, results] = await Promise.all([
+ get('/rest/v1/n26_races?select=id,race_number,track_short,status&order=race_number.asc'),
+ get('/rest/v1/n26_claims?select=car_number,gamertag'),
+ get('/rest/v1/n26_results?select=*')
+ ]);
 
-    const completed = races.filter(r => r.status === 'completed');
-    const completedIds = new Set(completed.map(r => r.id));
-    const racesRun = completed.length;
+ const completed = races.filter(r => r.status === 'completed');
+ const completedIds = new Set(completed.map(r => r.id));
+ const racesRun = completed.length;
 
-    document.getElementById('ticker-text').textContent =
-      racesRun > 0 ? `Season 1 · ${racesRun} of 10 races complete` : 'Season 1 · Season has not started';
-    document.getElementById('races-run-label').innerHTML =
-      racesRun > 0 ? `After Race ${racesRun}: <span>${completed[racesRun-1].track_short}</span>` : '';
+ document.getElementById('ticker-text').textContent =
+ racesRun > 0 ? `Season 1 · ${racesRun} of 10 races complete` : 'Season 1 · Season has not started';
+ document.getElementById('races-run-label').innerHTML =
+ racesRun > 0 ? `After Race ${racesRun}: <span>${completed[racesRun-1].track_short}</span>` : '';
 
-    const claimMap = {};
-    claims.forEach(c => claimMap[c.car_number] = c.gamertag);
+ const claimMap = {};
+ claims.forEach(c => claimMap[c.car_number] = c.gamertag);
 
-    const stats = {};
-    claims.forEach(c => { stats[c.car_number] = {car:c.car_number,gamertag:c.gamertag,starts:0,wins:0,top5:0,top10:0,racePts:0,stagePts:0,playoffPts:0}; });
-    results.filter(r => completedIds.has(r.race_id)).forEach(r => {
-      const d = stats[r.car_number]; if (!d) return;
-      d.starts++; if(r.finish_position===1)d.wins++; if(r.finish_position<=5)d.top5++; if(r.finish_position<=10)d.top10++;
-      d.racePts += r.points_earned||0; d.stagePts += (r.stage1_points||0)+(r.stage2_points||0); d.playoffPts += r.playoff_points||0;
-    });
+ const stats = {};
+ claims.forEach(c => { stats[c.car_number] = {car:c.car_number,gamertag:c.gamertag,starts:0,wins:0,top5:0,top10:0,racePts:0,stagePts:0,playoffPts:0}; });
+ results.filter(r => completedIds.has(r.race_id)).forEach(r => {
+ const d = stats[r.car_number]; if (!d) return;
+ d.starts++; if(r.finish_position===1)d.wins++; if(r.finish_position<=5)d.top5++; if(r.finish_position<=10)d.top10++;
+ d.racePts += r.points_earned||0; d.stagePts += (r.stage1_points||0)+(r.stage2_points||0); d.playoffPts += r.playoff_points||0;
+ });
 
-    const drivers = Object.values(stats).sort((a,b)=>{
-      const ta=a.racePts+a.stagePts, tb=b.racePts+b.stagePts;
-      return tb-ta||b.wins-a.wins||b.top5-a.top5||b.top10-a.top10;
-    });
-    const leader = drivers.length ? drivers[0].racePts+drivers[0].stagePts : 0;
+ const drivers = Object.values(stats).sort((a,b)=>{
+ const ta=a.racePts+a.stagePts, tb=b.racePts+b.stagePts;
+ return tb-ta||b.wins-a.wins||b.top5-a.top5||b.top10-a.top10;
+ });
+ const leader = drivers.length ? drivers[0].racePts+drivers[0].stagePts : 0;
 
-    const tbody = document.getElementById('driver-tbody');
-    if (racesRun === 0) {
-      tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="empty-num">1</div><p>Season Not Started</p><small>Standings populate after Race 1 at Daytona</small></div></td></tr>`;
-    } else {
-      const rows = drivers.map((d,i) => {
-        const pos = i+1, total = d.racePts+d.stagePts, behind = pos===1 ? '<span style="color:var(--muted)">—</span>' : `-${leader-total}`;
-        const isChase = racesRun >= 7 && pos <= 10;
-        return `<tr class="${isChase?'chase-row':''}">
-          <td><span class="num-cell ${pos<=3?'':'muted'}">${pos}</span></td>
-          <td><div class="driver-cell">
-            <span class="car-badge">#${d.car}</span>
-            <div><div class="driver-name">${d.gamertag||'—'}${isChase?'<span class="pill yellow" style="margin-left:6px">Chase</span>':''}</div>
-            <div class="driver-sub">${TEAM_MAP[d.car]||'—'}</div></div>
-          </div></td>
-          <td class="c hide-mobile">${d.starts}</td>
-          <td class="c"><span class="num-cell ${d.wins?'red':''}">${d.wins}</span></td>
-          <td class="c hide-mobile">${d.top5}</td>
-          <td class="c hide-mobile">${d.top10}</td>
-          <td class="c hide-mobile">${d.racePts}</td>
-          <td class="c hide-mobile">${d.stagePts}</td>
-          <td class="c"><span class="num-cell">${total}</span></td>
-          <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
-          <td class="c hide-mobile">${d.playoffPts?`<span class="num-cell red">+${d.playoffPts}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
-        </tr>`;
-      });
-      if (racesRun >= 7 && drivers.length > 10) {
-        rows.splice(10, 0, `<tr class="chase-cutoff-row"><td colspan="11"><div class="chase-cutoff-label">Chase cutoff</div></td></tr>`);
-      }
-      tbody.innerHTML = rows.join('');
-    }
+ const tbody = document.getElementById('driver-tbody');
+ if (racesRun === 0) {
+ tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="empty-num">1</div><p>Season Not Started</p><small>Standings populate after Race 1 at Daytona</small></div></td></tr>`;
+ } else {
+ const rows = drivers.map((d,i) => {
+ const pos = i+1, total = d.racePts+d.stagePts, behind = pos===1 ? '<span style="color:var(--muted)">—</span>' : `-${leader-total}`;
+ const isChase = racesRun >= 7 && pos <= 10;
+ return `<tr class="${isChase?'chase-row':''}">
+ <td><span class="num-cell ${pos<=3?'':'muted'}">${pos}</span></td>
+ <td><div class="driver-cell">
+ <span class="car-badge">#${d.car}</span>
+ <div><div class="driver-name">${d.gamertag||'—'}${isChase?'<span class="pill yellow" style="margin-left:6px">Chase</span>':''}</div>
+ <div class="driver-sub">${TEAM_MAP[d.car]||'—'}</div></div>
+ </div></td>
+ <td class="c hide-mobile">${d.starts}</td>
+ <td class="c"><span class="num-cell ${d.wins?'red':''}">${d.wins}</span></td>
+ <td class="c hide-mobile">${d.top5}</td>
+ <td class="c hide-mobile">${d.top10}</td>
+ <td class="c hide-mobile">${d.racePts}</td>
+ <td class="c hide-mobile">${d.stagePts}</td>
+ <td class="c"><span class="num-cell">${total}</span></td>
+ <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
+ <td class="c hide-mobile">${d.playoffPts?`<span class="num-cell red">+${d.playoffPts}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
+ </tr>`;
+ });
+ if (racesRun >= 7 && drivers.length > 10) {
+ rows.splice(10, 0, `<tr class="chase-cutoff-row"><td colspan="11"><div class="chase-cutoff-label">Chase cutoff</div></td></tr>`);
+ }
+ tbody.innerHTML = rows.join('');
+ }
 
-    // Owner
-    const ownerPts = {}, ownerWins = {};
-    Object.values(stats).forEach(d => {
-      const t = TEAM_MAP[d.car]; if (!t) return;
-      ownerPts[t] = (ownerPts[t]||0) + d.racePts + d.stagePts;
-      ownerWins[t] = (ownerWins[t]||0) + d.wins;
-    });
-    const teams = Object.entries(ownerPts).sort((a,b)=>b[1]-a[1]||ownerWins[b[0]]-ownerWins[a[0]]);
-    const ownerLeader = teams.length ? teams[0][1] : 0;
-    const CARS = {'Hendrick':['5','9','24','48'],'JGR':['11','19','20','54'],'Penske':['2','12','22'],'23XI':['23','35','45'],'RFK':['6','17','60'],'Spire':['7','71','77'],'Trackhouse':['1','88','97']};
+ // Owner
+ const ownerPts = {}, ownerWins = {};
+ Object.values(stats).forEach(d => {
+ const t = TEAM_MAP[d.car]; if (!t) return;
+ ownerPts[t] = (ownerPts[t]||0) + d.racePts + d.stagePts;
+ ownerWins[t] = (ownerWins[t]||0) + d.wins;
+ });
+ const teams = Object.entries(ownerPts).sort((a,b)=>b[1]-a[1]||ownerWins[b[0]]-ownerWins[a[0]]);
+ const ownerLeader = teams.length ? teams[0][1] : 0;
+ const CARS = {'Hendrick':['5','9','24','48'],'JGR':['11','19','20','54'],'Penske':['2','12','22'],'23XI':['23','35','45'],'RFK':['6','17','60'],'Spire':['7','71','77'],'Trackhouse':['1','88','97']};
 
-    const otbody = document.getElementById('owner-tbody');
-    if (racesRun === 0) {
-      otbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>Season Not Started</p><small>Owner standings populate after Race 1</small></div></td></tr>`;
-    } else {
-      otbody.innerHTML = teams.map(([team,pts],i) => {
-        const pos=i+1, behind=pos===1?'<span style="color:var(--muted)">—</span>':`-${ownerLeader-pts}`;
-        const cars = (CARS[team]||[]).filter(c=>claimMap[c]).map(c=>`<span class="car-badge sm">#${c}</span>`).join(' ');
-        return `<tr>
-          <td><span class="num-cell ${pos<=3?'':'muted'}">${pos}</span></td>
-          <td><span class="driver-name">${team}</span></td>
-          <td style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">${cars}</td>
-          <td class="c"><span class="num-cell ${ownerWins[team]?'red':''}">${ownerWins[team]||0}</span></td>
-          <td class="c"><span class="num-cell">${pts}</span></td>
-          <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
-        </tr>`;
-      }).join('');
-    }
-  }
+ const otbody = document.getElementById('owner-tbody');
+ if (racesRun === 0) {
+ otbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>Season Not Started</p><small>Owner standings populate after Race 1</small></div></td></tr>`;
+ } else {
+ otbody.innerHTML = teams.map(([team,pts],i) => {
+ const pos=i+1, behind=pos===1?'<span style="color:var(--muted)">—</span>':`-${ownerLeader-pts}`;
+ const cars = (CARS[team]||[]).filter(c=>claimMap[c]).map(c=>`<span class="car-badge sm">#${c}</span>`).join(' ');
+ return `<tr>
+ <td><span class="num-cell ${pos<=3?'':'muted'}">${pos}</span></td>
+ <td><span class="driver-name">${team}</span></td>
+ <td style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">${cars}</td>
+ <td class="c"><span class="num-cell ${ownerWins[team]?'red':''}">${ownerWins[team]||0}</span></td>
+ <td class="c"><span class="num-cell">${pts}</span></td>
+ <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
+ </tr>`;
+ }).join('');
+ }
+ }
 
-  function showTab(tab, btn) {
-    document.getElementById('tab-driver').style.display = tab==='driver'?'block':'none';
-    document.getElementById('tab-owner').style.display  = tab==='owner' ?'block':'none';
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b===btn));
-  }
+ function showTab(tab, btn) {
+ document.getElementById('tab-driver').style.display = tab==='driver'?'block':'none';
+ document.getElementById('tab-owner').style.display = tab==='owner' ?'block':'none';
+ document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b===btn));
+ }
 
-  load().catch(console.error);
+ load().catch(console.error);
 </script>
 </body>
 </html>

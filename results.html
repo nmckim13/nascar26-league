@@ -1,255 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Results | N26 Racing League</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="n26.css">
-  <style>
-    /* Race rail */
-    .race-rail {
-      display: flex;
-      overflow-x: auto;
-      gap: 0;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 24px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--surface3) transparent;
-    }
-    .race-pill {
-      flex-shrink: 0;
-      min-width: 80px;
-      padding: 10px 14px;
-      text-align: center;
-      cursor: pointer;
-      border-right: 1px solid var(--border);
-      transition: background 0.15s;
-      background: var(--surface);
-    }
-    .race-pill:last-child { border-right: none; }
-    .race-pill:hover { background: var(--surface2); }
-    .race-pill.active { background: var(--surface3); }
-    .race-pill.active .rp-num { color: var(--yellow); }
-    .race-pill.chase-race { border-top: 2px solid rgba(224,25,43,0.4); }
-    .rp-num { font-family: var(--font-cond); font-size: 20px; font-weight: 900; color: var(--muted2); line-height: 1; }
-    .rp-track { font-family: var(--font-cond); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; color: var(--muted); margin-top: 2px; line-height: 1.2; }
-    .rp-status { font-size: 9px; font-weight: 600; letter-spacing: -0.01em; text-transform: uppercase; margin-top: 3px; color: var(--muted2); }
-    .rp-status.done { color: var(--green); }
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Results | N26 Racing League</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="n26.css">
+ <style>
+ /* Race rail */
+ .race-rail {
+ display: flex;
+ overflow-x: auto;
+ gap: 0;
+ border: 1px solid var(--border);
+ border-radius: var(--radius);
+ margin-bottom: 24px;
+ scrollbar-width: thin;
+ scrollbar-color: var(--surface3) transparent;
+ }
+ .race-pill {
+ flex-shrink: 0;
+ min-width: 80px;
+ padding: 10px 14px;
+ text-align: center;
+ cursor: pointer;
+ border-right: 1px solid var(--border);
+ transition: background 0.15s;
+ background: var(--surface);
+ }
+ .race-pill:last-child { border-right: none; }
+ .race-pill:hover { background: var(--surface2); }
+ .race-pill.active { background: var(--surface3); }
+ .race-pill.active .rp-num { color: var(--yellow); }
+ .race-pill.chase-race { border-top: 2px solid rgba(224,25,43,0.4); }
+ .rp-num { font-family: var(--font-cond); font-size: 20px; font-weight: 900; color: var(--muted2); line-height: 1; }
+ .rp-track { font-family: var(--font-cond); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; color: var(--muted); margin-top: 2px; line-height: 1.2; }
+ .rp-status { font-size: 9px; font-weight: 600; letter-spacing: -0.01em; text-transform: uppercase; margin-top: 3px; color: var(--muted2); }
+ .rp-status.done { color: var(--green); }
 
-    /* Race panel */
-    .race-detail { display: none; }
-    .race-detail.active { display: block; }
-    .race-detail-hdr { margin-bottom: 16px; }
-    .race-detail-hdr .track-name { font-family: var(--font-cond); font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
-    .race-detail-hdr .race-meta { font-size: 12px; color: var(--muted); margin-top: 3px; display: flex; gap: 12px; }
+ /* Race panel */
+ .race-detail { display: none; }
+ .race-detail.active { display: block; }
+ .race-detail-hdr { margin-bottom: 16px; }
+ .race-detail-hdr .track-name { font-family: var(--font-cond); font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
+ .race-detail-hdr .race-meta { font-size: 12px; color: var(--muted); margin-top: 3px; display: flex; gap: 12px; }
 
-    /* Upcoming box */
-    .upcoming-box { border: 1px solid var(--border); border-radius: var(--radius); padding: 48px; text-align: center; background: var(--surface); }
-    .upcoming-box .ub-num { font-family: var(--font-cond); font-size: 72px; font-weight: 900; color: var(--surface3); line-height: 1; }
-    .upcoming-box .ub-track { font-family: var(--font-cond); font-size: 18px; font-weight: 900; text-transform: uppercase; color: var(--muted2); margin-top: 8px; }
-    .upcoming-box .ub-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
-  </style>
+ /* Upcoming box */
+ .upcoming-box { border: 1px solid var(--border); border-radius: var(--radius); padding: 48px; text-align: center; background: var(--surface); }
+ .upcoming-box .ub-num { font-family: var(--font-cond); font-size: 72px; font-weight: 900; color: var(--surface3); line-height: 1; }
+ .upcoming-box .ub-track { font-family: var(--font-cond); font-size: 18px; font-weight: 900; text-transform: uppercase; color: var(--muted2); margin-top: 8px; }
+ .upcoming-box .ub-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+ </style>
 </head>
 <body>
 
 <div class="ticker">
-  <span class="ticker-label yellow">Results</span>
-  <span id="ticker-next">Season 1 · N26 Racing League</span>
+ <span class="ticker-label yellow">Results</span>
+ <span id="ticker-next">Season 1 · N26 Racing League</span>
 </div>
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">N26<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="standings.html">Standings</a></li>
-    <li><a href="results.html" class="active">Results</a></li>
-    <li><a href="schedule.html">Schedule</a></li>
-    <li><a href="rules.html">Rules</a></li>
-    <li><a href="claim.html">Roster</a></li>
-  </ul>
-  <a href="claim.html" class="nav-cta">Claim a Car →</a>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </div>
+ <a href="index.html" class="nav-logo">N26<span>.</span></a>
+ <ul class="nav-links">
+ <li><a href="index.html">Home</a></li>
+ <li><a href="standings.html">Standings</a></li>
+ <li><a href="results.html" class="active">Results</a></li>
+ <li><a href="schedule.html">Schedule</a></li>
+ <li><a href="rules.html">Rules</a></li>
+ <li><a href="claim.html">Roster</a></li>
+ </ul>
+ <a href="claim.html" class="nav-cta">Claim a Car →</a>
+ <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+ <span></span><span></span><span></span>
+ </div>
 </nav>
 
 <div class="page-wrap">
-  <div class="page-header">
-    <div>
-      <h1>Results</h1>
-      <p>Season 1 — official finishing order, points, and stage breakdowns</p>
-    </div>
-  </div>
+ <div class="page-header">
+ <div>
+ <h1>Results</h1>
+ <p>Season 1 — official finishing order, points, and stage breakdowns</p>
+ </div>
+ </div>
 
-  <div class="race-rail" id="race-rail"><div class="loading">Loading...</div></div>
-  <div id="race-panels"></div>
+ <div class="race-rail" id="race-rail"><div class="loading">Loading...</div></div>
+ <div id="race-panels"></div>
 </div>
 
 <footer class="footer">
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="standings.html">Standings</a>
-    <a href="results.html">Results</a>
-    <a href="schedule.html">Schedule</a>
-    <a href="rules.html">Rules</a>
-    <a href="claim.html">Roster</a>
-  </div>
-  N26 Racing League · Season 1 · Real Points. Real Teams. Real Trophies.
+ <div class="footer-links">
+ <a href="index.html">Home</a>
+ <a href="standings.html">Standings</a>
+ <a href="results.html">Results</a>
+ <a href="schedule.html">Schedule</a>
+ <a href="rules.html">Rules</a>
+ <a href="claim.html">Roster</a>
+ </div>
+ N26 Racing League · Season 1 · Real Points. Real Teams. Real Trophies.
 </footer>
 
 <script>
-  const SB_URL = 'https://vvujhkryqzhmemojedxs.supabase.co';
-  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
-  const H = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
-  const TEAM_MAP = {'5':'Hendrick','9':'Hendrick','24':'Hendrick','48':'Hendrick','11':'JGR','19':'JGR','20':'JGR','54':'JGR','2':'Penske','12':'Penske','22':'Penske','23':'23XI','35':'23XI','45':'23XI','6':'RFK','17':'RFK','60':'RFK','7':'Spire','71':'Spire','77':'Spire','1':'Trackhouse','88':'Trackhouse','97':'Trackhouse'};
+ const SB_URL = 'https://vvujhkryqzhmemojedxs.supabase.co';
+ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
+ const H = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
+ const TEAM_MAP = {'5':'Hendrick','9':'Hendrick','24':'Hendrick','48':'Hendrick','11':'JGR','19':'JGR','20':'JGR','54':'JGR','2':'Penske','12':'Penske','22':'Penske','23':'23XI','35':'23XI','45':'23XI','6':'RFK','17':'RFK','60':'RFK','7':'Spire','71':'Spire','77':'Spire','1':'Trackhouse','88':'Trackhouse','97':'Trackhouse'};
 
-  async function get(path) { return (await fetch(SB_URL+path,{headers:H})).json(); }
+ async function get(path) { return (await fetch(SB_URL+path,{headers:H})).json(); }
 
-  let races=[], claims={}, allResults={};
+ let races=[], claims={}, allResults={};
 
-  async function loadAll() {
-    const [racesData, claimsData] = await Promise.all([
-      get('/rest/v1/n26_races?select=*&order=race_number.asc'),
-      get('/rest/v1/n26_claims?select=car_number,gamertag')
-    ]);
-    races = racesData;
-    claimsData.forEach(c => claims[c.car_number] = c);
+ async function loadAll() {
+ const [racesData, claimsData] = await Promise.all([
+ get('/rest/v1/n26_races?select=*&order=race_number.asc'),
+ get('/rest/v1/n26_claims?select=car_number,gamertag')
+ ]);
+ races = racesData;
+ claimsData.forEach(c => claims[c.car_number] = c);
 
-    const completedIds = races.filter(r=>r.status==='completed').map(r=>r.id);
-    if (completedIds.length) {
-      const res = await get(`/rest/v1/n26_results?select=*&race_id=in.(${completedIds.join(',')})&order=finish_position.asc`);
-      completedIds.forEach(id => allResults[id]=[]);
-      res.forEach(r => { if(!allResults[r.race_id]) allResults[r.race_id]=[]; allResults[r.race_id].push(r); });
-    }
+ const completedIds = races.filter(r=>r.status==='completed').map(r=>r.id);
+ if (completedIds.length) {
+ const res = await get(`/rest/v1/n26_results?select=*&race_id=in.(${completedIds.join(',')})&order=finish_position.asc`);
+ completedIds.forEach(id => allResults[id]=[]);
+ res.forEach(r => { if(!allResults[r.race_id]) allResults[r.race_id]=[]; allResults[r.race_id].push(r); });
+ }
 
-    renderRail(); renderPanels();
-    const first = races.find(r=>r.status==='completed') || races[0];
-    if (first) selectRace(first.id);
-  }
+ renderRail(); renderPanels();
+ const first = races.find(r=>r.status==='completed') || races[0];
+ if (first) selectRace(first.id);
+ }
 
-  function renderRail() {
-    const rail = document.getElementById('race-rail');
-    const next = races.find(r=>r.status!=='completed');
-    if (next) document.getElementById('ticker-next').textContent = `Next: Race ${next.race_number} — ${next.track_short}`;
-    rail.innerHTML = races.map(r => `
-      <div class="race-pill${r.race_type==='chase'?' chase-race':''}${r.status==='completed'?' completed':''}" id="pill-${r.id}" onclick="selectRace(${r.id})">
-        <div class="rp-num">${r.race_number}</div>
-        <div class="rp-track">${r.track_short}</div>
-        <div class="rp-status ${r.status==='completed'?'done':''}">${r.status==='completed'?'✓ Final':r.race_type==='chase'?'Chase':'Upcoming'}</div>
-      </div>`).join('');
-  }
+ function renderRail() {
+ const rail = document.getElementById('race-rail');
+ const next = races.find(r=>r.status!=='completed');
+ if (next) document.getElementById('ticker-next').textContent = `Next: Race ${next.race_number} — ${next.track_short}`;
+ rail.innerHTML = races.map(r => `
+ <div class="race-pill${r.race_type==='chase'?' chase-race':''}${r.status==='completed'?' completed':''}" id="pill-${r.id}" onclick="selectRace(${r.id})">
+ <div class="rp-num">${r.race_number}</div>
+ <div class="rp-track">${r.track_short}</div>
+ <div class="rp-status ${r.status==='completed'?'done':''}">${r.status==='completed'?' Final':r.race_type==='chase'?'Chase':'Upcoming'}</div>
+ </div>`).join('');
+ }
 
-  function renderPanels() {
-    document.getElementById('race-panels').innerHTML = races.map(r => {
-      const badge = r.race_type==='chase'
-        ? '<span class="pill red">Chase</span>'
-        : `<span class="pill gray">Race ${r.race_number} of 10</span>`;
+ function renderPanels() {
+ document.getElementById('race-panels').innerHTML = races.map(r => {
+ const badge = r.race_type==='chase'
+ ? '<span class="pill red">Chase</span>'
+ : `<span class="pill gray">Race ${r.race_number} of 10</span>`;
 
-      if (r.status !== 'completed') return `
-        <div class="race-detail" id="panel-${r.id}">
-          <div class="race-detail-hdr">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${badge}</div>
-            <div class="track-name">${r.track_name}</div>
-            <div class="race-meta"><span>Season 1</span><span>Not yet raced</span></div>
-          </div>
-          <div class="upcoming-box">
-            <div class="ub-num">${r.race_number}</div>
-            <div class="ub-track">${r.track_name}</div>
-            <div class="ub-sub">Results post after the race is run</div>
-          </div>
-        </div>`;
+ if (r.status !== 'completed') return `
+ <div class="race-detail" id="panel-${r.id}">
+ <div class="race-detail-hdr">
+ <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${badge}</div>
+ <div class="track-name">${r.track_name}</div>
+ <div class="race-meta"><span>Season 1</span><span>Not yet raced</span></div>
+ </div>
+ <div class="upcoming-box">
+ <div class="ub-num">${r.race_number}</div>
+ <div class="ub-track">${r.track_name}</div>
+ <div class="ub-sub">Results post after the race is run</div>
+ </div>
+ </div>`;
 
-      const results = allResults[r.id] || [];
-      return `
-        <div class="race-detail" id="panel-${r.id}">
-          <div class="race-detail-hdr">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${badge}${r.race_date?`<span class="pill gray">${r.race_date}</span>`:''}</div>
-            <div class="track-name">${r.track_name}</div>
-            <div class="race-meta"><span>Season 1</span><span>${results.length} finishers</span></div>
-          </div>
-          <div class="tabs" style="margin-bottom:0">
-            <button class="tab-btn active" onclick="switchTab(${r.id},'finish',this)">Finish</button>
-            <button class="tab-btn" onclick="switchTab(${r.id},'stages',this)">Stage Points</button>
-          </div>
-          <div id="tab-finish-${r.id}" class="tab-panel" style="display:block">${renderFinish(results)}</div>
-          <div id="tab-stages-${r.id}" class="tab-panel" style="display:none">${renderStages(results)}</div>
-        </div>`;
-    }).join('');
-  }
+ const results = allResults[r.id] || [];
+ return `
+ <div class="race-detail" id="panel-${r.id}">
+ <div class="race-detail-hdr">
+ <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${badge}${r.race_date?`<span class="pill gray">${r.race_date}</span>`:''}</div>
+ <div class="track-name">${r.track_name}</div>
+ <div class="race-meta"><span>Season 1</span><span>${results.length} finishers</span></div>
+ </div>
+ <div class="tabs" style="margin-bottom:0">
+ <button class="tab-btn active" onclick="switchTab(${r.id},'finish',this)">Finish</button>
+ <button class="tab-btn" onclick="switchTab(${r.id},'stages',this)">Stage Points</button>
+ </div>
+ <div id="tab-finish-${r.id}" class="tab-panel" style="display:block">${renderFinish(results)}</div>
+ <div id="tab-stages-${r.id}" class="tab-panel" style="display:none">${renderStages(results)}</div>
+ </div>`;
+ }).join('');
+ }
 
-  function renderFinish(results) {
-    if (!results.length) return '<div class="loading">No results yet</div>';
-    return `<div class="table-wrap"><table class="data-table">
-      <thead><tr>
-        <th>Pos</th><th>Driver</th>
-        <th class="c">Race Pts</th><th class="c">St 1</th><th class="c">St 2</th>
-        <th class="c">Total</th><th class="c">Playoff Pts</th><th class="c">Status</th>
-      </tr></thead>
-      <tbody>${results.map(r => {
-        const cl = claims[r.car_number];
-        const total = (r.points_earned||0)+(r.stage1_points||0)+(r.stage2_points||0);
-        const posColor = r.finish_position===1?'yellow':r.finish_position<=3?'':'muted';
-        return `<tr>
-          <td><span class="num-cell ${posColor}">${r.finish_position}</span></td>
-          <td><div class="driver-cell">
-            <span class="car-badge">#${r.car_number}</span>
-            <div><div class="driver-name">${cl?cl.gamertag:'—'}</div>
-            <div class="driver-sub">${TEAM_MAP[r.car_number]||'—'}</div></div>
-          </div></td>
-          <td class="c">${r.points_earned||0}</td>
-          <td class="c">${r.stage1_points?`<span class="num-cell green">+${r.stage1_points}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
-          <td class="c">${r.stage2_points?`<span class="num-cell green">+${r.stage2_points}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
-          <td class="c"><span class="num-cell">${total}</span></td>
-          <td class="c">${r.playoff_points?`<span class="num-cell red">+${r.playoff_points}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
-          <td class="c">${r.dnf?'<span class="pill red">DNF</span>':'<span style="color:var(--muted2)">—</span>'}</td>
-        </tr>`;
-      }).join('')}</tbody>
-    </table>`;
-  }
+ function renderFinish(results) {
+ if (!results.length) return '<div class="loading">No results yet</div>';
+ return `<div class="table-wrap"><table class="data-table">
+ <thead><tr>
+ <th>Pos</th><th>Driver</th>
+ <th class="c">Race Pts</th><th class="c">St 1</th><th class="c">St 2</th>
+ <th class="c">Total</th><th class="c">Playoff Pts</th><th class="c">Status</th>
+ </tr></thead>
+ <tbody>${results.map(r => {
+ const cl = claims[r.car_number];
+ const total = (r.points_earned||0)+(r.stage1_points||0)+(r.stage2_points||0);
+ const posColor = r.finish_position===1?'yellow':r.finish_position<=3?'':'muted';
+ return `<tr>
+ <td><span class="num-cell ${posColor}">${r.finish_position}</span></td>
+ <td><div class="driver-cell">
+ <span class="car-badge">#${r.car_number}</span>
+ <div><div class="driver-name">${cl?cl.gamertag:'—'}</div>
+ <div class="driver-sub">${TEAM_MAP[r.car_number]||'—'}</div></div>
+ </div></td>
+ <td class="c">${r.points_earned||0}</td>
+ <td class="c">${r.stage1_points?`<span class="num-cell green">+${r.stage1_points}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
+ <td class="c">${r.stage2_points?`<span class="num-cell green">+${r.stage2_points}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
+ <td class="c"><span class="num-cell">${total}</span></td>
+ <td class="c">${r.playoff_points?`<span class="num-cell red">+${r.playoff_points}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
+ <td class="c">${r.dnf?'<span class="pill red">DNF</span>':'<span style="color:var(--muted2)">—</span>'}</td>
+ </tr>`;
+ }).join('')}</tbody>
+ </table>`;
+ }
 
-  function renderStages(results) {
-    const s1 = results.filter(r=>r.stage1_position).sort((a,b)=>a.stage1_position-b.stage1_position);
-    const s2 = results.filter(r=>r.stage2_position).sort((a,b)=>a.stage2_position-b.stage2_position);
-    const stagePts = p => p>=1&&p<=10?11-p:0;
+ function renderStages(results) {
+ const s1 = results.filter(r=>r.stage1_position).sort((a,b)=>a.stage1_position-b.stage1_position);
+ const s2 = results.filter(r=>r.stage2_position).sort((a,b)=>a.stage2_position-b.stage2_position);
+ const stagePts = p => p>=1&&p<=10?11-p:0;
 
-    const makeTable = (data, key, label) => !data.length ? '' : `
-      <div style="margin-bottom:20px">
-        <div style="font-family:var(--font-cond);font-size:11px;font-weight:700;letter-spacing: -0.01em;text-transform:uppercase;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--border);margin-bottom:0">${label}</div>
-        <div class="table-wrap"><table class="data-table">
-          <thead><tr><th>Pos</th><th>Driver</th><th class="c">Stage Pts</th></tr></thead>
-          <tbody>${data.map(r=>{
-            const cl=claims[r.car_number], pos=r[key], pts=stagePts(pos);
-            return `<tr>
-              <td><span class="num-cell ${pos===1?'yellow':'muted'}">${pos}</span></td>
-              <td><div class="driver-cell"><span class="car-badge">#${r.car_number}</span><span class="driver-name">${cl?cl.gamertag:'—'}</span></div></td>
-              <td class="c">${pts?`<span class="num-cell green">+${pts}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
-            </tr>`;
-          }).join('')}</tbody>
-        </table>
-      </div>`;
+ const makeTable = (data, key, label) => !data.length ? '' : `
+ <div style="margin-bottom:20px">
+ <div style="font-family:var(--font-cond);font-size:11px;font-weight:700;letter-spacing: -0.01em;text-transform:uppercase;color:var(--muted);padding:8px 0;border-bottom:1px solid var(--border);margin-bottom:0">${label}</div>
+ <div class="table-wrap"><table class="data-table">
+ <thead><tr><th>Pos</th><th>Driver</th><th class="c">Stage Pts</th></tr></thead>
+ <tbody>${data.map(r=>{
+ const cl=claims[r.car_number], pos=r[key], pts=stagePts(pos);
+ return `<tr>
+ <td><span class="num-cell ${pos===1?'yellow':'muted'}">${pos}</span></td>
+ <td><div class="driver-cell"><span class="car-badge">#${r.car_number}</span><span class="driver-name">${cl?cl.gamertag:'—'}</span></div></td>
+ <td class="c">${pts?`<span class="num-cell green">+${pts}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
+ </tr>`;
+ }).join('')}</tbody>
+ </table>
+ </div>`;
 
-    return makeTable(s1,'stage1_position','Stage 1') + makeTable(s2,'stage2_position','Stage 2') || '<div class="loading">No stage data</div>';
-  }
+ return makeTable(s1,'stage1_position','Stage 1') + makeTable(s2,'stage2_position','Stage 2') || '<div class="loading">No stage data</div>';
+ }
 
-  function selectRace(id) {
-    document.querySelectorAll('.race-pill').forEach(p=>p.classList.remove('active'));
-    document.querySelectorAll('.race-detail').forEach(p=>p.classList.remove('active'));
-    const pill = document.getElementById(`pill-${id}`);
-    const panel = document.getElementById(`panel-${id}`);
-    if (pill) { pill.classList.add('active'); pill.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }
-    if (panel) panel.classList.add('active');
-  }
+ function selectRace(id) {
+ document.querySelectorAll('.race-pill').forEach(p=>p.classList.remove('active'));
+ document.querySelectorAll('.race-detail').forEach(p=>p.classList.remove('active'));
+ const pill = document.getElementById(`pill-${id}`);
+ const panel = document.getElementById(`panel-${id}`);
+ if (pill) { pill.classList.add('active'); pill.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'}); }
+ if (panel) panel.classList.add('active');
+ }
 
-  function switchTab(raceId, tab, btn) {
-    document.querySelectorAll(`#panel-${raceId} .tab-btn`).forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll(`#panel-${raceId} .tab-panel`).forEach(p=>p.style.display='none');
-    btn.classList.add('active');
-    document.getElementById(`tab-${tab}-${raceId}`).style.display='block';
-  }
+ function switchTab(raceId, tab, btn) {
+ document.querySelectorAll(`#panel-${raceId} .tab-btn`).forEach(b=>b.classList.remove('active'));
+ document.querySelectorAll(`#panel-${raceId} .tab-panel`).forEach(p=>p.style.display='none');
+ btn.classList.add('active');
+ document.getElementById(`tab-${tab}-${raceId}`).style.display='block';
+ }
 
-  loadAll().catch(console.error);
+ loadAll().catch(console.error);
 </script>
 </body>
 </html>

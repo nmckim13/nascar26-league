@@ -1,241 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Schedule | N26 Racing League</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="n26.css">
-  <style>
-    .section-label {
-      font-family: var(--font-cond);
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: -0.01em;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 0 0 10px 0;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .chase-tag { color: var(--red); }
-    .schedule-section { margin-bottom: 32px; }
-    .race-row {
-      display: grid;
-      grid-template-columns: 52px 1fr auto;
-      align-items: center;
-      gap: 16px;
-      padding: 14px 8px;
-      border-bottom: 1px solid var(--border2);
-      border-radius: var(--radius);
-      transition: background 0.12s;
-    }
-    .race-row:hover { background: var(--surface2); }
-    .race-row.is-next .rr-num { color: var(--yellow); }
-    .race-row.is-completed .rr-num { color: var(--muted2); }
-    .rr-num {
-      font-family: var(--font-cond);
-      font-size: 32px;
-      font-weight: 900;
-      color: var(--surface3);
-      line-height: 1;
-      text-align: center;
-    }
-    .rr-num.chase-num { color: rgba(224,25,43,0.25); }
-    .rr-track {
-      font-family: var(--font-cond);
-      font-size: 16px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: -0.01em;
-      color: var(--white);
-    }
-    .rr-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
-    .track-type {
-      display: inline-block;
-      font-family: var(--font-cond);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      text-transform: uppercase;
-      padding: 2px 6px;
-      border-radius: 2px;
-      margin-left: 6px;
-      vertical-align: middle;
-    }
-    .tt-road  { background: rgba(34,197,94,0.12); color: var(--green); }
-    .tt-super { background: rgba(255,201,6,0.12); color: var(--yellow); }
-    .tt-short { background: rgba(224,25,43,0.12); color: var(--red); }
-    .tt-mid   { background: var(--surface3); color: var(--muted); }
-  </style>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Schedule | N26 Racing League</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="n26.css">
+ <style>
+ .section-label {
+ font-family: var(--font-cond);
+ font-size: 10px;
+ font-weight: 800;
+ letter-spacing: -0.01em;
+ text-transform: uppercase;
+ color: var(--muted);
+ padding: 0 0 10px 0;
+ border-bottom: 1px solid var(--border);
+ margin-bottom: 0;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ }
+ .chase-tag { color: var(--red); }
+ .schedule-section { margin-bottom: 32px; }
+ .race-row {
+ display: grid;
+ grid-template-columns: 52px 1fr auto;
+ align-items: center;
+ gap: 16px;
+ padding: 14px 8px;
+ border-bottom: 1px solid var(--border2);
+ border-radius: var(--radius);
+ transition: background 0.12s;
+ }
+ .race-row:hover { background: var(--surface2); }
+ .race-row.is-next .rr-num { color: var(--yellow); }
+ .race-row.is-completed .rr-num { color: var(--muted2); }
+ .rr-num {
+ font-family: var(--font-cond);
+ font-size: 32px;
+ font-weight: 900;
+ color: var(--surface3);
+ line-height: 1;
+ text-align: center;
+ }
+ .rr-num.chase-num { color: rgba(224,25,43,0.25); }
+ .rr-track {
+ font-family: var(--font-cond);
+ font-size: 16px;
+ font-weight: 800;
+ text-transform: uppercase;
+ letter-spacing: -0.01em;
+ color: var(--white);
+ }
+ .rr-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
+ .track-type {
+ display: inline-block;
+ font-family: var(--font-cond);
+ font-size: 9px;
+ font-weight: 700;
+ letter-spacing: -0.01em;
+ text-transform: uppercase;
+ padding: 2px 6px;
+ border-radius: 2px;
+ margin-left: 6px;
+ vertical-align: middle;
+ }
+ .tt-road { background: rgba(34,197,94,0.12); color: var(--green); }
+ .tt-super { background: rgba(255,201,6,0.12); color: var(--yellow); }
+ .tt-short { background: rgba(224,25,43,0.12); color: var(--red); }
+ .tt-mid { background: var(--surface3); color: var(--muted); }
+ </style>
 </head>
 <body>
 
 <div class="ticker">
-  <span class="ticker-label yellow">Schedule</span>
-  <span>Season 1 · 10 Races · Daytona to Homestead</span>
-  <span class="ticker-sep"></span>
-  <span class="ticker-label red">Chase</span>
-  <span>Top 10 After Race 7</span>
+ <span class="ticker-label yellow">Schedule</span>
+ <span>Season 1 · 10 Races · Daytona to Homestead</span>
+ <span class="ticker-sep"></span>
+ <span class="ticker-label red">Chase</span>
+ <span>Top 10 After Race 7</span>
 </div>
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo">N26<span>.</span></a>
-  <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="standings.html">Standings</a></li>
-    <li><a href="results.html">Results</a></li>
-    <li><a href="schedule.html" class="active">Schedule</a></li>
-    <li><a href="rules.html">Rules</a></li>
-    <li><a href="claim.html">Roster</a></li>
-  </ul>
-  <a href="claim.html" class="nav-cta">Claim a Car →</a>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </div>
+ <a href="index.html" class="nav-logo">N26<span>.</span></a>
+ <ul class="nav-links">
+ <li><a href="index.html">Home</a></li>
+ <li><a href="standings.html">Standings</a></li>
+ <li><a href="results.html">Results</a></li>
+ <li><a href="schedule.html" class="active">Schedule</a></li>
+ <li><a href="rules.html">Rules</a></li>
+ <li><a href="claim.html">Roster</a></li>
+ </ul>
+ <a href="claim.html" class="nav-cta">Claim a Car →</a>
+ <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+ <span></span><span></span><span></span>
+ </div>
 </nav>
 
 <div class="page-wrap">
-  <div class="page-header">
-    <div>
-      <h1>Season 1 Schedule</h1>
-      <p>10 races · 7 regular season · 3 Chase · Daytona to Homestead</p>
-    </div>
-  </div>
+ <div class="page-header">
+ <div>
+ <h1>Season 1 Schedule</h1>
+ <p>10 races · 7 regular season · 3 Chase · Daytona to Homestead</p>
+ </div>
+ </div>
 
-  <!-- REGULAR SEASON -->
-  <div class="schedule-section">
-    <div class="section-label">
-      <span>Regular Season</span>
-      <span>Races 1–7</span>
-    </div>
+ <!-- REGULAR SEASON -->
+ <div class="schedule-section">
+ <div class="section-label">
+ <span>Regular Season</span>
+ <span>Races 1–7</span>
+ </div>
 
-    <div class="race-row is-next" id="row-1">
-      <div class="rr-num">1</div>
-      <div>
-        <div class="rr-track">Daytona International Speedway <span class="track-type tt-super">Super</span></div>
-        <div class="rr-meta">Season Opener</div>
-      </div>
-      <div id="status-1"><span class="pill yellow">Next</span></div>
-    </div>
+ <div class="race-row is-next" id="row-1">
+ <div class="rr-num">1</div>
+ <div>
+ <div class="rr-track">Daytona International Speedway <span class="track-type tt-super">Super</span></div>
+ <div class="rr-meta">Season Opener</div>
+ </div>
+ <div id="status-1"><span class="pill yellow">Next</span></div>
+ </div>
 
-    <div class="race-row" id="row-2">
-      <div class="rr-num">2</div>
-      <div><div class="rr-track">Las Vegas Motor Speedway <span class="track-type tt-mid">Mid</span></div></div>
-      <div id="status-2"><span class="pill gray">Upcoming</span></div>
-    </div>
+ <div class="race-row" id="row-2">
+ <div class="rr-num">2</div>
+ <div><div class="rr-track">Las Vegas Motor Speedway <span class="track-type tt-mid">Mid</span></div></div>
+ <div id="status-2"><span class="pill gray">Upcoming</span></div>
+ </div>
 
-    <div class="race-row" id="row-3">
-      <div class="rr-num">3</div>
-      <div><div class="rr-track">Bristol Motor Speedway <span class="track-type tt-short">Short</span></div></div>
-      <div id="status-3"><span class="pill gray">Upcoming</span></div>
-    </div>
+ <div class="race-row" id="row-3">
+ <div class="rr-num">3</div>
+ <div><div class="rr-track">Bristol Motor Speedway <span class="track-type tt-short">Short</span></div></div>
+ <div id="status-3"><span class="pill gray">Upcoming</span></div>
+ </div>
 
-    <div class="race-row" id="row-4">
-      <div class="rr-num">4</div>
-      <div>
-        <div class="rr-track">Watkins Glen International <span class="track-type tt-road">Road</span></div>
-      </div>
-      <div id="status-4"><span class="pill gray">Upcoming</span></div>
-    </div>
+ <div class="race-row" id="row-4">
+ <div class="rr-num">4</div>
+ <div>
+ <div class="rr-track">Watkins Glen International <span class="track-type tt-road">Road</span></div>
+ </div>
+ <div id="status-4"><span class="pill gray">Upcoming</span></div>
+ </div>
 
-    <div class="race-row" id="row-5">
-      <div class="rr-num">5</div>
-      <div><div class="rr-track">Charlotte Motor Speedway <span class="track-type tt-mid">Mid</span></div></div>
-      <div id="status-5"><span class="pill gray">Upcoming</span></div>
-    </div>
+ <div class="race-row" id="row-5">
+ <div class="rr-num">5</div>
+ <div><div class="rr-track">Charlotte Motor Speedway <span class="track-type tt-mid">Mid</span></div></div>
+ <div id="status-5"><span class="pill gray">Upcoming</span></div>
+ </div>
 
-    <div class="race-row" id="row-6">
-      <div class="rr-num">6</div>
-      <div><div class="rr-track">Talladega Superspeedway <span class="track-type tt-super">Super</span></div></div>
-      <div id="status-6"><span class="pill gray">Upcoming</span></div>
-    </div>
+ <div class="race-row" id="row-6">
+ <div class="rr-num">6</div>
+ <div><div class="rr-track">Talladega Superspeedway <span class="track-type tt-super">Super</span></div></div>
+ <div id="status-6"><span class="pill gray">Upcoming</span></div>
+ </div>
 
-    <div class="race-row" id="row-7">
-      <div class="rr-num">7</div>
-      <div>
-        <div class="rr-track">Chicagoland Speedway <span class="track-type tt-mid">Mid</span></div>
-        <div class="rr-meta">Regular Season Finale · Chase Cutoff</div>
-      </div>
-      <div id="status-7"><span class="pill gray">Upcoming</span></div>
-    </div>
-  </div>
+ <div class="race-row" id="row-7">
+ <div class="rr-num">7</div>
+ <div>
+ <div class="rr-track">Chicagoland Speedway <span class="track-type tt-mid">Mid</span></div>
+ <div class="rr-meta">Regular Season Finale · Chase Cutoff</div>
+ </div>
+ <div id="status-7"><span class="pill gray">Upcoming</span></div>
+ </div>
+ </div>
 
-  <!-- CHASE -->
-  <div class="schedule-section">
-    <div class="section-label">
-      <span class="chase-tag">The Chase</span>
-      <span>Races 8–10 · Top 10 Only · 2000pt Reset</span>
-    </div>
+ <!-- CHASE -->
+ <div class="schedule-section">
+ <div class="section-label">
+ <span class="chase-tag">The Chase</span>
+ <span>Races 8–10 · Top 10 Only · 2000pt Reset</span>
+ </div>
 
-    <div class="race-row" id="row-8">
-      <div class="rr-num chase-num">8</div>
-      <div>
-        <div class="rr-track">Martinsville Speedway <span class="track-type tt-short">Short</span></div>
-        <div class="rr-meta">Chase Race 1</div>
-      </div>
-      <div><span class="pill chase">Chase</span></div>
-    </div>
+ <div class="race-row" id="row-8">
+ <div class="rr-num chase-num">8</div>
+ <div>
+ <div class="rr-track">Martinsville Speedway <span class="track-type tt-short">Short</span></div>
+ <div class="rr-meta">Chase Race 1</div>
+ </div>
+ <div><span class="pill chase">Chase</span></div>
+ </div>
 
-    <div class="race-row" id="row-9">
-      <div class="rr-num chase-num">9</div>
-      <div>
-        <div class="rr-track">Phoenix Raceway <span class="track-type tt-short">Short</span></div>
-        <div class="rr-meta">Chase Race 2</div>
-      </div>
-      <div><span class="pill chase">Chase</span></div>
-    </div>
+ <div class="race-row" id="row-9">
+ <div class="rr-num chase-num">9</div>
+ <div>
+ <div class="rr-track">Phoenix Raceway <span class="track-type tt-short">Short</span></div>
+ <div class="rr-meta">Chase Race 2</div>
+ </div>
+ <div><span class="pill chase">Chase</span></div>
+ </div>
 
-    <div class="race-row" id="row-10">
-      <div class="rr-num chase-num">10</div>
-      <div>
-        <div class="rr-track">Homestead-Miami Speedway <span class="track-type tt-mid">Mid</span></div>
-        <div class="rr-meta">Chase Race 3 · Championship 🏆</div>
-      </div>
-      <div><span class="pill chase">Chase</span></div>
-    </div>
-  </div>
+ <div class="race-row" id="row-10">
+ <div class="rr-num chase-num">10</div>
+ <div>
+ <div class="rr-track">Homestead-Miami Speedway <span class="track-type tt-mid">Mid</span></div>
+ <div class="rr-meta">Chase Race 3 · Championship </div>
+ </div>
+ <div><span class="pill chase">Chase</span></div>
+ </div>
+ </div>
 </div>
 
 <footer class="footer">
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="standings.html">Standings</a>
-    <a href="results.html">Results</a>
-    <a href="schedule.html">Schedule</a>
-    <a href="rules.html">Rules</a>
-    <a href="claim.html">Roster</a>
-  </div>
-  N26 Racing League · Season 1 · Real Points. Real Teams. Real Trophies.
+ <div class="footer-links">
+ <a href="index.html">Home</a>
+ <a href="standings.html">Standings</a>
+ <a href="results.html">Results</a>
+ <a href="schedule.html">Schedule</a>
+ <a href="rules.html">Rules</a>
+ <a href="claim.html">Roster</a>
+ </div>
+ N26 Racing League · Season 1 · Real Points. Real Teams. Real Trophies.
 </footer>
 
 <script>
-  const SB_URL = 'https://vvujhkryqzhmemojedxs.supabase.co';
-  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
-  fetch(`${SB_URL}/rest/v1/n26_races?select=race_number,status&order=race_number.asc`,
-    { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } })
-    .then(r => r.json()).then(races => {
-      let foundNext = false;
-      races.forEach(r => {
-        const row = document.getElementById('row-' + r.race_number);
-        const status = document.getElementById('status-' + r.race_number);
-        if (!row) return;
-        if (r.status === 'completed') {
-          if (status) status.innerHTML = '<span class="pill green">✓ Final</span>';
-          row.classList.remove('is-next');
-          row.classList.add('is-completed');
-          row.querySelector('.rr-num').style.color = 'var(--muted2)';
-        } else if (!foundNext && r.race_number <= 7) {
-          foundNext = true;
-          if (status) status.innerHTML = '<span class="pill yellow">Next</span>';
-          row.classList.add('is-next');
-          row.querySelector('.rr-num').style.color = 'var(--yellow)';
-        }
-      });
-    }).catch(() => {});
+ const SB_URL = 'https://vvujhkryqzhmemojedxs.supabase.co';
+ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
+ fetch(`${SB_URL}/rest/v1/n26_races?select=race_number,status&order=race_number.asc`,
+ { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } })
+ .then(r => r.json()).then(races => {
+ let foundNext = false;
+ races.forEach(r => {
+ const row = document.getElementById('row-' + r.race_number);
+ const status = document.getElementById('status-' + r.race_number);
+ if (!row) return;
+ if (r.status === 'completed') {
+ if (status) status.innerHTML = '<span class="pill green"> Final</span>';
+ row.classList.remove('is-next');
+ row.classList.add('is-completed');
+ row.querySelector('.rr-num').style.color = 'var(--muted2)';
+ } else if (!foundNext && r.race_number <= 7) {
+ foundNext = true;
+ if (status) status.innerHTML = '<span class="pill yellow">Next</span>';
+ row.classList.add('is-next');
+ row.querySelector('.rr-num').style.color = 'var(--yellow)';
+ }
+ });
+ }).catch(() => {});
 </script>
 </body>
 </html>
