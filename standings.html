@@ -46,6 +46,9 @@
     <li><a href="claim.html">Roster</a></li>
   </ul>
   <a href="claim.html" class="nav-cta">Claim a Car →</a>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
 </nav>
 
 <div class="page-wrap">
@@ -63,33 +66,34 @@
   </div>
 
   <div id="tab-driver">
-    <table class="data-table">
+    <div class="table-wrap"><table class="data-table">
       <thead>
         <tr>
           <th style="width:40px">Pos</th>
           <th>Driver</th>
-          <th class="c">Starts</th>
+          <th class="c hide-mobile">Starts</th>
           <th class="c">Wins</th>
-          <th class="c">Top 5</th>
-          <th class="c">Top 10</th>
-          <th class="c">Race Pts</th>
-          <th class="c">Stage Pts</th>
+          <th class="c hide-mobile">Top 5</th>
+          <th class="c hide-mobile">Top 10</th>
+          <th class="c hide-mobile">Race Pts</th>
+          <th class="c hide-mobile">Stage Pts</th>
           <th class="c">Total</th>
           <th class="c">Behind</th>
-          <th class="c">Playoff Pts</th>
+          <th class="c hide-mobile">Playoff Pts</th>
         </tr>
       </thead>
       <tbody id="driver-tbody">
         <tr><td colspan="11"><div class="loading">Loading...</div></td></tr>
       </tbody>
     </table>
+</div>
   </div>
 
   <div id="tab-owner" style="display:none">
     <div style="padding:8px 12px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border2);">
       Full-season players only. Mid-season joiners do not count toward team totals.
     </div>
-    <table class="data-table">
+    <div class="table-wrap"><table class="data-table">
       <thead>
         <tr>
           <th style="width:40px">Pos</th>
@@ -104,6 +108,7 @@
         <tr><td colspan="6"><div class="loading">Loading...</div></td></tr>
       </tbody>
     </table>
+</div>
   </div>
 </div>
 
@@ -174,15 +179,15 @@
             <div><div class="driver-name">${d.gamertag||'—'}${isChase?'<span class="pill yellow" style="margin-left:6px">Chase</span>':''}</div>
             <div class="driver-sub">${TEAM_MAP[d.car]||'—'}</div></div>
           </div></td>
-          <td class="c">${d.starts}</td>
+          <td class="c hide-mobile">${d.starts}</td>
           <td class="c"><span class="num-cell ${d.wins?'red':''}">${d.wins}</span></td>
-          <td class="c">${d.top5}</td>
-          <td class="c">${d.top10}</td>
-          <td class="c">${d.racePts}</td>
-          <td class="c">${d.stagePts}</td>
+          <td class="c hide-mobile">${d.top5}</td>
+          <td class="c hide-mobile">${d.top10}</td>
+          <td class="c hide-mobile">${d.racePts}</td>
+          <td class="c hide-mobile">${d.stagePts}</td>
           <td class="c"><span class="num-cell">${total}</span></td>
           <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
-          <td class="c">${d.playoffPts?`<span class="num-cell red">+${d.playoffPts}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
+          <td class="c hide-mobile">${d.playoffPts?`<span class="num-cell red">+${d.playoffPts}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
         </tr>`;
       });
       if (racesRun >= 7 && drivers.length > 10) {
