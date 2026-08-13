@@ -198,10 +198,11 @@
     </div>
     N26 League
   </a>
-          <ul class="nav-links">
+              <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="standings.html">Standings</a></li>
       <li><a href="results.html">Results</a></li>
+      <li><a href="schedule.html">Schedule</a></li>
       <li><a href="rules.html">Rules</a></li>
       <li><a href="claim.html">Roster</a></li>
     </ul>
@@ -271,20 +272,20 @@
   <div id="tab-driver">
     <div class="standings-card">
       <div class="s-row s-row-hdr"><span>Pos</span><span>Driver</span><span>Pts</span></div>
-      <div class="s-empty">
-        <strong>Season 1 — Not Yet Started</strong>
-        Standings update within 24 hours of each race.
+      <div id="driver-rows">
+        <div class="s-empty"><strong>Loading...</strong></div>
       </div>
     </div>
+    <a href="standings.html" style="display:block;text-align:center;padding:10px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);border-top:1px solid var(--border);">Full Standings →</a>
   </div>
   <div id="tab-owner" style="display:none;">
     <div class="standings-card">
       <div class="s-row s-row-hdr"><span>Pos</span><span>Team</span><span>Pts</span></div>
-      <div class="s-empty">
-        <strong>Owner Standings After Race 1</strong>
-        Combined points from all 3 team drivers each week.
+      <div id="owner-rows">
+        <div class="s-empty"><strong>Loading...</strong></div>
       </div>
     </div>
+    <a href="standings.html" style="display:block;text-align:center;padding:10px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);border-top:1px solid var(--border);">Full Standings →</a>
   </div>
 </div>
 
@@ -388,6 +389,72 @@
 </footer>
 
 <script>
+  const SB_URL = 'https://vvujhkryqzhmemojedxs.supabase.co';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
+  const SB_HDR = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
+  const TEAM_MAP = {'5':'Hendrick','9':'Hendrick','24':'Hendrick','48':'Hendrick','11':'JGR','19':'JGR','20':'JGR','54':'JGR','2':'Penske','12':'Penske','22':'Penske','23':'23XI','35':'23XI','45':'23XI','6':'RFK','17':'RFK','60':'RFK','7':'Spire','71':'Spire','77':'Spire','1':'Trackhouse','88':'Trackhouse','97':'Trackhouse'};
+
+  async function sbFetch(path) {
+    const r = await fetch(SB_URL + path, { headers: SB_HDR });
+    return r.json();
+  }
+
+  async function loadHomeStandings() {
+    const [claims, races, results] = await Promise.all([
+      sbFetch('/rest/v1/n26_claims?select=car_number,gamertag'),
+      sbFetch('/rest/v1/n26_races?select=id,status&order=race_number.asc'),
+      sbFetch('/rest/v1/n26_results?select=car_number,race_id,finish_position,points_earned,stage1_points,stage2_points')
+    ]);
+
+    const completedIds = new Set(races.filter(r => r.status === 'completed').map(r => r.id));
+    const racesRun = completedIds.size;
+
+    // Driver stats
+    const stats = {};
+    claims.forEach(c => { stats[c.car_number] = { car: c.car_number, gamertag: c.gamertag, pts: 0 }; });
+    results.filter(r => completedIds.has(r.race_id)).forEach(r => {
+      if (stats[r.car_number]) stats[r.car_number].pts += (r.points_earned||0) + (r.stage1_points||0) + (r.stage2_points||0);
+    });
+
+    const drivers = Object.values(stats).sort((a,b) => b.pts - a.pts);
+
+    const driverEl = document.getElementById('driver-rows');
+    if (racesRun === 0) {
+      driverEl.innerHTML = '<div class="s-empty"><strong>Season Not Started</strong>Standings update after Race 1 at Daytona.</div>';
+    } else {
+      driverEl.innerHTML = drivers.slice(0,10).map((d,i) => `
+        <div class="s-row">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
+          <span>
+            <span style="background:#000;color:#FFC906;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;padding:2px 6px;margin-right:6px;">#${d.car}</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;">${d.gamertag||'—'}</span>
+          </span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;">${d.pts}</span>
+        </div>`).join('');
+    }
+
+    // Owner stats
+    const ownerPts = {};
+    Object.values(stats).forEach(d => {
+      const t = TEAM_MAP[d.car];
+      if (t) ownerPts[t] = (ownerPts[t]||0) + d.pts;
+    });
+    const teams = Object.entries(ownerPts).sort((a,b)=>b[1]-a[1]);
+    const ownerEl = document.getElementById('owner-rows');
+    if (racesRun === 0) {
+      ownerEl.innerHTML = '<div class="s-empty"><strong>Season Not Started</strong>Owner standings update after Race 1.</div>';
+    } else {
+      ownerEl.innerHTML = teams.map(([team,pts],i) => `
+        <div class="s-row">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;">${team}</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;">${pts}</span>
+        </div>`).join('');
+    }
+  }
+
+  loadHomeStandings().catch(()=>{});
+
   function showTab(tab, btn) {
     document.getElementById('tab-driver').style.display = tab === 'driver' ? 'block' : 'none';
     document.getElementById('tab-owner').style.display  = tab === 'owner'  ? 'block' : 'none';
