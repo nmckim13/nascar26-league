@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="n26.css">
   <style>
-    .schedule-section { margin-bottom: 32px; }
     .section-label {
       font-family: var(--font-cond);
       font-size: 10px;
@@ -22,21 +21,21 @@
       align-items: center;
       justify-content: space-between;
     }
-    .section-label .chase-tag { color: var(--red); }
-
+    .chase-tag { color: var(--red); }
+    .schedule-section { margin-bottom: 32px; }
     .race-row {
       display: grid;
       grid-template-columns: 52px 1fr auto;
       align-items: center;
       gap: 16px;
-      padding: 14px 0;
+      padding: 14px 8px;
       border-bottom: 1px solid var(--border2);
+      border-radius: var(--radius);
       transition: background 0.12s;
     }
-    .race-row:hover { background: var(--surface2); margin: 0 -8px; padding-left: 8px; padding-right: 8px; border-radius: var(--radius); }
+    .race-row:hover { background: var(--surface2); }
     .race-row.is-next .rr-num { color: var(--yellow); }
     .race-row.is-completed .rr-num { color: var(--muted2); }
-
     .rr-num {
       font-family: var(--font-cond);
       font-size: 32px;
@@ -45,6 +44,7 @@
       line-height: 1;
       text-align: center;
     }
+    .rr-num.chase-num { color: rgba(224,25,43,0.25); }
     .rr-track {
       font-family: var(--font-cond);
       font-size: 16px;
@@ -53,8 +53,7 @@
       letter-spacing: 0.02em;
       color: var(--white);
     }
-    .rr-meta { font-size: 11px; color: var(--muted); margin-top: 3px; display: flex; gap: 10px; flex-wrap: wrap; }
-
+    .rr-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
     .track-type {
       display: inline-block;
       font-family: var(--font-cond);
@@ -67,10 +66,10 @@
       margin-left: 6px;
       vertical-align: middle;
     }
-    .track-type.road    { background: rgba(34,197,94,0.12); color: var(--green); }
-    .track-type.super   { background: rgba(255,201,6,0.12); color: var(--yellow); }
-    .track-type.short   { background: rgba(224,25,43,0.12); color: var(--red); }
-    .track-type.mid     { background: var(--surface3); color: var(--muted); }
+    .tt-road  { background: rgba(34,197,94,0.12); color: var(--green); }
+    .tt-super { background: rgba(255,201,6,0.12); color: var(--yellow); }
+    .tt-short { background: rgba(224,25,43,0.12); color: var(--red); }
+    .tt-mid   { background: var(--surface3); color: var(--muted); }
   </style>
 </head>
 <body>
@@ -110,23 +109,56 @@
       <span>Regular Season</span>
       <span>Races 1–7</span>
     </div>
-    ${[
-      [1,'Daytona International Speedway','super','Season Opener'],
-      [2,'Las Vegas Motor Speedway','mid',''],
-      [3,'Bristol Motor Speedway','short',''],
-      [4,'Watkins Glen International','road','Road Course'],
-      [5,'Charlotte Motor Speedway','mid',''],
-      [6,'Talladega Superspeedway','super',''],
-      [7,'Chicagoland Speedway','mid','Regular Season Finale · Chase Cutoff'],
-    ].map(([n,t,type,note]) => `
-    <div class="race-row" id="row-${n}">
-      <div class="rr-num">${n}</div>
+
+    <div class="race-row is-next" id="row-1">
+      <div class="rr-num">1</div>
       <div>
-        <div class="rr-track">${t}<span class="track-type ${type}">${type==='road'?'Road':type==='super'?'Super':type==='short'?'Short':'Mid'}</span></div>
-        ${note ? `<div class="rr-meta">${note}</div>` : ''}
+        <div class="rr-track">Daytona International Speedway <span class="track-type tt-super">Super</span></div>
+        <div class="rr-meta">Season Opener</div>
       </div>
-      <div id="status-${n}"><span class="pill gray">Upcoming</span></div>
-    </div>`).join('')}
+      <div id="status-1"><span class="pill yellow">Next</span></div>
+    </div>
+
+    <div class="race-row" id="row-2">
+      <div class="rr-num">2</div>
+      <div><div class="rr-track">Las Vegas Motor Speedway <span class="track-type tt-mid">Mid</span></div></div>
+      <div id="status-2"><span class="pill gray">Upcoming</span></div>
+    </div>
+
+    <div class="race-row" id="row-3">
+      <div class="rr-num">3</div>
+      <div><div class="rr-track">Bristol Motor Speedway <span class="track-type tt-short">Short</span></div></div>
+      <div id="status-3"><span class="pill gray">Upcoming</span></div>
+    </div>
+
+    <div class="race-row" id="row-4">
+      <div class="rr-num">4</div>
+      <div>
+        <div class="rr-track">Watkins Glen International <span class="track-type tt-road">Road</span></div>
+      </div>
+      <div id="status-4"><span class="pill gray">Upcoming</span></div>
+    </div>
+
+    <div class="race-row" id="row-5">
+      <div class="rr-num">5</div>
+      <div><div class="rr-track">Charlotte Motor Speedway <span class="track-type tt-mid">Mid</span></div></div>
+      <div id="status-5"><span class="pill gray">Upcoming</span></div>
+    </div>
+
+    <div class="race-row" id="row-6">
+      <div class="rr-num">6</div>
+      <div><div class="rr-track">Talladega Superspeedway <span class="track-type tt-super">Super</span></div></div>
+      <div id="status-6"><span class="pill gray">Upcoming</span></div>
+    </div>
+
+    <div class="race-row" id="row-7">
+      <div class="rr-num">7</div>
+      <div>
+        <div class="rr-track">Chicagoland Speedway <span class="track-type tt-mid">Mid</span></div>
+        <div class="rr-meta">Regular Season Finale · Chase Cutoff</div>
+      </div>
+      <div id="status-7"><span class="pill gray">Upcoming</span></div>
+    </div>
   </div>
 
   <!-- CHASE -->
@@ -135,19 +167,33 @@
       <span class="chase-tag">The Chase</span>
       <span>Races 8–10 · Top 10 Only · 2000pt Reset</span>
     </div>
-    ${[
-      [8,'Martinsville Speedway','short','Chase Race 1'],
-      [9,'Phoenix Raceway','short','Chase Race 2'],
-      [10,'Homestead-Miami Speedway','mid','Chase Race 3 · Championship 🏆'],
-    ].map(([n,t,type,note]) => `
-    <div class="race-row" id="row-${n}">
-      <div class="rr-num" style="color:rgba(224,25,43,0.3)">${n}</div>
+
+    <div class="race-row" id="row-8">
+      <div class="rr-num chase-num">8</div>
       <div>
-        <div class="rr-track">${t}<span class="track-type ${type}">${type==='short'?'Short':'Mid'}</span></div>
-        <div class="rr-meta">${note}</div>
+        <div class="rr-track">Martinsville Speedway <span class="track-type tt-short">Short</span></div>
+        <div class="rr-meta">Chase Race 1</div>
       </div>
       <div><span class="pill chase">Chase</span></div>
-    </div>`).join('')}
+    </div>
+
+    <div class="race-row" id="row-9">
+      <div class="rr-num chase-num">9</div>
+      <div>
+        <div class="rr-track">Phoenix Raceway <span class="track-type tt-short">Short</span></div>
+        <div class="rr-meta">Chase Race 2</div>
+      </div>
+      <div><span class="pill chase">Chase</span></div>
+    </div>
+
+    <div class="race-row" id="row-10">
+      <div class="rr-num chase-num">10</div>
+      <div>
+        <div class="rr-track">Homestead-Miami Speedway <span class="track-type tt-mid">Mid</span></div>
+        <div class="rr-meta">Chase Race 3 · Championship 🏆</div>
+      </div>
+      <div><span class="pill chase">Chase</span></div>
+    </div>
   </div>
 </div>
 
@@ -167,23 +213,26 @@
   const SB_URL = 'https://vvujhkryqzhmemojedxs.supabase.co';
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
   fetch(`${SB_URL}/rest/v1/n26_races?select=race_number,status&order=race_number.asc`,
-    {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}})
-    .then(r=>r.json()).then(races=>{
+    { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } })
+    .then(r => r.json()).then(races => {
       let foundNext = false;
-      races.forEach(r=>{
-        const status = document.getElementById(`status-${r.race_number}`);
-        const row = document.getElementById(`row-${r.race_number}`);
-        if (!status||!row) return;
-        if (r.status==='completed') {
-          status.innerHTML='<span class="pill green">✓ Final</span>';
+      races.forEach(r => {
+        const row = document.getElementById('row-' + r.race_number);
+        const status = document.getElementById('status-' + r.race_number);
+        if (!row) return;
+        if (r.status === 'completed') {
+          if (status) status.innerHTML = '<span class="pill green">✓ Final</span>';
+          row.classList.remove('is-next');
           row.classList.add('is-completed');
-        } else if (!foundNext) {
-          foundNext=true;
-          status.innerHTML='<span class="pill yellow">Next</span>';
+          row.querySelector('.rr-num').style.color = 'var(--muted2)';
+        } else if (!foundNext && r.race_number <= 7) {
+          foundNext = true;
+          if (status) status.innerHTML = '<span class="pill yellow">Next</span>';
           row.classList.add('is-next');
+          row.querySelector('.rr-num').style.color = 'var(--yellow)';
         }
       });
-    }).catch(()=>{});
+    }).catch(() => {});
 </script>
 </body>
 </html>
