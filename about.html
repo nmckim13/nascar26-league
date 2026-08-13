@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N26 Racing League | About</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0c0c0f;--surface:#14141a;--surface2:#1c1c24;--surface3:#24242e;
+      --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.14);
+      --white:#f4f4f6;--muted:#72728a;--muted2:#44445a;
+      --yellow:#FFC200;--red:#E8002D;--blue:#003087;
+      --radius-sm:6px;--radius-md:12px;--radius-lg:20px;--radius-xl:28px;--radius-pill:9999px;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;}
+    body{background:var(--bg);color:var(--white);font-family:'Barlow',system-ui,sans-serif;font-size:15px;line-height:1.55;overflow-x:hidden;}
+    a{text-decoration:none;color:inherit;}
+    img{display:block;max-width:100%;}
+
+    /* TICKER */
+    .ticker{background:var(--yellow);height:32px;display:flex;align-items:center;overflow:hidden;}
+    .ticker-inner{display:flex;align-items:center;gap:28px;padding:0 16px;white-space:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;width:100%;}
+    .ticker-inner::-webkit-scrollbar{display:none;}
+    .ticker-item{display:flex;align-items:center;gap:7px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#000;flex-shrink:0;}
+    .ticker-badge{background:var(--blue);color:#fff;padding:1px 7px;border-radius:3px;font-size:10px;font-weight:800;letter-spacing:0.12em;}
+    .ticker-badge.red{background:var(--red);}
+    .ticker-sep{width:1px;height:14px;background:rgba(0,0,0,0.2);flex-shrink:0;}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;background:rgba(0,48,135,0.97);backdrop-filter:blur(16px);border-bottom:2px solid var(--yellow);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+    .nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:0.04em;text-transform:uppercase;color:var(--white);display:flex;align-items:center;gap:10px;white-space:nowrap;flex-shrink:0;}
+    .nav-flag{display:grid;grid-template-columns:repeat(3,5px);grid-template-rows:repeat(3,5px);gap:1px;}
+    .nav-flag span{display:block;}
+    .nav-flag span:nth-child(odd){background:var(--yellow);}
+    .nav-flag span:nth-child(even){background:rgba(255,255,255,0.2);}
+    .nav-links{display:flex;align-items:center;gap:2px;list-style:none;flex:1;justify-content:center;}
+    .nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.7);padding:6px 12px;border-radius:var(--radius-sm);transition:color 0.15s,background 0.15s;}
+    .nav-links a:hover{color:var(--yellow);background:rgba(255,255,255,0.08);}
+    .nav-links a.active{color:var(--yellow);}
+    .nav-join{background:var(--yellow);color:#000;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;padding:8px 16px;border-radius:var(--radius-sm);white-space:nowrap;transition:background 0.15s;flex-shrink:0;}
+    .nav-join:hover{background:#ffd033;}
+    .nav-hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:4px;}
+    .nav-hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:1px;}
+
+    /* LAYOUT */
+    .page{max-width:680px;margin:0 auto;padding:0 20px;}
+
+    /* PAGE HERO */
+    .page-hero{padding:36px 20px 32px;max-width:680px;margin:0 auto;border-bottom:1px solid var(--border);}
+    .page-hero-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--yellow);display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+    .page-hero-eyebrow::before{content:'';display:block;width:16px;height:2px;background:var(--yellow);}
+    .page-hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(44px,10vw,72px);font-weight:900;letter-spacing:-0.01em;text-transform:uppercase;color:var(--white);line-height:0.95;margin-bottom:14px;}
+    .page-hero h1 em{font-style:normal;color:var(--yellow);}
+    .page-hero p{font-size:15px;color:var(--muted);line-height:1.65;max-width:480px;}
+
+    /* SECTION */
+    .section{padding:40px 0 0;}
+    .s-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--yellow);display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+    .s-eyebrow::before{content:'';display:block;width:16px;height:2px;background:var(--yellow);}
+    .s-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(26px,6vw,40px);font-weight:900;letter-spacing:-0.01em;text-transform:uppercase;color:var(--white);line-height:1;margin-bottom:16px;}
+
+    /* HOW IT WORKS */
+    .how-list{display:flex;flex-direction:column;}
+    .how-item{display:flex;gap:14px;padding:18px 0;border-bottom:1px solid var(--border);}
+    .how-item:last-child{border-bottom:none;}
+    .how-num{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;color:rgba(255,194,0,0.12);line-height:1;width:40px;flex-shrink:0;text-align:center;}
+    .how-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:4px;}
+    .how-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+
+    /* POINTS EXPLAINER */
+    .points-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+    .points-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 16px;}
+    .points-card-num{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;color:var(--yellow);line-height:1;margin-bottom:4px;}
+    .points-card-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:var(--white);margin-bottom:4px;}
+    .points-card-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+
+    /* TEAMS */
+    .teams-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+    .team-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;transition:border-color 0.2s,background 0.2s,transform 0.15s;}
+    .team-card:hover{border-color:rgba(255,194,0,0.25);background:var(--surface2);transform:translateY(-2px);}
+    .team-logo-wrap{height:38px;display:flex;align-items:center;justify-content:center;}
+    .team-logo{max-height:34px;max-width:80px;object-fit:contain;}
+    .spire-logo{filter:invert(1) brightness(0.85);}
+    .team-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);text-align:center;line-height:1.3;}
+    .team-nums{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;}
+    .team-num-img{width:38px;height:34px;object-fit:contain;}
+
+    /* RULES */
+    .rules-list{display:flex;flex-direction:column;gap:0;}
+    .rule-item{padding:16px 0;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start;}
+    .rule-item:last-child{border-bottom:none;}
+    .rule-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+    .rule-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:3px;}
+    .rule-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+
+    /* JOIN CTA */
+    .join-card{background:var(--yellow);border-radius:var(--radius-xl);padding:32px 24px;text-align:center;position:relative;overflow:hidden;}
+    .join-card::before,.join-card::after{content:'';position:absolute;width:80px;height:80px;background-image:repeating-conic-gradient(rgba(0,0,0,0.12) 0% 25%,transparent 0% 50%);background-size:16px 16px;}
+    .join-card::before{top:0;left:0;border-radius:var(--radius-xl) 0 0 0;}
+    .join-card::after{bottom:0;right:0;border-radius:0 0 var(--radius-xl) 0;}
+    .join-inner{position:relative;z-index:1;}
+    .join-inner h2{font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:900;text-transform:uppercase;letter-spacing:-0.01em;color:#000;line-height:1;margin-bottom:8px;}
+    .join-inner p{font-size:14px;color:rgba(0,0,0,0.55);margin-bottom:20px;font-weight:500;}
+    .btn-dark{background:#000;color:var(--yellow);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;padding:13px 30px;border-radius:var(--radius-sm);display:inline-block;transition:background 0.15s;}
+    .btn-dark:hover{background:#1a1a1a;}
+
+    /* FOOTER */
+    footer{margin-top:56px;padding:3px 0 0;background:linear-gradient(to right,var(--yellow) 33.3%,var(--red) 33.3% 66.6%,var(--blue) 66.6%);}
+    .footer-body{background:var(--bg);padding:28px 20px 40px;max-width:680px;margin:0 auto;}
+    .footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:20px;margin-bottom:20px;}
+    .footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);}
+    .footer-tagline{font-size:11px;color:var(--muted);margin-top:3px;}
+    .footer-nav{display:flex;gap:6px;flex-wrap:wrap;}
+    .footer-nav a{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);padding:5px 10px;border-radius:var(--radius-sm);border:1px solid var(--border);transition:color 0.15s,border-color 0.15s;}
+    .footer-nav a:hover{color:var(--yellow);border-color:rgba(255,194,0,0.3);}
+    .footer-bottom{border-top:1px solid var(--border);padding-top:16px;font-size:11px;color:var(--muted2);font-family:'Barlow Condensed',sans-serif;letter-spacing:0.08em;text-transform:uppercase;}
+
+    @media(min-width:768px){
+      .page{padding:0 32px;}
+      .page-hero{padding:40px 32px 32px;max-width:720px;}
+      .footer-body{padding:28px 32px 40px;max-width:720px;}
+      .nav-links{display:flex;}
+      .nav-hamburger{display:none;}
+      .teams-grid{grid-template-columns:repeat(4,1fr);}
+      .points-grid{grid-template-columns:repeat(4,1fr);}
+    }
+    @media(max-width:767px){
+      .nav-links{display:none;}
+      .nav-hamburger{display:flex;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-item"><span class="ticker-badge">Next Race</span> Season Opener — Date TBD</div>
+    <div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="ticker-badge">Season 1</span> 18 Drivers · 7 Teams · 10 Races</div>
+    <div class="ticker-sep"></div>
+    <div class="ticker-item"><span class="ticker-badge red">Chase</span> Top 10 After Race 7</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-flag"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    N26 League
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="standings.html">Standings</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="teams.html">Teams</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Menu" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  <a href="#join" class="nav-join">I'm In</a>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-eyebrow">The League</div>
+  <h1>About the<br>N26 <em>League.</em></h1>
+  <p>Real NASCAR points. Real teams. Real playoffs. A real trophy with your name on it — for the price of a video game and a couch. This is everything you need to know.</p>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="page section">
+  <div class="s-eyebrow">How It Works</div>
+  <div class="s-title">Draft Night to Champion's Circle.</div>
+  <div class="how-list">
+    <div class="how-item">
+      <div class="how-num">1</div>
+      <div>
+        <div class="how-title">Live Draft Night</div>
+        <div class="how-desc">Before the season starts, team managers hold a live snake draft. They pick their 3-driver rosters from the full pool. Your name gets called. You represent a real NASCAR team. The season starts.</div>
+      </div>
+    </div>
+    <div class="how-item">
+      <div class="how-num">2</div>
+      <div>
+        <div class="how-title">10-Week Regular Season</div>
+        <div class="how-desc">One race per week. Real NASCAR Cup Series points — 40 for the win, descending to 1st for 40th. Stage breaks pay bonus points mid-race. Every position, every lap counts. Nobody is ever mathematically out of it.</div>
+      </div>
+    </div>
+    <div class="how-item">
+      <div class="how-num">3</div>
+      <div>
+        <div class="how-title">The Championship Chase</div>
+        <div class="how-desc">Top 10 drivers after Race 7 advance to the Chase. The regular season points leader carries a bonus in. The final 3 races — Races 8, 9, and 10 — decide the champion. No excuses, no do-overs.</div>
+      </div>
+    </div>
+    <div class="how-item">
+      <div class="how-num">4</div>
+      <div>
+        <div class="how-title">Champions Crowned</div>
+        <div class="how-desc">Driver Championship trophy. Owner Championship trophy. And a traveling trophy that gets a new name engraved after every season. Ten years from now, that thing is a piece of history.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POINTS SYSTEM -->
+<div class="page section">
+  <div class="s-eyebrow">Points System</div>
+  <div class="s-title">Real NASCAR Rules.</div>
+  <div class="points-grid">
+    <div class="points-card">
+      <div class="points-card-num">44</div>
+      <div class="points-card-label">Win Bonus</div>
+      <div class="points-card-desc">40 finish points + 4 win bonus. Most points you can earn in a single race.</div>
+    </div>
+    <div class="points-card">
+      <div class="points-card-num">40–1</div>
+      <div class="points-card-label">Finish Points</div>
+      <div class="points-card-desc">Every position pays. 40 for 1st down to 1 for 40th. 15th still matters.</div>
+    </div>
+    <div class="points-card">
+      <div class="points-card-num">10–1</div>
+      <div class="points-card-label">Stage Points</div>
+      <div class="points-card-desc">Top 10 at each stage break earn bonus points. Two stage breaks per race.</div>
+    </div>
+    <div class="points-card">
+      <div class="points-card-num">2</div>
+      <div class="points-card-label">Championships</div>
+      <div class="points-card-desc">Driver Championship and Owner Championship run simultaneously all season.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TEAMS -->
+<div class="page section" id="teams">
+  <div class="s-eyebrow">The Teams</div>
+  <div class="s-title">7 Teams. 3 Drivers Each.</div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.65;">Teams are assigned via live snake draft. Each team uses a real NASCAR team identity. Team managers recruit, mentor, and find substitutes. If you can't make a race, your team keeps rolling.</p>
+  <div class="teams-grid">
+    <div class="team-card">
+      <div class="team-logo-wrap"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Hendrick_Motorsports_Logo.svg/250px-Hendrick_Motorsports_Logo.svg.png" alt="Hendrick" class="team-logo"></div>
+      <div class="team-label">Hendrick<br>Motorsports</div>
+      <div class="team-nums">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/5.png"  alt="#5"  class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/9.png"  alt="#9"  class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/24.png" alt="#24" class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/48.png" alt="#48" class="team-num-img">
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-logo-wrap"><img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Joe_Gibbs_Racing_logo.png" alt="JGR" class="team-logo"></div>
+      <div class="team-label">Joe Gibbs<br>Racing</div>
+      <div class="team-nums">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/11.png" alt="#11" class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/19.png" alt="#19" class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/20.png" alt="#20" class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/54.png" alt="#54" class="team-num-img">
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-logo-wrap"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Team_Penske_logo.svg/250px-Team_Penske_logo.svg.png" alt="Penske" class="team-logo"></div>
+      <div class="team-label">Team<br>Penske</div>
+      <div class="team-nums">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/2.png"  alt="#2"  class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/12.png" alt="#12" class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/22.png" alt="#22" class="team-num-img">
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-logo-wrap"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/23XI_racing_logo_%282023%29.png/250px-23XI_racing_logo_%282023%29.png" alt="23XI" class="team-logo"></div>
+      <div class="team-label">23XI<br>Racing</div>
+      <div class="team-nums">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/23.png" alt="#23" class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/35.png" alt="#35" class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/45.png" alt="#45" class="team-num-img">
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-logo-wrap"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/RFK_logo.png/500px-RFK_logo.png" alt="RFK" class="team-logo"></div>
+      <div class="team-label">RFK<br>Racing</div>
+      <div class="team-nums">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/6.png"  alt="#6"  class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/17.png" alt="#17" class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/60.png" alt="#60" class="team-num-img">
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-logo-wrap"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Spire_Motorsports_yellow_logo.png/250px-Spire_Motorsports_yellow_logo.png" alt="Spire" class="team-logo spire-logo"></div>
+      <div class="team-label">Spire<br>Motorsports</div>
+      <div class="team-nums">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/7.png"  alt="#7"  class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/71.png" alt="#71" class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/77.png" alt="#77" class="team-num-img">
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-logo-wrap"><img src="https://upload.wikimedia.org/wikipedia/en/d/d2/Trackhouse_Racing_Logo.png" alt="Trackhouse" class="team-logo"></div>
+      <div class="team-label">Trackhouse<br>Racing</div>
+      <div class="team-nums">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/1.png"  alt="#1"  class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/88.png" alt="#88" class="team-num-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/97.png" alt="#97" class="team-num-img">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KEY RULES -->
+<div class="page section">
+  <div class="s-eyebrow">Key Rules</div>
+  <div class="s-title">The Important Stuff.</div>
+  <div class="rules-list">
+    <div class="rule-item"><div class="rule-icon">📅</div><div><div class="rule-title">75% Attendance</div><div class="rule-desc">Drivers must race in at least 6 of 7 regular season races to qualify for the Chase. Miss too many and you're watching from the sideline.</div></div></div>
+    <div class="rule-item"><div class="rule-icon">🔄</div><div><div class="rule-title">Substitutes Welcome</div><div class="rule-desc">Can't make a race? Your team manager finds a sub. The sub's points count 100% toward the team Owner Championship. Life happens — the league rolls on.</div></div></div>
+    <div class="rule-item"><div class="rule-icon">🐍</div><div><div class="rule-title">Snake Draft</div><div class="rule-desc">Live snake draft before every season. Order reverses each round so no team always picks first. Show up to draft night — it's an event.</div></div></div>
+    <div class="rule-item"><div class="rule-icon">🏆</div><div><div class="rule-title">Chase Seeding</div><div class="rule-desc">The regular season points leader carries a bonus into the Chase. Dominating the regular season has real meaning.</div></div></div>
+    <div class="rule-item"><div class="rule-icon">👥</div><div><div class="rule-title">Owner Championship</div><div class="rule-desc">All 3 drivers' points combined each week. A team can win the Owner Championship even if no individual driver wins the Driver Championship.</div></div></div>
+    <div class="rule-item"><div class="rule-icon">📖</div><div><div class="rule-title">Full Rulebook</div><div class="rule-desc">Every detail is documented. <a href="https://docs.google.com/document/d/1Kt33Qxdc5g-wsJKROLlfM96EOBVEOxYKBPCMuA3o-X8/edit" style="color:var(--yellow);">Read the full rulebook →</a></div></div></div>
+  </div>
+</div>
+
+<!-- JOIN CTA -->
+<div class="page section" id="join" style="padding-bottom:0;">
+  <div class="join-card">
+    <div class="join-inner">
+      <h2>Seats Still<br>Available.</h2>
+      <p>Season 1 is 18 drivers. Once the grid is full, you wait for Season 2. The draft order is coming. The trophy is real.</p>
+      <a href="mailto:?subject=N26%20Racing%20League%20%E2%80%94%20I%27m%20In&body=Count%20me%20in%20for%20Season%201." class="btn-dark">I'm In — Count Me</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-body">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">N26 Racing League</div>
+        <div class="footer-tagline">Real Points · Real Teams · Real Trophies</div>
+      </div>
+      <nav class="footer-nav">
+        <a href="index.html">Home</a>
+        <a href="standings.html">Standings</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="teams.html">Teams</a>
+        <a href="about.html">About</a>
+        <a href="#join">Join</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">N26 Racing League · Season 1 · Built on NASCAR 26</div>
+  </div>
+</footer>
+
+<script>
+  function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    if (!links) return;
+    const shown = links.style.display === 'flex';
+    links.style.display = shown ? 'none' : 'flex';
+    if (!shown) {
+      Object.assign(links.style, {flexDirection:'column',position:'absolute',top:'54px',left:'0',right:'0',background:'rgba(0,48,135,0.98)',padding:'12px 20px',borderBottom:'2px solid var(--yellow)',zIndex:'99'});
+    }
+  }
+</script>
+</body>
+</html>
