@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>N26 Racing League | Official Home</title>
   <meta name="description" content="NASCAR 26 Racing League — Official Home. Standings, Schedule, Results.">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:        #0c0c0f;
@@ -30,7 +30,7 @@
     }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-    body { background: var(--bg); color: var(--white); font-family: 'Barlow', system-ui, sans-serif; font-size: 15px; line-height: 1.55; overflow-x: hidden; }
+    body { background: var(--bg); color: var(--white); font-family: var(--font); font-size: 15px; line-height: 1.55; overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
     img { display: block; max-width: 100%; }
 
@@ -38,23 +38,23 @@
     .ticker { background: var(--yellow); height: 32px; display: flex; align-items: center; overflow: hidden; }
     .ticker-inner { display: flex; align-items: center; gap: 28px; padding: 0 16px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; width: 100%; }
     .ticker-inner::-webkit-scrollbar { display: none; }
-    .ticker-item { display: flex; align-items: center; gap: 7px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #000; flex-shrink: 0; }
-    .ticker-badge { background: var(--blue); color: #fff; padding: 1px 7px; border-radius: 3px; font-size: 10px; font-weight: 800; letter-spacing: 0.12em; }
+    .ticker-item { display: flex; align-items: center; gap: 7px; font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: #000; flex-shrink: 0; }
+    .ticker-badge { background: var(--blue); color: #fff; padding: 1px 7px; border-radius: 3px; font-size: 10px; font-weight: 800; letter-spacing: -0.01em; }
     .ticker-badge.red { background: var(--red); }
     .ticker-sep { width: 1px; height: 14px; background: rgba(0,0,0,0.2); flex-shrink: 0; }
 
     /* ── NAV ── */
     nav { position: sticky; top: 0; z-index: 100; background: rgba(0,48,135,0.97); backdrop-filter: blur(16px); border-bottom: 2px solid var(--yellow); padding: 0 20px; height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; color: var(--white); display: flex; align-items: center; gap: 10px; white-space: nowrap; flex-shrink: 0; }
+    .nav-logo { font-family: var(--font); font-size: 22px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; color: var(--white); display: flex; align-items: center; gap: 10px; white-space: nowrap; flex-shrink: 0; }
     .nav-flag { display: grid; grid-template-columns: repeat(3, 5px); grid-template-rows: repeat(3, 5px); gap: 1px; }
     .nav-flag span { display: block; }
     .nav-flag span:nth-child(odd) { background: var(--yellow); }
     .nav-flag span:nth-child(even) { background: rgba(255,255,255,0.2); }
     .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; flex: 1; justify-content: center; }
-    .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: var(--radius-sm); transition: color 0.15s, background 0.15s; }
+    .nav-links a { font-family: var(--font); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: var(--radius-sm); transition: color 0.15s, background 0.15s; }
     .nav-links a:hover { color: var(--yellow); background: rgba(255,255,255,0.08); }
     .nav-links a.active { color: var(--yellow); }
-    .nav-join { background: var(--yellow); color: #000; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 16px; border-radius: var(--radius-sm); white-space: nowrap; transition: background 0.15s; flex-shrink: 0; }
+    .nav-join { background: var(--yellow); color: #000; font-family: var(--font); font-size: 14px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; padding: 8px 16px; border-radius: var(--radius-sm); white-space: nowrap; transition: background 0.15s; flex-shrink: 0; }
     .nav-join:hover { background: #ffd033; }
     .nav-hamburger { display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 4px; }
     .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 1px; }
@@ -63,69 +63,69 @@
     .page { max-width: 680px; margin: 0 auto; padding: 0 20px; }
 
     /* ── SECTION LABEL ── */
-    .s-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--yellow); display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .s-eyebrow { font-family: var(--font); font-size: 11px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--yellow); display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
     .s-eyebrow::before { content: ''; display: block; width: 16px; height: 2px; background: var(--yellow); }
-    .s-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(26px, 6vw, 40px); font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; color: var(--white); line-height: 1; margin-bottom: 16px; }
+    .s-title { font-family: var(--font); font-size: clamp(26px, 6vw, 40px); font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; color: var(--white); line-height: 1; margin-bottom: 16px; }
     .s-hdr { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
-    .s-hdr-right { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .s-hdr-right { font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted); }
     .s-hdr-right:hover { color: var(--yellow); }
 
     /* ── HERO / NEXT RACE ── */
     .hero { padding: 32px 20px 0; max-width: 680px; margin: 0 auto; }
     .next-race-card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden; }
     .nrc-header { background: var(--yellow); padding: 9px 18px; display: flex; align-items: center; justify-content: space-between; }
-    .nrc-header-left { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; color: #000; }
-    .nrc-header-right { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(0,0,0,0.55); }
+    .nrc-header-left { font-family: var(--font); font-size: 12px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; color: #000; }
+    .nrc-header-right { font-family: var(--font); font-size: 11px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: rgba(0,0,0,0.55); }
     .nrc-body { padding: 20px 18px; }
-    .nrc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1; margin-bottom: 4px; }
+    .nrc-name { font-family: var(--font); font-size: 36px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1; margin-bottom: 4px; }
     .nrc-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
     .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
     .cd-unit { background: var(--surface2); border-radius: var(--radius-md); padding: 12px 6px; text-align: center; border: 1px solid var(--border); }
-    .cd-num { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 900; color: var(--yellow); display: block; line-height: 1; }
-    .cd-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px; }
+    .cd-num { font-family: var(--font); font-size: 30px; font-weight: 900; color: var(--yellow); display: block; line-height: 1; }
+    .cd-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: -0.01em; margin-top: 3px; }
     .nrc-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); padding-top: 12px; border-top: 1px solid var(--border); }
     .nrc-meta strong { color: var(--white); font-weight: 600; }
 
     /* ── LAST RACE ── */
     .last-race-card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden; }
     .lrc-header { background: var(--red); padding: 9px 18px; }
-    .lrc-header span { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; }
+    .lrc-header span { font-family: var(--font); font-size: 12px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; color: #fff; }
     .lrc-body { padding: 24px 18px; text-align: center; }
     .lrc-body .placeholder-icon { font-size: 36px; margin-bottom: 10px; }
-    .lrc-body .placeholder-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); margin-bottom: 4px; }
+    .lrc-body .placeholder-title { font-family: var(--font); font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); margin-bottom: 4px; }
     .lrc-body .placeholder-sub { font-size: 12px; color: var(--muted); }
 
     /* ── STANDINGS ── */
     .section-block { padding: 40px 0 0; }
     .standings-tabs { display: flex; gap: 3px; background: var(--surface); border-radius: var(--radius-sm); padding: 3px; border: 1px solid var(--border); }
-    .tab-btn { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 4px; border: none; cursor: pointer; background: transparent; color: var(--muted); transition: all 0.15s; }
+    .tab-btn { font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; padding: 6px 14px; border-radius: 4px; border: none; cursor: pointer; background: transparent; color: var(--muted); transition: all 0.15s; }
     .tab-btn.active { background: var(--yellow); color: #000; }
     .standings-card { background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
     .s-row { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 12px; padding: 13px 18px; border-bottom: 1px solid var(--border); transition: background 0.1s; }
     .s-row:last-child { border-bottom: none; }
     .s-row:not(.s-row-hdr):hover { background: var(--surface2); }
     .s-row-hdr { background: var(--surface2); padding: 9px 18px; }
-    .s-row-hdr span { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted2); }
-    .s-pos { font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 900; color: var(--muted2); text-align: center; line-height: 1; }
+    .s-row-hdr span { font-family: var(--font); font-size: 10px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted2); }
+    .s-pos { font-family: var(--font); font-size: 26px; font-weight: 900; color: var(--muted2); text-align: center; line-height: 1; }
     .s-driver { display: flex; align-items: center; gap: 10px; }
-    .s-carnum { background: var(--surface3); color: var(--yellow); font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 900; width: 30px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .s-name { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--white); }
+    .s-carnum { background: var(--surface3); color: var(--yellow); font-family: var(--font); font-size: 12px; font-weight: 900; width: 30px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .s-name { font-family: var(--font); font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); }
     .s-team-lbl { font-size: 11px; color: var(--muted); margin-top: 1px; }
-    .s-pts { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; color: var(--white); display: block; line-height: 1; text-align: right; }
-    .s-pts-lbl { font-size: 9px; color: var(--muted2); letter-spacing: 0.1em; text-transform: uppercase; text-align: right; }
+    .s-pts { font-family: var(--font); font-size: 22px; font-weight: 900; color: var(--white); display: block; line-height: 1; text-align: right; }
+    .s-pts-lbl { font-size: 9px; color: var(--muted2); letter-spacing: -0.01em; text-transform: uppercase; text-align: right; }
     .s-empty { padding: 28px 18px; text-align: center; font-size: 13px; color: var(--muted); line-height: 1.7; }
-    .s-empty strong { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 800; text-transform: uppercase; color: var(--white); display: block; margin-bottom: 5px; letter-spacing: 0.04em; }
+    .s-empty strong { font-family: var(--font); font-size: 17px; font-weight: 800; text-transform: uppercase; color: var(--white); display: block; margin-bottom: 5px; letter-spacing: -0.01em; }
 
     /* ── SCHEDULE ── */
     .sched-list { display: flex; flex-direction: column; }
     .sched-item { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--border); }
     .sched-item:last-child { border-bottom: none; }
-    .sched-num { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 900; color: var(--surface3); width: 40px; text-align: center; flex-shrink: 0; line-height: 1; }
+    .sched-num { font-family: var(--font); font-size: 32px; font-weight: 900; color: var(--surface3); width: 40px; text-align: center; flex-shrink: 0; line-height: 1; }
     .sched-num.hot { color: var(--yellow); }
     .sched-info { flex: 1; min-width: 0; }
-    .sched-name { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--white); line-height: 1.1; }
+    .sched-name { font-family: var(--font); font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); line-height: 1.1; }
     .sched-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
-    .badge { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: var(--radius-sm); flex-shrink: 0; white-space: nowrap; }
+    .badge { font-family: var(--font); font-size: 10px; font-weight: 800; letter-spacing: -0.01em; text-transform: uppercase; padding: 4px 10px; border-radius: var(--radius-sm); flex-shrink: 0; white-space: nowrap; }
     .badge-next   { background: var(--yellow); color: #000; }
     .badge-up     { background: var(--surface3); color: var(--muted); }
     .badge-chase  { background: var(--red); color: #fff; }
@@ -139,13 +139,13 @@
     .news-card-thumb img { width: 100%; height: 100%; object-fit: cover; }
     .news-card-thumb-placeholder { font-size: 24px; }
     .news-card-content { flex: 1; min-width: 0; }
-    .news-card-cat { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--yellow); margin-bottom: 4px; }
-    .news-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; color: var(--white); line-height: 1.2; }
+    .news-card-cat { font-family: var(--font); font-size: 10px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--yellow); margin-bottom: 4px; }
+    .news-card-title { font-family: var(--font); font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); line-height: 1.2; }
     .news-card-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
     .news-card-arrow { color: var(--muted2); font-size: 16px; flex-shrink: 0; }
     .news-empty-state { background: var(--surface); padding: 40px 18px; text-align: center; border-radius: var(--radius-lg); border: 1px solid var(--border); }
     .news-empty-state .icon { font-size: 32px; margin-bottom: 10px; }
-    .news-empty-state p { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); margin-bottom: 4px; }
+    .news-empty-state p { font-family: var(--font); font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); margin-bottom: 4px; }
     .news-empty-state small { font-size: 12px; color: var(--muted); }
 
     /* ── FOOTER ── */
@@ -153,12 +153,12 @@
     footer-inner { background: var(--bg); display: block; }
     .footer-body { background: var(--bg); padding: 28px 20px 40px; max-width: 680px; margin: 0 auto; }
     .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px; margin-bottom: 20px; }
-    .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); }
+    .footer-logo { font-family: var(--font); font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); }
     .footer-tagline { font-size: 11px; color: var(--muted); margin-top: 3px; }
     .footer-nav { display: flex; gap: 6px; flex-wrap: wrap; }
-    .footer-nav a { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 5px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); transition: color 0.15s, border-color 0.15s; }
+    .footer-nav a { font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted); padding: 5px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); transition: color 0.15s, border-color 0.15s; }
     .footer-nav a:hover { color: var(--yellow); border-color: rgba(255,194,0,0.3); }
-    .footer-bottom { border-top: 1px solid var(--border); padding-top: 16px; font-size: 11px; color: var(--muted2); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 16px; font-size: 11px; color: var(--muted2); font-family: var(--font); letter-spacing: -0.01em; text-transform: uppercase; }
 
     /* ── RESPONSIVE ── */
     @media (min-width: 768px) {
@@ -270,7 +270,7 @@
         <div class="s-empty"><strong>Loading...</strong></div>
       </div>
     </div>
-    <a href="standings.html" style="display:block;text-align:center;padding:10px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);border-top:1px solid var(--border);">Full Standings →</a>
+    <a href="standings.html" style="display:block;text-align:center;padding:10px;font-family: var(--font);font-size:13px;font-weight:700;letter-spacing: -0.01em;text-transform:uppercase;color:var(--blue);border-top:1px solid var(--border);">Full Standings →</a>
   </div>
   <div id="tab-owner" style="display:none;">
     <div class="standings-card">
@@ -279,7 +279,7 @@
         <div class="s-empty"><strong>Loading...</strong></div>
       </div>
     </div>
-    <a href="standings.html" style="display:block;text-align:center;padding:10px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);border-top:1px solid var(--border);">Full Standings →</a>
+    <a href="standings.html" style="display:block;text-align:center;padding:10px;font-family: var(--font);font-size:13px;font-weight:700;letter-spacing: -0.01em;text-transform:uppercase;color:var(--blue);border-top:1px solid var(--border);">Full Standings →</a>
   </div>
 </div>
 
@@ -410,12 +410,12 @@
     } else {
       driverEl.innerHTML = drivers.slice(0,10).map((d,i) => `
         <div class="s-row">
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
+          <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
           <span>
-            <span style="background:#000;color:#FFC906;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:900;padding:2px 6px;margin-right:6px;">#${d.car}</span>
-            <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;">${d.gamertag||'—'}</span>
+            <span style="background:#000;color:#FFC906;font-family: var(--font);font-size:12px;font-weight:900;padding:2px 6px;margin-right:6px;">#${d.car}</span>
+            <span style="font-family: var(--font);font-size:14px;font-weight:800;text-transform:uppercase;">${d.gamertag||'—'}</span>
           </span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;">${d.pts}</span>
+          <span style="font-family: var(--font);font-size:16px;font-weight:900;">${d.pts}</span>
         </div>`).join('');
     }
 
@@ -432,9 +432,9 @@
     } else {
       ownerEl.innerHTML = teams.map(([team,pts],i) => `
         <div class="s-row">
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;">${team}</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;">${pts}</span>
+          <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
+          <span style="font-family: var(--font);font-size:14px;font-weight:800;text-transform:uppercase;">${team}</span>
+          <span style="font-family: var(--font);font-size:16px;font-weight:900;">${pts}</span>
         </div>`).join('');
     }
   }

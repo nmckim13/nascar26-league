@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Claim Your Car — N26 Racing League</title>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:       #0e0e0e;
@@ -25,7 +25,7 @@
     body {
       background: var(--bg);
       color: var(--white);
-      font-family: 'Barlow', system-ui, sans-serif;
+      font-family: var(--font);
       font-size: 15px;
       line-height: 1.55;
       overflow-x: hidden;
@@ -46,9 +46,9 @@
       gap: 16px;
     }
     .nav-logo {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 22px; font-weight: 900;
-      letter-spacing: 0.04em; text-transform: uppercase;
+      letter-spacing: -0.01em; text-transform: uppercase;
       display: flex; align-items: center; gap: 8px;
     }
     .nav-flag {
@@ -59,9 +59,9 @@
     .nav-flag span:nth-child(odd)  { background: var(--yellow); }
     .nav-flag span:nth-child(even) { background: rgba(255,255,255,0.15); }
     .nav-back {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 13px; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
+      letter-spacing: -0.01em; text-transform: uppercase;
       color: var(--muted); transition: color 0.15s;
       display: flex; align-items: center; gap: 5px;
     }
@@ -73,16 +73,16 @@
     /* HERO */
     .hero { padding: 40px 20px 32px; max-width: 720px; margin: 0 auto; }
     .eyebrow {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 11px; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
+      letter-spacing: -0.01em; text-transform: uppercase;
       color: var(--yellow);
       display: flex; align-items: center; gap: 8px;
       margin-bottom: 12px;
     }
     .eyebrow::before { content:''; display:block; width:16px; height:2px; background:var(--yellow); }
     .hero h1 {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: clamp(44px,11vw,72px); font-weight: 900;
       text-transform: uppercase; line-height: 0.95;
       letter-spacing: -0.01em; margin-bottom: 14px;
@@ -103,27 +103,27 @@
       text-align: center;
     }
     .rule-pill .rn {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 22px; font-weight: 900; color: var(--yellow);
       display: block; line-height: 1; margin-bottom: 3px;
     }
     .rule-pill .rl {
       font-size: 10px; color: var(--muted); text-transform: uppercase;
-      letter-spacing: 0.12em; font-weight: 600;
+      letter-spacing: -0.01em; font-weight: 600;
     }
 
     /* SECTION LABEL */
     .s-label {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 11px; font-weight: 700;
-      letter-spacing: 0.2em; text-transform: uppercase;
+      letter-spacing: -0.01em; text-transform: uppercase;
       color: var(--yellow);
       display: flex; align-items: center; gap: 8px;
       margin-bottom: 6px;
     }
     .s-label::before { content:''; display:block; width:16px; height:2px; background:var(--yellow); }
     .s-title {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: clamp(24px,5vw,38px); font-weight: 900;
       text-transform: uppercase; letter-spacing: -0.01em;
       margin-bottom: 20px;
@@ -145,15 +145,15 @@
     }
     .spire-sm { filter: invert(1) brightness(0.7); }
     .team-name-lbl {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 16px; font-weight: 800;
-      text-transform: uppercase; letter-spacing: 0.04em;
+      text-transform: uppercase; letter-spacing: -0.01em;
       color: var(--white);
     }
     .team-slots {
       font-size: 11px; color: var(--muted);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700; letter-spacing: 0.08em;
+      font-family: var(--font);
+      font-weight: 700; letter-spacing: -0.01em;
       text-transform: uppercase; margin-left: auto;
     }
 
@@ -199,9 +199,9 @@
       pointer-events: none;
     }
     .car-claimer {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 11px; font-weight: 800;
-      text-transform: uppercase; letter-spacing: 0.06em;
+      text-transform: uppercase; letter-spacing: -0.01em;
       color: var(--yellow);
       text-align: center;
       line-height: 1.2;
@@ -212,9 +212,9 @@
       width: 64px; height: 52px; object-fit: contain;
     }
     .car-driver-name {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 12px; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.04em;
+      text-transform: uppercase; letter-spacing: -0.01em;
       color: var(--muted); text-align: center;
       line-height: 1.2;
     }
@@ -235,20 +235,20 @@
     .sel-info { flex: 1; min-width: 0; }
     .sel-label {
       font-size: 10px; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 0.12em;
-      font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+      text-transform: uppercase; letter-spacing: -0.01em;
+      font-family: var(--font); font-weight: 700;
     }
     .sel-name {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 20px; font-weight: 900;
-      text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.1;
+      text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.1;
     }
     .sel-team { font-size: 11px; color: var(--muted); }
     .btn-claim {
       background: var(--yellow); color: #000;
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 15px; font-weight: 900;
-      letter-spacing: 0.1em; text-transform: uppercase;
+      letter-spacing: -0.01em; text-transform: uppercase;
       padding: 12px 22px; border-radius: 8px;
       border: none; cursor: pointer; white-space: nowrap;
       flex-shrink: 0; transition: background 0.15s;
@@ -289,11 +289,11 @@
     }
     .modal-num-img { width: 72px; height: 58px; object-fit: contain; }
     .modal-car-info {}
-    .modal-car-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.15em; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; margin-bottom: 2px; }
+    .modal-car-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: -0.01em; font-family: var(--font); font-weight: 700; margin-bottom: 2px; }
     .modal-car-driver {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 26px; font-weight: 900;
-      text-transform: uppercase; letter-spacing: 0.01em; line-height: 1;
+      text-transform: uppercase; letter-spacing: -0.01em; line-height: 1;
     }
     .modal-car-team { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
@@ -301,9 +301,9 @@
     .form-group { margin-bottom: 16px; }
     label {
       display: block;
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 12px; font-weight: 700;
-      letter-spacing: 0.12em; text-transform: uppercase;
+      letter-spacing: -0.01em; text-transform: uppercase;
       color: var(--muted); margin-bottom: 6px;
     }
     label span { color: var(--yellow); }
@@ -313,7 +313,7 @@
       border: 1.5px solid var(--border2);
       border-radius: 8px;
       color: var(--white);
-      font-family: 'Barlow', sans-serif;
+      font-family: var(--font);
       font-size: 16px; font-weight: 500;
       padding: 13px 14px;
       outline: none;
@@ -327,9 +327,9 @@
     .btn-submit {
       width: 100%;
       background: var(--yellow); color: #000;
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 18px; font-weight: 900;
-      letter-spacing: 0.1em; text-transform: uppercase;
+      letter-spacing: -0.01em; text-transform: uppercase;
       padding: 16px; border-radius: 8px;
       border: none; cursor: pointer;
       transition: background 0.15s; margin-top: 8px;
@@ -351,7 +351,7 @@
       font-size: 52px; margin-bottom: 12px; display: block;
     }
     .success-state h2 {
-      font-family: 'Barlow Condensed', sans-serif;
+      font-family: var(--font);
       font-size: 36px; font-weight: 900;
       text-transform: uppercase; letter-spacing: -0.01em;
       color: var(--yellow); margin-bottom: 8px; line-height: 1;
@@ -364,8 +364,8 @@
       margin-top: 20px; padding: 24px 20px;
       text-align: center;
       font-size: 11px; color: var(--muted2);
-      font-family: 'Barlow Condensed', sans-serif;
-      letter-spacing: 0.08em; text-transform: uppercase;
+      font-family: var(--font);
+      letter-spacing: -0.01em; text-transform: uppercase;
     }
 
     @media (max-width: 520px) {

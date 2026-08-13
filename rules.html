@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rules — N26 League</title>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:       #0e0e0e;
@@ -22,7 +22,7 @@
     }
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
-    body { background: var(--bg); color: var(--white); font-family: 'Barlow', system-ui, sans-serif; font-size: 15px; line-height: 1.6; overflow-x: hidden; }
+    body { background: var(--bg); color: var(--white); font-family: var(--font); font-size: 15px; line-height: 1.6; overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
 
     /* NAV */
@@ -34,15 +34,15 @@
       padding: 0 20px; height: 52px;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
-    .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+    .nav-logo { font-family: var(--font); font-size: 22px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
     .nav-flag { display: grid; grid-template-columns: repeat(3,5px); grid-template-rows: repeat(3,5px); gap: 1px; }
     .nav-flag span { display: block; }
     .nav-flag span:nth-child(odd)  { background: var(--yellow); }
     .nav-flag span:nth-child(even) { background: rgba(255,255,255,0.15); }
     .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
-    .nav-links a { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 6px 12px; border-radius: 6px; transition: color 0.15s, background 0.15s; }
+    .nav-links a { font-family: var(--font); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted); padding: 6px 12px; border-radius: 6px; transition: color 0.15s, background 0.15s; }
     .nav-links a:hover, .nav-links a.active { color: var(--yellow); background: rgba(255,194,0,0.07); }
-    .nav-join { background: var(--yellow); color: #000; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: background 0.15s; }
+    .nav-join { background: var(--yellow); color: #000; font-family: var(--font); font-size: 14px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: background 0.15s; }
     .nav-join:hover { background: #ffd033; }
     @media (max-width: 767px) { .nav-links { display: none; } }
 
@@ -51,31 +51,31 @@
 
     /* HERO */
     .hero { padding: 40px 20px 36px; max-width: 720px; margin: 0 auto; }
-    .eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--yellow); display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .eyebrow { font-family: var(--font); font-size: 11px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--yellow); display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
     .eyebrow::before { content: ''; display: block; width: 16px; height: 2px; background: var(--yellow); }
-    .hero h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(44px, 11vw, 72px); font-weight: 900; text-transform: uppercase; line-height: 0.95; letter-spacing: -0.01em; margin-bottom: 14px; }
+    .hero h1 { font-family: var(--font); font-size: clamp(44px, 11vw, 72px); font-weight: 900; text-transform: uppercase; line-height: 0.95; letter-spacing: -0.01em; margin-bottom: 14px; }
     .hero h1 em { font-style: normal; color: var(--yellow); }
     .hero-sub { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 480px; }
 
     /* TOC */
     .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin: 32px 0; }
-    .toc-title { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .toc-title { font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
     .toc-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-    .toc-list a { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); display: flex; align-items: center; gap: 8px; padding: 5px 0; transition: color 0.15s; }
+    .toc-list a { font-family: var(--font); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); display: flex; align-items: center; gap: 8px; padding: 5px 0; transition: color 0.15s; }
     .toc-list a:hover { color: var(--yellow); }
     .toc-list a::before { content: ''; display: block; width: 12px; height: 2px; background: var(--yellow); opacity: 0.4; flex-shrink: 0; }
     .toc-list a:hover::before { opacity: 1; }
 
     /* SECTIONS */
     .rules-section { margin-bottom: 48px; scroll-margin-top: 70px; }
-    .section-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--yellow); display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .section-eyebrow { font-family: var(--font); font-size: 11px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--yellow); display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
     .section-eyebrow::before { content: ''; display: block; width: 16px; height: 2px; background: var(--yellow); }
-    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(26px, 5vw, 38px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1; margin-bottom: 20px; }
+    .section-title { font-family: var(--font); font-size: clamp(26px, 5vw, 38px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1; margin-bottom: 20px; }
 
     /* RULE CARDS */
     .rule-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 10px; }
-    .rule-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; color: var(--white); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-    .rule-card-title .badge { font-size: 10px; background: var(--yellow); color: #000; padding: 2px 8px; border-radius: 4px; font-weight: 800; letter-spacing: 0.1em; }
+    .rule-card-title { font-family: var(--font); font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+    .rule-card-title .badge { font-size: 10px; background: var(--yellow); color: #000; padding: 2px 8px; border-radius: 4px; font-weight: 800; letter-spacing: -0.01em; }
     .rule-card-title .badge.red { background: var(--red); color: #fff; }
     .rule-card-title .badge.green { background: var(--green); color: #fff; }
     .rule-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
@@ -84,43 +84,43 @@
     /* POINTS TABLE */
     .points-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
     .points-table thead tr { background: var(--surface2); }
-    .points-table thead th { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+    .points-table thead th { font-family: var(--font); font-size: 10px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
     .points-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
     .points-table tbody tr:last-child { border-bottom: none; }
     .points-table tbody tr:hover { background: var(--surface2); }
     .points-table tbody td { padding: 8px 12px; color: var(--muted); }
-    .points-table tbody td:first-child { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 900; color: var(--white); }
-    .points-table tbody td.pts { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 900; color: var(--yellow); text-align: right; }
+    .points-table tbody td:first-child { font-family: var(--font); font-size: 15px; font-weight: 900; color: var(--white); }
+    .points-table tbody td.pts { font-family: var(--font); font-size: 16px; font-weight: 900; color: var(--yellow); text-align: right; }
     .points-table tbody tr.highlight td { color: var(--white); }
     .points-table tbody tr.highlight td:first-child { color: var(--yellow); }
 
     /* CHASE TABLE */
     .chase-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .chase-table thead tr { background: var(--surface2); }
-    .chase-table thead th { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding: 8px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+    .chase-table thead th { font-family: var(--font); font-size: 10px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted); padding: 8px 14px; text-align: left; border-bottom: 1px solid var(--border); }
     .chase-table tbody tr { border-bottom: 1px solid var(--border); }
     .chase-table tbody tr:last-child { border-bottom: none; }
     .chase-table tbody td { padding: 10px 14px; }
-    .chase-table .pos { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 900; color: var(--muted2); }
+    .chase-table .pos { font-family: var(--font); font-size: 20px; font-weight: 900; color: var(--muted2); }
     .chase-table .pos.p1 { color: var(--yellow); }
-    .chase-table .bonus { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 900; color: var(--yellow); }
-    .chase-table .start { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 900; color: var(--white); }
+    .chase-table .bonus { font-family: var(--font); font-size: 16px; font-weight: 900; color: var(--yellow); }
+    .chase-table .start { font-family: var(--font); font-size: 16px; font-weight: 900; color: var(--white); }
     .chase-table .label { font-size: 12px; color: var(--muted); }
 
     /* STAGE POINTS */
     .stage-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .stage-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
-    .stage-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--yellow); margin-bottom: 10px; }
+    .stage-card-title { font-family: var(--font); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; color: var(--yellow); margin-bottom: 10px; }
     .stage-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
     .stage-row:last-child { border-bottom: none; }
     .stage-row .pos { color: var(--muted); font-size: 12px; }
-    .stage-row .pts { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 900; color: var(--white); }
+    .stage-row .pts { font-family: var(--font); font-size: 15px; font-weight: 900; color: var(--white); }
 
     /* TIEBREAKER LIST */
     .tb-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
     .tb-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface2); border-radius: 10px; border: 1px solid var(--border); }
-    .tb-num { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 900; color: var(--yellow); width: 28px; flex-shrink: 0; }
-    .tb-text { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    .tb-num { font-family: var(--font); font-size: 22px; font-weight: 900; color: var(--yellow); width: 28px; flex-shrink: 0; }
+    .tb-text { font-family: var(--font); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; }
 
     /* DIVIDER */
     .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
@@ -128,7 +128,7 @@
     /* FOOTER */
     footer { border-top: 2px solid var(--yellow); padding: 28px 20px 48px; margin-top: 48px; }
     .footer-inner { max-width: 720px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-    .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; }
+    .footer-logo { font-family: var(--font); font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
     .footer-links { display: flex; gap: 20px; }
     .footer-links a { font-size: 13px; color: var(--muted); transition: color 0.15s; }
     .footer-links a:hover { color: var(--white); }
