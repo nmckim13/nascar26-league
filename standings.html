@@ -132,12 +132,34 @@
 
  async function get(path) { return (await fetch(SB_URL+path,{headers:H})).json(); }
 
+ // Placeholder claims — cars in numerical order, shown until real players claim them
+ const PLACEHOLDER_CLAIMS = [
+   {car_number:'1',gamertag:'Player 1'},{car_number:'2',gamertag:'Player 2'},
+   {car_number:'5',gamertag:'Player 3'},{car_number:'6',gamertag:'Player 4'},
+   {car_number:'7',gamertag:'Player 5'},{car_number:'9',gamertag:'Player 6'},
+   {car_number:'11',gamertag:'Player 7'},{car_number:'12',gamertag:'Player 8'},
+   {car_number:'17',gamertag:'Player 9'},{car_number:'19',gamertag:'Player 10'},
+   {car_number:'20',gamertag:'Player 11'},{car_number:'22',gamertag:'Player 12'},
+   {car_number:'23',gamertag:'Player 13'},{car_number:'24',gamertag:'Player 14'},
+   {car_number:'35',gamertag:'Player 15'},{car_number:'45',gamertag:'Player 16'},
+   {car_number:'48',gamertag:'Player 17'},{car_number:'54',gamertag:'Player 18'},
+   {car_number:'60',gamertag:'Player 19'},{car_number:'71',gamertag:'Player 20'},
+   {car_number:'77',gamertag:'Player 21'},{car_number:'88',gamertag:'Player 22'},
+ ];
+
  async function load() {
- const [races, claims, results] = await Promise.all([
- get('/rest/v1/n26_races?select=id,race_number,track_short,status&order=race_number.asc'),
- get('/rest/v1/n26_claims?select=car_number,gamertag'),
- get('/rest/v1/n26_results?select=*')
- ]);
+   const [races, claimsRaw, results] = await Promise.all([
+     get('/rest/v1/n26_races?select=id,race_number,track_short,status&order=race_number.asc'),
+     get('/rest/v1/n26_claims?select=car_number,gamertag'),
+     get('/rest/v1/n26_results?select=*')
+   ]);
+
+   // Merge real claims over placeholders
+   const claimedCars = new Set(claimsRaw.map(c => c.car_number));
+   const claims = [
+     ...claimsRaw,
+     ...PLACEHOLDER_CLAIMS.filter(p => !claimedCars.has(p.car_number))
+   ];
 
  const completed = races.filter(r => r.status === 'completed');
  const completedIds = new Set(completed.map(r => r.id));
@@ -166,34 +188,36 @@
  const leader = drivers.length ? drivers[0].racePts+drivers[0].stagePts : 0;
 
  const tbody = document.getElementById('driver-tbody');
- if (racesRun === 0) {
- tbody.innerHTML = `<tr><td colspan="11"><div class="empty-state"><div class="empty-num">1</div><p>Season Not Started</p><small>Standings populate after Race 1 at Daytona</small></div></td></tr>`;
- } else {
- const rows = drivers.map((d,i) => {
- const pos = i+1, total = d.racePts+d.stagePts, behind = pos===1 ? '<span style="color:var(--muted)">—</span>' : `-${leader-total}`;
- const isChase = racesRun >= 7 && pos <= 10;
- return `<tr class="${isChase?'chase-row':''}">
- <td><span class="num-cell ${pos<=3?'':'muted'}">${pos}</span></td>
- <td><div class="driver-cell">
- <span class="car-badge">#${d.car}</span>
- <div><div class="driver-name">${d.gamertag||'—'}${isChase?'<span class="pill yellow" style="margin-left:6px">Chase</span>':''}</div>
- <div class="driver-sub">${TEAM_MAP[d.car]||'—'}</div></div>
- </div></td>
- <td class="c hide-mobile">${d.starts}</td>
- <td class="c"><span class="num-cell ${d.wins?'red':''}">${d.wins}</span></td>
- <td class="c hide-mobile">${d.top5}</td>
- <td class="c hide-mobile">${d.top10}</td>
- <td class="c hide-mobile">${d.racePts}</td>
- <td class="c hide-mobile">${d.stagePts}</td>
- <td class="c"><span class="num-cell">${total}</span></td>
- <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
- <td class="c hide-mobile">${d.playoffPts?`<span class="num-cell red">+${d.playoffPts}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
- </tr>`;
- });
+ tbody.innerHTML = drivers.map((d,i) => {
+   const pos = i+1, total = d.racePts+d.stagePts;
+   const behind = racesRun === 0 ? '<span style="color:var(--muted2)">—</span>' : pos===1 ? '<span style="color:var(--muted)">—</span>' : `-${leader-total}`;
+   const isChase = racesRun >= 7 && pos <= 10;
+   const gamertag = d.gamertag && !d.gamertag.startsWith('Player ') ? d.gamertag : `<span style="color:var(--muted2)">${d.gamertag}</span>`;
+   return `<tr class="${isChase?'chase-row':''}">
+     <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
+     <td><div class="driver-cell">
+       <span class="car-badge">#${d.car}</span>
+       <div><div class="driver-name">${gamertag}${isChase?'<span class="pill yellow" style="margin-left:6px">Chase</span>':''}</div>
+       <div class="driver-sub">${TEAM_MAP[d.car]||'—'}</div></div>
+     </div></td>
+     <td class="c hide-mobile">${d.starts}</td>
+     <td class="c"><span class="num-cell ${d.wins?'red':''}">${d.wins}</span></td>
+     <td class="c hide-mobile">${d.top5}</td>
+     <td class="c hide-mobile">${d.top10}</td>
+     <td class="c hide-mobile">${d.racePts}</td>
+     <td class="c hide-mobile">${d.stagePts}</td>
+     <td class="c"><span class="num-cell">${total}</span></td>
+     <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
+     <td class="c hide-mobile">${d.playoffPts?`<span class="num-cell red">+${d.playoffPts}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
+   </tr>`;
+ }).join('');
  if (racesRun >= 7 && drivers.length > 10) {
- rows.splice(10, 0, `<tr class="chase-cutoff-row"><td colspan="11"><div class="chase-cutoff-label">Chase cutoff</div></td></tr>`);
- }
- tbody.innerHTML = rows.join('');
+   const rows = document.querySelectorAll('#driver-tbody tr');
+   if (rows[9]) {
+     const cutoffRow = document.createElement('tr');
+     cutoffRow.innerHTML = `<td colspan="11"><div class="chase-cutoff-label">Chase cutoff</div></td>`;
+     rows[9].after(cutoffRow);
+   }
  }
 
  // Owner
@@ -208,22 +232,18 @@
  const CARS = {'Hendrick':['5','9','24','48'],'JGR':['11','19','20','54'],'Penske':['2','12','22'],'23XI':['23','35','45'],'RFK':['6','17','60'],'Spire':['7','71','77'],'Trackhouse':['1','88','97']};
 
  const otbody = document.getElementById('owner-tbody');
- if (racesRun === 0) {
- otbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><p>Season Not Started</p><small>Owner standings populate after Race 1</small></div></td></tr>`;
- } else {
  otbody.innerHTML = teams.map(([team,pts],i) => {
- const pos=i+1, behind=pos===1?'<span style="color:var(--muted)">—</span>':`-${ownerLeader-pts}`;
- const cars = (CARS[team]||[]).filter(c=>claimMap[c]).map(c=>`<span class="car-badge sm">#${c}</span>`).join(' ');
- return `<tr>
- <td><span class="num-cell ${pos<=3?'':'muted'}">${pos}</span></td>
- <td><span class="driver-name">${team}</span></td>
- <td style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">${cars}</td>
- <td class="c"><span class="num-cell ${ownerWins[team]?'red':''}">${ownerWins[team]||0}</span></td>
- <td class="c"><span class="num-cell">${pts}</span></td>
- <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
- </tr>`;
+   const pos=i+1, behind=racesRun===0?'<span style="color:var(--muted2)">—</span>':pos===1?'<span style="color:var(--muted)">—</span>':`-${ownerLeader-pts}`;
+   const cars = (CARS[team]||[]).filter(c=>claims.find(cl=>cl.car_number===c)).map(c=>`<span class="car-badge sm">#${c}</span>`).join(' ');
+   return `<tr>
+     <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
+     <td><span class="driver-name">${team}</span></td>
+     <td style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;padding-top:10px;padding-bottom:10px">${cars}</td>
+     <td class="c"><span class="num-cell ${ownerWins[team]?'red':''}">${ownerWins[team]||0}</span></td>
+     <td class="c"><span class="num-cell">${pts}</span></td>
+     <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
+   </tr>`;
  }).join('');
- }
  }
 
  function showTab(tab, btn) {
