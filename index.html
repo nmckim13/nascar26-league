@@ -5,1206 +5,1020 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>N26 Racing League | Official Home</title>
   <meta name="description" content="NASCAR 26 Racing League — Official Home. Standings, Schedule, Teams, and Results.">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --black: #000000;
-      --off-black: #111111;
-      --dark: #1a1a1a;
-      --white: #ffffff;
-      --off-white: #f5f5f5;
-      --light-gray: #eeeeee;
-      --mid-gray: #cccccc;
-      --gray: #888888;
-      --dark-gray: #444444;
-      --yellow: #FFD700;
-      --yellow-nascar: #FFC906;
-      --red: #C8102E;
-      --blue: #003087;
-      --green: #00843D;
-      --border: #e0e0e0;
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --surface2: #1e1e1e;
+      --surface3: #252525;
+      --border: rgba(255,255,255,0.08);
+      --border-strong: rgba(255,255,255,0.15);
+      --white: #f5f5f5;
+      --muted: #888;
+      --muted2: #555;
+      --yellow: #FFC906;
+      --yellow-dim: rgba(255,201,6,0.15);
+      --red: #E8002D;
+      --red-dim: rgba(232,0,45,0.15);
+      --green: #00C853;
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --radius-pill: 9999px;
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
     body {
-      background: var(--white);
-      color: var(--black);
-      font-family: 'Barlow', system-ui, sans-serif;
-      font-size: 14px;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
     }
-
     a { text-decoration: none; color: inherit; }
     img { display: block; max-width: 100%; }
 
-    /* ══════════════════════════════════
-       TICKER BAR
-    ══════════════════════════════════ */
+    /* ── TICKER ── */
     .ticker {
-      background: var(--black);
-      color: var(--white);
-      height: 36px;
+      background: var(--yellow);
+      color: #000;
+      height: 34px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 48px;
-      font-family: 'Barlow Condensed', sans-serif;
+      gap: 0;
+      overflow: hidden;
+      font-family: 'DM Sans', sans-serif;
       font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      overflow: hidden;
     }
-    .ticker-item {
+    .ticker-inner {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 32px;
+      padding: 0 20px;
       white-space: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      width: 100%;
     }
-    .ticker-label {
-      background: var(--yellow-nascar);
-      color: var(--black);
+    .ticker-inner::-webkit-scrollbar { display: none; }
+    .ticker-item { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .ticker-badge {
+      background: #000;
+      color: var(--yellow);
       padding: 2px 8px;
+      border-radius: var(--radius-pill);
       font-size: 10px;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: 0.1em;
     }
-    .ticker-label.next { background: var(--green); color: var(--white); }
-    .ticker-label.results { background: var(--red); color: var(--white); }
-    .ticker-sep { color: var(--dark-gray); }
+    .ticker-badge.chase { background: var(--red); color: #fff; }
+    .ticker-dot { width: 3px; height: 3px; background: rgba(0,0,0,0.3); border-radius: 50%; flex-shrink: 0; }
 
-    /* ══════════════════════════════════
-       NAV
-    ══════════════════════════════════ */
+    /* ── NAV ── */
     nav {
-      background: var(--black);
-      height: 52px;
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
       position: sticky;
       top: 0;
       z-index: 100;
-      border-bottom: 3px solid var(--yellow-nascar);
-    }
-    .nav-logo {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--white);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-right: 32px;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .nav-logo .flag {
-      display: inline-flex;
-      gap: 2px;
-      align-items: center;
-    }
-    .nav-logo .flag span {
-      display: inline-block;
-      width: 4px;
-      height: 18px;
-    }
-    .nav-logo .flag span:nth-child(odd) { background: var(--yellow-nascar); }
-    .nav-logo .flag span:nth-child(even) { background: var(--white); }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      list-style: none;
-      flex: 1;
-    }
-    .nav-links a {
-      color: var(--white);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 8px 14px;
-      display: block;
-      transition: color 0.15s;
-      opacity: 0.85;
-    }
-    .nav-links a:hover, .nav-links a.active { opacity: 1; color: var(--yellow-nascar); }
-    .nav-links a.active { border-bottom: 2px solid var(--yellow-nascar); }
-
-    .nav-join {
-      background: var(--yellow-nascar);
-      color: var(--black);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 13px;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 7px 18px;
-      white-space: nowrap;
-      transition: background 0.15s;
-    }
-    .nav-join:hover { background: #ffe033; }
-
-    /* ══════════════════════════════════
-       LAYOUT
-    ══════════════════════════════════ */
-    .page-wrap {
-      max-width: 1280px;
-      margin: 0 auto;
+      background: rgba(13,13,13,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
       padding: 0 20px;
-    }
-    .main-grid {
-      display: grid;
-      grid-template-columns: 1fr 320px;
-      gap: 24px;
-      padding: 20px 0;
-      align-items: start;
-    }
-
-    /* ══════════════════════════════════
-       SECTION HEADERS (NASCAR style)
-    ══════════════════════════════════ */
-    .section-header {
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 3px solid var(--yellow-nascar);
-      padding-bottom: 6px;
+      gap: 16px;
+    }
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .nav-logo-flag {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+    }
+    .nav-logo-flag span {
+      display: block;
+      width: 3px;
+      height: 16px;
+      border-radius: 2px;
+    }
+    .nav-logo-flag span:nth-child(odd) { background: var(--yellow); }
+    .nav-logo-flag span:nth-child(even) { background: rgba(255,255,255,0.3); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+      flex: 1;
+      justify-content: center;
+    }
+    .nav-links a {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-links a:hover { color: var(--white); background: var(--surface2); }
+    .nav-links a.active { color: var(--white); }
+    .nav-join {
+      background: var(--yellow);
+      color: #000;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: var(--radius-pill);
+      white-space: nowrap;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .nav-join:hover { background: #ffd633; transform: translateY(-1px); }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+    }
+
+    /* ── PAGE ── */
+    .page { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+    .page-wide { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 48px 20px 40px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--yellow-dim);
+      border: 1px solid rgba(255,201,6,0.25);
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(40px, 8vw, 64px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--white);
       margin-bottom: 16px;
     }
-    .section-header h2 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 20px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--black);
-    }
-    .section-header .see-all {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gray);
-      transition: color 0.15s;
-    }
-    .section-header .see-all:hover { color: var(--black); }
-    .section-block { margin-bottom: 32px; }
-
-    /* ══════════════════════════════════
-       HERO / FEATURED
-    ══════════════════════════════════ */
-    .hero-card {
-      position: relative;
-      background: var(--black);
-      aspect-ratio: 16/9;
-      overflow: hidden;
-      margin-bottom: 24px;
-    }
-    .hero-card-bg {
-      width: 100%;
-      height: 100%;
-      background:
-        linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%, transparent 100%),
-        linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #111 100%);
-      display: flex;
-      align-items: flex-end;
-      padding: 32px;
-      min-height: 360px;
-    }
-    /* Checkered pattern overlay */
-    .hero-card-bg::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-conic-gradient(rgba(255,201,6,0.04) 0% 25%, transparent 0% 50%)
-        0 0 / 28px 28px;
-      pointer-events: none;
-    }
-    .hero-card-content { position: relative; z-index: 1; }
-    .hero-series-label {
-      display: inline-block;
-      background: var(--yellow-nascar);
-      color: var(--black);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 3px 10px;
-      margin-bottom: 10px;
-    }
-    .hero-card h1 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(28px, 4vw, 52px);
-      font-weight: 900;
-      color: var(--white);
-      text-transform: uppercase;
-      line-height: 1;
-      margin-bottom: 8px;
-      letter-spacing: -0.01em;
-    }
-    .hero-card p {
-      font-size: 14px;
-      color: rgba(255,255,255,0.7);
-      max-width: 480px;
+    .hero h1 em { font-style: italic; color: var(--yellow); }
+    .hero-sub {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 28px;
       font-weight: 400;
     }
-
-    /* ══════════════════════════════════
-       NEWS CARDS
-    ══════════════════════════════════ */
-    .news-grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 36px; }
+    .btn-primary {
+      background: var(--yellow);
+      color: #000;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 12px 24px;
+      border-radius: var(--radius-pill);
+      transition: background 0.15s, transform 0.1s;
+      display: inline-block;
     }
-    .news-grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+    .btn-primary:hover { background: #ffd633; transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 11px 22px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-strong);
+      transition: border-color 0.15s, background 0.15s;
+      display: inline-block;
     }
-    .news-card { cursor: pointer; }
-    .news-card-img {
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: var(--light-gray);
+    .btn-outline:hover { border-color: rgba(255,255,255,0.35); background: var(--surface2); }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: var(--radius-md);
       overflow: hidden;
-      position: relative;
+    }
+    .hero-stat {
+      background: var(--surface);
+      padding: 16px 12px;
+      text-align: center;
+    }
+    .hero-stat .n {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--yellow);
+      display: block;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .hero-stat .l { font-size: 10px; color: var(--muted); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    /* ── SECTION LABEL ── */
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
       margin-bottom: 8px;
+      display: block;
     }
-    .news-card-img img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s ease;
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-bottom: 24px;
+      line-height: 1.15;
     }
-    .news-card:hover .news-card-img img { transform: scale(1.04); }
-    .news-card-cat {
-      font-family: 'Barlow Condensed', sans-serif;
+
+    /* ── STANDINGS ── */
+    .standings-section { padding: 48px 0 0; }
+    .standings-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 16px;
+      background: var(--surface);
+      border-radius: var(--radius-pill);
+      padding: 4px;
+      width: fit-content;
+    }
+    .tab-btn {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 7px 16px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      background: transparent;
+      color: var(--muted);
+      transition: all 0.15s;
+    }
+    .tab-btn.active { background: var(--yellow); color: #000; }
+    .standings-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .standings-row {
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.1s;
+    }
+    .standings-row:last-child { border-bottom: none; }
+    .standings-row:hover { background: var(--surface2); }
+    .standings-row.header {
+      background: var(--surface2);
+      padding: 10px 20px;
+    }
+    .standings-row.header span {
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--red);
-      margin-bottom: 4px;
+      color: var(--muted2);
     }
-    .news-card h3 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      text-transform: uppercase;
-      line-height: 1.2;
-      color: var(--black);
-      transition: color 0.15s;
+    .s-pos {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      color: var(--muted2);
+      text-align: center;
     }
-    .news-card:hover h3 { color: var(--dark-gray); }
-
-    /* ══════════════════════════════════
-       STANDINGS TABLE
-    ══════════════════════════════════ */
-    .standings-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-    .standings-table thead tr {
-      background: var(--off-black);
-      color: var(--white);
-    }
-    .standings-table thead th {
-      font-family: 'Barlow Condensed', sans-serif;
+    .s-driver { display: flex; align-items: center; gap: 10px; }
+    .s-car {
+      background: var(--surface3);
+      color: var(--yellow);
       font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 8px 12px;
-      text-align: left;
-    }
-    .standings-table thead th:not(:first-child) { text-align: center; }
-    .standings-table tbody tr {
-      border-bottom: 1px solid var(--border);
-      transition: background 0.1s;
-    }
-    .standings-table tbody tr:hover { background: var(--off-white); }
-    .standings-table tbody td {
-      padding: 9px 12px;
-      vertical-align: middle;
-    }
-    .standings-table tbody td:not(:first-child) { text-align: center; }
-    .pos-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--dark-gray);
-      width: 36px;
-    }
-    .driver-cell { display: flex; align-items: center; gap: 10px; }
-    .car-number {
-      background: var(--black);
-      color: var(--yellow-nascar);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 14px;
-      font-weight: 900;
-      width: 36px;
-      height: 28px;
+      font-weight: 800;
+      width: 32px;
+      height: 24px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
-    .driver-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 15px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
+    .s-name { font-size: 14px; font-weight: 600; color: var(--white); }
+    .s-team { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .s-pts {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--white);
+      text-align: right;
     }
-    .driver-team {
-      font-size: 11px;
-      color: var(--gray);
-      font-weight: 400;
-    }
-    .pts-cell {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-    }
-    .chase-badge {
-      background: var(--yellow-nascar);
-      color: var(--black);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      padding: 2px 6px;
-      vertical-align: middle;
-      margin-left: 4px;
-    }
-    .standings-tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 0;
-    }
-    .standings-tab {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 8px 16px;
-      cursor: pointer;
-      color: var(--gray);
-      border-bottom: 2px solid transparent;
-      transition: color 0.15s;
-      background: none;
-      border-top: none;
-      border-left: none;
-      border-right: none;
-    }
-    .standings-tab.active {
-      color: var(--black);
-      border-bottom: 2px solid var(--yellow-nascar);
-    }
-
-    /* ══════════════════════════════════
-       SCHEDULE
-    ══════════════════════════════════ */
-    .schedule-list { display: flex; flex-direction: column; gap: 0; }
-    .schedule-item {
-      display: grid;
-      grid-template-columns: 52px 1fr auto;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border);
-    }
-    .schedule-item:last-child { border-bottom: none; }
-    .race-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--light-gray);
+    .s-pts-label { font-size: 10px; color: var(--muted); display: block; text-align: right; letter-spacing: 0.06em; }
+    .standings-empty {
+      padding: 32px 20px;
       text-align: center;
-      line-height: 1;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
     }
-    .race-num.current { color: var(--yellow-nascar); }
-    .race-info {}
-    .race-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 15px;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: var(--black);
-      letter-spacing: 0.02em;
+    .standings-empty strong { color: var(--white); display: block; font-size: 15px; margin-bottom: 6px; }
+
+    /* ── NEXT RACE CARD ── */
+    .next-race-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 20px;
     }
-    .race-track {
-      font-size: 12px;
-      color: var(--gray);
-      margin-top: 1px;
+    .next-race-header {
+      background: var(--yellow);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .race-status {
-      font-family: 'Barlow Condensed', sans-serif;
+    .next-race-header span {
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      text-align: right;
-      white-space: nowrap;
+      color: #000;
     }
-    .status-upcoming { color: var(--gray); }
-    .status-next {
-      background: var(--yellow-nascar);
-      color: var(--black);
-      padding: 3px 8px;
+    .next-race-body { padding: 20px; }
+    .next-race-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 4px;
     }
-    .status-completed { color: var(--green); }
-    .status-chase {
-      background: var(--red);
-      color: var(--white);
-      padding: 3px 8px;
-    }
-
-    /* ══════════════════════════════════
-       TEAMS GRID
-    ══════════════════════════════════ */
-    .teams-grid {
+    .next-race-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .countdown {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
+      gap: 8px;
+      margin-bottom: 16px;
     }
-    /* Make last odd tile span full row on 4-col to avoid orphan */
-    .teams-grid .team-tile:last-child:nth-child(4n-3) { grid-column: span 4; }
-    .teams-grid .team-tile:last-child:nth-child(4n-2) { grid-column: span 2; }
-    .teams-grid .team-tile:last-child:nth-child(4n-1) { grid-column: span 1; }
-    .team-tile {
-      background: var(--white);
+    .countdown-unit {
+      background: var(--surface2);
+      border-radius: var(--radius-md);
+      padding: 12px 8px;
+      text-align: center;
+    }
+    .countdown-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1;
+      display: block;
+      color: var(--yellow);
+    }
+    .countdown-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px; }
+    .next-race-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .next-race-meta strong { color: var(--white); }
+
+    /* ── SCHEDULE ── */
+    .schedule-section { padding: 48px 0 0; }
+    .schedule-list { display: flex; flex-direction: column; gap: 0; }
+    .schedule-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .schedule-item:last-child { border-bottom: none; }
+    .race-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      color: var(--surface3);
+      width: 40px;
+      text-align: center;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .race-num.active { color: var(--yellow); }
+    .race-info { flex: 1; min-width: 0; }
+    .race-name { font-size: 14px; font-weight: 600; color: var(--white); }
+    .race-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .race-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .badge-next { background: var(--yellow); color: #000; }
+    .badge-upcoming { color: var(--muted2); background: var(--surface2); }
+    .badge-chase { background: var(--red); color: #fff; }
+    .badge-done { color: var(--green); background: rgba(0,200,83,0.1); }
+
+    /* ── TEAMS ── */
+    .teams-section { padding: 48px 0 0; }
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .team-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
       padding: 20px 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
       cursor: pointer;
-      transition: background 0.15s;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
     }
-    .team-tile:hover { background: var(--off-white); }
-    .team-logo {
-      height: 44px;
-      width: auto;
-      max-width: 90px;
-      object-fit: contain;
+    .team-card:hover {
+      border-color: var(--border-strong);
+      background: var(--surface2);
+      transform: translateY(-2px);
     }
-    .spire-logo { filter: invert(1); }
-    .team-tile-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px;
-      font-weight: 800;
+    .team-logo-wrap {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .team-logo { max-height: 36px; max-width: 80px; object-fit: contain; }
+    .spire-logo { filter: invert(1) brightness(0.9); }
+    .team-name-text {
+      font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
+      color: var(--muted);
       text-align: center;
-      color: var(--black);
-      line-height: 1.2;
+      line-height: 1.3;
     }
-    .team-cars {
+    .team-badges {
       display: flex;
       gap: 4px;
       flex-wrap: wrap;
       justify-content: center;
     }
-    .team-car-badge {
-      width: 52px;
-      height: 47px;
+    .team-badge-img {
+      width: 40px;
+      height: 36px;
       object-fit: contain;
     }
 
-    /* ══════════════════════════════════
-       SIDEBAR
-    ══════════════════════════════════ */
-    .sidebar {}
-    .sidebar-section { margin-bottom: 28px; }
-    .sidebar-header {
-      background: var(--black);
-      color: var(--white);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 8px 12px;
-      margin-bottom: 0;
-    }
-
-    /* Next race card */
-    .next-race-card {
-      background: var(--off-white);
-      border: 1px solid var(--border);
-      padding: 16px;
-    }
-    .next-race-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 22px;
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-      line-height: 1.1;
-      margin-bottom: 4px;
-    }
-    .next-race-track {
-      font-size: 13px;
-      color: var(--gray);
-      margin-bottom: 12px;
-    }
-    .race-countdown {
+    /* ── STATS STRIP ── */
+    .stats-strip {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 4px;
-      margin-bottom: 12px;
-    }
-    .countdown-unit { text-align: center; }
-    .countdown-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 28px;
-      font-weight: 900;
-      line-height: 1;
-      display: block;
-    }
-    .countdown-label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gray);
-    }
-    .race-info-row {
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px solid var(--border);
-      padding-top: 10px;
-      font-size: 12px;
-      color: var(--gray);
-    }
-    .race-info-row strong { color: var(--black); font-weight: 600; }
-
-    /* Points leader sidebar */
-    .points-leader {
-      background: var(--off-white);
-      border: 1px solid var(--border);
-    }
-    .leader-row {
-      display: flex;
-      align-items: center;
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      padding: 10px 12px;
+      padding: 48px 0 0;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--yellow);
+      display: block;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; }
+
+    /* ── HOW IT WORKS ── */
+    .how-section { padding: 48px 0 0; }
+    .how-steps { display: flex; flex-direction: column; gap: 0; }
+    .how-step {
+      display: flex;
+      gap: 16px;
+      padding: 20px 0;
       border-bottom: 1px solid var(--border);
-      cursor: pointer;
-      transition: background 0.1s;
     }
-    .leader-row:hover { background: var(--light-gray); }
-    .leader-row:last-child { border-bottom: none; }
-    .leader-pos {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 20px;
-      font-weight: 900;
-      color: var(--light-gray);
-      width: 24px;
-      flex-shrink: 0;
-    }
-    .leader-car {
-      background: var(--black);
-      color: var(--yellow-nascar);
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 13px;
-      font-weight: 900;
-      width: 32px;
-      height: 24px;
+    .how-step:last-child { border-bottom: none; }
+    .step-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--yellow-dim);
+      border: 1px solid rgba(255,201,6,0.3);
       display: flex;
       align-items: center;
       justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 16px;
+      color: var(--yellow);
       flex-shrink: 0;
     }
-    .leader-name {
-      font-family: 'Barlow Condensed', sans-serif;
+    .step-content {}
+    .step-title { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* ── JOIN CTA ── */
+    .join-section { padding: 48px 0 0; }
+    .join-card {
+      background: var(--yellow);
+      border-radius: var(--radius-xl);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .join-card h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: #000;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .join-card p { font-size: 14px; color: rgba(0,0,0,0.6); margin-bottom: 20px; }
+    .btn-dark {
+      background: #000;
+      color: var(--yellow);
       font-size: 14px;
-      font-weight: 800;
-      text-transform: uppercase;
-      flex: 1;
-    }
-    .leader-pts {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 16px;
-      font-weight: 900;
-      color: var(--black);
-    }
-
-    /* League stats */
-    .league-stats {
-      background: var(--off-white);
-      border: 1px solid var(--border);
-      padding: 0;
-    }
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
-    }
-    .stat-row:last-child { border-bottom: none; }
-    .stat-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--gray);
-      text-transform: uppercase;
+      font-weight: 700;
       letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 13px 28px;
+      border-radius: var(--radius-pill);
+      display: inline-block;
+      transition: background 0.15s;
     }
-    .stat-value {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--black);
-    }
+    .btn-dark:hover { background: #1a1a1a; }
 
-    /* ══════════════════════════════════
-       FOOTER
-    ══════════════════════════════════ */
+    /* ── FOOTER ── */
     footer {
-      background: var(--off-black);
-      color: var(--white);
-      margin-top: 40px;
+      margin-top: 64px;
+      border-top: 1px solid var(--border);
+      padding: 32px 20px 40px;
     }
-    .footer-top {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 32px 20px 24px;
+    .footer-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .footer-tagline { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+    .footer-links {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 32px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px 16px;
+      margin-bottom: 28px;
     }
     .footer-col h5 {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--mid-gray);
-      margin-bottom: 14px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      color: var(--muted2);
+      margin-bottom: 10px;
     }
     .footer-col ul { list-style: none; }
     .footer-col li { margin-bottom: 8px; }
-    .footer-col a {
-      font-size: 13px;
-      color: rgba(255,255,255,0.6);
-      transition: color 0.15s;
-    }
+    .footer-col a { font-size: 13px; color: var(--muted); transition: color 0.15s; }
     .footer-col a:hover { color: var(--white); }
     .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding: 16px 20px;
-      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
       font-size: 12px;
-      color: rgba(255,255,255,0.35);
-      max-width: 1280px;
-      margin: 0 auto;
+      color: var(--muted2);
+      text-align: center;
     }
 
-    /* ══════════════════════════════════
-       RESPONSIVE
-    ══════════════════════════════════ */
-    @media (max-width: 1024px) {
-      .main-grid { grid-template-columns: 1fr; }
-      .sidebar { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    /* ── SECTION DIVIDER ── */
+    .section-divider { height: 1px; background: var(--border); margin: 0; }
+
+    /* ── DESKTOP ── */
+    @media (min-width: 768px) {
+      .page, .page-wide { padding: 0 32px; }
+      .hero { padding: 64px 32px 48px; max-width: 720px; }
+      .nav-links { display: flex; }
+      .nav-hamburger { display: none; }
       .teams-grid { grid-template-columns: repeat(4, 1fr); }
-      .footer-top { grid-template-columns: repeat(2, 1fr); }
+      .stats-strip { grid-template-columns: repeat(6, 1fr); }
+      .footer-links { grid-template-columns: repeat(4, 1fr); }
+      .countdown-num { font-size: 36px; }
     }
-    @media (max-width: 768px) {
-      /* Ticker — single scrollable line */
-      .ticker {
-        font-size: 11px;
-        overflow-x: auto;
-        justify-content: flex-start;
-        padding: 0 12px;
-        gap: 12px;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
-      }
-      .ticker-sep { display: none; }
-
-      /* Nav */
-      nav { padding: 0 12px; }
+    @media (max-width: 767px) {
       .nav-links { display: none; }
-      .nav-logo { font-size: 17px; }
-
-      /* Layout */
-      .page-wrap { padding: 0 12px; }
-      .main-grid { grid-template-columns: 1fr; gap: 16px; }
-
-      /* Sidebar stacks below, single column */
-      .sidebar { grid-template-columns: 1fr; gap: 16px; }
-
-      /* Hero */
-      .hero-card-bg { min-height: 220px; padding: 20px; }
-      .hero-card h1 { font-size: 28px; }
-      .hero-card p { font-size: 13px; }
-
-      /* Standings table — hide less important cols on mobile */
-      .standings-table thead th:nth-child(3),
-      .standings-table tbody td:nth-child(3) { display: none; } /* TEAM */
-      .standings-table thead th:nth-child(4),
-      .standings-table tbody td:nth-child(4) { display: none; } /* STARTS */
-      .standings-table thead th:nth-child(5),
-      .standings-table tbody td:nth-child(5) { display: none; } /* WINS */
-      .driver-name { font-size: 13px; }
-      .driver-team { display: none; }
-      .car-number { width: 28px; height: 22px; font-size: 11px; }
-
-      /* Schedule */
-      .race-name { font-size: 13px; }
-      .race-track { font-size: 11px; }
-      .race-status { font-size: 10px; }
-      .schedule-item { grid-template-columns: 40px 1fr auto; gap: 8px; }
-
-      /* Teams — 2 columns on mobile, larger badges */
-      .teams-grid { grid-template-columns: repeat(2, 1fr); }
-      .team-tile { padding: 16px 12px; gap: 8px; }
-      .team-logo { height: 36px; max-width: 80px; }
-      .team-tile-name { font-size: 11px; }
-      .team-car-badge { width: 44px; height: 40px; }
-
-      /* How it works cards */
-      .news-grid-3 { grid-template-columns: 1fr; gap: 12px; }
-      .news-grid-2 { grid-template-columns: 1fr; }
-
-      /* Footer */
-      .footer-top { grid-template-columns: 1fr 1fr; gap: 20px; padding: 24px 16px 20px; }
-      .footer-bottom { padding: 12px 16px; }
-
-      /* Section headers */
-      .section-header h2 { font-size: 17px; }
-    }
-    @media (max-width: 480px) {
-      .teams-grid { grid-template-columns: repeat(2, 1fr); }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .race-countdown { gap: 2px; }
-      .countdown-num { font-size: 22px; }
+      .nav-hamburger { display: flex; }
+      .stats-strip { grid-template-columns: repeat(3, 1fr); }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
 
-  <!-- TICKER -->
-  <div class="ticker">
-    <div class="ticker-item">
-      <span class="ticker-label next">NEXT</span>
-      Race 1 — TBD
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-item"><span class="ticker-badge">NEXT</span> Race 1 — Date TBD</div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item"><span class="ticker-badge">SEASON 1</span> 18 Drivers · 7 Teams · 10 Races</div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item"><span class="ticker-badge chase">CHASE</span> Top 10 after Race 7 advance</div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">Draft Night — Date TBD</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-flag">
+      <span></span><span></span><span></span><span></span><span></span>
     </div>
-    <div class="ticker-sep">|</div>
-    <div class="ticker-item">
-      <span class="ticker-label">SEASON</span>
-      Season 1 — 18 Drivers · 7 Teams · 10 Races
-    </div>
-    <div class="ticker-sep">|</div>
-    <div class="ticker-item">
-      <span class="ticker-label" style="background:var(--blue);color:var(--white);">DRAFT</span>
-      Draft Night — Date TBD
+    N26 League
+  </a>
+  <ul class="nav-links">
+    <li><a href="#standings" class="active">Standings</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#teams">Teams</a></li>
+    <li><a href="#how">How It Works</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="#join" class="nav-join">I'm In</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">🏁 Season 1 — Now Forming</div>
+  <h1>The N26<br>Racing <em>League.</em></h1>
+  <p class="hero-sub">Real NASCAR points. Real teams. Real playoffs. A real trophy with your name on it — for the price of a video game.</p>
+  <div class="hero-actions">
+    <a href="#join" class="btn-primary">Claim Your Spot</a>
+    <a href="#teams" class="btn-outline">View Teams</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="n">18</span><span class="l">Drivers</span></div>
+    <div class="hero-stat"><span class="n">7</span><span class="l">Teams</span></div>
+    <div class="hero-stat"><span class="n">10</span><span class="l">Races</span></div>
+    <div class="hero-stat"><span class="n">$75</span><span class="l">All-in</span></div>
+  </div>
+</div>
+
+<!-- STANDINGS -->
+<div class="page standings-section" id="standings">
+  <span class="section-eyebrow">Driver Standings</span>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+    <h2 class="section-title" style="margin-bottom:0;">Season 1</h2>
+    <div class="standings-tabs">
+      <button class="tab-btn active" onclick="showTab('driver',this)">Drivers</button>
+      <button class="tab-btn" onclick="showTab('owner',this)">Owners</button>
     </div>
   </div>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-logo">
-      <div class="flag">
-        <span></span><span></span><span></span><span></span><span></span>
+  <div id="tab-driver">
+    <div class="standings-card">
+      <div class="standings-row header">
+        <span>#</span><span>Driver</span><span>Pts</span>
       </div>
-      N26 League
-    </div>
-    <ul class="nav-links">
-      <li><a href="#" class="active">HOME</a></li>
-      <li><a href="#standings">STANDINGS</a></li>
-      <li><a href="#schedule">SCHEDULE</a></li>
-      <li><a href="#teams">TEAMS</a></li>
-      <li><a href="#results">RESULTS</a></li>
-      <li><a href="#rules">RULES</a></li>
-    </ul>
-    <a href="#join" class="nav-join">I'm In →</a>
-  </nav>
-
-  <!-- MAIN CONTENT -->
-  <div class="page-wrap">
-    <div class="main-grid">
-
-      <!-- LEFT: MAIN FEED -->
-      <main>
-
-        <!-- HERO -->
-        <div class="hero-card">
-          <div class="hero-card-bg">
-            <div class="hero-card-content">
-              <div class="hero-series-label">🏁 Season 1 — Now Forming</div>
-              <h1>The N26 Racing<br>League Is Here</h1>
-              <p>Real NASCAR points. Real teams. Real playoff Chase. Real trophies. Built on NASCAR 26 — 7 teams, 18 drivers, one champion.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- STANDINGS -->
-        <div class="section-block" id="standings">
-          <div class="section-header">
-            <h2>Driver Standings</h2>
-            <a href="#standings" class="see-all">Full Standings →</a>
-          </div>
-          <div class="standings-tabs">
-            <button class="standings-tab active" onclick="showTab('driver',this)">Driver Championship</button>
-            <button class="standings-tab" onclick="showTab('owner',this)">Owner Championship</button>
-          </div>
-          <div id="tab-driver">
-            <table class="standings-table">
-              <thead>
-                <tr>
-                  <th style="width:36px">#</th>
-                  <th>Driver</th>
-                  <th>Team</th>
-                  <th>Starts</th>
-                  <th>Wins</th>
-                  <th>Pts</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="pos-num">1</td>
-                  <td><div class="driver-cell"><div class="car-number">—</div><div><div class="driver-name">TBD — Draft Night</div><div class="driver-team">To be determined</div></div></div></td>
-                  <td style="font-size:12px;color:var(--gray)">—</td>
-                  <td>0</td><td>0</td>
-                  <td class="pts-cell">0</td>
-                </tr>
-                <tr>
-                  <td class="pos-num" style="color:var(--border)">2</td>
-                  <td><div class="driver-cell"><div class="car-number" style="background:var(--light-gray);color:var(--mid-gray)">—</div><div><div class="driver-name" style="color:var(--mid-gray)">Season Not Started</div><div class="driver-team">Draft night locks the roster</div></div></div></td>
-                  <td style="font-size:12px;color:var(--border)">—</td>
-                  <td style="color:var(--border)">—</td><td style="color:var(--border)">—</td>
-                  <td class="pts-cell" style="color:var(--border)">—</td>
-                </tr>
-              </tbody>
-            </table>
-            <div style="background:var(--off-white);border:1px solid var(--border);padding:16px 20px;text-align:center;border-top:none;">
-              <p style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--dark-gray);text-transform:uppercase;letter-spacing:0.06em;">Standings populate after Race 1</p>
-              <p style="font-size:12px;color:var(--gray);margin-top:4px;">Points update within 24 hours of each race. Real NASCAR points scale — 40 for the win, bonus stages, Chase playoff.</p>
-            </div>
-          </div>
-          <div id="tab-owner" style="display:none;">
-            <table class="standings-table">
-              <thead><tr><th>#</th><th>Team</th><th>Starts</th><th>Wins</th><th>Pts</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td class="pos-num">1</td>
-                  <td><div class="driver-cell"><div class="driver-name">To be assigned at draft</div></div></td>
-                  <td>0</td><td>0</td><td class="pts-cell">0</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- SCHEDULE -->
-        <div class="section-block" id="schedule">
-          <div class="section-header">
-            <h2>Season 1 Schedule</h2>
-            <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);">10 Races</span>
-          </div>
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <div class="race-num current">1</div>
-              <div class="race-info">
-                <div class="race-name">Season Opener</div>
-                <div class="race-track">Track TBD — Week 1</div>
-              </div>
-              <div class="race-status status-next">NEXT RACE</div>
-            </div>
-            <div class="schedule-item">
-              <div class="race-num">2</div>
-              <div class="race-info"><div class="race-name">Race 2</div><div class="race-track">Track TBD — Week 2</div></div>
-              <div class="race-status status-upcoming">UPCOMING</div>
-            </div>
-            <div class="schedule-item">
-              <div class="race-num">3</div>
-              <div class="race-info"><div class="race-name">Race 3</div><div class="race-track">Track TBD — Week 3</div></div>
-              <div class="race-status status-upcoming">UPCOMING</div>
-            </div>
-            <div class="schedule-item">
-              <div class="race-num">4</div>
-              <div class="race-info"><div class="race-name">Race 4</div><div class="race-track">Track TBD — Week 4</div></div>
-              <div class="race-status status-upcoming">UPCOMING</div>
-            </div>
-            <div class="schedule-item">
-              <div class="race-num">5</div>
-              <div class="race-info"><div class="race-name">Race 5 — Midpoint</div><div class="race-track">Track TBD — Week 5</div></div>
-              <div class="race-status status-upcoming">UPCOMING</div>
-            </div>
-            <div class="schedule-item">
-              <div class="race-num">6</div>
-              <div class="race-info"><div class="race-name">Race 6</div><div class="race-track">Track TBD — Week 6</div></div>
-              <div class="race-status status-upcoming">UPCOMING</div>
-            </div>
-            <div class="schedule-item">
-              <div class="race-num">7</div>
-              <div class="race-info"><div class="race-name">Regular Season Finale</div><div class="race-track">Track TBD — Week 7 · Chase Cutoff</div></div>
-              <div class="race-status status-upcoming">UPCOMING</div>
-            </div>
-            <div class="schedule-item">
-              <div class="race-num">8</div>
-              <div class="race-info"><div class="race-name">Chase Race 1</div><div class="race-track">Track TBD — Week 8</div></div>
-              <div class="race-status status-chase">THE CHASE</div>
-            </div>
-            <div class="schedule-item">
-              <div class="race-num">9</div>
-              <div class="race-info"><div class="race-name">Chase Race 2</div><div class="race-track">Track TBD — Week 9</div></div>
-              <div class="race-status status-chase">THE CHASE</div>
-            </div>
-            <div class="schedule-item">
-              <div class="race-num">10</div>
-              <div class="race-info"><div class="race-name">Championship Race 🏆</div><div class="race-track">Track TBD — Week 10 · Champion Crowned</div></div>
-              <div class="race-status status-chase">THE CHASE</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- TEAMS -->
-        <div class="section-block" id="teams">
-          <div class="section-header">
-            <h2>The Teams</h2>
-            <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gray);">7 Teams · 3 Drivers Each · Snake Draft</span>
-          </div>
-          <div class="teams-grid">
-
-            <div class="team-tile">
-              <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Hendrick_Motorsports_Logo.svg/250px-Hendrick_Motorsports_Logo.svg.png" alt="Hendrick Motorsports" class="team-logo">
-              <div class="team-tile-name">Hendrick<br>Motorsports</div>
-              <div class="team-cars">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/5.png" alt="#5" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/9.png" alt="#9" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/24.png" alt="#24" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/48.png" alt="#48" class="team-car-badge">
-              </div>
-            </div>
-
-            <div class="team-tile">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Joe_Gibbs_Racing_logo.png" alt="Joe Gibbs Racing" class="team-logo">
-              <div class="team-tile-name">Joe Gibbs<br>Racing</div>
-              <div class="team-cars">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/11.png" alt="#11" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/19.png" alt="#19" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/20.png" alt="#20" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/54.png" alt="#54" class="team-car-badge">
-              </div>
-            </div>
-
-            <div class="team-tile">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Team_Penske_logo.svg/250px-Team_Penske_logo.svg.png" alt="Team Penske" class="team-logo">
-              <div class="team-tile-name">Team<br>Penske</div>
-              <div class="team-cars">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/2.png" alt="#2" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/12.png" alt="#12" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/22.png" alt="#22" class="team-car-badge">
-              </div>
-            </div>
-
-            <div class="team-tile">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/23XI_racing_logo_%282023%29.png/250px-23XI_racing_logo_%282023%29.png" alt="23XI Racing" class="team-logo">
-              <div class="team-tile-name">23XI<br>Racing</div>
-              <div class="team-cars">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/23.png" alt="#23" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/35.png" alt="#35" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/45.png" alt="#45" class="team-car-badge">
-              </div>
-            </div>
-
-            <div class="team-tile">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/RFK_logo.png/500px-RFK_logo.png" alt="RFK Racing" class="team-logo">
-              <div class="team-tile-name">RFK<br>Racing</div>
-              <div class="team-cars">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/6.png" alt="#6" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/17.png" alt="#17" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/60.png" alt="#60" class="team-car-badge">
-              </div>
-            </div>
-
-            <div class="team-tile">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Spire_Motorsports_yellow_logo.png/250px-Spire_Motorsports_yellow_logo.png" alt="Spire Motorsports" class="team-logo spire-logo">
-              <div class="team-tile-name">Spire<br>Motorsports</div>
-              <div class="team-cars">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/7.png" alt="#7" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/71.png" alt="#71" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/77.png" alt="#77" class="team-car-badge">
-              </div>
-            </div>
-
-            <div class="team-tile">
-              <img src="https://upload.wikimedia.org/wikipedia/en/d/d2/Trackhouse_Racing_Logo.png" alt="Trackhouse Racing" class="team-logo">
-              <div class="team-tile-name">Trackhouse<br>Racing</div>
-              <div class="team-cars">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/1.png" alt="#1" class="team-car-badge">
-                <img src="https://cf.nascar.com/data/images/carbadges/1/88.png" alt="#88" class="team-car-badge">
-              <img src="https://cf.nascar.com/data/images/carbadges/1/97.png" alt="#97" class="team-car-badge">
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- HOW IT WORKS / NEWS CARDS -->
-        <div class="section-block" id="results">
-          <div class="section-header">
-            <h2>How It Works</h2>
-          </div>
-          <div class="news-grid-3">
-            <div class="news-card">
-              <div class="news-card-img" style="background:var(--black);display:flex;align-items:center;justify-content:center;">
-                <div style="font-family:'Barlow Condensed',sans-serif;font-size:64px;font-weight:900;color:var(--yellow-nascar);line-height:1;">44</div>
-              </div>
-              <div class="news-card-cat">Points System</div>
-              <h3>NASCAR-Authentic Scoring</h3>
-              <p style="font-size:12px;color:var(--gray);margin-top:4px;line-height:1.5;">40 points for the win. Descending scale to 40th. Stage points every race. Real NASCAR rules, nothing made up.</p>
-            </div>
-            <div class="news-card">
-              <div class="news-card-img" style="background:#111;display:flex;align-items:center;justify-content:center;">
-                <div style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:var(--white);line-height:1;text-align:center;">DRAFT<br><span style="color:var(--yellow-nascar);font-size:32px;">NIGHT</span></div>
-              </div>
-              <div class="news-card-cat">Draft</div>
-              <h3>Live Snake Draft Before Every Season</h3>
-              <p style="font-size:12px;color:var(--gray);margin-top:4px;line-height:1.5;">Team managers build rosters from the full driver pool. Draft order reverses every round. Show up.</p>
-            </div>
-            <div class="news-card">
-              <div class="news-card-img" style="background:var(--red);display:flex;align-items:center;justify-content:center;">
-                <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:var(--white);line-height:1.1;text-align:center;">THE<br>CHASE</div>
-              </div>
-              <div class="news-card-cat">Playoffs</div>
-              <h3>Top 10 Fight for the Championship</h3>
-              <p style="font-size:12px;color:var(--gray);margin-top:4px;line-height:1.5;">After Race 7, the top 10 drivers advance to the Chase. Three races decide the champion.</p>
-            </div>
-          </div>
-        </div>
-
-      </main>
-
-      <!-- RIGHT: SIDEBAR -->
-      <aside class="sidebar">
-
-        <!-- NEXT RACE -->
-        <div class="sidebar-section">
-          <div class="sidebar-header">🏁 Next Race</div>
-          <div class="next-race-card">
-            <div class="next-race-name">Race 1<br>Season Opener</div>
-            <div class="next-race-track">Track & Date TBD</div>
-            <div class="race-countdown" id="countdown">
-              <div class="countdown-unit"><span class="countdown-num" id="cd-days">—</span><span class="countdown-label">Days</span></div>
-              <div class="countdown-unit"><span class="countdown-num" id="cd-hrs">—</span><span class="countdown-label">Hrs</span></div>
-              <div class="countdown-unit"><span class="countdown-num" id="cd-min">—</span><span class="countdown-label">Min</span></div>
-              <div class="countdown-unit"><span class="countdown-num" id="cd-sec">—</span><span class="countdown-label">Sec</span></div>
-            </div>
-            <div class="race-info-row">
-              <span>Season 1</span>
-              <span><strong>10 Races</strong></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- POINTS LEADERS -->
-        <div class="sidebar-section">
-          <div class="sidebar-header">📊 Points Leaders</div>
-          <div class="points-leader">
-            <div class="leader-row">
-              <div class="leader-pos">1</div>
-              <div class="leader-car">—</div>
-              <div class="leader-name">Draft Night TBD</div>
-              <div class="leader-pts">0</div>
-            </div>
-            <div class="leader-row">
-              <div class="leader-pos" style="color:var(--border)">2</div>
-              <div class="leader-car" style="background:var(--light-gray);color:var(--mid-gray)">—</div>
-              <div class="leader-name" style="color:var(--mid-gray)">—</div>
-              <div class="leader-pts" style="color:var(--mid-gray)">0</div>
-            </div>
-            <div class="leader-row">
-              <div class="leader-pos" style="color:var(--border)">3</div>
-              <div class="leader-car" style="background:var(--light-gray);color:var(--mid-gray)">—</div>
-              <div class="leader-name" style="color:var(--mid-gray)">—</div>
-              <div class="leader-pts" style="color:var(--mid-gray)">0</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- LEAGUE STATS -->
-        <div class="sidebar-section">
-          <div class="sidebar-header">⚡ League Stats</div>
-          <div class="league-stats">
-            <div class="stat-row">
-              <span class="stat-label">Season</span>
-              <span class="stat-value">1</span>
-            </div>
-            <div class="stat-row">
-              <span class="stat-label">Drivers</span>
-              <span class="stat-value">18</span>
-            </div>
-            <div class="stat-row">
-              <span class="stat-label">Teams</span>
-              <span class="stat-value">7</span>
-            </div>
-            <div class="stat-row">
-              <span class="stat-label">Races</span>
-              <span class="stat-value">10</span>
-            </div>
-            <div class="stat-row">
-              <span class="stat-label">Chase Spots</span>
-              <span class="stat-value">10</span>
-            </div>
-            <div class="stat-row">
-              <span class="stat-label">Entry Cost</span>
-              <span class="stat-value">~$75</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- JOIN CTA -->
-        <div class="sidebar-section" id="join">
-          <div style="background:var(--yellow-nascar);padding:20px;">
-            <div style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;text-transform:uppercase;line-height:1;margin-bottom:8px;">Seats Still Available</div>
-            <p style="font-size:13px;color:rgba(0,0,0,0.65);margin-bottom:16px;line-height:1.5;">Season 1 is limited to 18 drivers. Once spots are gone, you wait for Season 2.</p>
-            <a href="mailto:?subject=N26%20Racing%20League%20%E2%80%94%20I%27m%20In&body=Count%20me%20in." style="display:block;background:var(--black);color:var(--yellow-nascar);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;padding:12px;text-align:center;transition:background 0.15s;">I'M IN →</a>
-          </div>
-        </div>
-
-      </aside>
-
+      <div class="standings-empty">
+        <strong>Season hasn't started yet</strong>
+        Standings update within 24 hours of each race. Points use the real NASCAR Cup scale — 40 for the win, stage bonus points, playoff Chase.
+      </div>
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-top">
+  <div id="tab-owner" style="display:none;">
+    <div class="standings-card">
+      <div class="standings-row header">
+        <span>#</span><span>Team</span><span>Pts</span>
+      </div>
+      <div class="standings-empty">
+        <strong>Owner standings after Race 1</strong>
+        All 3 drivers' points combined each week. Best team all season wins the Owner Championship.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEXT RACE -->
+<div class="page" style="padding-top:32px;">
+  <div class="next-race-card">
+    <div class="next-race-header">
+      <span>🏁 Next Race</span>
+    </div>
+    <div class="next-race-body">
+      <div class="next-race-name">Race 1<br>Season Opener</div>
+      <div class="next-race-sub">Track & Date TBD</div>
+      <div class="countdown">
+        <div class="countdown-unit"><span class="countdown-num" id="cd-days">—</span><span class="countdown-lbl">Days</span></div>
+        <div class="countdown-unit"><span class="countdown-num" id="cd-hrs">—</span><span class="countdown-lbl">Hrs</span></div>
+        <div class="countdown-unit"><span class="countdown-num" id="cd-min">—</span><span class="countdown-lbl">Min</span></div>
+        <div class="countdown-unit"><span class="countdown-num" id="cd-sec">—</span><span class="countdown-lbl">Sec</span></div>
+      </div>
+      <div class="next-race-meta">
+        <span>Season <strong>1</strong></span>
+        <span><strong>10 races</strong> total</span>
+        <span>Chase after <strong>Race 7</strong></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div class="page schedule-section" id="schedule">
+  <span class="section-eyebrow">Schedule</span>
+  <h2 class="section-title">Season 1 — 10 Races</h2>
+  <div class="schedule-list">
+    <div class="schedule-item">
+      <div class="race-num active">1</div>
+      <div class="race-info"><div class="race-name">Season Opener</div><div class="race-sub">Track TBD · Week 1</div></div>
+      <span class="race-badge badge-next">Next</span>
+    </div>
+    <div class="schedule-item">
+      <div class="race-num">2</div>
+      <div class="race-info"><div class="race-name">Race 2</div><div class="race-sub">Track TBD · Week 2</div></div>
+      <span class="race-badge badge-upcoming">Upcoming</span>
+    </div>
+    <div class="schedule-item">
+      <div class="race-num">3</div>
+      <div class="race-info"><div class="race-name">Race 3</div><div class="race-sub">Track TBD · Week 3</div></div>
+      <span class="race-badge badge-upcoming">Upcoming</span>
+    </div>
+    <div class="schedule-item">
+      <div class="race-num">4</div>
+      <div class="race-info"><div class="race-name">Race 4</div><div class="race-sub">Track TBD · Week 4</div></div>
+      <span class="race-badge badge-upcoming">Upcoming</span>
+    </div>
+    <div class="schedule-item">
+      <div class="race-num">5</div>
+      <div class="race-info"><div class="race-name">Race 5 — Midpoint</div><div class="race-sub">Track TBD · Week 5</div></div>
+      <span class="race-badge badge-upcoming">Upcoming</span>
+    </div>
+    <div class="schedule-item">
+      <div class="race-num">6</div>
+      <div class="race-info"><div class="race-name">Race 6</div><div class="race-sub">Track TBD · Week 6</div></div>
+      <span class="race-badge badge-upcoming">Upcoming</span>
+    </div>
+    <div class="schedule-item">
+      <div class="race-num">7</div>
+      <div class="race-info"><div class="race-name">Regular Season Finale</div><div class="race-sub">Track TBD · Week 7 · Chase cutoff</div></div>
+      <span class="race-badge badge-upcoming">Upcoming</span>
+    </div>
+    <div class="schedule-item">
+      <div class="race-num">8</div>
+      <div class="race-info"><div class="race-name">Chase Race 1</div><div class="race-sub">Track TBD · Week 8</div></div>
+      <span class="race-badge badge-chase">Chase</span>
+    </div>
+    <div class="schedule-item">
+      <div class="race-num">9</div>
+      <div class="race-info"><div class="race-name">Chase Race 2</div><div class="race-sub">Track TBD · Week 9</div></div>
+      <span class="race-badge badge-chase">Chase</span>
+    </div>
+    <div class="schedule-item">
+      <div class="race-num">10</div>
+      <div class="race-info"><div class="race-name">Championship Race 🏆</div><div class="race-sub">Track TBD · Week 10 · Champion crowned</div></div>
+      <span class="race-badge badge-chase">Chase</span>
+    </div>
+  </div>
+</div>
+
+<!-- STATS STRIP -->
+<div class="page">
+  <div class="stats-strip">
+    <div class="stat-card"><span class="stat-num">1</span><span class="stat-label">Season</span></div>
+    <div class="stat-card"><span class="stat-num">18</span><span class="stat-label">Drivers</span></div>
+    <div class="stat-card"><span class="stat-num">7</span><span class="stat-label">Teams</span></div>
+    <div class="stat-card"><span class="stat-num">10</span><span class="stat-label">Races</span></div>
+    <div class="stat-card"><span class="stat-num">10</span><span class="stat-label">Chase</span></div>
+    <div class="stat-card"><span class="stat-num">$75</span><span class="stat-label">Entry</span></div>
+  </div>
+</div>
+
+<!-- TEAMS -->
+<div class="page teams-section" id="teams">
+  <span class="section-eyebrow">The Teams</span>
+  <h2 class="section-title">7 Teams. Snake Draft.<br>3 Drivers Each.</h2>
+  <div class="teams-grid">
+
+    <div class="team-card">
+      <div class="team-logo-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Hendrick_Motorsports_Logo.svg/250px-Hendrick_Motorsports_Logo.svg.png" alt="Hendrick" class="team-logo">
+      </div>
+      <div class="team-name-text">Hendrick<br>Motorsports</div>
+      <div class="team-badges">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/5.png" alt="#5" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/9.png" alt="#9" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/24.png" alt="#24" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/48.png" alt="#48" class="team-badge-img">
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-logo-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Joe_Gibbs_Racing_logo.png" alt="JGR" class="team-logo">
+      </div>
+      <div class="team-name-text">Joe Gibbs<br>Racing</div>
+      <div class="team-badges">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/11.png" alt="#11" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/19.png" alt="#19" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/20.png" alt="#20" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/54.png" alt="#54" class="team-badge-img">
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-logo-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Team_Penske_logo.svg/250px-Team_Penske_logo.svg.png" alt="Penske" class="team-logo">
+      </div>
+      <div class="team-name-text">Team<br>Penske</div>
+      <div class="team-badges">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/2.png" alt="#2" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/12.png" alt="#12" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/22.png" alt="#22" class="team-badge-img">
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-logo-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/23XI_racing_logo_%282023%29.png/250px-23XI_racing_logo_%282023%29.png" alt="23XI" class="team-logo">
+      </div>
+      <div class="team-name-text">23XI<br>Racing</div>
+      <div class="team-badges">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/23.png" alt="#23" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/35.png" alt="#35" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/45.png" alt="#45" class="team-badge-img">
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-logo-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/RFK_logo.png/500px-RFK_logo.png" alt="RFK" class="team-logo">
+      </div>
+      <div class="team-name-text">RFK<br>Racing</div>
+      <div class="team-badges">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/6.png" alt="#6" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/17.png" alt="#17" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/60.png" alt="#60" class="team-badge-img">
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-logo-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Spire_Motorsports_yellow_logo.png/250px-Spire_Motorsports_yellow_logo.png" alt="Spire" class="team-logo spire-logo">
+      </div>
+      <div class="team-name-text">Spire<br>Motorsports</div>
+      <div class="team-badges">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/7.png" alt="#7" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/71.png" alt="#71" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/77.png" alt="#77" class="team-badge-img">
+      </div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-logo-wrap">
+        <img src="https://upload.wikimedia.org/wikipedia/en/d/d2/Trackhouse_Racing_Logo.png" alt="Trackhouse" class="team-logo">
+      </div>
+      <div class="team-name-text">Trackhouse<br>Racing</div>
+      <div class="team-badges">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/1.png" alt="#1" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/88.png" alt="#88" class="team-badge-img">
+        <img src="https://cf.nascar.com/data/images/carbadges/1/97.png" alt="#97" class="team-badge-img">
+      </div>
+    </div>
+
+  </div>
+  <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:16px;">Teams assigned via live snake draft · 3 drivers per roster · Draft night date TBD</p>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="page how-section" id="how">
+  <span class="section-eyebrow">How It Works</span>
+  <h2 class="section-title">From draft night<br>to champion.</h2>
+  <div class="how-steps">
+    <div class="how-step">
+      <div class="step-dot">1</div>
+      <div class="step-content">
+        <div class="step-title">Live Draft Night</div>
+        <div class="step-desc">Team managers pick rosters in a live snake draft. Your name gets called. Season starts.</div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="step-dot">2</div>
+      <div class="step-content">
+        <div class="step-title">10-Week Season</div>
+        <div class="step-desc">One race per week. Real NASCAR points. Stage breaks every race. Every position pays.</div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="step-dot">3</div>
+      <div class="step-content">
+        <div class="step-title">The Chase</div>
+        <div class="step-desc">Top 10 drivers after Race 7 advance to the Championship Chase. Final 3 races decide everything.</div>
+      </div>
+    </div>
+    <div class="how-step">
+      <div class="step-dot">4</div>
+      <div class="step-content">
+        <div class="step-title">Champions Crowned</div>
+        <div class="step-desc">Driver Champion and Owner Champion. Real trophies, engraved names, permanent bragging rights.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JOIN CTA -->
+<div class="page join-section" id="join">
+  <div class="join-card">
+    <h2>Seats still<br>available.</h2>
+    <p>Season 1 is limited to 18 drivers. Once spots are gone, you wait for Season 2.</p>
+    <a href="mailto:?subject=N26%20Racing%20League%20%E2%80%94%20I%27m%20In&body=Count%20me%20in." class="btn-dark">I'm In — Count Me</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="page">
+    <div class="footer-logo">N26 Racing League</div>
+    <div class="footer-tagline">Real Points · Real Teams · Real Trophies · Built on NASCAR 26</div>
+    <div class="footer-links">
       <div class="footer-col">
         <h5>League</h5>
         <ul>
           <li><a href="#standings">Standings</a></li>
           <li><a href="#schedule">Schedule</a></li>
-          <li><a href="#results">Results</a></li>
           <li><a href="#teams">Teams</a></li>
+          <li><a href="#how">How It Works</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h5>Info</h5>
+        <h5>Rules</h5>
         <ul>
-          <li><a href="#rules">Rules & Format</a></li>
           <li><a href="#">Points System</a></li>
           <li><a href="#">The Chase</a></li>
-          <li><a href="#">Draft Info</a></li>
+          <li><a href="#">Draft Rules</a></li>
+          <li><a href="https://docs.google.com/document/d/1Kt33Qxdc5g-wsJKROLlfM96EOBVEOxYKBPCMuA3o-X8/edit">Full Rulebook</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1213,7 +1027,6 @@
           <li><a href="#">Driver Championship</a></li>
           <li><a href="#">Owner Championship</a></li>
           <li><a href="#">Traveling Trophy</a></li>
-          <li><a href="#">Season History</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1221,53 +1034,37 @@
         <ul>
           <li><a href="#join">Claim Your Spot</a></li>
           <li><a href="#">Contact Commissioner</a></li>
-          <li><a href="https://docs.google.com/document/d/1Kt33Qxdc5g-wsJKROLlfM96EOBVEOxYKBPCMuA3o-X8/edit">Full Rulebook</a></li>
         </ul>
       </div>
     </div>
-    <div class="footer-bottom">
-      N26 Racing League &nbsp;·&nbsp; Built on NASCAR 26 &nbsp;·&nbsp; Season 1 &nbsp;·&nbsp; Real Points. Real Teams. Real Trophies.
-    </div>
-  </footer>
+    <div class="footer-bottom">N26 Racing League · Season 1 · Built on NASCAR 26</div>
+  </div>
+</footer>
 
-  <script>
-    // Tab switcher
-    function showTab(tab, btn) {
-      document.getElementById('tab-driver').style.display = tab === 'driver' ? 'block' : 'none';
-      document.getElementById('tab-owner').style.display = tab === 'owner' ? 'block' : 'none';
-      document.querySelectorAll('.standings-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
-    }
+<script>
+  // Tab switcher
+  function showTab(tab, btn) {
+    document.getElementById('tab-driver').style.display = tab === 'driver' ? 'block' : 'none';
+    document.getElementById('tab-owner').style.display = tab === 'owner' ? 'block' : 'none';
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+  }
 
-    // Countdown — to draft night (placeholder: 30 days from now)
-    function updateCountdown() {
-      const target = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-      const now = new Date();
-      const diff = target - now;
-      if (diff <= 0) return;
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
-      document.getElementById('cd-hrs').textContent = String(h).padStart(2,'0');
-      document.getElementById('cd-min').textContent = String(m).padStart(2,'0');
-      document.getElementById('cd-sec').textContent = String(s).padStart(2,'0');
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-
-    // Active nav on scroll
-    const sections = document.querySelectorAll('main [id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
-    window.addEventListener('scroll', () => {
-      let cur = '';
-      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
-      navLinks.forEach(a => {
-        a.classList.toggle('active', a.getAttribute('href') === '#' + cur || (cur === '' && a.getAttribute('href') === '#'));
-      });
+  // Countdown (30 days from now as placeholder)
+  function tick() {
+    const target = new Date(Date.now() + 30 * 864e5);
+    const diff = target - Date.now();
+    if (diff <= 0) return;
+    const d = Math.floor(diff / 864e5);
+    const h = Math.floor(diff % 864e5 / 36e5);
+    const m = Math.floor(diff % 36e5 / 6e4);
+    const s = Math.floor(diff % 6e4 / 1e3);
+    ['days','hrs','min','sec'].forEach((id, i) => {
+      const el = document.getElementById('cd-' + id);
+      if (el) el.textContent = String([d,h,m,s][i]).padStart(2,'0');
     });
-  </script>
-
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
 </body>
 </html>
