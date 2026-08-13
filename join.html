@@ -181,6 +181,7 @@
  .footer-links a{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
  .footer-links a:hover{color:var(--yellow);}
  </style>
+  <link rel="stylesheet" href="n26.css">
 </head>
 <body>
 
@@ -190,16 +191,31 @@
 </div>
 
 <!-- NAV -->
-<div class="nav">
- <div class="nav-logo">
- <div class="nav-flag">
- <span></span><span></span><span></span>
- <span></span><span></span><span></span>
- <span></span><span></span><span></span>
- </div>
- N26 League
- </div>
- <a href="index.html" class="nav-home">← Back to League</a>
+<nav class="nav" style="background:rgba(14,14,14,0.97);">
+  <a href="index.html" class="nav-logo">N26<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="standings.html">Standings</a></li>
+    <li><a href="results.html">Results</a></li>
+    <li><a href="schedule.html">Schedule</a></li>
+    <li><a href="rules.html">Rules</a></li>
+    <li><a href="claim.html">Roster</a></li>
+    <li><a href="join.html" class="active">Join</a></li>
+  </ul>
+  <a href="claim.html" class="nav-cta">Claim a Car →</a>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="nav-drawer" id="nav-drawer">
+  <a href="index.html">Home</a>
+  <a href="standings.html">Standings</a>
+  <a href="results.html">Results</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="rules.html">Rules</a>
+  <a href="claim.html">Roster</a>
+  <a href="join.html" class="active">Join</a>
+  <a href="claim.html" class="drawer-cta">Claim a Car →</a>
 </div>
 
 <!-- HERO -->
@@ -210,7 +226,7 @@
  <div class="hero-eyebrow">You've Been Invited</div>
  <h1>The N26<br>Racing<br><em>League.</em></h1>
  <p class="hero-sub">
- A NASCAR fantasy league built on <strong>NASCAR 26</strong>. Real teams. Real points. Real playoffs. A real trophy with your name on it.
+ A fantasy racing league built on the <strong>NASCAR 26 video game</strong>. Real teams. Real points. Real playoffs. A real trophy with your name on it. Available on PlayStation, Xbox, and PC.
  </p>
  <div class="hero-cta">
  <a href="claim.html" class="btn-big">I Want In</a>
@@ -231,7 +247,7 @@
 <!-- STATS -->
 <div class="stats-row">
  <div class="stat-box"><span class="stat-n">7</span><span class="stat-l">Real Teams</span></div>
- <div class="stat-box"><span class="stat-n">18</span><span class="stat-l">Drivers</span></div>
+ <div class="stat-box"><span class="stat-n">21</span><span class="stat-l">Spots</span></div>
  <div class="stat-box"><span class="stat-n">10</span><span class="stat-l">Races</span></div>
 </div>
 
@@ -257,8 +273,8 @@
  <div class="pitch-card">
  <div class="pitch-icon"></div>
  <div>
- <div class="pitch-title">Live Draft Night</div>
- <div class="pitch-desc">Before the season, everyone gets together for a <strong>live snake draft</strong>. You pick your 3 drivers. Your team name. Your identity. It's an event in itself.</div>
+ <div class="pitch-title">Claim Your Car</div>
+ <div class="pitch-desc">Head to the Roster page and claim any available car — first come, first served. Your car number locks in for the full season. No draft night, no waiting.</div>
  </div>
  </div>
  <div class="pitch-card">
@@ -287,14 +303,14 @@
  <div class="step-num">1</div>
  <div>
  <div class="step-title">Claim Your Spot</div>
- <div class="step-desc">Hit the button below. You're in. The commissioner will reach out with draft night details when the date is locked.</div>
+ <div class="step-desc">Hit the button below. You're in. Nolan McKim will reach out with draft night details when the date is locked.</div>
  </div>
  </div>
  <div class="step">
  <div class="step-num">2</div>
  <div>
- <div class="step-title">Draft Night</div>
- <div class="step-desc">Everyone gathers for a live snake draft. Pick your 3 drivers from the real 2026 NASCAR Cup Series field. Your roster is set for the season.</div>
+ <div class="step-title">Claim Your Car</div>
+ <div class="step-desc">Head to the Roster page and claim any open car number from the 2026 NASCAR Cup Series field. First come, first served — once it's gone, it's gone.</div>
  </div>
  </div>
  <div class="step">
@@ -327,9 +343,7 @@
  <div class="team-chip"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/RFK_logo.png/500px-RFK_logo.png" alt="RFK"></div>
  <div class="team-chip"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Spire_Motorsports_yellow_logo.png/250px-Spire_Motorsports_yellow_logo.png" alt="Spire" class="tc-spire"></div>
  <div class="team-chip"><img src="https://upload.wikimedia.org/wikipedia/en/d/d2/Trackhouse_Racing_Logo.png" alt="Trackhouse"></div>
- <div class="team-chip" style="background:var(--surface2);justify-content:center;">
- <span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);text-align:center;">Your<br>Team</span>
- </div>
+ 
  </div>
 </div>
 
@@ -337,9 +351,9 @@
 <div class="final-cta" id="claim">
  <div class="final-cta-inner">
  <h2>Ready to<br>Race?</h2>
- <p>Spots are limited to 18 drivers. Season 1 kicks off at Daytona. The draft is coming. The trophy is real. All you have to do is say yes.</p>
+ <p>Spots are limited to 21 drivers. Season 1 kicks off at Daytona. Cars are claimed first come, first served. The trophy is real. All you have to do is say yes.</p>
  <a href="claim.html" class="btn-dark">Claim Your Car →</a>
- <div class="final-cta-note">Tapping this sends an email to the commissioner · Free to join · Season 1</div>
+ <div class="final-cta-note">Tapping this sends an email to Nolan McKim · Free to join · Season 1</div>
  </div>
 </div>
 
@@ -357,5 +371,19 @@
  </div>
 </footer>
 
+<script>
+  function toggleNav() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('nav-drawer').classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    var h = document.getElementById('hamburger');
+    var d = document.getElementById('nav-drawer');
+    if (h && d && !h.contains(e.target) && !d.contains(e.target)) {
+      h.classList.remove('open');
+      d.classList.remove('open');
+    }
+  });
+</script>
 </body>
 </html>
