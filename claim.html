@@ -191,16 +191,22 @@
       filter: grayscale(0.6);
     }
     .car-card.claimed::after {
-      content: 'CLAIMED';
+      content: '';
       position: absolute;
       inset: 0;
-      background: rgba(14,14,14,0.65);
+      background: rgba(14,14,14,0.5);
       border-radius: 11px;
-      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+    }
+    .car-claimer {
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 11px; font-weight: 900;
-      letter-spacing: 0.15em; text-transform: uppercase;
-      color: var(--muted);
+      font-size: 11px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--yellow);
+      text-align: center;
+      line-height: 1.2;
+      word-break: break-all;
+      position: relative; z-index: 1;
     }
     .car-num-img {
       width: 64px; height: 52px; object-fit: contain;
@@ -629,9 +635,8 @@
 
 <script>
   // ─── CONFIG ─────────────────────────────────────────────
-  // Paste your Formspree form ID here after signing up at formspree.io
-  // e.g. "https://formspree.io/f/abcd1234"
-  const FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID';
+  const SUPABASE_URL  = 'https://vvujhkryqzhmemojedxs.supabase.co';
+  const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
 
   // Team slot tracking (max 3 per team)
   const TEAM_MAP = {
@@ -645,23 +650,49 @@
   };
 
   // ─── STATE ───────────────────────────────────────────────
-  // claimed cars are stored in localStorage so page refreshes show correct state
-  // In production you'd replace this with a real backend/DB
-  let claimedCars  = JSON.parse(localStorage.getItem('n26_claimed') || '[]');
+  let claimedCars  = []; // { car_number, gamertag }
   let selectedCard = null;
 
+  // ─── SUPABASE HELPERS ────────────────────────────────────
+  async function sbFetch(path, opts = {}) {
+    return fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+      ...opts,
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation',
+        ...(opts.headers || {})
+      }
+    });
+  }
+
   // ─── INIT ────────────────────────────────────────────────
-  function init() {
-    claimedCars.forEach(car => {
-      const el = document.querySelector(`[data-car="${car}"]`);
-      if (el) el.classList.add('claimed');
+  async function init() {
+    try {
+      const res = await sbFetch('n26_claims?select=car_number,gamertag');
+      if (res.ok) {
+        claimedCars = await res.json();
+      }
+    } catch(e) { console.warn('Could not load claims', e); }
+
+    claimedCars.forEach(({ car_number, gamertag }) => {
+      const el = document.querySelector(`[data-car="${car_number}"]`);
+      if (el) {
+        el.classList.add('claimed');
+        // Show gamertag under the number
+        const tag = document.createElement('span');
+        tag.className = 'car-claimer';
+        tag.textContent = gamertag;
+        el.appendChild(tag);
+      }
     });
     updateAllSlotCounts();
   }
 
   function updateAllSlotCounts() {
     Object.entries(TEAM_MAP).forEach(([team, cars]) => {
-      const claimed = cars.filter(c => claimedCars.includes(c)).length;
+      const claimed = cars.filter(c => claimedCars.find(x => x.car_number === c)).length;
       const open = Math.max(0, 3 - claimed);
       const el = document.getElementById(`slots-${team}`);
       if (el) el.textContent = open === 0 ? 'FULL' : `${open} spot${open !== 1 ? 's' : ''} open`;
@@ -674,7 +705,7 @@
 
     // Check team slot limit
     const team = Object.keys(TEAM_MAP).find(t => TEAM_MAP[t].includes(card.dataset.car));
-    const teamClaimed = TEAM_MAP[team].filter(c => claimedCars.includes(c)).length;
+    const teamClaimed = TEAM_MAP[team].filter(c => claimedCars.find(x => x.car_number === c)).length;
     if (teamClaimed >= 3) { alert('This team is full (3 drivers max).'); return; }
 
     // Deselect previous
@@ -734,37 +765,53 @@
     btn.textContent = 'Sending…';
 
     const form = e.target;
-    const data = new FormData(form);
+    const data = {
+      car_number:  document.getElementById('hiddenCar').value,
+      driver_name: document.getElementById('hiddenDriver').value,
+      team_name:   document.getElementById('hiddenTeam').value,
+      gamertag:    form.gamertag.value.trim(),
+      first_name:  form.first_name.value.trim(),
+      last_name:   form.last_name.value.trim(),
+      phone:       form.phone.value.trim(),
+    };
 
     try {
-      const res = await fetch(FORMSPREE_URL, {
+      const res = await sbFetch('n26_claims', {
         method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
+        body: JSON.stringify(data),
+        headers: { 'Prefer': 'return=minimal' }
       });
 
-      if (res.ok) {
-        // Mark as claimed locally
-        const carNum = document.getElementById('hiddenCar').value;
-        claimedCars.push(carNum);
-        localStorage.setItem('n26_claimed', JSON.stringify(claimedCars));
+      if (res.ok || res.status === 201) {
+        // Update local state
+        claimedCars.push({ car_number: data.car_number, gamertag: data.gamertag });
 
-        // Update UI
+        // Update UI — gray out card and show gamertag
         if (selectedCard) {
           selectedCard.classList.add('claimed');
           selectedCard.classList.remove('selected');
+          const tag = document.createElement('span');
+          tag.className = 'car-claimer';
+          tag.textContent = data.gamertag;
+          selectedCard.appendChild(tag);
           selectedCard = null;
         }
         hideBanner();
         updateAllSlotCounts();
 
-        // Show success
         document.getElementById('claimForm').style.display = 'none';
         document.getElementById('successState').style.display = 'block';
       } else {
-        btn.disabled = false;
-        btn.textContent = '🏁 Lock In My Car';
-        alert('Something went wrong. Try again or text the commissioner directly.');
+        const err = await res.json().catch(() => ({}));
+        // Handle duplicate (car already claimed between page load and submit)
+        if (res.status === 409 || (err.code === '23505')) {
+          alert('That car was just claimed by someone else. Pick another one!');
+          location.reload();
+        } else {
+          btn.disabled = false;
+          btn.textContent = '🏁 Lock In My Car';
+          alert('Something went wrong. Try again.');
+        }
       }
     } catch (err) {
       btn.disabled = false;
