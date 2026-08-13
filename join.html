@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>N26 Racing League — Join Season 1</title>
+  <meta name="description" content="The N26 Racing League is forming now. Real NASCAR points. Real teams. Real trophies. Season 1 starts at Daytona.">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #0c0c0f;
+      --surface:#14141a;
+      --surface2:#1c1c24;
+      --border: rgba(255,255,255,0.08);
+      --white:  #f4f4f6;
+      --muted:  #72728a;
+      --yellow: #FFC200;
+      --red:    #E8002D;
+      --blue:   #003087;
+      --r-sm:   6px;
+      --r-md:   14px;
+      --r-lg:   22px;
+      --r-xl:   32px;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--white);font-family:'Barlow',system-ui,sans-serif;overflow-x:hidden;}
+    a{text-decoration:none;color:inherit;}
+    img{display:block;max-width:100%;}
+
+    /* ── TOP BAR ── */
+    .topbar{background:var(--yellow);padding:8px 20px;text-align:center;}
+    .topbar span{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#000;}
+
+    /* ── NAV ── */
+    .nav{background:rgba(0,48,135,0.97);border-bottom:2px solid var(--yellow);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;}
+    .nav-logo{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;letter-spacing:0.04em;text-transform:uppercase;color:var(--white);display:flex;align-items:center;gap:8px;}
+    .nav-flag{display:grid;grid-template-columns:repeat(3,4px);grid-template-rows:repeat(3,4px);gap:1px;}
+    .nav-flag span{display:block;}
+    .nav-flag span:nth-child(odd){background:var(--yellow);}
+    .nav-flag span:nth-child(even){background:rgba(255,255,255,0.2);}
+    .nav-home{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.6);}
+    .nav-home:hover{color:var(--yellow);}
+
+    /* ── HERO ── */
+    .hero{padding:56px 20px 48px;max-width:600px;margin:0 auto;text-align:center;position:relative;}
+    .hero::before{
+      content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+      width:300px;height:300px;
+      background:radial-gradient(circle,rgba(255,194,0,0.08) 0%,transparent 70%);
+      pointer-events:none;
+    }
+    .hero-flag-strip{display:flex;justify-content:center;gap:4px;margin-bottom:24px;}
+    .hero-flag-strip span{display:block;height:3px;width:28px;border-radius:2px;}
+    .hero-flag-strip span:nth-child(1){background:var(--yellow);}
+    .hero-flag-strip span:nth-child(2){background:var(--red);}
+    .hero-flag-strip span:nth-child(3){background:var(--blue);}
+    .hero-eyebrow{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--yellow);margin-bottom:16px;}
+    .hero h1{
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:clamp(60px,16vw,100px);
+      font-weight:900;
+      line-height:0.9;
+      letter-spacing:-0.02em;
+      text-transform:uppercase;
+      color:var(--white);
+      margin-bottom:20px;
+    }
+    .hero h1 em{font-style:normal;color:var(--yellow);display:block;}
+    .hero-sub{font-size:16px;color:var(--muted);line-height:1.7;margin-bottom:32px;max-width:440px;margin-left:auto;margin-right:auto;}
+    .hero-sub strong{color:var(--white);font-weight:600;}
+    .hero-cta{display:flex;flex-direction:column;align-items:center;gap:12px;}
+    .btn-big{
+      background:var(--yellow);color:#000;
+      font-family:'Barlow Condensed',sans-serif;
+      font-size:18px;font-weight:900;
+      letter-spacing:0.1em;text-transform:uppercase;
+      padding:16px 36px;border-radius:var(--r-sm);
+      display:inline-block;transition:background 0.15s,transform 0.1s;
+      width:100%;max-width:320px;text-align:center;
+    }
+    .btn-big:hover{background:#ffd033;transform:translateY(-1px);}
+    .hero-cta-note{font-size:12px;color:var(--muted);letter-spacing:0.04em;}
+
+    /* ── DAYTONA BANNER ── */
+    .daytona-banner{
+      background:linear-gradient(135deg,var(--red) 0%,#8b0000 100%);
+      margin:0 20px;
+      border-radius:var(--r-lg);
+      padding:24px 20px;
+      display:flex;
+      align-items:center;
+      gap:16px;
+      max-width:560px;
+      margin-left:auto;
+      margin-right:auto;
+      position:relative;
+      overflow:hidden;
+    }
+    .daytona-banner::after{
+      content:'';position:absolute;right:-20px;top:-20px;
+      width:120px;height:120px;
+      background-image:repeating-conic-gradient(rgba(255,255,255,0.07) 0% 25%,transparent 0% 50%);
+      background-size:20px 20px;
+      border-radius:50%;
+    }
+    .daytona-flag{font-size:40px;flex-shrink:0;}
+    .daytona-text{}
+    .daytona-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:3px;}
+    .daytona-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;text-transform:uppercase;letter-spacing:-0.01em;line-height:1;color:#fff;}
+    .daytona-sub{font-size:13px;color:rgba(255,255,255,0.65);margin-top:4px;}
+
+    /* ── STATS ROW ── */
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin:32px 20px 0;border-radius:var(--r-lg);overflow:hidden;max-width:560px;margin-left:auto;margin-right:auto;}
+    .stat-box{background:var(--surface);padding:20px 12px;text-align:center;}
+    .stat-n{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;color:var(--yellow);display:block;line-height:1;}
+    .stat-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;font-weight:600;margin-top:3px;}
+
+    /* ── SECTION ── */
+    .section{padding:48px 20px 0;max-width:600px;margin:0 auto;}
+    .s-ey{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--yellow);display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+    .s-ey::before{content:'';display:block;width:14px;height:2px;background:var(--yellow);}
+    .s-ti{font-family:'Barlow Condensed',sans-serif;font-size:clamp(28px,7vw,44px);font-weight:900;text-transform:uppercase;letter-spacing:-0.01em;line-height:1;color:var(--white);margin-bottom:20px;}
+
+    /* ── PITCH CARDS ── */
+    .pitch-list{display:flex;flex-direction:column;gap:10px;}
+    .pitch-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;display:flex;gap:16px;align-items:flex-start;}
+    .pitch-icon{font-size:28px;flex-shrink:0;line-height:1;}
+    .pitch-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;text-transform:uppercase;letter-spacing:0.02em;color:var(--white);margin-bottom:5px;}
+    .pitch-desc{font-size:14px;color:var(--muted);line-height:1.65;}
+    .pitch-desc strong{color:var(--white);font-weight:600;}
+
+    /* ── HOW IT WORKS ── */
+    .steps{display:flex;flex-direction:column;}
+    .step{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--border);}
+    .step:last-child{border-bottom:none;}
+    .step-num{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:rgba(255,194,0,0.12);line-height:1;width:44px;flex-shrink:0;text-align:center;}
+    .step-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:4px;}
+    .step-desc{font-size:13px;color:var(--muted);line-height:1.65;}
+
+    /* ── TEAMS STRIP ── */
+    .teams-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:var(--r-lg);overflow:hidden;}
+    .team-chip{background:var(--surface);padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;}
+    .team-chip img{max-height:28px;max-width:64px;object-fit:contain;}
+    .team-chip .tc-spire{filter:invert(1) brightness(0.8);}
+
+    /* ── FINAL CTA ── */
+    .final-cta{
+      margin:48px 20px 0;
+      background:var(--yellow);
+      border-radius:var(--r-xl);
+      padding:40px 24px;
+      text-align:center;
+      max-width:560px;
+      margin-left:auto;
+      margin-right:auto;
+      position:relative;
+      overflow:hidden;
+    }
+    .final-cta::before,.final-cta::after{
+      content:'';position:absolute;
+      width:80px;height:80px;
+      background-image:repeating-conic-gradient(rgba(0,0,0,0.1) 0% 25%,transparent 0% 50%);
+      background-size:16px 16px;
+    }
+    .final-cta::before{top:0;left:0;border-radius:var(--r-xl) 0 0 0;}
+    .final-cta::after{bottom:0;right:0;border-radius:0 0 var(--r-xl) 0;}
+    .final-cta-inner{position:relative;z-index:1;}
+    .final-cta h2{font-family:'Barlow Condensed',sans-serif;font-size:clamp(40px,10vw,64px);font-weight:900;text-transform:uppercase;letter-spacing:-0.02em;line-height:0.95;color:#000;margin-bottom:12px;}
+    .final-cta p{font-size:15px;color:rgba(0,0,0,0.55);margin-bottom:24px;font-weight:500;line-height:1.6;}
+    .final-cta .btn-dark{background:#000;color:var(--yellow);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;padding:15px 36px;border-radius:var(--r-sm);display:inline-block;transition:background 0.15s;width:100%;max-width:300px;}
+    .final-cta .btn-dark:hover{background:#1a1a1a;}
+    .final-cta-note{margin-top:12px;font-size:12px;color:rgba(0,0,0,0.45);}
+
+    /* ── FOOTER ── */
+    footer{margin-top:56px;padding:3px 0 0;background:linear-gradient(to right,var(--yellow) 33.3%,var(--red) 33.3% 66.6%,var(--blue) 66.6%);}
+    .footer-body{background:var(--bg);padding:24px 20px 36px;text-align:center;}
+    .footer-logo{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:0.04em;color:var(--white);margin-bottom:4px;}
+    .footer-tagline{font-size:11px;color:var(--muted);margin-bottom:16px;}
+    .footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
+    .footer-links a{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+    .footer-links a:hover{color:var(--yellow);}
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span>🏁 Season 1 Now Forming — Spots Are Limited</span>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-logo">
+    <div class="nav-flag">
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+      <span></span><span></span><span></span>
+    </div>
+    N26 League
+  </div>
+  <a href="index.html" class="nav-home">← Back to League</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-flag-strip">
+    <span></span><span></span><span></span>
+  </div>
+  <div class="hero-eyebrow">You've Been Invited</div>
+  <h1>The N26<br>Racing<br><em>League.</em></h1>
+  <p class="hero-sub">
+    A NASCAR fantasy league built on <strong>NASCAR 26</strong>. Real teams. Real points. Real playoffs. A real trophy with your name on it.
+  </p>
+  <div class="hero-cta">
+    <a href="#claim" class="btn-big">I Want In</a>
+    <span class="hero-cta-note">Free to join · Season 1 · Limited spots</span>
+  </div>
+</div>
+
+<!-- DAYTONA BANNER -->
+<div class="daytona-banner">
+  <div class="daytona-flag">🏁</div>
+  <div class="daytona-text">
+    <div class="daytona-label">Season 1 Opens At</div>
+    <div class="daytona-title">Daytona International Speedway</div>
+    <div class="daytona-sub">The Great American Race. The only place to start a season.</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-box"><span class="stat-n">7</span><span class="stat-l">Real Teams</span></div>
+  <div class="stat-box"><span class="stat-n">18</span><span class="stat-l">Drivers</span></div>
+  <div class="stat-box"><span class="stat-n">10</span><span class="stat-l">Races</span></div>
+</div>
+
+<!-- WHY YOU WANT IN -->
+<div class="section">
+  <div class="s-ey">Why Join</div>
+  <div class="s-ti">This Isn't<br>Fantasy Football.</div>
+  <div class="pitch-list">
+    <div class="pitch-card">
+      <div class="pitch-icon">🏆</div>
+      <div>
+        <div class="pitch-title">A Real Trophy</div>
+        <div class="pitch-desc">Not a digital badge. A <strong>physical trophy</strong> with your name engraved on it. The traveling trophy keeps a record of every champion — every season, forever.</div>
+      </div>
+    </div>
+    <div class="pitch-card">
+      <div class="pitch-icon">📊</div>
+      <div>
+        <div class="pitch-title">Real NASCAR Points</div>
+        <div class="pitch-desc">We run the <strong>actual NASCAR Cup Series points system</strong>. 40 for the win. Stage bonuses. Playoff Chase. If you watch NASCAR, you already know how it works.</div>
+      </div>
+    </div>
+    <div class="pitch-card">
+      <div class="pitch-icon">🐍</div>
+      <div>
+        <div class="pitch-title">Live Draft Night</div>
+        <div class="pitch-desc">Before the season, everyone gets together for a <strong>live snake draft</strong>. You pick your 3 drivers. Your team name. Your identity. It's an event in itself.</div>
+      </div>
+    </div>
+    <div class="pitch-card">
+      <div class="pitch-icon">🔥</div>
+      <div>
+        <div class="pitch-title">The Chase</div>
+        <div class="pitch-desc">Top 10 drivers after Race 7 make the <strong>Championship Chase</strong>. The final 3 races decide everything. Nobody is mathematically eliminated until it's over.</div>
+      </div>
+    </div>
+    <div class="pitch-card">
+      <div class="pitch-icon">🆓</div>
+      <div>
+        <div class="pitch-title">Free to Join</div>
+        <div class="pitch-desc">Season 1 is <strong>completely free</strong>. All you need is NASCAR 26 and the will to compete. Show up. Draft a team. Race for the trophy.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="section">
+  <div class="s-ey">How It Works</div>
+  <div class="s-ti">Four Steps.<br>One Champion.</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Claim Your Spot</div>
+        <div class="step-desc">Hit the button below. You're in. The commissioner will reach out with draft night details when the date is locked.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Draft Night</div>
+        <div class="step-desc">Everyone gathers for a live snake draft. Pick your 3 drivers from the real 2026 NASCAR Cup Series field. Your roster is set for the season.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Race 10 Times</div>
+        <div class="step-desc">One race per week. Your drivers score real NASCAR points. Standings update after every race. Watch the leaderboard move all season long.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">Take the Trophy Home</div>
+        <div class="step-desc">The Driver Champion and the Owner Champion both get trophies. Your name goes on the traveling trophy. That's permanent.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEAMS STRIP -->
+<div class="section">
+  <div class="s-ey">The Teams</div>
+  <div class="s-ti">Real NASCAR Teams.<br>Your Drivers.</div>
+  <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.65;">Seven real NASCAR organizations. You draft 3 drivers to represent yours. Hendrick. JGR. Penske. 23XI. RFK. Spire. Trackhouse.</p>
+  <div class="teams-strip">
+    <div class="team-chip"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Hendrick_Motorsports_Logo.svg/250px-Hendrick_Motorsports_Logo.svg.png" alt="Hendrick"></div>
+    <div class="team-chip"><img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Joe_Gibbs_Racing_logo.png" alt="JGR"></div>
+    <div class="team-chip"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Team_Penske_logo.svg/250px-Team_Penske_logo.svg.png" alt="Penske"></div>
+    <div class="team-chip"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/23XI_racing_logo_%282023%29.png/250px-23XI_racing_logo_%282023%29.png" alt="23XI"></div>
+    <div class="team-chip"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/RFK_logo.png/500px-RFK_logo.png" alt="RFK"></div>
+    <div class="team-chip"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Spire_Motorsports_yellow_logo.png/250px-Spire_Motorsports_yellow_logo.png" alt="Spire" class="tc-spire"></div>
+    <div class="team-chip"><img src="https://upload.wikimedia.org/wikipedia/en/d/d2/Trackhouse_Racing_Logo.png" alt="Trackhouse"></div>
+    <div class="team-chip" style="background:var(--surface2);justify-content:center;">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);text-align:center;">Your<br>Team</span>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<div class="final-cta" id="claim">
+  <div class="final-cta-inner">
+    <h2>Ready to<br>Race?</h2>
+    <p>Spots are limited to 18 drivers. Season 1 kicks off at Daytona. The draft is coming. The trophy is real. All you have to do is say yes.</p>
+    <a href="mailto:?subject=N26%20Racing%20League%20%E2%80%94%20I%27m%20In&body=Count%20me%20in%20for%20Season%201%20of%20the%20N26%20Racing%20League." class="btn-dark">Count Me In →</a>
+    <div class="final-cta-note">Tapping this sends an email to the commissioner · Free to join · Season 1</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-body">
+    <div class="footer-logo">N26 Racing League</div>
+    <div class="footer-tagline">Real Points · Real Teams · Real Trophies · Built on NASCAR 26</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="about.html#teams">Teams</a>
+      <a href="about.html#rules">Rules</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
