@@ -8,19 +8,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:        #0e0e0e;
-      --surface:   #171717;
-      --surface2:  #1f1f1f;
-      --surface3:  #272727;
+      --bg:        #0c0c0f;
+      --surface:   #14141a;
+      --surface2:  #1c1c24;
+      --surface3:  #24242e;
       --border:    rgba(255,255,255,0.07);
-      --border2:   rgba(255,255,255,0.13);
-      --white:     #f0ece4;        /* warm white — like aged paper */
-      --muted:     #7a7368;
-      --muted2:    #4a4640;
-      --yellow:    #FFC200;        /* warm race-day yellow */
+      --border2:   rgba(255,255,255,0.14);
+      --white:     #f4f4f6;
+      --muted:     #72728a;
+      --muted2:    #44445a;
+      --yellow:    #FFC200;        /* NASCAR yellow */
       --yellow2:   #e6a800;
-      --red:       #C8102E;
-      --checker:   rgba(255,194,0,0.06);
+      --red:       #E8002D;        /* NASCAR red */
+      --blue:      #003087;        /* NASCAR blue */
+      --blue-bright: #0047BB;     /* lighter blue for accents */
+      --checker:   rgba(255,194,0,0.05);
       --radius-sm: 6px;
       --radius-md: 12px;
       --radius-lg: 20px;
@@ -85,8 +87,8 @@
       flex-shrink: 0;
     }
     .ticker-badge {
-      background: #000;
-      color: var(--yellow);
+      background: var(--blue);
+      color: #fff;
       padding: 1px 7px;
       border-radius: 3px;
       font-size: 10px;
@@ -94,6 +96,7 @@
       letter-spacing: 0.12em;
     }
     .ticker-badge.red { background: var(--red); color: #fff; }
+    .ticker-badge.blue { background: var(--blue); color: #fff; }
     .ticker-sep { width: 1px; height: 14px; background: rgba(0,0,0,0.25); flex-shrink: 0; }
 
     /* ─────────────────────────────
@@ -103,7 +106,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(14,14,14,0.96);
+      background: rgba(0,48,135,0.97);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 2px solid var(--yellow);
@@ -154,7 +157,7 @@
       border-radius: var(--radius-sm);
       transition: color 0.15s, background 0.15s;
     }
-    .nav-links a:hover, .nav-links a.active { color: var(--yellow); background: rgba(255,194,0,0.07); }
+    .nav-links a:hover, .nav-links a.active { color: var(--yellow); background: rgba(255,255,255,0.1); }
     .nav-join {
       background: var(--yellow);
       color: #000;
@@ -168,7 +171,7 @@
       white-space: nowrap;
       transition: background 0.15s;
     }
-    .nav-join:hover { background: #ffd033; }
+    .nav-join:hover { background: #ffd033; color: #000; }
     .nav-hamburger {
       display: none;
       flex-direction: column;
@@ -586,6 +589,8 @@
       gap: 8px;
       padding: 48px 0 0;
     }
+    /* Blue accent on stat cards */
+    .stat-card { border-top: 2px solid var(--blue); }
     .stat-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -666,6 +671,19 @@
        HOW IT WORKS
     ───────────────────────────── */
     .how-section { padding: 48px 0 0; }
+    .how-section-inner {
+      background: var(--blue);
+      border-radius: var(--radius-xl);
+      padding: 28px 20px;
+      margin-top: 0;
+    }
+    .how-section-inner .s-eyebrow { color: rgba(255,255,255,0.6); }
+    .how-section-inner .s-eyebrow::before { background: rgba(255,255,255,0.4); }
+    .how-section-inner .s-title { color: #fff; }
+    .how-section-inner .how-title { color: #fff; }
+    .how-section-inner .how-desc { color: rgba(255,255,255,0.65); }
+    .how-section-inner .how-num { color: rgba(255,255,255,0.12); }
+    .how-section-inner .how-item { border-bottom-color: rgba(255,255,255,0.12); }
     .how-list { display: flex; flex-direction: column; }
     .how-item {
       display: flex;
@@ -751,8 +769,9 @@
     ───────────────────────────── */
     footer {
       margin-top: 64px;
-      border-top: 2px solid var(--yellow);
+      border-top: none;
       padding: 32px 20px 48px;
+      background: linear-gradient(to right, var(--yellow) 33.3%, var(--red) 33.3% 66.6%, var(--blue) 66.6%) 0 0 / 100% 3px no-repeat, var(--bg);
     }
     .footer-logo {
       font-family: 'Barlow Condensed', sans-serif;
@@ -1072,6 +1091,7 @@
 
 <!-- HOW IT WORKS -->
 <div class="page how-section" id="how">
+  <div class="how-section-inner">
   <div class="s-eyebrow">How It Works</div>
   <div class="s-title">Draft Night to<br>Champion's Circle.</div>
   <div class="how-list">
@@ -1103,7 +1123,8 @@
         <div class="how-desc">Driver Championship trophy. Owner Championship trophy. Traveling trophy engraved with every season winner — ten years from now that's history.</div>
       </div>
     </div>
-  </div>
+  </div><!-- end how-list -->
+  </div><!-- end how-section-inner -->
 </div>
 
 <!-- JOIN CTA -->
