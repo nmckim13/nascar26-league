@@ -205,7 +205,7 @@
    return `<tr class="${isChase?'chase-row':''}">
      <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
      <td><div class="driver-cell">
-       <span class="car-badge">#${d.car}</span>
+       <img class="car-badge" src="https://cf.nascar.com/data/images/carbadges/1/${d.car}.png" alt="#${d.car}">
        <div><div class="driver-name">${gamertag}${isChase?'<span class="pill yellow" style="margin-left:6px">Chase</span>':''}</div>
        <div class="driver-sub">${TEAM_MAP[d.car]||'—'}</div></div>
      </div></td>
@@ -243,7 +243,7 @@
  const otbody = document.getElementById('owner-tbody');
  otbody.innerHTML = teams.map(([team,pts],i) => {
    const pos=i+1, behind=racesRun===0?'<span style="color:var(--muted2)">—</span>':pos===1?'<span style="color:var(--muted)">—</span>':`-${ownerLeader-pts}`;
-   const cars = (CARS[team]||[]).filter(c=>claims.find(cl=>cl.car_number===c)).map(c=>`<span class="car-badge sm">#${c}</span>`).join(' ');
+   const cars = (CARS[team]||[]).filter(c=>claims.find(cl=>cl.car_number===c)).map(c=>`<img class="car-badge sm" src="https://cf.nascar.com/data/images/carbadges/1/${c}.png" alt="#${c}">`).join(' ');
    return `<tr>
      <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
      <td><span class="driver-name">${team}</span></td>
