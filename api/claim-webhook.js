@@ -30,6 +30,8 @@ const TEAM_MAP = {
   '45':'23XI Racing','48':'Hendrick Motorsports','54':'Joe Gibbs Racing',
   '60':'RFK Racing','71':'Spire Motorsports','77':'Spire Motorsports',
   '88':'Trackhouse Racing','97':'Trackhouse Racing',
+  '42':'Legacy Motor Club',
+  '43':'Legacy Motor Club',
   '84':'Legacy Motor Club',
 };
 
@@ -137,7 +139,7 @@ export default async function handler(req, res) {
       roleStatus = `\n⚠️ No Discord username provided — DM Nolan to get your role`;
     }
 
-    const spotsText = spotsLeft !== null ? `\n**${spotsLeft} spot${spotsLeft !== 1 ? 's' : ''} remaining out of 21**` : '';
+    const spotsText = spotsLeft !== null ? `\n**${spotsLeft} spot${spotsLeft !== 1 ? 's' : ''} remaining out of 23**` : '';
     const finalCall = spotsLeft === 0
       ? `\n\n🏁 **The roster is FULL. Season 1 is locked.**`
       : spotsLeft === 1 ? `\n⚠️ **Last spot — one car left!**` : '';
