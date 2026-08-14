@@ -411,3 +411,14 @@ img { display: block; max-width: 100%; }
   .hide-mobile { display: table-cell; }
   .ticker { justify-content: center; gap: 20px; }
 }
+
+/* BARL Logo */
+.nav-logo {
+  font-family: 'Audiowide', sans-serif !important;
+  font-size: 28px !important;
+  letter-spacing: -1px !important;
+  text-decoration: none !important;
+}
+.nav-logo span {
+  color: var(--yellow);
+}
