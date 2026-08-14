@@ -211,14 +211,8 @@
  .car-num-img {
  width: 64px; height: 52px; object-fit: contain;
  }
- .car-driver-name {
- font-family: var(--font);
- font-size: 12px; font-weight: 700;
- text-transform: uppercase; letter-spacing: -0.01em;
- color: var(--muted); text-align: center;
- line-height: 1.2;
- }
- .car-card.selected .car-driver-name { color: var(--yellow); }
+ 
+ .car-card.selected 
 
  /* SELECTION CONFIRM BANNER */
  .selection-banner {
@@ -751,7 +745,7 @@
 
  function showBanner(card) {
  document.getElementById('selNumImg').src = card.querySelector('img').src;
- document.getElementById('selName').textContent = `#${card.dataset.car} — ${card.dataset.driver}`;
+ document.getElementById('selName').textContent = `#${card.dataset.car}`;
  document.getElementById('selTeam').textContent = card.dataset.team;
  document.getElementById('selBanner').classList.add('visible');
  }
@@ -765,7 +759,7 @@
  if (!selectedCard) return;
  const card = selectedCard;
  document.getElementById('modalNumImg').src = card.querySelector('img').src;
- document.getElementById('modalDriver').textContent = `#${card.dataset.car} — ${card.dataset.driver}`;
+ document.getElementById('modalDriver').textContent = `#${card.dataset.car}`;
  document.getElementById('modalTeam').textContent = card.dataset.team;
  document.getElementById('hiddenCar').value = card.dataset.car;
  document.getElementById('hiddenDriver').value = card.dataset.driver;
