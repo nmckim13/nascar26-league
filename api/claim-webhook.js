@@ -18,6 +18,7 @@ const TEAM_ROLES = {
   'RFK Racing':           '1537581471219581019',
   'Spire Motorsports':    '1537581474990260294',
   'Trackhouse Racing':    '1537581478270206024',
+  'Legacy Motor Club':     '1537875081672532058',
 };
 
 const TEAM_MAP = {
@@ -29,12 +30,14 @@ const TEAM_MAP = {
   '45':'23XI Racing','48':'Hendrick Motorsports','54':'Joe Gibbs Racing',
   '60':'RFK Racing','71':'Spire Motorsports','77':'Spire Motorsports',
   '88':'Trackhouse Racing','97':'Trackhouse Racing',
+  '84':'Legacy Motor Club',
 };
 
 const TEAM_EMOJI = {
   'Hendrick Motorsports':'🔵','Joe Gibbs Racing':'🟠','Team Penske':'🔴',
   '23XI Racing':'🟥','RFK Racing':'⚪','Spire Motorsports':'🟡',
   'Trackhouse Racing':'💙',
+  'Legacy Motor Club': '💚',
 };
 
 async function discordAPI(method, path, body) {
