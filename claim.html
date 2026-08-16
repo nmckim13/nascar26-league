@@ -712,20 +712,20 @@
  // ─── INIT ────────────────────────────────────────────────
  async function init() {
  try {
- const res = await sbFetch('n26_claims?select=car_number,gamertag');
+ const res = await sbFetch('n26_claims?select=car_number,gamertag,first_name,last_name');
  if (res.ok) {
  claimedCars = await res.json();
  }
  } catch(e) { console.warn('Could not load claims', e); }
 
- claimedCars.forEach(({ car_number, gamertag }) => {
+ claimedCars.forEach(({ car_number, gamertag, first_name, last_name }) => {
  const el = document.querySelector(`[data-car="${car_number}"]`);
  if (el) {
  el.classList.add('claimed');
- // Show gamertag under the number
+ // Show driver's real name under the number (fallback to gamertag)
  const tag = document.createElement('span');
  tag.className = 'car-claimer';
- tag.textContent = gamertag;
+ tag.textContent = [first_name, last_name].filter(Boolean).join(' ').trim() || gamertag;
  el.appendChild(tag);
  }
  });
@@ -827,15 +827,15 @@
 
  if (res.ok || res.status === 201) {
  // Update local state
- claimedCars.push({ car_number: data.car_number, gamertag: data.gamertag });
+ claimedCars.push({ car_number: data.car_number, gamertag: data.gamertag, first_name: data.first_name, last_name: data.last_name });
 
- // Update UI — gray out card and show gamertag
+ // Update UI — gray out card and show driver's real name
  if (selectedCard) {
  selectedCard.classList.add('claimed');
  selectedCard.classList.remove('selected');
  const tag = document.createElement('span');
  tag.className = 'car-claimer';
- tag.textContent = data.gamertag;
+ tag.textContent = [data.first_name, data.last_name].filter(Boolean).join(' ').trim() || data.gamertag;
  selectedCard.appendChild(tag);
  selectedCard = null;
  }

@@ -8,6 +8,9 @@ const DISCORD_TOKEN = process.env.DISCORD_BOT_TOKEN;
 const GUILD_ID = "1537572693837217873";
 const ANNOUNCEMENTS_CHANNEL = "1537577565093502987";
 const WEBHOOK_SECRET = process.env.SUPABASE_WEBHOOK_SECRET;
+// Commissioner Discord user ID — tagged when a role can't be auto-assigned
+// so failures are never silent. Nolan (nmckim13).
+const COMMISSIONER_ID = process.env.COMMISSIONER_DISCORD_ID || "759986368972980235";
 
 // Team → Discord role ID
 const TEAM_ROLES = {
@@ -51,9 +54,17 @@ async function discordAPI(method, path, body) {
     },
     body: body ? JSON.stringify(body) : undefined,
   });
-  if (res.status === 204) return { ok: true };
-  const data = await res.json().catch(() => ({}));
-  return { ok: res.ok, status: res.status, ...data };
+  if (res.status === 204) return { ok: true, status: 204 };
+  const data = await res.json().catch(() => null);
+  // If the response body is an array (e.g. member search / list), return it
+  // directly — spreading it into an object would corrupt it and break
+  // Array.isArray checks downstream.
+  if (Array.isArray(data)) {
+    data.ok = res.ok;
+    data.status = res.status;
+    return data;
+  }
+  return { ok: res.ok, status: res.status, ...(data || {}) };
 }
 
 async function getTotalClaims() {
@@ -65,27 +76,45 @@ async function getTotalClaims() {
   return (await res.json()).length;
 }
 
-// Search guild members for a username match
+// Find a guild member by a typed name. Uses the member-SEARCH endpoint
+// (matches by username prefix on Discord's side, works without needing the
+// full member list), then matches the typed string against username,
+// global_name (display name) and per-guild nick — case-insensitive.
+// This catches the common case where a claimant types their DISPLAY name
+// (e.g. "Dirt Eater") instead of their real username ("casual_dirt_enjoyer").
 async function findMemberByUsername(username) {
-  const clean = username.toLowerCase().replace(/^@/, '');
+  const clean = String(username).toLowerCase().replace(/^@/, '').trim();
+  if (!clean) return null;
 
-  // Search the guild members (up to 1000)
-  const result = await discordAPI('GET', `/guilds/${GUILD_ID}/members?limit=1000`);
-  if (!Array.isArray(result)) return null;
+  // Discord's search matches the START of username/nick. Query the first
+  // token so a typed display name like "Dirt Eater" still returns candidates.
+  const firstToken = clean.split(/\s+/)[0];
+  const queries = [clean, firstToken].filter((v, i, a) => v && a.indexOf(v) === i);
 
-  // Match on username or global_name or display name
-  const member = result.find(m => {
-    const u = m.user;
-    return (
-      u.username?.toLowerCase() === clean ||
-      u.global_name?.toLowerCase() === clean ||
-      u.display_name?.toLowerCase() === clean ||
-      // also try partial match on the discriminator-less username
-      u.username?.toLowerCase().startsWith(clean)
+  const candidates = [];
+  for (const q of queries) {
+    const res = await discordAPI(
+      'GET',
+      `/guilds/${GUILD_ID}/members/search?query=${encodeURIComponent(q)}&limit=100`
     );
-  });
+    if (Array.isArray(res)) candidates.push(...res);
+  }
 
-  return member || null;
+  const norm = (s) => (s ? String(s).toLowerCase().trim() : '');
+  // Prefer an exact match on any name field, then fall back to a prefix match.
+  const exact = candidates.find((m) => {
+    const u = m.user || {};
+    return [u.username, u.global_name, m.nick].map(norm).includes(clean);
+  });
+  if (exact) return exact;
+
+  const prefix = candidates.find((m) => {
+    const u = m.user || {};
+    return [u.username, u.global_name, m.nick]
+      .map(norm)
+      .some((n) => n && (n.startsWith(clean) || clean.startsWith(n)));
+  });
+  return prefix || null;
 }
 
 async function assignRole(userId, roleId) {
@@ -109,7 +138,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ message: 'Ignored' });
     }
 
-    const { car_number, gamertag, team_name, discord_username } = payload.record;
+    const { car_number, gamertag, team_name, discord_username, discord_user_id } = payload.record;
     if (!car_number || !gamertag) return res.status(200).json({ message: 'Missing fields' });
 
     const team = team_name || TEAM_MAP[car_number] || 'Unknown Team';
@@ -119,24 +148,41 @@ export default async function handler(req, res) {
 
     let roleStatus = '';
     let memberId = null;
+    let roleAssigned = false;
+    const roleId = TEAM_ROLES[team];
+    const manualTag = COMMISSIONER_ID ? `<@${COMMISSIONER_ID}>` : 'the commissioner';
 
-    // Try to find and assign role
-    if (discord_username) {
-      const member = await findMemberByUsername(discord_username);
-      if (member) {
-        memberId = member.user.id;
-        const roleId = TEAM_ROLES[team];
-        if (roleId) {
-          const roleResult = await assignRole(memberId, roleId);
-          roleStatus = roleResult.ok
-            ? `\n✅ **${team} role assigned** to <@${memberId}>`
-            : `\n⚠️ Found ${discord_username} but role assignment failed — assign manually`;
+    // Preferred path: assign role directly by numeric Discord user ID.
+    if (discord_user_id && /^\d{5,}$/.test(String(discord_user_id))) {
+      const uid = String(discord_user_id);
+      if (roleId) {
+        const roleResult = await assignRole(uid, roleId);
+        if (roleResult.ok) {
+          memberId = uid;
+          roleAssigned = true;
+          roleStatus = `\n✅ **${team} role assigned** to <@${uid}>`;
+        } else {
+          roleStatus = `\n⚠️ Role assignment failed for <@${uid}> (status ${roleResult.status}) — ${manualTag} will assign it`;
         }
-      } else {
-        roleStatus = `\n⚠️ **${discord_username}** not found in server — join BARL Discord to get your team role`;
+      }
+    } else if (discord_username) {
+      // Fallback: resolve by typed name (username / display name / nick).
+      const member = await findMemberByUsername(discord_username);
+      if (member && roleId) {
+        const uid = member.user.id;
+        const roleResult = await assignRole(uid, roleId);
+        if (roleResult.ok) {
+          memberId = uid;
+          roleAssigned = true;
+          roleStatus = `\n✅ **${team} role assigned** to <@${uid}>`;
+        } else {
+          roleStatus = `\n⚠️ Found ${discord_username} but role assignment failed (status ${roleResult.status}) — ${manualTag} will assign it`;
+        }
+      } else if (!member) {
+        roleStatus = `\n⚠️ Couldn't match **${discord_username}** to a server member — ${manualTag} will assign the ${team} role manually`;
       }
     } else {
-      roleStatus = `\n⚠️ No Discord username provided — DM Nolan to get your role`;
+      roleStatus = `\n⚠️ No Discord username provided — ${manualTag} will assign your role`;
     }
 
     const spotsText = spotsLeft !== null ? `\n**${spotsLeft} spot${spotsLeft !== 1 ? 's' : ''} remaining out of 23**` : '';
@@ -153,9 +199,13 @@ export default async function handler(req, res) {
       finalCall,
     ].filter(Boolean).join('\n');
 
-    await postToDiscord(message);
+    const postResult = await postToDiscord(message);
+    if (!postResult.ok) {
+      console.error('Announcement post FAILED', { car_number, status: postResult.status, body: postResult });
+      return res.status(502).json({ ok: false, posted: false, roleAssigned, status: postResult.status });
+    }
 
-    return res.status(200).json({ ok: true, roleAssigned: !!memberId });
+    return res.status(200).json({ ok: true, posted: true, roleAssigned });
   } catch (err) {
     console.error('Webhook error:', err);
     return res.status(500).json({ error: 'Internal error' });

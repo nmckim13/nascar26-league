@@ -161,7 +161,7 @@
  async function load() {
    const [races, claimsRaw, results] = await Promise.all([
      get('/rest/v1/n26_races?select=id,race_number,track_short,status&order=race_number.asc'),
-     get('/rest/v1/n26_claims?select=car_number,gamertag'),
+     get('/rest/v1/n26_claims?select=car_number,gamertag,first_name,last_name'),
      get('/rest/v1/n26_results?select=*')
    ]);
 
@@ -185,7 +185,7 @@
  claims.forEach(c => claimMap[c.car_number] = c.gamertag);
 
  const stats = {};
- claims.forEach(c => { stats[c.car_number] = {car:c.car_number,gamertag:c.gamertag,starts:0,wins:0,top5:0,top10:0,racePts:0,stagePts:0,playoffPts:0}; });
+ claims.forEach(c => { stats[c.car_number] = {car:c.car_number,gamertag:c.gamertag,name:[c.first_name,c.last_name].filter(Boolean).join(' ').trim()||c.gamertag,starts:0,wins:0,top5:0,top10:0,racePts:0,stagePts:0,playoffPts:0}; });
  results.filter(r => completedIds.has(r.race_id)).forEach(r => {
  const d = stats[r.car_number]; if (!d) return;
  d.starts++; if(r.finish_position===1)d.wins++; if(r.finish_position<=5)d.top5++; if(r.finish_position<=10)d.top10++;
@@ -203,7 +203,7 @@
    const pos = i+1, total = d.racePts+d.stagePts;
    const behind = racesRun === 0 ? '<span style="color:var(--muted2)">—</span>' : pos===1 ? '<span style="color:var(--muted)">—</span>' : `-${leader-total}`;
    const isChase = racesRun >= 7 && pos <= 10;
-   const gamertag = d.gamertag && !d.gamertag.startsWith('Player ') ? d.gamertag : `<span style="color:var(--muted2)">${d.gamertag}</span>`;
+   const gamertag = d.gamertag && !d.gamertag.startsWith('Player ') ? d.name : `<span style="color:var(--muted2)">${d.name}</span>`;
    return `<tr class="${isChase?'chase-row':''}">
      <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
      <td><div class="driver-cell">

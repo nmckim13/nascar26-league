@@ -123,10 +123,10 @@
  async function loadAll() {
  const [racesData, claimsData] = await Promise.all([
  get('/rest/v1/n26_races?select=*&order=race_number.asc'),
- get('/rest/v1/n26_claims?select=car_number,gamertag')
+ get('/rest/v1/n26_claims?select=car_number,gamertag,first_name,last_name')
  ]);
  races = racesData;
- claimsData.forEach(c => claims[c.car_number] = c);
+ claimsData.forEach(c => { c.displayName = [c.first_name, c.last_name].filter(Boolean).join(' ').trim() || c.gamertag; claims[c.car_number] = c; });
 
  const completedIds = races.filter(r=>r.status==='completed').map(r=>r.id);
  if (completedIds.length) {
@@ -206,7 +206,7 @@
  <td><span class="num-cell ${posColor}">${r.finish_position}</span></td>
  <td><div class="driver-cell">
  <img class="car-badge" src="https://cf.nascar.com/data/images/carbadges/1/${r.car_number}.png" alt="#${r.car_number}">
- <div><div class="driver-name">${cl?cl.gamertag:'—'}</div>
+ <div><div class="driver-name">${cl?cl.displayName:'—'}</div>
  <div class="driver-sub">${TEAM_MAP[r.car_number]||'—'}</div></div>
  </div></td>
  <td class="c">${r.points_earned||0}</td>
@@ -234,7 +234,7 @@
  const cl=claims[r.car_number], pos=r[key], pts=stagePts(pos);
  return `<tr>
  <td><span class="num-cell ${pos===1?'yellow':'muted'}">${pos}</span></td>
- <td><div class="driver-cell"><img class="car-badge" src="https://cf.nascar.com/data/images/carbadges/1/${r.car_number}.png" alt="#${r.car_number}"><span class="driver-name">${cl?cl.gamertag:'—'}</span></div></td>
+ <td><div class="driver-cell"><img class="car-badge" src="https://cf.nascar.com/data/images/carbadges/1/${r.car_number}.png" alt="#${r.car_number}"><span class="driver-name">${cl?cl.displayName:'—'}</span></div></td>
  <td class="c">${pts?`<span class="num-cell green">+${pts}</span>`:'<span style="color:var(--muted2)">—</span>'}</td>
  </tr>`;
  }).join('')}</tbody>

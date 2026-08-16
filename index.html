@@ -349,37 +349,37 @@
   </div>
   <div class="sched-item">
    <div class="sched-num">2</div>
-   <div class="sched-info"><div class="sched-name">Las Vegas Motor Speedway</div><div class="sched-sub">Race 2</div></div>
+   <div class="sched-info"><div class="sched-name">Nashville Superspeedway</div><div class="sched-sub">Race 2</div></div>
    <span class="badge badge-up">Upcoming</span>
   </div>
   <div class="sched-item">
    <div class="sched-num">3</div>
-   <div class="sched-info"><div class="sched-name">Bristol Motor Speedway</div><div class="sched-sub">Race 3</div></div>
+   <div class="sched-info"><div class="sched-name">Michigan International Speedway</div><div class="sched-sub">Race 3</div></div>
    <span class="badge badge-up">Upcoming</span>
   </div>
   <div class="sched-item">
    <div class="sched-num">4</div>
-   <div class="sched-info"><div class="sched-name">Watkins Glen International</div><div class="sched-sub">Race 4 · Road Course</div></div>
+   <div class="sched-info"><div class="sched-name">Bristol Motor Speedway</div><div class="sched-sub">Race 4</div></div>
    <span class="badge badge-up">Upcoming</span>
   </div>
   <div class="sched-item">
    <div class="sched-num">5</div>
-   <div class="sched-info"><div class="sched-name">Charlotte Motor Speedway</div><div class="sched-sub">Race 5</div></div>
+   <div class="sched-info"><div class="sched-name">Watkins Glen International</div><div class="sched-sub">Race 5 · Road Course</div></div>
    <span class="badge badge-up">Upcoming</span>
   </div>
   <div class="sched-item">
    <div class="sched-num">6</div>
-   <div class="sched-info"><div class="sched-name">Talladega Superspeedway</div><div class="sched-sub">Race 6</div></div>
+   <div class="sched-info"><div class="sched-name">Indianapolis Motor Speedway</div><div class="sched-sub">Race 6</div></div>
    <span class="badge badge-up">Upcoming</span>
   </div>
   <div class="sched-item">
    <div class="sched-num">7</div>
-   <div class="sched-info"><div class="sched-name">Martinsville Speedway</div><div class="sched-sub">Race 7 · Regular Season Finale · Chase Cutoff</div></div>
+   <div class="sched-info"><div class="sched-name">Iowa Speedway</div><div class="sched-sub">Race 7 · Regular Season Finale · Chase Cutoff</div></div>
    <span class="badge badge-up">Upcoming</span>
   </div>
   <div class="sched-item">
    <div class="sched-num hot">8</div>
-   <div class="sched-info"><div class="sched-name">Phoenix Raceway</div><div class="sched-sub">Chase Race 1</div></div>
+   <div class="sched-info"><div class="sched-name">World Wide Technology Raceway</div><div class="sched-sub">Chase Race 1</div></div>
    <span class="badge badge-chase">Chase</span>
   </div>
   <div class="sched-item">
@@ -389,7 +389,7 @@
   </div>
   <div class="sched-item">
    <div class="sched-num hot">10</div>
-   <div class="sched-info"><div class="sched-name">Homestead-Miami Speedway</div><div class="sched-sub">Chase Race 3 · Championship </div></div>
+   <div class="sched-info"><div class="sched-name">Chicagoland Speedway</div><div class="sched-sub">Chase Race 3 · Championship · Home Track</div></div>
    <span class="badge badge-chase">Chase</span>
   </div>
  </div>
@@ -422,7 +422,7 @@
 
  async function loadHomeStandings() {
   const [claims, races, results] = await Promise.all([
-   sbFetch('/rest/v1/n26_claims?select=car_number,gamertag'),
+   sbFetch('/rest/v1/n26_claims?select=car_number,gamertag,first_name,last_name'),
    sbFetch('/rest/v1/n26_races?select=id,status&order=race_number.asc'),
    sbFetch('/rest/v1/n26_results?select=car_number,race_id,finish_position,points_earned,stage1_points,stage2_points')
   ]);
@@ -432,7 +432,7 @@
 
   // Driver stats
   const stats = {};
-  claims.forEach(c => { stats[c.car_number] = { car: c.car_number, gamertag: c.gamertag, pts: 0 }; });
+  claims.forEach(c => { stats[c.car_number] = { car: c.car_number, gamertag: c.gamertag, name: [c.first_name, c.last_name].filter(Boolean).join(' ').trim() || c.gamertag, pts: 0 }; });
   results.filter(r => completedIds.has(r.race_id)).forEach(r => {
    if (stats[r.car_number]) stats[r.car_number].pts += (r.points_earned||0) + (r.stage1_points||0) + (r.stage2_points||0);
   });
@@ -448,7 +448,7 @@
      <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
      <span>
       <img style="width:40px;height:25px;object-fit:contain;margin-right:6px;vertical-align:middle" src="https://cf.nascar.com/data/images/carbadges/1/${d.car}.png" alt="#${d.car}">
-      <span style="font-family: var(--font);font-size:14px;font-weight:800;text-transform:uppercase;">${d.gamertag||'—'}</span>
+      <span style="font-family: var(--font);font-size:14px;font-weight:800;text-transform:uppercase;">${d.name||'—'}</span>
      </span>
      <span style="font-family: var(--font);font-size:16px;font-weight:900;">${d.pts}</span>
     </div>`).join('');
