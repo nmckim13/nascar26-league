@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>BARL Commissioner Console</title>
+ <link rel="stylesheet" href="n26.css">
+ <style>
+  body { background: #09090c; color: #f4f4f6; font-family: Inter, system-ui, sans-serif; }
+  main { width: min(1120px, calc(100% - 28px)); margin: 0 auto; padding: 34px 0 64px; }
+  .admin-head { display:flex; justify-content:space-between; gap:16px; align-items:end; margin-bottom:22px; }
+  h1,h2 { margin:0; text-transform:uppercase; letter-spacing:-.04em; }
+  h1 { font-size:clamp(32px, 7vw, 64px); line-height:.95; }
+  h1 span { color:#ffc200; }
+  h2 { font-size:20px; margin-bottom:14px; }
+  .eyebrow { color:#ffc200; font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; margin-bottom:10px; }
+  .muted { color:#88889b; line-height:1.55; }
+  .grid { display:grid; grid-template-columns:1.2fr .8fr; gap:16px; }
+  .card { background:#14141a; border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:20px; }
+  .wide { grid-column:1/-1; }
+  .form { display:grid; gap:10px; }
+  label { color:#a5a5b5; font-size:11px; font-weight:800; text-transform:uppercase; }
+  input,select,textarea,button { width:100%; border-radius:9px; border:1px solid rgba(255,255,255,.14); padding:11px 12px; font:inherit; }
+  input,select,textarea { background:#1d1d26; color:#fff; }
+  button { background:#ffc200; color:#080808; border:0; font-weight:900; text-transform:uppercase; cursor:pointer; }
+  button.secondary { background:#292933; color:#fff; }
+  .row { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+  .stat-row { display:flex; flex-wrap:wrap; gap:10px; margin:14px 0; }
+  .stat { background:#1d1d26; border-radius:10px; padding:12px 14px; min-width:120px; }
+  .stat strong { display:block; font-size:22px; }
+  .stat span { color:#88889b; font-size:11px; text-transform:uppercase; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th,td { padding:10px 8px; text-align:left; border-bottom:1px solid rgba(255,255,255,.08); }
+  th { color:#88889b; font-size:10px; text-transform:uppercase; }
+  .message { min-height:22px; margin-top:12px; color:#ffc200; line-height:1.5; }
+  .message.error { color:#ff8793; }
+  @media (max-width:760px) { .grid { grid-template-columns:1fr; } .wide { grid-column:auto; } .admin-head { display:block; } .admin-head a { display:inline-block; margin-top:14px; } }
+ </style>
+</head>
+<body>
+ <main>
+  <div class="admin-head">
+   <div><div class="eyebrow">Restricted route</div><h1>Commissioner <span>Console</span></h1><p class="muted">Roster identity, seats, results, certification, and ratings. Every write is checked server-side.</p></div>
+   <a href="index.html" class="muted">Back to public site</a>
+  </div>
+  <div class="grid">
+   <section class="card wide">
+    <h2>Season Overview</h2>
+    <div id="stats" class="stat-row"></div>
+    <div id="overviewMessage" class="message">Loading commissioner data...</div>
+    <div style="overflow:auto"><table><thead><tr><th>Driver</th><th>Gamertag</th><th>Entry</th><th>Team</th><th>Car</th></tr></thead><tbody id="roster"></tbody></table></div>
+   </section>
+  <section class="card">
+   <h2>Add Driver</h2>
+    <form id="driverForm" class="form">
+     <label>Display name<input name="display_name" required minlength="2"></label>
+     <label>Gamertag<input name="gamertag"></label>
+     <div class="row"><label>First name<input name="first_name"></label><label>Last name<input name="last_name"></label></div>
+     <label>Driver status<select name="status"><option value="active">Active</option><option value="reserve">Reserve</option></select></label>
+     <button>Add identity</button>
+   </form>
+  </section>
+  <section class="card">
+   <h2>Team Profile Desk</h2>
+   <form id="teamProfileForm" class="form">
+    <label>Team<select name="team_id" id="profileTeam" required></select></label>
+    <label>Owner name<input name="owner_name" id="profileOwner" placeholder="Optional public owner name"></label>
+    <label>Honors JSON<textarea name="honors" id="profileHonors" rows="4" placeholder='[{"season":1,"award":"Team Champion"}]'></textarea></label>
+    <div class="muted" style="font-size:11px;line-height:1.45">Honors are public metadata. Use an array of strings or objects with season and award fields.</div>
+    <button>Save team profile</button>
+   </form>
+  </section>
+  <section class="card wide">
+   <h2>Bulk Roster Import</h2>
+   <p class="muted">Draft seasons only. Paste up to 24 new permanent identities as JSON. Full-time rows need an active <code>team_slug</code> and <code>car_number</code>; reserve rows use <code>status":"reserve"</code> and <code>entry_status":"reserve"</code>. The whole batch rolls back if any row is invalid.</p>
+   <label style="display:block;margin-top:12px">Roster JSON<textarea id="rosterJson" rows="8" placeholder='[{"display_name":"Driver Name","gamertag":"Gamertag","team_slug":"hendrick","car_number":"48","status":"active","entry_status":"full_time"},{"display_name":"Reserve Driver","status":"reserve","entry_status":"reserve"}]'></textarea></label>
+   <button id="importRoster" type="button" style="margin-top:10px">Import roster atomically</button>
+   <button id="syncClaims" type="button" class="secondary" style="margin-top:10px">Sync authenticated claims into draft</button>
+  </section>
+  <section class="card">
+   <h2>Seat Desk</h2>
+   <form id="seatForm" class="form">
+    <label>Driver<select name="driver_id" id="seatDriver" required></select></label>
+    <label>Team<select name="team_id" id="seatTeam" required></select></label>
+    <label>Car number<select name="car_number" id="seatCar" required></select></label>
+    <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="allow_transfer" style="width:auto"> This is a transfer from the current seat</label>
+    <div class="muted" style="font-size:11px;line-height:1.45">For transfers, check all three attestations below. Initial assignments do not need them.</div>
+    <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="driver_consented" style="width:auto"> Driver consent recorded</label>
+    <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="from_team_consented" style="width:auto"> Releasing team consent recorded</label>
+    <label style="display:flex;gap:8px;align-items:center"><input type="checkbox" name="to_team_consented" style="width:auto"> Destination team consent recorded</label>
+    <label>Consent notes<input name="notes" placeholder="Optional audit note"></label>
+    <button>Assign or transfer seat</button>
+   </form>
+   <form id="releaseForm" class="form" style="margin-top:12px">
+    <label>Release driver<select name="driver_id" id="releaseDriver" required></select></label>
+    <button type="submit" class="secondary">Release active seat</button>
+  </form>
+ </section>
+  <section class="card">
+   <h2>Midseason Replacement</h2>
+   <p class="muted">For documented withdrawals only. The replacement takes the departing driver’s current team seat and receives separate statistics.</p>
+   <form id="replacementForm" class="form">
+    <label>Departing driver<select name="departing_driver_id" id="departingDriver" required></select></label>
+    <label>Replacement identity<select name="replacement_driver_id" id="replacementDriver" required></select></label>
+    <label>Documented reason<input name="reason" required minlength="3" placeholder="Withdrawal, disconnect, or approved replacement"></label>
+    <button type="submit" class="secondary">Record replacement</button>
+   </form>
+  </section>
+  <section class="card">
+   <h2>Contract Desk</h2>
+   <form id="contractForm" class="form">
+    <label>Driver<select name="driver_id" id="contractDriver" required></select></label>
+    <label>Team<select name="team_id" id="contractTeam" required></select></label>
+    <div class="row"><label>Term<select name="original_term_seasons"><option value="1">1 season</option><option value="2">2 seasons</option><option value="3">3 seasons</option></select></label><label>Rating<span class="muted" style="display:block;padding:11px 0;text-transform:none;font-weight:400">Server-derived from certified OVR or newcomer value</span></label></div>
+    <div class="row"><label>Term discount<select name="term_discount_bps"><option value="0">0%</option><option value="200">2%</option><option value="400">4%</option></select></label><label>Loyalty discount<select name="loyalty_discount_bps"><option value="0">0%</option><option value="100">1%</option></select></label></div>
+   <button>Create contract</button>
+   </form>
+   <div style="overflow:auto;margin-top:14px"><table><thead><tr><th>Driver</th><th>Team</th><th>Term</th><th>Charge</th><th>Status</th></tr></thead><tbody id="contracts"></tbody></table></div>
+   <button id="openContractMarket" type="button" class="secondary" style="margin-top:10px">Open 48-hour renewals, then 5-day free agency</button>
+   <form id="extendContractForm" class="form" style="margin-top:14px">
+    <label>Extend incumbent contract<select id="extendContractSelect" name="contract_id" required></select></label>
+    <label>Additional term<select name="additional_term_seasons"><option value="1">1 season</option><option value="2">2 seasons</option><option value="3">3 seasons</option></select></label>
+    <button type="submit" class="secondary">Extend during renewal window</button>
+   </form>
+   <form id="releaseContractForm" class="form" style="margin-top:14px">
+    <label>Release contract<select id="contractReleaseSelect" name="contract_id" required></select></label>
+    <label>Reason<input name="reason" minlength="3" required placeholder="Mutual early termination or cap compliance"></label>
+    <button type="submit" class="secondary">Release contract before roster lock</button>
+   </form>
+   <button id="expireContracts" type="button" class="secondary" style="margin-top:10px">Expire contracts after certification</button>
+  </section>
+  <section class="card wide">
+   <h2>Race Desk</h2>
+   <div class="row">
+    <label>Race<select id="raceSelect"></select></label>
+    <div class="form" style="align-content:end"><button id="openRace" type="button">Open selected race</button><button id="publishRace" type="button" class="secondary">Publish and open appeals</button><button id="finalizeRace" type="button" class="secondary">Finalize after appeals</button><button id="voidRace" type="button" class="secondary">Void selected race</button></div>
+   </div>
+   <div class="row" style="margin-top:10px">
+    <label>Starter count<input id="startersCount" type="number" min="1"></label>
+    <label>Qualifying field<input id="qualifyingCount" type="number" min="0"></label>
+   </div>
+   <div class="row" style="margin-top:10px">
+    <label>Qualifying status<select id="qualifyingStatus"><option value="not_recorded">Not recorded</option><option value="valid">Valid</option><option value="canceled">Canceled</option><option value="incomplete">Incomplete</option><option value="voided">Voided</option></select></label>
+    <div class="form" style="align-content:end"><button id="saveRaceSetup" type="button" class="secondary">Save race setup</button></div>
+   </div>
+   <label style="display:block;margin-top:12px">Result JSON<textarea id="resultJson" rows="7" placeholder='[{"driver_id":"...","team_id":"...","car_number":"5","start_status":"started","finish_status":"classified","finish_position":1,"stage1_points":10,"stage2_points":9,"qualifying_valid":true,"qualifying_position":1}]'></textarea></label>
+   <div class="muted" style="font-size:11px;line-height:1.45;margin-top:6px">Allowed finish statuses: classified, dnf, or disqualified. A disqualified starter keeps the official finish position but receives zero points and finish-quality credit.</div>
+   <div class="row" style="margin-top:10px"><button id="recordResults" type="button">Save draft results</button><button id="correctResults" type="button" class="secondary">Apply appeal correction</button></div>
+  </section>
+  <section class="card wide">
+   <h2>News Desk</h2>
+   <p class="muted">Draft race debriefs here, then publish only after the official results are certified.</p>
+   <form id="newsForm" class="form">
+    <label>Headline<input name="headline" required minlength="3" maxlength="160"></label>
+    <label>Deck / summary<input name="dek" maxlength="500"></label>
+    <label>Article body<textarea name="article_body" rows="6"></textarea></label>
+    <input type="hidden" name="image_url" value="/assets/news/barl-season-1-launch.jpg">
+    <label>Status<select name="status"><option value="draft">Save as draft</option><option value="published">Publish</option></select></label>
+    <button>Create article</button>
+   </form>
+  </section>
+  <section class="card">
+    <h2>Season Actions</h2>
+   <div class="form">
+     <label>Approved points schedule version<input id="pointsVersion" placeholder="2.1-24-position"></label>
+     <label>Points by position JSON<textarea id="pointsJson" rows="5" placeholder='{"1":55,"2":35,"3":34,"4":33,"5":32,"6":31,"7":30,"8":29,"9":28,"10":27,"11":26,"12":25,"13":24,"14":23,"15":22,"16":21,"17":20,"18":19,"19":18,"20":17,"21":16,"22":15,"23":14,"24":13}'></textarea></label>
+     <button id="approvePoints" type="button" class="secondary">Approve new points version</button>
+     <button id="calculateRatings" class="secondary">Calculate provisional ratings</button>
+     <button id="certifyRatings" class="secondary">Certify ratings</button>
+     <button id="certifySeason" class="secondary">Certify completed season</button>
+     <button id="prepareNextSeason" class="secondary">Prepare next season draft</button>
+     <button id="publishSeason">Publish season when ready</button>
+    </div>
+    <div id="actionMessage" class="message"></div>
+   </section>
+  </div>
+ </main>
+ <script src="scripts/league-rules.js"></script>
+ <script type="module" src="scripts/admin-page.js"></script>
+</body>
+</html>

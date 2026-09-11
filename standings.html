@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Standings | N26 Racing League</title>
+ <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="n26.css">
+ <style>
+ </style>
+</head>
+<body>
+
+<div class="ticker">
+ <span class="ticker-label yellow">Standings</span>
+ <span id="ticker-text">Season 1 · N26 Racing League</span>
+</div>
+
+<nav class="nav">
+ <a href="index.html" class="nav-logo">B<span style="color:var(--yellow)">A</span>RL</a>
+ <ul class="nav-links">
+ <li><a href="index.html">Home</a></li>
+ <li><a href="standings.html" class="active">Standings</a></li>
+ <li><a href="results.html">Results</a></li>
+ <li><a href="schedule.html">Schedule</a></li>
+ <li><a href="rules.html">Rules</a></li>
+ <li><a href="claim.html">Roster</a></li>
+ <li><a href="join.html">Join</a></li>
+ </ul>
+ <a href="claim.html" class="nav-cta">Claim a Car →</a>
+ <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+ <span></span><span></span><span></span>
+ </div>
+</nav>
+<div class="nav-drawer" id="nav-drawer">
+  <a href="index.html">Home</a>
+  <a href="standings.html" class="active">Standings</a>
+  <a href="results.html">Results</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="rules.html">Rules</a>
+  <a href="claim.html">Roster</a>
+  <a href="join.html">Join</a>
+  <a href="claim.html" class="drawer-cta">Claim a Car →</a>
+</div>
+
+<div class="page-wrap">
+ <div class="page-header">
+ <div>
+ <h1>Standings</h1>
+ <p>Season 1 — updated after every race</p>
+ </div>
+ <div class="page-tag" id="races-run-label"></div>
+ </div>
+
+ <div class="tabs">
+ <button class="tab-btn active" onclick="showTab('driver',this)">Driver Championship</button>
+ <button class="tab-btn" onclick="showTab('owner',this)">Owner Championship</button>
+ </div>
+
+ <div id="tab-driver">
+ <div class="table-wrap"><table class="data-table">
+ <thead>
+ <tr>
+ <th style="width:40px">Pos</th>
+ <th>Driver</th>
+ <th class="c hide-mobile">Starts</th>
+ <th class="c">Wins</th>
+ <th class="c hide-mobile">Top 5</th>
+ <th class="c hide-mobile">Top 10</th>
+ <th class="c hide-mobile">Race Pts</th>
+ <th class="c">Total</th>
+ <th class="c">Behind</th>
+ </tr>
+ </thead>
+ <tbody id="driver-tbody">
+ <tr><td colspan="9"><div class="loading">Loading...</div></td></tr>
+ </tbody>
+ </table>
+</div>
+ </div>
+
+ <div id="tab-owner" style="display:none">
+ <div style="padding:8px 12px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border2);">
+ Full-season players only. Mid-season joiners do not count toward team totals.
+ </div>
+ <div class="table-wrap"><table class="data-table">
+ <thead>
+ <tr>
+ <th style="width:40px">Pos</th>
+ <th>Team</th>
+ <th>Cars</th>
+ <th class="c">Wins</th>
+ <th class="c">Total Pts</th>
+ <th class="c">Behind</th>
+ </tr>
+ </thead>
+ <tbody id="owner-tbody">
+ <tr><td colspan="6"><div class="loading">Loading...</div></td></tr>
+ </tbody>
+ </table>
+</div>
+ </div>
+</div>
+
+<footer class="footer">
+ <div class="footer-links">
+ <a href="index.html">Home</a>
+ <a href="standings.html">Standings</a>
+ <a href="results.html">Results</a>
+ <a href="schedule.html">Schedule</a>
+ <a href="rules.html">Rules</a>
+ <a href="claim.html">Roster</a>
+ </div>
+ N26 Racing League · Season 1 · Real Points. Real Teams. Real Trophies.
+</footer>
+
+<script src="./scripts/league-rules.js"></script>
+<script src="./scripts/public-bootstrap.js"></script>
+<script>
+ const SB_URL = 'https://txipxisumngvzkuqsysq.supabase.co';
+ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
+ const H = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
+ const TEAM_MAP = {'5':'Hendrick','9':'Hendrick','24':'Hendrick','48':'Hendrick','11':'JGR','19':'JGR','20':'JGR','54':'JGR','2':'Penske','12':'Penske','22':'Penske','23':'23XI','35':'23XI','45':'23XI','6':'RFK','17':'RFK','60':'RFK','7':'Spire','71':'Spire','77':'Spire','1':'Trackhouse','88':'Trackhouse','97':'Trackhouse','42':'Legacy Motor Club','43':'Legacy Motor Club','84':'Legacy Motor Club'};
+
+ async function get(path) { return (await fetch(SB_URL+path,{headers:H})).json(); }
+
+ async function load() {
+ const display = await window.__leagueDataReady;
+ const races = display.races;
+ const isNormalized = display.source === 'normalized';
+   const claimsRaw = display.claims;
+   const results = display.results;
+
+ // Show only identities that have actually been claimed or imported.
+   const claims = claimsRaw;
+
+ const completed = races.filter(r => r.status === 'completed');
+ const completedIds = new Set(completed.map(r => r.id));
+ const authoritativeStandings = isNormalized && display.ruleset && window.N26LeagueRules
+   ? window.N26LeagueRules.calculateSeasonStandings({
+     entries: display.entries.map(entry => ({ driverId: entry.driver_id, teamId: (display.assignments || []).find(assignment => assignment.driver_id === entry.driver_id)?.team_id || null, entryStatus: entry.entry_status })),
+     races,
+     results,
+     pointsByPosition: display.ruleset.points_by_position,
+     strict: false,
+   })
+   : null;
+ const completedForDisplay = authoritativeStandings?.completedRaces || completed;
+ const racesRun = completedForDisplay.length;
+
+ document.getElementById('ticker-text').textContent =
+ racesRun > 0 ? `Season 1 · ${racesRun} of ${races.length} races complete` : 'Season 1 · Season has not started';
+ document.getElementById('races-run-label').innerHTML =
+ racesRun > 0 ? `After Race ${racesRun}: <span>${completedForDisplay[racesRun-1].track_short}</span>` : '';
+
+ const stats = {};
+ let drivers;
+ if (authoritativeStandings) {
+   const identityById = Object.fromEntries(claims.map(claim => [claim.driver_id, claim]));
+   const assignmentByDriver = Object.fromEntries((display.assignments || []).map(assignment => [assignment.driver_id, assignment]));
+   const teamById = Object.fromEntries((display.catalog?.teams || []).map(team => [team.id, team.name]));
+   drivers = authoritativeStandings.drivers.map(driver => {
+     const identity = identityById[driver.driverId] || {};
+     const assignment = assignmentByDriver[driver.driverId] || {};
+     return {
+       key: driver.driverId,
+       driverId: driver.driverId,
+       car: assignment.car_number || identity.car_number,
+       team: teamById[assignment.team_id] || identity.team_name,
+       gamertag: identity.gamertag,
+       name: identity.displayName || [identity.first_name, identity.last_name].filter(Boolean).join(' ').trim() || identity.gamertag,
+       starts: driver.starts,
+       wins: driver.wins,
+       top5: driver.topFives,
+       top10: driver.finishes.filter(finish => finish <= 10).length,
+       racePts: driver.points,
+     };
+   });
+ } else {
+   claims.forEach(c => {
+     const key = c.car_number;
+     stats[key] = { key, driverId:c.driver_id, car:c.car_number, team:c.team_name || TEAM_MAP[c.car_number], gamertag:c.gamertag, name:[c.first_name,c.last_name].filter(Boolean).join(' ').trim()||c.gamertag, starts:0,wins:0,top5:0,top10:0,racePts:0 };
+   });
+   results.filter(r => completedIds.has(r.race_id)).forEach(r => {
+     const d = stats[r.car_number]; if (!d) return;
+     if (r.start_status !== 'dns') { d.starts++; if(r.finish_position===1)d.wins++; if(r.finish_position<=5)d.top5++; if(r.finish_position<=10)d.top10++; }
+     d.racePts += r.points_earned||0;
+   });
+   drivers = Object.values(stats).sort((a,b)=>{
+     const ta=a.racePts, tb=b.racePts;
+     return tb-ta||b.wins-a.wins||b.top5-a.top5||b.top10-a.top10||String(a.key).localeCompare(String(b.key));
+   });
+ }
+ const leader = drivers.length ? drivers[0].racePts : 0;
+
+ const tbody = document.getElementById('driver-tbody');
+ tbody.innerHTML = drivers.map((d,i) => {
+   const pos = i+1, total = d.racePts;
+   const behind = racesRun === 0 ? '<span style="color:var(--muted2)">—</span>' : pos===1 ? '<span style="color:var(--muted)">—</span>' : `-${leader-total}`;
+   const gamertag = d.gamertag ? d.name : `<span style="color:var(--muted2)">${d.name}</span>`;
+   return `<tr>
+     <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
+     <td><div class="driver-cell">
+       <img class="car-badge" src="https://cf.nascar.com/data/images/carbadges/1/${d.car}.png" alt="#${d.car}">
+       <div><div class="driver-name">${gamertag}</div>
+       <div class="driver-sub">${d.team||'—'}</div></div>
+     </div></td>
+     <td class="c hide-mobile">${d.starts}</td>
+     <td class="c"><span class="num-cell ${d.wins?'red':''}">${d.wins}</span></td>
+     <td class="c hide-mobile">${d.top5}</td>
+     <td class="c hide-mobile">${d.top10}</td>
+     <td class="c hide-mobile">${d.racePts}</td>
+     <td class="c"><span class="num-cell">${total}</span></td>
+     <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
+   </tr>`;
+ }).join('');
+ // Owner
+ const ownerPts = {}, ownerWins = {};
+ if (isNormalized) {
+   (display.catalog?.teams || []).forEach(team => { ownerPts[team.name] = 0; ownerWins[team.name] = 0; });
+   (authoritativeStandings?.teams || []).forEach(team => {
+     const teamName = (display.catalog?.teams || []).find(candidate => candidate.id === team.teamId)?.name || team.teamId;
+     ownerPts[teamName] = team.points;
+     ownerWins[teamName] = team.wins;
+   });
+ } else {
+   Object.values(stats).forEach(d => {
+     const t = TEAM_MAP[d.car]; if (!t) return;
+     ownerPts[t] = (ownerPts[t]||0) + d.racePts;
+     ownerWins[t] = (ownerWins[t]||0) + d.wins;
+   });
+ }
+ const teams = Object.entries(ownerPts).sort((a,b)=>b[1]-a[1]||ownerWins[b[0]]-ownerWins[a[0]]);
+ const ownerLeader = teams.length ? teams[0][1] : 0;
+ const CARS = {'Hendrick':['5','9','24','48'],'JGR':['11','19','20','54'],'Penske':['2','12','22'],'23XI':['23','35','45'],'RFK':['6','17','60'],'Spire':['7','71','77'],'Trackhouse':['1','88','97'],'Legacy Motor Club':['42','43','84']};
+
+ const otbody = document.getElementById('owner-tbody');
+ otbody.innerHTML = teams.map(([team,pts],i) => {
+   const pos=i+1, behind=racesRun===0?'<span style="color:var(--muted2)">—</span>':pos===1?'<span style="color:var(--muted)">—</span>':`-${ownerLeader-pts}`;
+   const cars = (isNormalized ? claims.filter(cl => cl.team_name === team).map(cl => cl.car_number) : (CARS[team]||[]).filter(c=>claims.find(cl=>cl.car_number===c))).map(c=>`<img class="car-badge sm" src="https://cf.nascar.com/data/images/carbadges/1/${c}.png" alt="#${c}">`).join(' ');
+   return `<tr>
+     <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
+     <td><span class="driver-name">${team}</span></td>
+     <td style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;padding-top:10px;padding-bottom:10px">${cars}</td>
+     <td class="c"><span class="num-cell ${ownerWins[team]?'red':''}">${ownerWins[team]||0}</span></td>
+     <td class="c"><span class="num-cell">${pts}</span></td>
+     <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
+   </tr>`;
+ }).join('');
+ }
+
+ function showTab(tab, btn) {
+ document.getElementById('tab-driver').style.display = tab==='driver'?'block':'none';
+ document.getElementById('tab-owner').style.display = tab==='owner' ?'block':'none';
+ document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b===btn));
+ }
+
+ load().catch(console.error);
+</script>
+<script>
+  function toggleNav() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('nav-drawer').classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    var h = document.getElementById('hamburger');
+    var d = document.getElementById('nav-drawer');
+    if (h && d && !h.contains(e.target) && !d.contains(e.target)) {
+      h.classList.remove('open');
+      d.classList.remove('open');
+    }
+  });
+</script>
+</body>
+</html>

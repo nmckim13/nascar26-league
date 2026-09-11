@@ -1,0 +1,43 @@
+{
+  "pointsByPosition": {"1":55,"2":35,"3":34,"4":33,"5":32,"6":31,"7":30,"8":29,"9":28,"10":27,"11":26,"12":25,"13":24,"14":23,"15":22,"16":21,"17":20,"18":19,"19":18,"20":17,"21":16,"22":15,"23":14,"24":13},
+  "drivers": [
+    {"driverId":"d5","carNumber":"5","teamId":"hendrick"},
+    {"driverId":"d9","carNumber":"9","teamId":"hendrick"},
+    {"driverId":"d24","carNumber":"24","teamId":"hendrick"},
+    {"driverId":"d20","carNumber":"20","teamId":"jgr"},
+    {"driverId":"d19","carNumber":"19","teamId":"jgr"},
+    {"driverId":"d54","carNumber":"54","teamId":"jgr"},
+    {"driverId":"d1","carNumber":"1","teamId":"trackhouse"},
+    {"driverId":"d88","carNumber":"88","teamId":"trackhouse"},
+    {"driverId":"d97","carNumber":"97","teamId":"trackhouse"},
+    {"driverId":"d6","carNumber":"6","teamId":"rfk"},
+    {"driverId":"d17","carNumber":"17","teamId":"rfk"},
+    {"driverId":"d60","carNumber":"60","teamId":"rfk"}
+  ],
+  "races": [
+    {"id":"r1","startersCount":12,"qualifyingFieldCount":12,"results":[
+      {"d":"d54","f":1,"q":4},{"d":"d24","f":2,"q":7},{"d":"d97","f":3,"q":3},{"d":"d5","f":4,"q":1},{"d":"d20","f":5,"q":9},{"d":"d88","f":6,"q":2},{"d":"d1","f":7,"q":8},{"d":"d9","f":8,"q":10},{"d":"d6","f":9,"q":12},{"d":"d19","f":10,"q":6},{"d":"d60","f":11,"q":11},{"d":"d17","f":12,"q":5}
+    ]},
+    {"id":"r2","startersCount":10,"qualifyingFieldCount":10,"results":[
+      {"d":"d88","f":1,"q":3},{"d":"d24","f":2,"q":1},{"d":"d97","f":3,"q":2},{"d":"d19","f":4,"q":6},{"d":"d20","f":5,"q":8},{"d":"d9","f":6,"q":5},{"d":"d1","f":7,"q":4},{"d":"d17","f":8,"q":7},{"d":"d60","f":9,"q":10},{"d":"d6","f":10,"q":9},{"d":"d5","dns":true},{"d":"d54","dns":true}
+    ]},
+    {"id":"r3","startersCount":12,"qualifyingFieldCount":12,"results":[
+      {"d":"d97","f":1,"q":1},{"d":"d54","f":2,"q":3},{"d":"d88","f":3,"q":4},{"d":"d24","f":4,"q":2},{"d":"d19","f":5,"q":12},{"d":"d5","f":6,"q":1},{"d":"d60","f":7,"q":11},{"d":"d9","f":8,"q":10},{"d":"d6","f":9,"q":8},{"d":"d1","f":10,"q":9},{"d":"d17","f":11,"q":7,"dnf":true},{"d":"d20","f":12,"q":6,"dnf":true}
+    ]},
+    {"id":"r4","startersCount":11,"qualifyingFieldCount":11,"results":[
+      {"d":"d1","f":1,"q":4},{"d":"d5","f":2,"q":6},{"d":"d88","f":3,"q":5},{"d":"d97","f":4,"q":2},{"d":"d24","f":5,"q":1},{"d":"d17","f":6,"q":3},{"d":"d19","f":7,"q":7},{"d":"d20","f":8,"q":8},{"d":"d9","f":9,"q":11},{"d":"d60","f":10,"q":10},{"d":"d6","f":11,"q":9},{"d":"d54","dns":true}
+    ]},
+    {"id":"r5","startersCount":12,"qualifyingFieldCount":12,"results":[
+      {"d":"d24","f":1,"q":1},{"d":"d54","f":2,"q":8},{"d":"d5","f":3,"q":2},{"d":"d97","f":4,"q":7},{"d":"d9","f":5,"q":9},{"d":"d88","f":6,"q":3},{"d":"d20","f":7,"q":10},{"d":"d19","f":8,"q":6},{"d":"d1","f":9,"q":4},{"d":"d6","f":10,"q":11},{"d":"d17","f":11,"q":5},{"d":"d60","f":12,"q":12}
+    ]},
+    {"id":"r6","startersCount":12,"qualifyingFieldCount":12,"results":[
+      {"d":"d97","f":1,"q":3},{"d":"d88","f":2,"q":1},{"d":"d20","f":3,"q":11},{"d":"d17","f":4,"q":2},{"d":"d5","f":5,"q":7},{"d":"d54","f":6,"q":5},{"d":"d60","f":7,"q":10},{"d":"d24","f":8,"q":4},{"d":"d9","f":9,"q":6},{"d":"d1","f":10,"q":8},{"d":"d19","f":11,"q":9},{"d":"d6","f":12,"q":12}
+    ]},
+    {"id":"r7","startersCount":11,"qualifyingFieldCount":11,"results":[
+      {"d":"d88","f":1,"q":2},{"d":"d5","f":2,"q":1},{"d":"d17","f":3,"q":10},{"d":"d97","f":4,"q":3},{"d":"d54","f":5,"q":4},{"d":"d1","f":6,"q":8},{"d":"d20","f":7,"q":6},{"d":"d19","f":8,"q":11},{"d":"d60","f":9,"q":5},{"d":"d9","f":10,"q":7},{"d":"d6","f":11,"q":9,"dnf":true},{"d":"d24","dns":true}
+    ]},
+    {"id":"r8","startersCount":10,"qualifyingFieldCount":10,"results":[
+      {"d":"d88","f":1,"q":2},{"d":"d97","f":2,"q":3},{"d":"d20","f":3,"q":5},{"d":"d1","f":4,"q":8},{"d":"d60","f":5,"q":6},{"d":"d24","f":6,"q":1},{"d":"d9","f":7,"q":10},{"d":"d19","f":8,"q":7},{"d":"d17","f":9,"q":4},{"d":"d6","f":10,"q":9},{"d":"d5","dns":true},{"d":"d54","dns":true}
+    ]}
+  ]
+}

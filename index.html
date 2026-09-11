@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>N26 Racing League | Official Home</title>
+ <meta name="description" content="NASCAR 26 Racing League — A fantasy racing league built on NASCAR 26. Claim a real car number, race your friends, compete for the championship.">
+ <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+ <style>
+  :root {
+   --bg: #0c0c0f;
+   --surface: #14141a;
+   --surface2: #1c1c24;
+   --surface3: #24242e;
+   --border: rgba(255,255,255,0.07);
+   --border2: rgba(255,255,255,0.14);
+   --white: #f4f4f6;
+   --muted: #72728a;
+   --muted2: #44445a;
+   --yellow: #FFC200;
+   --yellow2: #e6a800;
+   --red: #E8002D;
+   --blue: #003087;
+   --blue2: #0047BB;
+   --radius-sm: 6px;
+   --radius-md: 12px;
+   --radius-lg: 20px;
+   --radius-xl: 28px;
+   --radius-pill: 9999px;
+   --font: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+   --nav-h: 52px;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body { background: var(--bg); color: var(--white); font-family: var(--font); font-size: 15px; line-height: 1.55; overflow-x: hidden; }
+  a { text-decoration: none; color: inherit; }
+  img { display: block; max-width: 100%; }
+
+  /* ── TICKER ── */
+  .ticker { background: var(--yellow); height: 32px; display: flex; align-items: center; overflow: hidden; }
+  .ticker-inner { display: flex; align-items: center; gap: 28px; padding: 0 16px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; width: 100%; }
+  .ticker-inner::-webkit-scrollbar { display: none; }
+  .ticker-item { display: flex; align-items: center; gap: 7px; font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: #000; flex-shrink: 0; }
+  .ticker-badge { background: var(--blue); color: #fff; padding: 1px 7px; border-radius: 3px; font-size: 10px; font-weight: 800; letter-spacing: -0.01em; }
+  .ticker-badge.red { background: var(--red); }
+  .ticker-sep { width: 1px; height: 14px; background: rgba(0,0,0,0.2); flex-shrink: 0; }
+
+  /* ── NAV ── */
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(0,48,135,0.97); backdrop-filter: blur(16px); border-bottom: 2px solid var(--yellow); padding: 0 20px; height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .nav-logo { font-family: var(--font); font-size: 22px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; color: var(--white); display: flex; align-items: center; gap: 10px; white-space: nowrap; flex-shrink: 0; }
+  .nav-flag { display: grid; grid-template-columns: repeat(3, 5px); grid-template-rows: repeat(3, 5px); gap: 1px; }
+  .nav-flag span { display: block; }
+  .nav-flag span:nth-child(odd) { background: var(--yellow); }
+  .nav-flag span:nth-child(even) { background: rgba(255,255,255,0.2); }
+  .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; flex: 1; justify-content: center; }
+  .nav-links a { font-family: var(--font); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: rgba(255,255,255,0.7); padding: 6px 12px; border-radius: var(--radius-sm); transition: color 0.15s, background 0.15s; }
+  .nav-links a:hover { color: var(--yellow); background: rgba(255,255,255,0.08); }
+  .nav-links a.active { color: var(--yellow); }
+  .nav-join { background: var(--yellow); color: #000; font-family: var(--font); font-size: 14px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; padding: 8px 16px; border-radius: var(--radius-sm); white-space: nowrap; transition: background 0.15s; flex-shrink: 0; }
+  .nav-join:hover { background: #ffd033; }
+  .nav-hamburger { display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 4px; }
+  .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--white); border-radius: 1px; }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+
+  /* ── SECTION LABEL ── */
+  .s-eyebrow { font-family: var(--font); font-size: 11px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--yellow); display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .s-eyebrow::before { content: ''; display: block; width: 16px; height: 2px; background: var(--yellow); }
+  .s-title { font-family: var(--font); font-size: clamp(26px, 6vw, 40px); font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; color: var(--white); line-height: 1; margin-bottom: 16px; }
+  .s-hdr { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+  .s-hdr-right { font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted); }
+  .s-hdr-right:hover { color: var(--yellow); }
+
+  /* ── HERO SECTION ── */
+  .site-hero {
+   position: relative;
+   isolation: isolate;
+   background: #111116;
+   border-bottom: 1px solid var(--border);
+   padding: 56px 20px 52px;
+   text-align: center;
+   overflow: hidden;
+  }
+  .site-hero::before { content:''; position:absolute; inset:0; z-index:-1; opacity:.08; background-image: linear-gradient(135deg, #fff 25%, transparent 25%), linear-gradient(225deg, #fff 25%, transparent 25%), linear-gradient(45deg, #fff 25%, transparent 25%), linear-gradient(315deg, #fff 25%, #111116 25%); background-position: 0 0, 14px 0, 14px -14px, 0 14px; background-size: 28px 28px; mask-image: linear-gradient(to right, transparent, #000 28%, #000 72%, transparent); }
+  .site-hero::after { content:'BARL / N26'; position:absolute; right:20px; bottom:18px; color:rgba(255,255,255,.18); font:700 10px var(--font); letter-spacing:.18em; transform:rotate(-90deg); transform-origin:right bottom; }
+  .site-hero-inner { max-width: 980px; margin: 0 auto; text-align: left; }
+  .site-hero-headline {
+   font-family: 'Audiowide', var(--font);
+   font-size: clamp(42px, 10vw, 72px);
+   font-weight: 900;
+   letter-spacing: -0.03em;
+   text-transform: uppercase;
+   color: var(--white);
+   line-height: 0.95;
+   margin-bottom: 20px;
+   text-shadow: 0 8px 28px rgba(0,0,0,.3);
+   animation: hero-rise .7s ease both;
+  }
+  .site-hero-headline span { color: var(--yellow); }
+  .site-hero-sub {
+   font-size: clamp(15px, 3vw, 18px);
+   color: rgba(255,255,255,0.75);
+   line-height: 1.5;
+   max-width: 520px;
+   margin: 0 0 12px;
+   font-weight: 400;
+   animation: hero-rise .7s .1s ease both;
+  }
+  .site-hero-platforms {
+   font-size: 11px;
+   font-weight: 600;
+   letter-spacing: 0.06em;
+   text-transform: uppercase;
+   color: var(--muted);
+   margin-bottom: 32px;
+  }
+  .site-hero-cta {
+   display: inline-block;
+   background: var(--yellow);
+   color: #000;
+   font-family: var(--font);
+   font-size: 16px;
+   font-weight: 900;
+   letter-spacing: -0.01em;
+   text-transform: uppercase;
+   padding: 14px 32px;
+   border-radius: var(--radius-sm);
+   transition: background 0.15s, transform 0.1s;
+   margin-bottom: 16px;
+   box-shadow: 0 10px 24px rgba(0,0,0,.28);
+   animation: hero-rise .7s .2s ease both;
+  }
+  .site-hero-cta:hover { background: #ffd033; transform: translateY(-1px); }
+ .site-hero-meta {
+   font-size: 12px;
+   color: var(--muted);
+   font-weight: 500;
+   letter-spacing: 0.01em;
+  }
+  @keyframes hero-rise { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }
+
+  /* ── HERO / NEXT RACE ── */
+  .hero { padding: 32px 20px 0; max-width: 680px; margin: 0 auto; }
+  .next-race-card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden; }
+  .nrc-header { background: var(--yellow); padding: 9px 18px; display: flex; align-items: center; justify-content: space-between; }
+  .nrc-header-left { font-family: var(--font); font-size: 12px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; color: #000; }
+  .nrc-header-right { font-family: var(--font); font-size: 11px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: rgba(0,0,0,0.55); }
+  .nrc-body { padding: 20px 18px; }
+  .nrc-name { font-family: var(--font); font-size: 36px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1; margin-bottom: 4px; }
+  .nrc-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+  .countdown { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
+  .cd-unit { background: var(--surface2); border-radius: var(--radius-md); padding: 12px 6px; text-align: center; border: 1px solid var(--border); }
+  .cd-num { font-family: var(--font); font-size: 30px; font-weight: 900; color: var(--yellow); display: block; line-height: 1; }
+  .cd-lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: -0.01em; margin-top: 3px; }
+  .nrc-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); padding-top: 12px; border-top: 1px solid var(--border); }
+  .nrc-meta strong { color: var(--white); font-weight: 600; }
+
+  /* ── LAST RACE ── */
+  .last-race-card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden; }
+  .lrc-header { background: var(--red); padding: 9px 18px; }
+  .lrc-header span { font-family: var(--font); font-size: 12px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; color: #fff; }
+  .lrc-body { padding: 24px 18px; text-align: center; }
+  .lrc-body .placeholder-icon { font-size: 36px; margin-bottom: 10px; }
+  .lrc-body .placeholder-title { font-family: var(--font); font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); margin-bottom: 4px; }
+  .lrc-body .placeholder-sub { font-size: 12px; color: var(--muted); }
+
+  /* ── STANDINGS ── */
+  .section-block { padding: 40px 0 0; }
+  .standings-tabs { display: flex; gap: 3px; background: var(--surface); border-radius: var(--radius-sm); padding: 3px; border: 1px solid var(--border); }
+  .tab-btn { font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; padding: 6px 14px; border-radius: 4px; border: none; cursor: pointer; background: transparent; color: var(--muted); transition: all 0.15s; }
+  .tab-btn.active { background: var(--yellow); color: #000; }
+  .standings-card { background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
+  .s-row { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 12px; padding: 13px 18px; border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  .s-row:last-child { border-bottom: none; }
+  .s-row:not(.s-row-hdr):hover { background: var(--surface2); }
+  .s-row-hdr { background: var(--surface2); padding: 9px 18px; }
+  .s-row-hdr span { font-family: var(--font); font-size: 10px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted2); }
+  .s-pos { font-family: var(--font); font-size: 26px; font-weight: 900; color: var(--muted2); text-align: center; line-height: 1; }
+  .s-driver { display: flex; align-items: center; gap: 10px; }
+  .s-carnum { background: var(--surface3); color: var(--yellow); font-family: var(--font); font-size: 12px; font-weight: 900; width: 30px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .s-name { font-family: var(--font); font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); }
+  .s-team-lbl { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .s-pts { font-family: var(--font); font-size: 22px; font-weight: 900; color: var(--white); display: block; line-height: 1; text-align: right; }
+  .s-pts-lbl { font-size: 9px; color: var(--muted2); letter-spacing: -0.01em; text-transform: uppercase; text-align: right; }
+  .s-empty { padding: 28px 18px; text-align: center; font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .s-empty strong { font-family: var(--font); font-size: 17px; font-weight: 800; text-transform: uppercase; color: var(--white); display: block; margin-bottom: 5px; letter-spacing: -0.01em; }
+
+  /* ── SCHEDULE ── */
+  .sched-list { display: flex; flex-direction: column; }
+  .sched-item { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+  .sched-item:last-child { border-bottom: none; }
+  .sched-num { font-family: var(--font); font-size: 32px; font-weight: 900; color: var(--surface3); width: 40px; text-align: center; flex-shrink: 0; line-height: 1; }
+  .sched-num.hot { color: var(--yellow); }
+  .sched-info { flex: 1; min-width: 0; }
+  .sched-name { font-family: var(--font); font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); line-height: 1.1; }
+  .sched-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .badge { font-family: var(--font); font-size: 10px; font-weight: 800; letter-spacing: -0.01em; text-transform: uppercase; padding: 4px 10px; border-radius: var(--radius-sm); flex-shrink: 0; white-space: nowrap; }
+  .badge-next { background: var(--yellow); color: #000; }
+  .badge-up { background: var(--surface3); color: var(--muted); }
+
+  /* ── RESPONSIVE ── */
+  @media (min-width: 768px) {
+   .page { padding: 0 32px; }
+   .hero { padding: 32px 32px 0; max-width: 720px; }
+   .nav-links { display: flex; }
+   .nav-hamburger { display: none; }
+  }
+  @media (max-width: 767px) {
+   .nav-links { display: none; }
+   .nav-hamburger { display: flex; }
+   .site-hero-inner { text-align: center; }
+   .site-hero-sub { margin-left: auto; margin-right: auto; }
+  }
+ .news-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; }
+ .news-card { padding:18px; border:1px solid var(--border); border-radius:12px; background:var(--surface); }
+ .news-card img { width:calc(100% + 36px); max-width:none; margin:-18px -18px 16px; aspect-ratio:16/9; object-fit:cover; border-radius:12px 12px 0 0; }
+ .news-card h3 { margin:0 0 8px; font-size:18px; line-height:1.1; }
+ .news-card p { margin:0; color:var(--muted); line-height:1.55; font-size:13px; }
+ .news-date { color:var(--yellow); font-size:10px; font-weight:800; text-transform:uppercase; margin-bottom:10px; }
+ </style>
+ <link rel="stylesheet" href="n26.css">
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+ <div class="ticker-inner">
+  <div class="ticker-item"><span class="ticker-badge">Next Race</span> Race 1 — Daytona International Speedway</div>
+  <div class="ticker-sep"></div>
+  <div class="ticker-item"><span class="ticker-badge">Season 1</span> 24 Spots · 8 Teams · <span id="season-race-count">8 Races</span></div>
+ </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+ <a href="index.html" class="nav-logo">B<span style="color:var(--yellow)">A</span>RL</a>
+ <ul class="nav-links">
+ <li><a href="index.html" class="active">Home</a></li>
+ <li><a href="standings.html">Standings</a></li>
+ <li><a href="profiles.html">Profiles</a></li>
+ <li><a href="archive.html">Archive</a></li>
+ <li><a href="results.html">Results</a></li>
+  <li><a href="schedule.html">Schedule</a></li>
+  <li><a href="rules.html">Rules</a></li>
+  <li><a href="claim.html">Roster</a></li>
+  <li><a href="join.html">Join</a></li>
+ </ul>
+ <a href="claim.html" class="nav-cta">Claim A Car →</a>
+ <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+  <span></span><span></span><span></span>
+ </div>
+</nav>
+<div class="nav-drawer" id="nav-drawer">
+  <a href="index.html" class="active">Home</a>
+  <a href="standings.html">Standings</a>
+  <a href="profiles.html">Profiles</a>
+  <a href="results.html">Results</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="rules.html">Rules</a>
+  <a href="claim.html">Roster</a>
+  <a href="join.html">Join</a>
+  <a href="claim.html" class="drawer-cta">Claim A Car →</a>
+</div>
+
+<!-- HERO SECTION -->
+<section class="site-hero">
+ <div class="site-hero-inner">
+  <h1 class="site-hero-headline">Claim Your <span>Number.</span></h1>
+  <p class="site-hero-sub">A fantasy racing league built on NASCAR 26. Claim a real NASCAR car number, race your friends every week, and compete for the championship.</p>
+  <div class="site-hero-platforms">Available on PlayStation · Xbox · PC</div>
+  <a href="claim.html" class="site-hero-cta">Claim Your Car →</a>
+  <div class="site-hero-meta">Season 1 · 24 spots · Free to join — just own the game</div>
+ </div>
+</section>
+
+<!-- MAIN -->
+<div class="hero">
+
+ <!-- NEXT RACE + LAST RACE side by side on desktop, stacked on mobile -->
+ <div style="display:grid;grid-template-columns:1fr;gap:12px;">
+
+ <!-- Next Race -->
+  <div class="next-race-card">
+  <div class="nrc-header">
+   <span class="nrc-header-left"> Next Race</span>
+   <span class="nrc-header-right" id="next-race-label">Race 1 Of 8</span>
+  </div>
+  <div class="nrc-body">
+   <div class="nrc-name" id="next-race-name">Daytona International Speedway</div>
+   <div class="nrc-sub" id="next-race-sub">Race 1 · Date to be announced</div>
+   <div class="countdown" id="race-countdown" hidden>
+    <div class="cd-unit"><span class="cd-num" id="cd-days">—</span><span class="cd-lbl">Days</span></div>
+    <div class="cd-unit"><span class="cd-num" id="cd-hrs">—</span><span class="cd-lbl">Hrs</span></div>
+    <div class="cd-unit"><span class="cd-num" id="cd-min">—</span><span class="cd-lbl">Min</span></div>
+    <div class="cd-unit"><span class="cd-num" id="cd-sec">—</span><span class="cd-lbl">Sec</span></div>
+   </div>
+   <div class="nrc-meta">
+    <span>Season <strong>1</strong></span>
+    <span id="season-format-label">Eight-Race Season</span>
+    <span><strong id="season-total-races">8 Races</strong> Total</span>
+   </div>
+  </div>
+ </div>
+
+ <!-- Last Race / Winner -->
+ <div class="last-race-card">
+  <div class="lrc-header"><span> Last Race Winner</span></div>
+  <div class="lrc-body">
+   <div class="placeholder-icon" id="last-race-icon"></div>
+   <div class="placeholder-title" id="last-race-title">Season 1 Hasn't Started</div>
+   <div class="placeholder-sub" id="last-race-sub">The winner will be posted here after Race 1</div>
+  </div>
+ </div>
+
+ </div>
+</div>
+
+<!-- STANDINGS -->
+<section class="page section-block" id="news">
+ <div class="s-hdr"><div><div class="s-eyebrow">From The Paddock</div><div class="s-title">League News</div></div><span class="s-hdr-right">Commissioner reviewed</span></div>
+ <div id="news-rows" class="news-grid"><div class="s-empty"><strong>No race reports yet</strong>Published debriefs will appear here after each certified race.</div></div>
+</section>
+
+<!-- STANDINGS -->
+<div class="page section-block" id="standings">
+ <div class="s-hdr">
+  <div>
+   <div class="s-eyebrow">Points</div>
+   <div class="s-title">Driver Standings</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+   <div class="standings-tabs">
+    <button class="tab-btn active" onclick="showTab('driver',this)">Drivers</button>
+    <button class="tab-btn" onclick="showTab('owner',this)">Owners</button>
+   </div>
+  </div>
+ </div>
+
+ <div id="tab-driver">
+  <div class="standings-card">
+   <div class="s-row s-row-hdr"><span>Pos</span><span>Driver</span><span>Pts</span></div>
+   <div id="driver-rows">
+    <div class="s-empty"><strong>Season 1 Hasn't Started</strong>Standings update after Race 1 at Daytona.</div>
+   </div>
+  </div>
+  <a href="standings.html" style="display:block;text-align:center;padding:10px;font-family: var(--font);font-size:13px;font-weight:700;letter-spacing: -0.01em;text-transform:uppercase;color:var(--blue);border-top:1px solid var(--border);">Full Standings →</a>
+ </div>
+ <div id="tab-owner" style="display:none;">
+  <div class="standings-card">
+   <div class="s-row s-row-hdr"><span>Pos</span><span>Team</span><span>Pts</span></div>
+   <div id="owner-rows">
+    <div class="s-empty"><strong>Season 1 Hasn't Started</strong>Owner standings update after Race 1.</div>
+   </div>
+  </div>
+  <a href="standings.html" style="display:block;text-align:center;padding:10px;font-family: var(--font);font-size:13px;font-weight:700;letter-spacing: -0.01em;text-transform:uppercase;color:var(--blue);border-top:1px solid var(--border);">Full Standings →</a>
+ </div>
+</div>
+
+<!-- SCHEDULE -->
+<div class="page section-block" id="schedule">
+ <div class="s-hdr">
+  <div>
+   <div class="s-eyebrow">Schedule</div>
+   <div class="s-title">Season 1</div>
+  </div>
+  <a href="schedule.html" class="s-hdr-right">Full Schedule →</a>
+ </div>
+ <div class="sched-list">
+  <div class="sched-item">
+   <div class="sched-num hot">1</div>
+   <div class="sched-info"><div class="sched-name">Daytona International Speedway</div><div class="sched-sub">Season Opener · Race 1</div></div>
+   <span class="badge badge-next">Next</span>
+  </div>
+  <div class="sched-item">
+   <div class="sched-num">2</div>
+   <div class="sched-info"><div class="sched-name">Nashville Superspeedway</div><div class="sched-sub">Race 2</div></div>
+   <span class="badge badge-up">Upcoming</span>
+  </div>
+  <div class="sched-item">
+   <div class="sched-num">3</div>
+   <div class="sched-info"><div class="sched-name">Bristol Motor Speedway</div><div class="sched-sub">Race 3</div></div>
+   <span class="badge badge-up">Upcoming</span>
+  </div>
+  <div class="sched-item">
+   <div class="sched-num">4</div>
+   <div class="sched-info"><div class="sched-name">Watkins Glen International</div><div class="sched-sub">Race 4 · Road Course</div></div>
+   <span class="badge badge-up">Upcoming</span>
+  </div>
+  <div class="sched-item">
+   <div class="sched-num">5</div>
+   <div class="sched-info"><div class="sched-name">Charlotte Motor Speedway</div><div class="sched-sub">Race 5</div></div>
+   <span class="badge badge-up">Upcoming</span>
+  </div>
+  <div class="sched-item">
+   <div class="sched-num">6</div>
+   <div class="sched-info"><div class="sched-name">Iowa Speedway</div><div class="sched-sub">Race 6</div></div>
+   <span class="badge badge-up">Upcoming</span>
+  </div>
+  <div class="sched-item">
+   <div class="sched-num">7</div>
+   <div class="sched-info"><div class="sched-name">Talladega Superspeedway</div><div class="sched-sub">Race 7</div></div>
+   <span class="badge badge-up">Upcoming</span>
+  </div>
+  <div class="sched-item">
+   <div class="sched-num hot">8</div>
+   <div class="sched-info"><div class="sched-name">Chicagoland Speedway</div><div class="sched-sub">Season Finale · Race 8</div></div>
+   <span class="badge badge-up">Finale</span>
+  </div>
+ </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+ <div class="footer-links">
+ <a href="index.html">Home</a>
+ <a href="standings.html">Standings</a>
+ <a href="profiles.html">Profiles</a>
+ <a href="results.html">Results</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="rules.html">Rules</a>
+  <a href="claim.html">Roster</a>
+  <a href="join.html">Join</a>
+ </div>
+ N26 Racing League · Season 1 · B<span style="color:var(--yellow)">A</span>RL · Below Average Racing League
+</footer>
+
+<script src="./scripts/league-rules.js"></script>
+<script src="./scripts/public-bootstrap.js"></script>
+<script>
+ const SB_URL = 'https://txipxisumngvzkuqsysq.supabase.co';
+ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
+ const SB_KEY_NEW = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0eGlweGlzdW1uZ3Z6a3VxeXN4cXMiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4OTA3MTExNiwgImV4cCI6MjEwNDY0NzExNn0.NxrJIAkWWfg-5ezHni_z56IRmLD9HHxM-VAALiT22io';
+ const SB_HDR = { 'apikey': SB_KEY_NEW, 'Authorization': 'Bearer ' + SB_KEY_NEW };
+ const TEAM_MAP = {'5':'Hendrick','9':'Hendrick','24':'Hendrick','48':'Hendrick','11':'JGR','19':'JGR','20':'JGR','54':'JGR','2':'Penske','12':'Penske','22':'Penske','23':'23XI','35':'23XI','45':'23XI','6':'RFK','17':'RFK','60':'RFK','7':'Spire','71':'Spire','77':'Spire','1':'Trackhouse','88':'Trackhouse','97':'Trackhouse','42':'Legacy Motor Club','43':'Legacy Motor Club','84':'Legacy Motor Club'};
+ let leagueRaceCount = 8;
+
+ async function sbFetch(path) {
+  const r = await fetch(SB_URL + path, { headers: SB_HDR });
+  return r.json();
+ }
+ async function loadHomeStandings() {
+  const display = await window.__leagueDataReady;
+  let news = display.news || [];
+  if (!news.length) {
+   news = await sbFetch('/rest/v1/n26_news_articles?select=id,headline,dek,body,image_url,published_at&status=eq.published&order=published_at.desc&limit=6').catch(() => []);
+  }
+  if (!news.length) {
+   news = [{
+    headline: 'The BARL Roster Is Taking Shape',
+    dek: 'Eleven drivers are officially in. Thirteen seats remain open across eight real NASCAR teams.',
+    published_at: '2026-09-11T19:13:05.870Z',
+    image_url: '/assets/news/barl-season-1-launch.jpg',
+   }];
+  }
+  renderNews(news);
+  const { claims, races, results } = display;
+  const isNormalized = display.source === 'normalized';
+  leagueRaceCount = races.length || leagueRaceCount;
+  document.getElementById('season-race-count').textContent = `${leagueRaceCount} Races`;
+  document.getElementById('season-total-races').textContent = `${leagueRaceCount} Races`;
+  document.getElementById('season-format-label').textContent = 'No Playoff Reset';
+  document.querySelectorAll('.sched-item').forEach(item => {
+   const number = item.querySelector('.sched-num')?.textContent.trim();
+   item.hidden = !races.some(race => String(race.race_number) === number);
+   item.style.display = item.hidden ? 'none' : '';
+  });
+  {
+   const row8 = [...document.querySelectorAll('.sched-item')].find(item => item.querySelector('.sched-num')?.textContent.trim() === '8');
+   const row7 = [...document.querySelectorAll('.sched-item')].find(item => item.querySelector('.sched-num')?.textContent.trim() === '7');
+   if (row7) row7.querySelector('.sched-sub').textContent = 'Race 7';
+   if (row8) {
+    row8.querySelector('.sched-sub').textContent = 'Season Finale · Race 8';
+    const badge = row8.querySelector('.badge');
+    if (badge) { badge.textContent = 'Finale'; badge.className = 'badge badge-up'; }
+   }
+  }
+
+  const authoritativeStandings = isNormalized && display.ruleset && window.N26LeagueRules
+   ? window.N26LeagueRules.calculateSeasonStandings({
+     entries: display.entries.map(entry => ({ driverId: entry.driver_id, teamId: (display.assignments || []).find(assignment => assignment.driver_id === entry.driver_id)?.team_id || null, entryStatus: entry.entry_status })),
+     races,
+     results,
+     pointsByPosition: display.ruleset.points_by_position,
+     strict: false,
+   })
+   : null;
+  const completedIds = new Set((authoritativeStandings?.completedRaces || races.filter(r => r.status === 'completed')).map(r => r.id));
+  const racesRun = completedIds.size;
+  const nextRace = races.find(r => !['completed', 'voided'].includes(r.status));
+  const lastCompletedRace = [...races].reverse().find(r => r.status === 'completed');
+  startNextRaceCountdown(nextRace);
+  updateLastRaceWinner(lastCompletedRace, results, claims);
+
+  // Driver stats
+  const stats = {};
+  let drivers;
+  if (authoritativeStandings) {
+   const identityById = Object.fromEntries(claims.map(claim => [claim.driver_id, claim]));
+   const assignmentByDriver = Object.fromEntries((display.assignments || []).map(assignment => [assignment.driver_id, assignment]));
+   const teamById = Object.fromEntries((display.catalog?.teams || []).map(team => [team.id, team.name]));
+   drivers = authoritativeStandings.drivers.map(driver => {
+    const identity = identityById[driver.driverId] || {};
+    const assignment = assignmentByDriver[driver.driverId] || {};
+    return { key: driver.driverId, driverId: driver.driverId, car: assignment.car_number || identity.car_number, team: teamById[assignment.team_id] || identity.team_name, gamertag: identity.gamertag, name: identity.displayName || [identity.first_name, identity.last_name].filter(Boolean).join(' ').trim() || identity.gamertag, pts: driver.points };
+   });
+  } else {
+   claims.forEach(c => {
+    const key = c.car_number;
+    stats[key] = { key, driverId:c.driver_id, car: c.car_number, team:c.team_name || TEAM_MAP[c.car_number], gamertag: c.gamertag, name: [c.first_name, c.last_name].filter(Boolean).join(' ').trim() || c.gamertag, pts: 0 };
+   });
+   results.filter(r => completedIds.has(r.race_id)).forEach(r => {
+    const driver = stats[r.car_number];
+    if (driver) driver.pts += r.points_earned || 0;
+   });
+   drivers = Object.values(stats).sort((a,b) => b.pts - a.pts || String(a.key).localeCompare(String(b.key)));
+  }
+
+  const driverEl = document.getElementById('driver-rows');
+  if (racesRun === 0) {
+   driverEl.innerHTML = '<div class="s-empty"><strong>Season 1 Hasn\'t Started</strong>Standings update after Race 1 at Daytona.</div>';
+  } else {
+   driverEl.innerHTML = drivers.slice(0,10).map((d,i) => `
+    <div class="s-row">
+     <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
+     <span>
+      <img style="width:40px;height:25px;object-fit:contain;margin-right:6px;vertical-align:middle" src="https://cf.nascar.com/data/images/carbadges/1/${d.car}.png" alt="#${d.car}">
+      <span style="font-family: var(--font);font-size:14px;font-weight:800;text-transform:uppercase;">${d.name||'—'}</span>
+     </span>
+     <span style="font-family: var(--font);font-size:16px;font-weight:900;">${d.pts}</span>
+    </div>`).join('');
+  }
+
+  // Owner stats
+  const ownerPts = {};
+  if (isNormalized) {
+   (display.catalog?.teams || []).forEach(team => { ownerPts[team.name] = 0; });
+   (authoritativeStandings?.teams || []).forEach(team => {
+    const name = (display.catalog?.teams || []).find(candidate => candidate.id === team.teamId)?.name || team.teamId;
+    ownerPts[name] = team.points;
+   });
+  } else {
+   Object.values(stats).forEach(d => {
+    const t = TEAM_MAP[d.car];
+    if (t) ownerPts[t] = (ownerPts[t]||0) + d.pts;
+   });
+  }
+  const teams = Object.entries(ownerPts).sort((a,b)=>b[1]-a[1]);
+  const ownerEl = document.getElementById('owner-rows');
+  if (racesRun === 0) {
+   ownerEl.innerHTML = '<div class="s-empty"><strong>Season 1 Hasn\'t Started</strong>Owner standings update after Race 1.</div>';
+  } else {
+   ownerEl.innerHTML = teams.map(([team,pts],i) => `
+    <div class="s-row">
+     <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
+     <span style="font-family: var(--font);font-size:14px;font-weight:800;text-transform:uppercase;">${team}</span>
+     <span style="font-family: var(--font);font-size:16px;font-weight:900;">${pts}</span>
+    </div>`).join('');
+  }
+ }
+ function renderNews(news) {
+  const target = document.getElementById('news-rows');
+  if (!target || !news.length) return;
+  target.innerHTML = news.map(article => `<article class="news-card">${article.image_url ? `<img src="${escapeHtml(article.image_url)}" alt="" loading="lazy">` : ''}<div class="news-date">${new Date(article.published_at).toLocaleDateString()}</div><h3>${escapeHtml(article.headline)}</h3><p>${escapeHtml(article.dek || '')}</p></article>`).join('');
+ }
+ function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+
+ loadHomeStandings().catch(()=>{});
+
+ function showTab(tab, btn) {
+  document.getElementById('tab-driver').style.display = tab === 'driver' ? 'block' : 'none';
+  document.getElementById('tab-owner').style.display = tab === 'owner' ? 'block' : 'none';
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
+ }
+ function startNextRaceCountdown(race) {
+  if (!race) return;
+  const label = document.getElementById('next-race-label');
+  if (label) label.textContent = `Race ${race.race_number} Of ${leagueRaceCount}`;
+  document.getElementById('next-race-name').textContent = race.track_name || race.track_short;
+  document.getElementById('next-race-sub').textContent = `Race ${race.race_number} · ${race.race_date || 'Date to be announced'}`;
+  if (!race.race_date) return;
+
+  const target = new Date(`${race.race_date}T20:00:00`);
+  const countdown = document.getElementById('race-countdown');
+  countdown.hidden = false;
+  const tick = () => {
+   const diff = target - Date.now();
+   if (diff <= 0) {
+    countdown.hidden = true;
+    document.getElementById('next-race-sub').textContent = `Race ${race.race_number} · Race day`;
+    return;
+   }
+   const v = [Math.floor(diff/864e5), Math.floor(diff%864e5/36e5), Math.floor(diff%36e5/6e4), Math.floor(diff%6e4/1e3)];
+   ['days','hrs','min','sec'].forEach((id,i) => { const el = document.getElementById('cd-'+id); if(el) el.textContent = String(v[i]).padStart(2,'0'); });
+  };
+  tick();
+  setInterval(tick, 1000);
+ }
+ function updateLastRaceWinner(race, results, claims) {
+  if (!race) return;
+  const winner = results.find(r => r.race_id === race.id && r.finish_position === 1);
+  if (!winner) return;
+  const claim = claims.find(c => winner.driver_id ? c.driver_id === winner.driver_id : c.car_number === winner.car_number);
+  const name = claim ? ([claim.first_name, claim.last_name].filter(Boolean).join(' ').trim() || claim.gamertag) : `Car #${winner.car_number}`;
+  const icon = document.getElementById('last-race-icon');
+  const title = document.getElementById('last-race-title');
+  const sub = document.getElementById('last-race-sub');
+  if (icon) icon.textContent = '#1';
+  if (title) title.textContent = name;
+  if (sub) sub.textContent = `${race.track_short || race.track_name} · Car #${winner.car_number}`;
+ }
+ function toggleMenu() {
+  const links = document.querySelector('.nav-links');
+  if (!links) return;
+  links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+  links.style.flexDirection = 'column';
+  links.style.position = 'absolute';
+  links.style.top = '54px';
+  links.style.left = '0'; links.style.right = '0';
+  links.style.background = 'rgba(0,48,135,0.98)';
+  links.style.padding = '12px 20px';
+  links.style.borderBottom = '2px solid var(--yellow)';
+ }
+</script>
+<script>
+  function toggleNav() {
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('nav-drawer').classList.toggle('open');
+  }
+  document.addEventListener('click', function(e) {
+    var h = document.getElementById('hamburger');
+    var d = document.getElementById('nav-drawer');
+    if (h && d && !h.contains(e.target) && !d.contains(e.target)) {
+      h.classList.remove('open');
+      d.classList.remove('open');
+    }
+  });
+</script>
+</body>
+</html>

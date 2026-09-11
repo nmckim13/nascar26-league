@@ -1,0 +1,15 @@
+{
+  "source": "https://www.nascar.com/nascar-cup-series-teams/",
+  "logos": {
+    "23xi": "https://www.nascar.com/wp-content/uploads/sites/7/2026/01/17/23XI-Solid-Racing-Red.png",
+    "front-row": "https://www.nascar.com/wp-content/uploads/sites/7/2026/04/01/FRM-logo-full-color.png",
+    "haas": "https://www.nascar.com/wp-content/uploads/sites/7/2026/01/18/Haas-Factory-Team-1.png",
+    "hendrick": "https://www.nascar.com/wp-content/uploads/sites/7/2026/01/17/Hendrick_Motorsports_Logo.svg.png",
+    "jgr": "https://www.nascar.com/wp-content/uploads/sites/7/2026/01/17/JGR-Block-Logo.png",
+    "legacy": "https://www.nascar.com/wp-content/uploads/sites/7/2026/01/27/LegacyMC_Global_OnWhite-RGB_2026.png",
+    "rfk": "https://www.nascar.com/wp-content/uploads/sites/7/2026/01/17/RFK_logo-443x189-1.jpg",
+    "spire": "https://www.nascar.com/wp-content/uploads/sites/7/2026/01/17/Spire_HorizontalBadge.png",
+    "trackhouse": "https://www.nascar.com/wp-content/uploads/sites/7/2021/01/02/Trackhouse_light.png",
+    "penske": "https://www.nascar.com/wp-content/uploads/sites/7/2026/01/18/Penskelogo1.png"
+  }
+}

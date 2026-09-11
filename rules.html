@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Rules — N26 League</title>
+ <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+ <style>
+ :root {
+ --bg: #0e0e0e;
+ --surface: #171717;
+ --surface2: #1f1f1f;
+ --surface3: #272727;
+ --border: rgba(255,255,255,0.07);
+ --border2: rgba(255,255,255,0.13);
+ --white: #f0ece4;
+ --muted: #7a7368;
+ --muted2: #4a4640;
+ --yellow: #FFC200;
+ --red: #C8102E;
+ --green: #00843D;
+ }
+ *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+ html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+ body { background: var(--bg); color: var(--white); font-family: var(--font); font-size: 15px; line-height: 1.6; overflow-x: hidden; }
+ a { text-decoration: none; color: inherit; }
+
+ /* NAV */
+ nav {
+ position: sticky; top: 0; z-index: 100;
+ background: rgba(14,14,14,0.96);
+ backdrop-filter: blur(16px);
+ border-bottom: 2px solid var(--yellow);
+ padding: 0 20px; height: 52px;
+ display: flex; align-items: center; justify-content: space-between; gap: 16px;
+ }
+ .nav-logo { font-family: var(--font); font-size: 22px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+ .nav-flag { display: grid; grid-template-columns: repeat(3,5px); grid-template-rows: repeat(3,5px); gap: 1px; }
+ .nav-flag span { display: block; }
+ .nav-flag span:nth-child(odd) { background: var(--yellow); }
+ .nav-flag span:nth-child(even) { background: rgba(255,255,255,0.15); }
+ .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
+ .nav-links a { font-family: var(--font); font-size: 14px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted); padding: 6px 12px; border-radius: 6px; transition: color 0.15s, background 0.15s; }
+ .nav-links a:hover, .nav-links a.active { color: var(--yellow); background: rgba(255,194,0,0.07); }
+ .nav-join { background: var(--yellow); color: #000; font-family: var(--font); font-size: 14px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; padding: 8px 16px; border-radius: 6px; white-space: nowrap; transition: background 0.15s; }
+ .nav-join:hover { background: #ffd033; }
+ @media (max-width: 767px) { .nav-links { display: none; } }
+
+ /* PAGE */
+ .page { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+ /* HERO */
+ .hero { padding: 40px 20px 36px; max-width: 720px; margin: 0 auto; }
+ .eyebrow { font-family: var(--font); font-size: 11px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--yellow); display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+ .eyebrow::before { content: ''; display: block; width: 16px; height: 2px; background: var(--yellow); }
+ .hero h1 { font-family: var(--font); font-size: clamp(44px, 11vw, 72px); font-weight: 900; text-transform: uppercase; line-height: 0.95; letter-spacing: -0.01em; margin-bottom: 14px; }
+ .hero h1 em { font-style: normal; color: var(--yellow); }
+ .hero-sub { font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 480px; }
+
+ /* TOC */
+ .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin: 32px 0; }
+ .toc-title { font-family: var(--font); font-size: 12px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+ .toc-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+ .toc-list a { font-family: var(--font); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); display: flex; align-items: center; gap: 8px; padding: 5px 0; transition: color 0.15s; }
+ .toc-list a:hover { color: var(--yellow); }
+ .toc-list a::before { content: ''; display: block; width: 12px; height: 2px; background: var(--yellow); opacity: 0.4; flex-shrink: 0; }
+ .toc-list a:hover::before { opacity: 1; }
+
+ /* SECTIONS */
+ .rules-section { margin-bottom: 48px; scroll-margin-top: 70px; }
+ .section-eyebrow { font-family: var(--font); font-size: 11px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--yellow); display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+ .section-eyebrow::before { content: ''; display: block; width: 16px; height: 2px; background: var(--yellow); }
+ .section-title { font-family: var(--font); font-size: clamp(26px, 5vw, 38px); font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1; margin-bottom: 20px; }
+
+ /* RULE CARDS */
+ .rule-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; margin-bottom: 10px; }
+ .rule-card-title { font-family: var(--font); font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+ .rule-card-title .badge { font-size: 10px; background: var(--yellow); color: #000; padding: 2px 8px; border-radius: 4px; font-weight: 800; letter-spacing: -0.01em; }
+ .rule-card-title .badge.red { background: var(--red); color: #fff; }
+ .rule-card-title .badge.green { background: var(--green); color: #fff; }
+ .rule-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
+ .rule-card p + p { margin-top: 8px; }
+ [hidden] { display: none !important; }
+
+ /* POINTS TABLE */
+ .points-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+ .points-table thead tr { background: var(--surface2); }
+ .points-table thead th { font-family: var(--font); font-size: 10px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+ .points-table tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+ .points-table tbody tr:last-child { border-bottom: none; }
+ .points-table tbody tr:hover { background: var(--surface2); }
+ .points-table tbody td { padding: 8px 12px; color: var(--muted); }
+ .points-table tbody td:first-child { font-family: var(--font); font-size: 15px; font-weight: 900; color: var(--white); }
+ .points-table tbody td.pts { font-family: var(--font); font-size: 16px; font-weight: 900; color: var(--yellow); text-align: right; }
+ .points-table tbody tr.highlight td { color: var(--white); }
+ .points-table tbody tr.highlight td:first-child { color: var(--yellow); }
+
+ /* CHASE TABLE */
+ .chase-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+ .chase-table thead tr { background: var(--surface2); }
+ .chase-table thead th { font-family: var(--font); font-size: 10px; font-weight: 700; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted); padding: 8px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+ .chase-table tbody tr { border-bottom: 1px solid var(--border); }
+ .chase-table tbody tr:last-child { border-bottom: none; }
+ .chase-table tbody td { padding: 10px 14px; }
+ .chase-table .pos { font-family: var(--font); font-size: 20px; font-weight: 900; color: var(--muted2); }
+ .chase-table .pos.p1 { color: var(--yellow); }
+ .chase-table .bonus { font-family: var(--font); font-size: 16px; font-weight: 900; color: var(--yellow); }
+ .chase-table .start { font-family: var(--font); font-size: 16px; font-weight: 900; color: var(--white); }
+ .chase-table .label { font-size: 12px; color: var(--muted); }
+
+ /* STAGE POINTS */
+ .stage-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+ .stage-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+ .stage-card-title { font-family: var(--font); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; color: var(--yellow); margin-bottom: 10px; }
+ .stage-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+ .stage-row:last-child { border-bottom: none; }
+ .stage-row .pos { color: var(--muted); font-size: 12px; }
+ .stage-row .pts { font-family: var(--font); font-size: 15px; font-weight: 900; color: var(--white); }
+
+ /* TIEBREAKER LIST */
+ .tb-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+ .tb-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface2); border-radius: 10px; border: 1px solid var(--border); }
+ .tb-num { font-family: var(--font); font-size: 22px; font-weight: 900; color: var(--yellow); width: 28px; flex-shrink: 0; }
+ .tb-text { font-family: var(--font); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; }
+
+ /* DIVIDER */
+ .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+ /* FOOTER */
+ footer { border-top: 2px solid var(--yellow); padding: 28px 20px 48px; margin-top: 48px; }
+ .footer-inner { max-width: 720px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+ .footer-logo { font-family: var(--font); font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
+ .footer-links { display: flex; gap: 20px; }
+ .footer-links a { font-size: 13px; color: var(--muted); transition: color 0.15s; }
+ .footer-links a:hover { color: var(--white); }
+ </style>
+ <link rel="stylesheet" href="n26.css">
+</head>
+<body>
+
+<!-- NAV -->
+<div class="ticker">
+ <span class="ticker-label yellow">Rules</span>
+ <span>Season 1 · N26 Racing League</span>
+</div>
+<nav class="nav">
+ <a href="index.html" class="nav-logo">B<span style="color:var(--yellow)">A</span>RL</a>
+ <ul class="nav-links">
+ <li><a href="index.html">Home</a></li>
+ <li><a href="standings.html">Standings</a></li>
+ <li><a href="results.html">Results</a></li>
+ <li><a href="schedule.html">Schedule</a></li>
+ <li><a href="rules.html" class="active">Rules</a></li>
+ <li><a href="claim.html">Roster</a></li>
+ <li><a href="join.html">Join</a></li>
+ </ul>
+ <a href="claim.html" class="nav-cta">Claim a Car →</a>
+ <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
+ <span></span><span></span><span></span>
+ </div>
+</nav>
+<div class="nav-drawer" id="nav-drawer">
+  <a href="index.html">Home</a>
+  <a href="standings.html">Standings</a>
+  <a href="results.html">Results</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="rules.html" class="active">Rules</a>
+  <a href="claim.html">Roster</a>
+  <a href="join.html">Join</a>
+  <a href="claim.html" class="drawer-cta">Claim a Car →</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow">Official Rulebook — Season 1</div>
+  <h1>Get your<br>crew <em>in.</em></h1>
+  <p class="hero-sub">Built on the NASCAR 26 video game, available on PlayStation, Xbox, and PC. Real teams. Real points. Real competition — with your friends. Grab a car, pick your number, and race a full eight-race season from Daytona to Chicagoland.</p>
+</div>
+
+<div class="page" id="active-rulebook">
+ <div class="rules-section">
+  <div class="section-eyebrow" id="active-rules-version">Authoritative Draft · Version 2.0</div>
+  <div class="section-title">Eight Races. 24 Drivers. 8 Teams.</div>
+  <div class="rule-card" style="border-color:rgba(255,201,6,0.35);">
+   <div class="rule-card-title">Season 1 Is In Setup</div>
+   <p>This is the active NASCAR 26 league model. The league has eight teams, three active seats per team, and a permanent 24-driver field. The 24-position race points schedule follows the current NASCAR Cup Series scale.</p>
+   <p style="color:var(--yellow)"><strong>Current status:</strong> driver expansion is open; the points scale is approved.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Roster Identity And Seats</div>
+   <p>A driver identity is permanent and separate from a car number. A team may have more catalog numbers than active seats. If a driver moves from #9 and takes an open #48, #9 becomes unowned; the driver does not remain tied to #9. Every transfer records the old team, old number, new team, and new number.</p>
+   <p>Three drivers are active per team. Reserves can be registered without taking an active seat. If a reserve replaces a driver, the reserve keeps separate driver statistics, while the occupied team seat receives the replacement's championship points.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Race Points</div>
+   <p>There are eight races and no playoff reset in this model. Race points use the current NASCAR Cup Series scale below: 55 points for a win, 35 for second, then one point less per position through 24th. The top 10 at each stage earn additional stage points.</p>
+   <table class="points-table"><thead><tr><th>Finish</th><th>Points</th><th>Finish</th><th>Points</th></tr></thead><tbody id="active-points-body">
+    <tr class="highlight"><td>1st</td><td class="pts">55</td><td>13th</td><td class="pts">24</td></tr>
+    <tr><td>2nd</td><td class="pts">35</td><td>14th</td><td class="pts">23</td></tr>
+    <tr><td>3rd</td><td class="pts">34</td><td>15th</td><td class="pts">22</td></tr>
+    <tr><td>4th</td><td class="pts">33</td><td>16th</td><td class="pts">21</td></tr>
+    <tr><td>5th</td><td class="pts">32</td><td>17th</td><td class="pts">20</td></tr>
+    <tr><td>6th</td><td class="pts">31</td><td>18th</td><td class="pts">19</td></tr>
+    <tr><td>7th</td><td class="pts">30</td><td>19th</td><td class="pts">18</td></tr>
+    <tr><td>8th</td><td class="pts">29</td><td>20th</td><td class="pts">17</td></tr>
+    <tr><td>9th</td><td class="pts">28</td><td>21st</td><td class="pts">16</td></tr>
+    <tr><td>10th</td><td class="pts">27</td><td>22nd</td><td class="pts">15</td></tr>
+    <tr><td>11th</td><td class="pts">26</td><td>23rd</td><td class="pts">14</td></tr>
+    <tr><td>12th</td><td class="pts">25</td><td>24th</td><td class="pts">13</td></tr>
+   </tbody></table>
+   <p id="active-points-note" style="color:var(--yellow)"><strong>Stage points:</strong> 10 points for first in each stage, then 9 through 1 for 10th. DQs receive zero race and stage points.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Ratings And Certification</div>
+   <p>Official OVR uses Championship Finish 50%, Finish Quality 20%, Wins 15%, Attendance 10%, and Qualifying 5%. Ratings use <code>40 + 60 * sqrt(x)</code>; OVR is rounded half-up only at the final step. DNS earns zero start credit, DNF uses classified finish, and a DQ counts as a start with zero points and zero finish-quality credit while retaining its official finish position. Valid qualifying data is required unless the session is explicitly canceled or voided.</p>
+   <p>Results are entered as drafts, published into a 48-hour appeal window, then finally certified. Corrections keep an audit record, and a race cannot be published until every full-time driver has a valid result row.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Cap And Contracts</div>
+   <p>Cap charge is rounded exactly to cents after term and loyalty discounts. Term discounts are 0%, 2%, or 4%; loyalty is 0% or 1%; combined discounts cannot exceed 5%. The inaugural team cap is 155 credits, while each introductory contract is 60 credits. Future equal cap is <code>max(155, 5 * ceil(M / 5))</code>, where M is the minimum feasible maximum team total.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Ties, Appeals, And Corrections</div>
+   <p>Ties use points, wins, finish counts from second downward, then latest-race performance. A true sporting tie receives the average rating rank. Canceled or voided rounds are excluded from standings calculations, and every correction remains visible to the commissioner.</p>
+  </div>
+ </div>
+</div>
+
+<!-- The active rulebook above is the single source of truth. -->
+</body>
+</html>

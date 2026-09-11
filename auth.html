@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>BARL Auth</title>
+ <meta name="description" content="Sign in to BARL with Supabase Auth to access protected league routes.">
+ <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="n26.css">
+ <style>
+ :root {
+  --bg: #0c0c0f;
+  --surface: #14141a;
+  --surface2: #1c1c24;
+  --surface3: #252533;
+  --border: rgba(255,255,255,0.08);
+  --white: #f4f4f6;
+  --muted: #72728a;
+  --yellow: #ffc200;
+  --yellow2: #ffd447;
+  --red: #e8002d;
+  --green: #0b9b51;
+  --font: 'Inter', system-ui, sans-serif;
+ }
+ * { box-sizing: border-box; }
+ body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+   radial-gradient(circle at top, rgba(255,194,0,0.12), transparent 28%),
+   linear-gradient(180deg, #101018 0%, #09090c 100%);
+  color: var(--white);
+  font-family: var(--font);
+ }
+ a { color: inherit; text-decoration: none; }
+ .shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+ }
+ .nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  height: 56px;
+  background: rgba(12,12,15,0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 2px solid var(--yellow);
+ }
+ .nav-logo {
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+ }
+ .nav-link {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--muted);
+ }
+ .page {
+  width: min(960px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 40px 0 56px;
+  display: grid;
+  gap: 18px;
+ }
+ .hero {
+  padding-top: 12px;
+ }
+ .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  color: var(--yellow);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+ }
+ .eyebrow::before {
+  content: "";
+  width: 16px;
+  height: 2px;
+  background: var(--yellow);
+ }
+ .hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(40px, 8vw, 72px);
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+ }
+ .hero h1 span { color: var(--yellow); }
+ .hero p {
+  margin: 0;
+  max-width: 520px;
+  color: rgba(255,255,255,0.74);
+  line-height: 1.7;
+ }
+ .layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+ }
+ .card {
+  background: rgba(20,20,26,0.88);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 18px 48px rgba(0,0,0,0.32);
+ }
+ .card h2 {
+  margin: 0 0 8px;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+ }
+ .card-sub {
+  margin: 0 0 20px;
+  color: var(--muted);
+  line-height: 1.6;
+ }
+ .button-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+ }
+ .tab-btn,
+ .submit-btn {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+ }
+ .tab-btn {
+  flex: 1;
+  padding: 12px 14px;
+  background: var(--yellow);
+  color: #000;
+ }
+ .tab-btn.secondary {
+  background: var(--surface3);
+  color: var(--white);
+ }
+ .form-stack {
+  display: grid;
+  gap: 12px;
+ }
+ .form-stack[hidden] {
+  display: none;
+ }
+ .field label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+ }
+ .field input {
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 10px;
+  padding: 14px 15px;
+  background: var(--surface2);
+  color: var(--white);
+  font: inherit;
+ }
+ .field input:focus {
+  outline: none;
+  border-color: var(--yellow);
+ }
+ .submit-btn {
+  width: 100%;
+  padding: 15px;
+  margin-top: 4px;
+  background: var(--yellow);
+  color: #000;
+  font-size: 15px;
+ }
+ .submit-btn.secondary {
+  background: var(--surface3);
+  color: var(--white);
+ }
+ .submit-btn:disabled {
+  opacity: 0.65;
+  cursor: progress;
+ }
+ .auth-message {
+  min-height: 22px;
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+ }
+ .auth-message.error { color: #ff8d97; }
+ .auth-message.success { color: #79d7a5; }
+ .aside-list {
+  display: grid;
+  gap: 12px;
+ }
+ .aside-item {
+  background: var(--surface2);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 16px;
+ }
+ .aside-item strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--yellow2);
+ }
+ .aside-item p {
+  margin: 0;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.6;
+ }
+ .route-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(255,194,0,0.08);
+  border: 1px solid rgba(255,194,0,0.18);
+  color: var(--yellow2);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+ }
+ .route-pill code {
+  color: var(--white);
+  font-size: 12px;
+ }
+ @media (max-width: 760px) {
+  .page {
+   width: min(100%, calc(100% - 24px));
+   padding-top: 28px;
+  }
+  .layout {
+   grid-template-columns: 1fr;
+  }
+ }
+ </style>
+</head>
+<body>
+ <div class="shell">
+  <nav class="nav">
+   <a href="index.html" class="nav-logo">B<span style="color:var(--yellow)">A</span>RL</a>
+   <a href="claim.html" class="nav-link">Protected Roster</a>
+  </nav>
+
+  <main class="page">
+   <section class="hero">
+    <div class="eyebrow">Supabase Auth</div>
+    <h1>Sign In Before You <span>Claim.</span></h1>
+    <p>BARL now uses Supabase Auth for roster access. Create an account once, then your claim runs as an authenticated user instead of a public form post.</p>
+   </section>
+
+   <section class="layout">
+    <div class="card">
+     <h2 id="authTitle">Sign In To Claim</h2>
+     <p class="card-sub" id="authSubtitle">Your BARL claim page is protected. Sign in to continue to the roster.</p>
+
+     <div class="button-row">
+     <button type="button" class="tab-btn" id="showSignIn">I Have An Account</button>
+      <button type="button" class="tab-btn secondary" id="showSignUp">Create One</button>
+     </div>
+
+     <form id="signInForm" class="form-stack">
+      <div class="field">
+       <label for="signin-email">Email</label>
+       <input id="signin-email" type="email" name="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+       <label for="signin-password">Password</label>
+       <input id="signin-password" type="password" name="password" autocomplete="current-password" minlength="8" required>
+      </div>
+      <button type="submit" class="submit-btn" id="signInBtn">Sign In</button>
+     </form>
+
+     <form id="signUpForm" class="form-stack" hidden>
+      <div class="field">
+       <label for="signup-email">New Account Email</label>
+       <input id="signup-email" type="email" name="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+       <label for="signup-password">New Password</label>
+       <input id="signup-password" type="password" name="password" autocomplete="new-password" minlength="8" required>
+      </div>
+     <button type="submit" class="submit-btn secondary" id="signUpBtn">Create Account</button>
+     </form>
+
+     <button type="button" class="submit-btn" id="googleSignInBtn" style="margin-top:12px;background:#fff;color:#111">Continue With Google</button>
+
+     <div class="auth-message" id="authMessage"></div>
+    </div>
+
+    <aside class="card">
+     <h2>What Changed</h2>
+     <p class="card-sub">The public site stays readable, but claiming a car now requires a Supabase session.</p>
+     <div class="aside-list">
+      <div class="aside-item">
+       <strong>Protected Route</strong>
+       <p>`claim.html` redirects here when there is no active Supabase session.</p>
+      </div>
+      <div class="aside-item">
+       <strong>RLS Backstop</strong>
+       <p>Database policies now decide who can insert a claim, so bypassing the UI is not enough.</p>
+      </div>
+      <div class="aside-item">
+       <strong>Driver Identity</strong>
+       <p>Each signed-in account can be tied to one claim through `auth.users`.</p>
+      </div>
+     </div>
+     <div class="route-pill">Next stop <code id="nextPath">claim.html</code></div>
+    </aside>
+   </section>
+  </main>
+ </div>
+
+ <script type="module" src="scripts/auth-page.js"></script>
+</body>
+</html>

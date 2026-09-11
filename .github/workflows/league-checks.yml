@@ -1,0 +1,41 @@
+name: League Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify rulebook calculations
+        run: |
+          node scripts/verify-league-model.js
+          node scripts/verify-rulebook-fixture.js
+      - name: Check JavaScript syntax
+        run: |
+          node --check api/league-admin.js
+          node --check scripts/admin-page.js
+          node --check scripts/claim-page.js
+          node --check scripts/league-public.js
+          node --check scripts/league-rules.js
+          node --check scripts/public-bootstrap.js
+      - name: Check inline page scripts
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const vm = require('vm');
+          for (const file of fs.readdirSync('.').filter(name => name.endsWith('.html'))) {
+            const html = fs.readFileSync(file, 'utf8');
+            for (const [index, match] of [...html.matchAll(/<script(?: [^>]*)?>([\s\S]*?)<\/script>/g)].entries()) {
+              if (index) new vm.Script(match[1], { filename: file });
+            }
+          }
+          NODE
+      - name: Check whitespace
+        run: git diff --check

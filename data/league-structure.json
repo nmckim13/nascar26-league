@@ -1,0 +1,57 @@
+{
+  "modelVersion": "8x3-v1",
+  "seasonLength": 8,
+  "teamSize": 3,
+  "teamCount": 8,
+  "driverCount": 24,
+  "teams": [
+    {
+      "id": "hendrick",
+      "name": "Hendrick Motorsports",
+      "seatLimit": 3,
+      "carNumbers": ["5", "9", "24", "48"]
+    },
+    {
+      "id": "jgr",
+      "name": "Joe Gibbs Racing",
+      "seatLimit": 3,
+      "carNumbers": ["11", "19", "20", "54"]
+    },
+    {
+      "id": "penske",
+      "name": "Team Penske",
+      "seatLimit": 3,
+      "carNumbers": ["2", "12", "22"]
+    },
+    {
+      "id": "23xi",
+      "name": "23XI Racing",
+      "seatLimit": 3,
+      "carNumbers": ["23", "35", "45"]
+    },
+    {
+      "id": "rfk",
+      "name": "RFK Racing",
+      "seatLimit": 3,
+      "carNumbers": ["6", "17", "60"]
+    },
+    {
+      "id": "spire",
+      "name": "Spire Motorsports",
+      "seatLimit": 3,
+      "carNumbers": ["7", "71", "77"]
+    },
+    {
+      "id": "trackhouse",
+      "name": "Trackhouse Racing",
+      "seatLimit": 3,
+      "carNumbers": ["1", "88", "97"]
+    },
+    {
+      "id": "legacy",
+      "name": "Legacy Motor Club",
+      "seatLimit": 3,
+      "carNumbers": ["42", "43", "84"]
+    }
+  ]
+}
