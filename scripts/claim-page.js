@@ -2,7 +2,7 @@ import {
   redirectToAuth,
   supabase,
 } from './supabase-auth.js';
-import { loadCurrentRosterSeason, loadNormalizedSeasonData, loadPublishedSeason, loadTeamCatalog, toLegacyDisplayData } from './league-public.js';
+import { loadCurrentRosterSeason, loadPublishedSeason, loadSeasonRosterClaims, loadTeamCatalog } from './league-public.js';
 
 const FALLBACK_TEAM_MAP = {
   hms: ['5', '9', '24', '48'],
@@ -115,7 +115,7 @@ async function loadClaims() {
   const catalog = await loadTeamCatalog();
   if (catalog.source === 'normalized' && catalog.teams.length) {
     state.teamMap = Object.fromEntries(catalog.teams.map(team => [
-      team.slug === 'legacy' ? 'lmc' : team.slug,
+      ({ hendrick: 'hms', legacy: 'lmc' })[team.slug] || team.slug,
       catalog.carNumbersByTeam[team.slug] || [],
     ]));
   }
@@ -124,11 +124,7 @@ async function loadClaims() {
   if (rosterSeason) {
     if (publishedSeason) lockClaiming(publishedSeason);
     try {
-      const normalized = toLegacyDisplayData({
-        ...(await loadNormalizedSeasonData(rosterSeason)),
-        catalog,
-      });
-      state.claimedCars = normalized.claims || [];
+      state.claimedCars = await loadSeasonRosterClaims(rosterSeason);
       renderClaimedCars();
     } catch (error) {
       console.warn('Could not load the published normalized roster', error);

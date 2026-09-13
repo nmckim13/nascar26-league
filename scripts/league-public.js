@@ -65,6 +65,27 @@ export async function loadCurrentRosterSeason() {
   } catch { return null; }
 }
 
+export async function loadSeasonRosterClaims(season) {
+  const assignments = await rest(`/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number&season_id=eq.${season.id}&assignment_status=eq.active`);
+  const driverIds = [...new Set((assignments || []).map(assignment => assignment.driver_id))];
+  const drivers = driverIds.length
+    ? await rest(`/rest/v1/n26_drivers?select=id,display_name,gamertag,first_name,last_name&id=in.(${driverIds.join(',')})`)
+    : [];
+  const driversById = Object.fromEntries((drivers || []).map(driver => [driver.id, driver]));
+
+  return (assignments || []).map(assignment => {
+    const driver = driversById[assignment.driver_id] || {};
+    return {
+      car_number: String(assignment.car_number),
+      gamertag: driver.gamertag || driver.display_name || `Car #${assignment.car_number}`,
+      first_name: driver.first_name || '',
+      last_name: driver.last_name || '',
+      driver_id: assignment.driver_id,
+      team_id: assignment.team_id,
+    };
+  });
+}
+
 export async function loadNormalizedSeasonData(season) {
   const [rulesetRows, races, entries, assignments, results, ratings] = await Promise.all([
     rest(`/rest/v1/n26_rulesets?select=*&id=eq.${season.ruleset_id}&limit=1`),

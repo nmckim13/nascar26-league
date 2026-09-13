@@ -19,10 +19,17 @@
   .profile-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
   .profile-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
   .profile-card:hover { border-color:rgba(255,201,6,.45); }
+  .profile-card.roster-card { position:relative; overflow:hidden; }
+  .profile-card.roster-card::before { content:''; position:absolute; inset:0 auto 0 0; width:4px; background:var(--yellow); }
   .profile-card h2 { font-size:18px; line-height:1.05; text-transform:uppercase; letter-spacing:-.04em; margin:0; }
   .profile-sub { color:var(--muted); font-size:11px; margin-top:4px; }
   .profile-top { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
   .car-number { width:42px; height:42px; display:grid; place-items:center; border:1px solid var(--yellow); color:var(--yellow); border-radius:50%; font:800 14px var(--font-mono); flex-shrink:0; }
+  .car-badge { width:68px; height:52px; object-fit:contain; flex-shrink:0; }
+  .roster-status { display:inline-flex; align-items:center; gap:6px; margin-top:12px; color:#8ee0ad; font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .roster-status::before { content:''; width:6px; height:6px; border-radius:50%; background:#41c878; }
+  .roster-summary { grid-column:1/-1; display:flex; justify-content:space-between; gap:18px; align-items:center; background:linear-gradient(110deg,rgba(255,201,6,.14),var(--surface)); border:1px solid rgba(255,201,6,.35); border-radius:10px; padding:16px 18px; }
+  .roster-summary strong { color:var(--yellow); font:800 24px var(--font-mono); }
   .ovr { margin-left:auto; text-align:right; }
   .ovr strong { display:block; color:var(--yellow); font:800 30px/1 var(--font-mono); }
   .ovr span { color:var(--muted); font-size:9px; font-weight:800; text-transform:uppercase; }
@@ -78,7 +85,7 @@
   const displayNumber = value => value ? `#${esc(value)}` : 'Seat pending';
   const format = value => Number.isFinite(Number(value)) ? Number(value).toFixed(2) : '—';
   const PUBLIC_URL = 'https://txipxisumngvzkuqsysq.supabase.co';
-  const PUBLIC_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
+  const PUBLIC_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4aXB4aXN1bW5ndnprdXFzeXNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzExMTYsImV4cCI6MjEwNDY0NzExNn0.NxrJIAkWWfg-5ezHni_z56IRmLD9HHxM-VAALiT22io';
   let state = null;
 
   async function publicGet(path) {
@@ -134,9 +141,58 @@
    document.getElementById('team-grid').innerHTML = '';
   }
 
+  async function renderPreseasonRoster(data) {
+   const assignments = await publicGet(`/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number,assignment_status&season_id=eq.${data.season.id}&assignment_status=eq.active`);
+   const driverIds = [...new Set(assignments.map(assignment => assignment.driver_id))];
+   const driverRows = driverIds.length
+    ? await publicGet(`/rest/v1/n26_drivers?select=id,display_name,gamertag,first_name,last_name&id=in.(${driverIds.join(',')})`)
+    : [];
+   const drivers = Object.fromEntries(driverRows.map(driver => [driver.id, driver]));
+   const teams = data.catalog?.teams || [];
+   const teamsById = Object.fromEntries(teams.map(team => [team.id, team]));
+   const sortedAssignments = [...assignments].sort((a, b) => {
+    const teamCompare = String(teamsById[a.team_id]?.name || '').localeCompare(String(teamsById[b.team_id]?.name || ''));
+    return teamCompare || String(a.car_number).localeCompare(String(b.car_number), undefined, { numeric:true });
+   });
+   const totalSeats = teams.reduce((sum, team) => sum + Number(team.seat_limit || 0), 0) || 24;
+
+   document.getElementById('ticker-text').textContent = `${data.season.name} · ${assignments.length}/${totalSeats} seats filled`;
+   document.getElementById('driver-grid').innerHTML = `<div class="roster-summary"><div><div class="eyebrow">Current preseason roster</div><span class="muted">Driver ratings and race statistics will populate once racing begins.</span></div><strong>${assignments.length}/${totalSeats}</strong></div>` + sortedAssignments.map(assignment => {
+    const driver = drivers[assignment.driver_id] || {};
+    const team = teamsById[assignment.team_id] || {};
+    const name = driver.display_name || driver.gamertag || [driver.first_name, driver.last_name].filter(Boolean).join(' ') || 'Driver pending';
+    return `<article class="profile-card roster-card"><div class="profile-top"><img class="car-badge" src="https://cf.nascar.com/data/images/carbadges/1/${encodeURIComponent(assignment.car_number)}.png" alt="Car #${esc(assignment.car_number)}"><div><h2>${esc(name)}</h2><div class="profile-sub">${esc(team.name || 'Team pending')} · ${displayNumber(assignment.car_number)}</div><div class="roster-status">Full-time driver</div></div></div><div class="stat-line"><span>Season</span><strong>Season ${esc(data.season.season_number)}</strong></div><div class="stat-line"><span>Car</span><strong>${displayNumber(assignment.car_number)}</strong></div><div class="stat-line"><span>Team</span><strong>${esc(team.name || 'Pending')}</strong></div></article>`;
+   }).join('') || '<div class="empty">No drivers have been assigned yet.</div>';
+
+   document.getElementById('team-grid').innerHTML = teams.map(team => {
+    const seats = assignments.filter(assignment => assignment.team_id === team.id).sort((a,b) => String(a.car_number).localeCompare(String(b.car_number), undefined, { numeric:true }));
+    const openSeats = Math.max(0, Number(team.seat_limit || 3) - seats.length);
+    const honors = Array.isArray(team.honors) ? team.honors : [];
+    const honorsText = honors.length ? honors.map(honor => typeof honor === 'string' ? honor : honor.title || honor.award).filter(Boolean).join(' · ') : 'First season';
+    return `<article class="profile-card team-card"><div class="profile-top"><div><h2>${esc(team.name)}</h2><div class="profile-sub">${esc(team.owner_name || 'Team profile')} · ${esc(seats.length)}/${esc(team.seat_limit || 3)} seats filled</div></div></div><div class="stat-line"><span>Roster status</span><strong>${openSeats ? `${openSeats} open` : 'FULL'}</strong></div><div class="stat-line"><span>League honors</span><strong>${esc(honorsText)}</strong></div><div class="seat-list">${seats.map(seat => { const driver = drivers[seat.driver_id] || {}; const name = driver.display_name || driver.gamertag || 'Driver pending'; return `<div class="seat"><span>${esc(name)}</span><strong>${displayNumber(seat.car_number)}</strong></div>`; }).join('') || '<div class="profile-sub">No drivers assigned yet.</div>'}</div></article>`;
+   }).join('');
+  }
+
+  async function loadPreseasonSeed(data) {
+   if (data.season?.id && data.catalog?.teams?.length) return data;
+   const [seasons, teams] = await Promise.all([
+    publicGet('/rest/v1/n26_seasons?select=id,season_number,name,status&season_number=eq.1&limit=1'),
+    publicGet('/rest/v1/n26_teams?select=id,slug,name,seat_limit,owner_name,honors&status=eq.active&order=name'),
+   ]);
+   return { ...data, season: seasons[0], catalog: { ...(data.catalog || {}), teams } };
+  }
+
   async function render(data) {
    state = data;
-   if (data.source !== 'normalized') { renderEmpty('Public profiles will appear when the normalized 24-driver season is opened. Draft identities stay private.'); return; }
+   if (data.source !== 'normalized') {
+    const preseason = await loadPreseasonSeed(data).catch(() => null);
+    if (preseason?.season?.id && preseason.catalog?.teams?.length) {
+     await renderPreseasonRoster(preseason);
+     return;
+    }
+    renderEmpty('Public profiles will appear as drivers join the roster.');
+    return;
+   }
    const history = await loadCareerHistory(data).catch(() => ({ seasons: [], entries: [], assignments: [], races: [], results: [], ratings: [], drivers: [], teams: [] }));
    const drivers = Object.fromEntries([...data.drivers || [], ...history.drivers].map(driver => [driver.id, driver]));
    const teams = Object.fromEntries((data.catalog?.teams || []).map(team => [team.id, team]));
