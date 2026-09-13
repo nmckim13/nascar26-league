@@ -150,10 +150,9 @@
    const drivers = Object.fromEntries(driverRows.map(driver => [driver.id, driver]));
    const teams = data.catalog?.teams || [];
    const teamsById = Object.fromEntries(teams.map(team => [team.id, team]));
-   const sortedAssignments = [...assignments].sort((a, b) => {
-    const teamCompare = String(teamsById[a.team_id]?.name || '').localeCompare(String(teamsById[b.team_id]?.name || ''));
-    return teamCompare || String(a.car_number).localeCompare(String(b.car_number), undefined, { numeric:true });
-   });
+   const sortedAssignments = [...assignments].sort((a, b) =>
+    String(a.car_number).localeCompare(String(b.car_number), undefined, { numeric:true })
+   );
    const totalSeats = teams.reduce((sum, team) => sum + Number(team.seat_limit || 0), 0) || 24;
 
    document.getElementById('ticker-text').textContent = `${data.season.name} · ${assignments.length}/${totalSeats} seats filled`;
