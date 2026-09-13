@@ -80,6 +80,15 @@
  .rule-card-title .badge.green { background: var(--green); color: #fff; }
  .rule-card p { font-size: 14px; color: var(--muted); line-height: 1.7; }
  .rule-card p + p { margin-top: 8px; }
+ .rule-list { margin: 10px 0 0 20px; color: var(--muted); font-size: 14px; }
+ .rule-list li { margin: 7px 0; padding-left: 4px; }
+ .rule-list strong { color: var(--white); }
+ .plain-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; margin-top: 12px; }
+ .plain-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 9px; padding: 13px; }
+ .plain-item strong { display: block; color: var(--yellow); font-size: 12px; text-transform: uppercase; margin-bottom: 4px; }
+ .plain-item span { color: var(--muted); font-size: 13px; line-height: 1.55; }
+ .quick-callout { border-left: 4px solid var(--yellow); background: rgba(255,194,0,.07); padding: 14px 16px; margin-top: 12px; color: var(--white); font-size: 14px; }
+ code { color: var(--yellow); }
  [hidden] { display: none !important; }
 
  /* POINTS TABLE */
@@ -133,6 +142,7 @@
  .footer-links { display: flex; gap: 20px; }
  .footer-links a { font-size: 13px; color: var(--muted); transition: color 0.15s; }
  .footer-links a:hover { color: var(--white); }
+ @media (max-width: 600px) { .plain-grid { grid-template-columns: 1fr; } }
  </style>
  <link rel="stylesheet" href="n26.css">
 </head>
@@ -178,9 +188,239 @@
 </div>
 
 <div class="page" id="active-rulebook">
+ <div class="toc">
+  <div class="toc-title">Start here</div>
+  <ul class="toc-list">
+   <li><a href="#welcome">What BARL is</a></li>
+   <li><a href="#nascar-basics">NASCAR basics</a></li>
+   <li><a href="#getting-started">How to join</a></li>
+   <li><a href="#race-night">What happens on race night</a></li>
+   <li><a href="#racing-rules">Driving standards</a></li>
+   <li><a href="#championship">Points and championships</a></li>
+   <li><a href="#attendance">Attendance and connection issues</a></li>
+   <li><a href="#reviews">Incidents, penalties, and appeals</a></li>
+   <li><a href="#ratings">Driver ratings and contracts</a></li>
+   <li><a href="#glossary">Beginner glossary</a></li>
+  </ul>
+ </div>
+
+ <section class="rules-section" id="welcome">
+  <div class="section-eyebrow">01 · The big picture</div>
+  <div class="section-title">What BARL Is</div>
+  <div class="rule-card" style="border-color:rgba(255,201,6,0.35);">
+   <div class="rule-card-title">A Friendly League With A Real Championship</div>
+   <p>BARL is an organized online racing league played in the NASCAR 26 video game. You do not need to follow real-world NASCAR or be an expert at racing games. The goal is to give friends a predictable place to race, learn, compete, and build a season-long story together.</p>
+   <p>Each person controls one stock car. Drivers race on the same virtual track at the same time, earn points from their finishing positions and stage results, and represent one of eight teams. After eight races, the driver with the most championship points is the Season 1 champion.</p>
+   <div class="quick-callout"><strong>The short version:</strong> claim a car, join your team, show up on race night, race clean, and collect as many points as possible across the full season.</div>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Season 1 At A Glance</div>
+   <div class="plain-grid">
+    <div class="plain-item"><strong>8 races</strong><span>Every round counts. There is no playoff reset.</span></div>
+    <div class="plain-item"><strong>24 drivers</strong><span>The full-time field has one permanent entry per person.</span></div>
+    <div class="plain-item"><strong>8 teams</strong><span>Each organization has three active scoring seats.</span></div>
+    <div class="plain-item"><strong>Cross-platform</strong><span>NASCAR 26 is available on PlayStation, Xbox, and PC.</span></div>
+   </div>
+  </div>
+ </section>
+
+ <section class="rules-section" id="nascar-basics">
+  <div class="section-eyebrow">02 · New to stock cars?</div>
+  <div class="section-title">NASCAR Basics</div>
+  <div class="rule-card">
+   <div class="rule-card-title">The Goal</div>
+   <p>Finish the scheduled distance before the other drivers. Unlike a time trial, everyone shares the track. Position, drafting, tire condition, fuel, traffic, and avoiding damage all matter. The fastest single lap does not guarantee the best race finish.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">How A Race Is Divided</div>
+   <p>A race may be split into stages. A stage is a checkpoint that awards bonus points to the top 10 while the overall race continues. The final finishing order awards the main race points. Winning a stage helps, but winning the race pays the most.</p>
+   <ul class="rule-list">
+    <li><strong>Qualifying</strong> determines the starting order.</li>
+    <li><strong>Green flag</strong> means the race is active at full speed.</li>
+    <li><strong>Yellow/caution</strong> slows and groups the field after an incident.</li>
+    <li><strong>Pit road</strong> is where drivers take fuel, tires, and repairs.</li>
+    <li><strong>Checkered flag</strong> ends the race.</li>
+   </ul>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Drafting And Racing Lines</div>
+   <p>Stock cars create a pocket of reduced air resistance behind them. Following another car can increase speed; this is called drafting. On many tracks, drivers form lines and work together before making a pass. A driver may defend a lane, but reacting dangerously, forcing another car off the track, or repeatedly blocking is not acceptable.</p>
+  </div>
+ </section>
+
+ <section class="rules-section" id="getting-started">
+  <div class="section-eyebrow">03 · Joining BARL</div>
+  <div class="section-title">From New Driver To The Grid</div>
+  <div class="rule-card">
+   <div class="rule-card-title">How To Join</div>
+   <ol class="rule-list">
+    <li>Create an account on the BARL website.</li>
+    <li>Open the Roster page and choose an available car from a team with an open seat.</li>
+    <li>Submit your gamer tag, name, phone number, and exact Discord username. Private contact information is used for league administration and is not displayed on public profiles.</li>
+    <li>Join the BARL Discord and watch the announcements channel for scheduling, lobby details, and race-control messages.</li>
+    <li>Install and update NASCAR 26 before race night. Confirm that online multiplayer and voice communication work.</li>
+   </ol>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Cars, Teams, And Identities</div>
+   <p>Your driver identity represents your career and remains yours across seasons. Your car number is a seat, not your permanent identity. If you later transfer from one team or number to another, your career history follows you and the old number becomes available.</p>
+   <p>Each team has three active drivers. Teammates compete individually for the driver championship while also combining their results for the team championship. Respectful teamwork is encouraged; manipulating results or deliberately interfering with another driver is not.</p>
+  </div>
+ </section>
+
+ <section class="rules-section" id="race-night">
+  <div class="section-eyebrow">04 · Weekly procedure</div>
+  <div class="section-title">What Happens On Race Night</div>
+  <div class="rule-card">
+   <div class="rule-card-title">Before The Lobby Opens</div>
+   <ul class="rule-list">
+    <li>Check Discord for the confirmed start time, track, lobby host, race settings, and any commissioner notes.</li>
+    <li>Restart the game if needed, test your controller or wheel, and use a stable wired connection when possible.</li>
+    <li>Be ready before qualifying begins. Joining late may be impossible once the session starts.</li>
+   </ul>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Session Order</div>
+   <p>The normal order is lobby check-in, a brief driver meeting, qualifying, and the race. Race control may hold a short warm-up or restart a lobby for a verified widespread technical failure. Once official qualifying begins, the event is considered underway.</p>
+   <div class="plain-grid">
+    <div class="plain-item"><strong>1 · Check in</strong><span>Confirm your identity, number, team, and connection.</span></div>
+    <div class="plain-item"><strong>2 · Qualify</strong><span>Set a valid lap to establish the starting grid.</span></div>
+    <div class="plain-item"><strong>3 · Race</strong><span>Complete the stages and full scheduled distance.</span></div>
+    <div class="plain-item"><strong>4 · Results</strong><span>Race control records the official finishing order and opens review.</span></div>
+   </div>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Race Control Is Final In The Moment</div>
+   <p>During an event, follow the lobby host and commissioner’s directions so the race can continue. If you disagree, save your replay or clip and raise it after the race. Arguing during green-flag racing creates more incidents and will not reverse an immediate call.</p>
+  </div>
+ </section>
+
+ <section class="rules-section" id="racing-rules">
+  <div class="section-eyebrow">05 · On-track conduct</div>
+  <div class="section-title">Race Clean And Predictably</div>
+  <div class="rule-card">
+   <div class="rule-card-title">Driver Responsibilities</div>
+   <ul class="rule-list">
+    <li><strong>Hold a predictable line.</strong> Avoid sudden moves when another car has overlap.</li>
+    <li><strong>Leave racing room.</strong> If another car is meaningfully alongside, give it enough usable track to remain in control.</li>
+    <li><strong>Rejoin safely.</strong> After a spin or trip off-track, wait for a safe opening instead of driving directly into traffic.</li>
+    <li><strong>Control damaged cars.</strong> Move off the preferred line when practical and communicate that you are slowing.</li>
+    <li><strong>Take responsibility.</strong> A quick apology and clean reset are better than retaliation.</li>
+   </ul>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Starts And Restarts</div>
+   <p>Maintain your assigned lane and a steady pace until the game or race control releases the field. Do not lay back to create an excessive run, jump the start, force a three-wide gap that is not present, or change lanes before the applicable start line when the lobby rules prohibit it.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Blocking, Contact, And Retaliation</div>
+   <p>One reasonable defensive move is part of racing. Repeated reactionary blocks, avoidable door-slamming, brake-checking, intentionally wrecking another driver, or waiting to retaliate are prohibited. Retaliation is treated more seriously than an ordinary racing mistake because it endangers the entire lobby.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Voice And Text Conduct</div>
+   <p>Keep race communications useful. Calling out a wreck, pit entry, or connection problem is encouraged. Harassment, slurs, threats, targeted abuse, or sustained arguing are not. Competitive frustration is normal; personal attacks are not part of BARL.</p>
+  </div>
+ </section>
+
+ <section class="rules-section" id="championship">
+  <div class="section-eyebrow">06 · Scoring</div>
+  <div class="section-title">How The Championship Works</div>
+  <div class="rule-card">
+   <div class="rule-card-title">Eight Races, No Reset</div>
+   <p>Season 1 is a straight points championship. Every certified round contributes to the total, and there is no playoff cutoff or points reset. Consistency, attendance, stage performance, and wins all matter. The driver with the most points after Race 8 is the champion.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Race Points</div>
+   <p>The winner earns 55 race points. Second earns 35, and each position after that earns one fewer point through 24th place. This large winning bonus rewards finishing first while still giving every classified driver meaningful points.</p>
+   <table class="points-table"><thead><tr><th>Finish</th><th>Points</th><th>Finish</th><th>Points</th></tr></thead><tbody id="active-points-body">
+    <tr class="highlight"><td>1st</td><td class="pts">55</td><td>13th</td><td class="pts">24</td></tr><tr><td>2nd</td><td class="pts">35</td><td>14th</td><td class="pts">23</td></tr><tr><td>3rd</td><td class="pts">34</td><td>15th</td><td class="pts">22</td></tr><tr><td>4th</td><td class="pts">33</td><td>16th</td><td class="pts">21</td></tr><tr><td>5th</td><td class="pts">32</td><td>17th</td><td class="pts">20</td></tr><tr><td>6th</td><td class="pts">31</td><td>18th</td><td class="pts">19</td></tr><tr><td>7th</td><td class="pts">30</td><td>19th</td><td class="pts">18</td></tr><tr><td>8th</td><td class="pts">29</td><td>20th</td><td class="pts">17</td></tr><tr><td>9th</td><td class="pts">28</td><td>21st</td><td class="pts">16</td></tr><tr><td>10th</td><td class="pts">27</td><td>22nd</td><td class="pts">15</td></tr><tr><td>11th</td><td class="pts">26</td><td>23rd</td><td class="pts">14</td></tr><tr><td>12th</td><td class="pts">25</td><td>24th</td><td class="pts">13</td></tr>
+   </tbody></table>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Stage Points</div>
+   <p>At each scoring stage, the top 10 receive bonus points: 10 for first, 9 for second, continuing down to 1 point for 10th. Stage points are added to race points. A driver can therefore improve a difficult night by running well early.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Teams And Tiebreakers</div>
+   <p>Team results are tied to the driver, team, and car used in that race so later transfers never rewrite history. Championship ties are broken by total points, wins, best finish counts beginning with second place, and then the better result in the latest race.</p>
+  </div>
+ </section>
+
+ <section class="rules-section" id="attendance">
+  <div class="section-eyebrow">07 · Showing up</div>
+  <div class="section-title">Attendance And Technical Problems</div>
+  <div class="rule-card">
+   <div class="rule-card-title">If You Cannot Race</div>
+   <p>Tell the commissioner as early as possible in Discord. A driver who does not start is recorded as DNS and earns no race, stage, attendance, or qualifying credit for that round. Advance notice helps race control prepare the lobby and determine whether a registered reserve is needed.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Disconnects And Game Failures</div>
+   <p>A single-driver disconnect is normally treated as part of online racing and scored from the official game result when available. A widespread server failure, broken lobby, or issue affecting a substantial part of the field may justify a restart or reschedule at race control’s discretion. Do not quit solely because your race is going poorly.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">DNS, DNF, And DQ</div>
+   <ul class="rule-list">
+    <li><strong>DNS — Did Not Start:</strong> the driver never begins the race and receives zero.</li>
+    <li><strong>DNF — Did Not Finish:</strong> the driver started but did not reach the finish; the official classified position is used.</li>
+    <li><strong>DQ — Disqualified:</strong> the start remains on the record, but championship and stage points are zero.</li>
+   </ul>
+  </div>
+ </section>
+
+ <section class="rules-section" id="reviews">
+  <div class="section-eyebrow">08 · Fair administration</div>
+  <div class="section-title">Incidents, Penalties, And Appeals</div>
+  <div class="rule-card">
+   <div class="rule-card-title">Submitting An Incident</div>
+   <p>Send race control a short description plus a replay clip or screenshot showing the relevant laps. Include the drivers involved and approximate lap number. Evidence should be submitted privately unless the commissioner asks for a public discussion.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Penalty Approach</div>
+   <p>Race control considers intent, avoidability, severity, advantage gained, previous behavior, and whether the driver attempted to give back a position. Outcomes may include no action, coaching or warning, loss of points or positions, qualifying restriction, probation, suspension, or removal. Intentional wrecking and harassment can skip lower steps.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Results And Appeals</div>
+   <p>Results are first stored as drafts, then published into a 48-hour appeal window. Drivers should raise scoring errors or review requests during that window. Corrections preserve an audit record. Once the window closes and results are certified, they become official except for a commissioner correction of a documented administrative error.</p>
+  </div>
+ </section>
+
+ <section class="rules-section" id="ratings">
+  <div class="section-eyebrow">09 · Long-term league systems</div>
+  <div class="section-title">Ratings, Rosters, And Contracts</div>
+  <div class="rule-card">
+   <div class="rule-card-title">Driver Overall Rating</div>
+   <p>OVR is BARL’s summary of season performance; it does not change the physics of your car. The official calculation weights Championship Finish 50%, Finish Quality 20%, Wins 15%, Attendance 10%, and Qualifying 5%. New Season 1 drivers begin at 60 OVR. Final ratings are certified only after complete results are approved.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Contracts And Team Cap</div>
+   <p>Season 1 uses one-season introductory contracts valued at 60 credits. Each team has a 155-credit cap, so future roster building must balance driver value. Multi-season contracts and loyalty discounts become meaningful in later seasons; combined term and loyalty discounts cannot exceed 5%.</p>
+  </div>
+  <div class="rule-card">
+   <div class="rule-card-title">Transfers And Reserves</div>
+   <p>A routine transfer requires the driver, releasing team, and destination team to agree. The move closes the old seat and opens the new one while preserving career history. Reserves retain their own driver statistics when replacing someone; the points earned in that occupied seat still count for the team.</p>
+  </div>
+ </section>
+
+ <section class="rules-section" id="glossary">
+  <div class="section-eyebrow">10 · Useful language</div>
+  <div class="section-title">Beginner Glossary</div>
+  <div class="plain-grid">
+   <div class="plain-item"><strong>Apron</strong><span>The flatter paved area below the main racing surface.</span></div>
+   <div class="plain-item"><strong>Clean air</strong><span>Undisturbed air that can help the leading car handle better.</span></div>
+   <div class="plain-item"><strong>Draft</strong><span>The speed benefit gained by following closely behind another car.</span></div>
+   <div class="plain-item"><strong>Groove</strong><span>A preferred lane around the track where grip and speed are strongest.</span></div>
+   <div class="plain-item"><strong>Loose</strong><span>The rear tires lack grip and the back of the car wants to rotate.</span></div>
+   <div class="plain-item"><strong>Tight</strong><span>The front tires lack grip and the car does not want to turn enough.</span></div>
+   <div class="plain-item"><strong>Overcut / undercut</strong><span>Pit timing strategies used to gain track position.</span></div>
+   <div class="plain-item"><strong>Overlap</strong><span>Part of one car is alongside another, requiring both drivers to leave room.</span></div>
+   <div class="plain-item"><strong>Stage</strong><span>An in-race scoring checkpoint that awards bonus points to the top 10.</span></div>
+   <div class="plain-item"><strong>Steward / race control</strong><span>The commissioner or official managing the event and reviewing incidents.</span></div>
+  </div>
+ </section>
+
  <div class="rules-section">
-  <div class="section-eyebrow" id="active-rules-version">Authoritative Draft · Version 2.0</div>
-  <div class="section-title">Eight Races. 24 Drivers. 8 Teams.</div>
+  <div class="section-eyebrow" id="active-rules-version">Authoritative Draft · Version 3.0</div>
+  <div class="section-title">Official Technical Summary</div>
   <div class="rule-card" style="border-color:rgba(255,201,6,0.35);">
    <div class="rule-card-title">Season 1 Is In Setup</div>
    <p>This is the active NASCAR 26 league model. The league has eight teams, three active seats per team, and a permanent 24-driver field. The 24-position race points schedule follows the current NASCAR Cup Series scale.</p>
@@ -190,25 +430,6 @@
    <div class="rule-card-title">Roster Identity And Seats</div>
    <p>A driver identity is permanent and separate from a car number. A team may have more catalog numbers than active seats. If a driver moves from #9 and takes an open #48, #9 becomes unowned; the driver does not remain tied to #9. Every transfer records the old team, old number, new team, and new number.</p>
    <p>Three drivers are active per team. Reserves can be registered without taking an active seat. If a reserve replaces a driver, the reserve keeps separate driver statistics, while the occupied team seat receives the replacement's championship points.</p>
-  </div>
-  <div class="rule-card">
-   <div class="rule-card-title">Race Points</div>
-   <p>There are eight races and no playoff reset in this model. Race points use the current NASCAR Cup Series scale below: 55 points for a win, 35 for second, then one point less per position through 24th. The top 10 at each stage earn additional stage points.</p>
-   <table class="points-table"><thead><tr><th>Finish</th><th>Points</th><th>Finish</th><th>Points</th></tr></thead><tbody id="active-points-body">
-    <tr class="highlight"><td>1st</td><td class="pts">55</td><td>13th</td><td class="pts">24</td></tr>
-    <tr><td>2nd</td><td class="pts">35</td><td>14th</td><td class="pts">23</td></tr>
-    <tr><td>3rd</td><td class="pts">34</td><td>15th</td><td class="pts">22</td></tr>
-    <tr><td>4th</td><td class="pts">33</td><td>16th</td><td class="pts">21</td></tr>
-    <tr><td>5th</td><td class="pts">32</td><td>17th</td><td class="pts">20</td></tr>
-    <tr><td>6th</td><td class="pts">31</td><td>18th</td><td class="pts">19</td></tr>
-    <tr><td>7th</td><td class="pts">30</td><td>19th</td><td class="pts">18</td></tr>
-    <tr><td>8th</td><td class="pts">29</td><td>20th</td><td class="pts">17</td></tr>
-    <tr><td>9th</td><td class="pts">28</td><td>21st</td><td class="pts">16</td></tr>
-    <tr><td>10th</td><td class="pts">27</td><td>22nd</td><td class="pts">15</td></tr>
-    <tr><td>11th</td><td class="pts">26</td><td>23rd</td><td class="pts">14</td></tr>
-    <tr><td>12th</td><td class="pts">25</td><td>24th</td><td class="pts">13</td></tr>
-   </tbody></table>
-   <p id="active-points-note" style="color:var(--yellow)"><strong>Stage points:</strong> 10 points for first in each stage, then 9 through 1 for 10th. DQs receive zero race and stage points.</p>
   </div>
   <div class="rule-card">
    <div class="rule-card-title">Ratings And Certification</div>
