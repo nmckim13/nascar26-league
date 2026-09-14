@@ -78,6 +78,9 @@ function render(bundle) {
   document.getElementById('storylinesList').innerHTML = (bundle.storylines || []).length
     ? bundle.storylines.map(story => `<tr><td>${escapeHtml(story.sort_order)}</td><td>${escapeHtml(story.headline)}</td><td>${escapeHtml(story.story_type.replaceAll('_', ' '))}</td><td>${escapeHtml(story.status)}</td><td><div style="display:flex;gap:6px;min-width:150px"><button type="button" data-story-edit="${escapeHtml(story.id)}" style="width:auto;padding:8px 10px">Edit</button><button type="button" class="secondary" data-story-archive="${escapeHtml(story.id)}" style="width:auto;padding:8px 10px">Archive</button></div></td></tr>`).join('')
     : '<tr><td colspan="5" class="muted">No custom storylines yet.</td></tr>';
+  document.getElementById('newsList').innerHTML = (bundle.newsArticles || []).length
+    ? bundle.newsArticles.map(article => `<tr><td>${escapeHtml(article.headline)}</td><td>${article.generation_kind ? 'Auto-generated' : 'Commissioner'}</td><td>${escapeHtml(article.status)}</td><td><button type="button" data-news-edit="${escapeHtml(article.id)}" style="width:auto;padding:8px 10px">Edit</button></td></tr>`).join('')
+    : '<tr><td colspan="4" class="muted">No news articles yet.</td></tr>';
   document.getElementById('seatTeam').innerHTML = bundle.teams.map(team => `<option value="${escapeHtml(team.id)}">${escapeHtml(team.name)}</option>`).join('');
   document.getElementById('contractTeam').innerHTML = bundle.teams.map(team => `<option value="${escapeHtml(team.id)}">${escapeHtml(team.name)}</option>`).join('');
   document.getElementById('profileTeam').innerHTML = bundle.teams.map(team => `<option value="${escapeHtml(team.id)}">${escapeHtml(team.name)}</option>`).join('');
@@ -244,14 +247,35 @@ async function init() {
       await refresh();
     } catch (error) { setMessage('actionMessage', error.message, true); }
   });
-  document.getElementById('newsForm').addEventListener('submit', async event => {
+  const newsForm = document.getElementById('newsForm');
+  const resetNewsForm = () => {
+    newsForm.reset();
+    document.getElementById('newsId').value = '';
+    document.getElementById('newsSave').textContent = 'Create article';
+  };
+  newsForm.addEventListener('submit', async event => {
     event.preventDefault();
     try {
       const values = Object.fromEntries(new FormData(event.currentTarget).entries());
-      await call('create_news_article', { ...values, season_id: state.bundle.season.id });
-      event.currentTarget.reset();
-      setMessage('actionMessage', 'News article created.');
-    } catch (error) { setMessage('actionMessage', error.message, true); }
+      await call(values.id ? 'update_news_article' : 'create_news_article', { ...values, season_id: state.bundle.season.id });
+      setMessage('newsMessage', values.id ? 'News article updated.' : 'News article created.');
+      resetNewsForm();
+      await refresh();
+    } catch (error) { setMessage('newsMessage', error.message, true); }
+  });
+  document.getElementById('newsReset').addEventListener('click', resetNewsForm);
+  document.getElementById('newsList').addEventListener('click', event => {
+    const button = event.target.closest('[data-news-edit]');
+    if (!button) return;
+    const article = state.bundle.newsArticles.find(item => item.id === button.dataset.newsEdit);
+    if (!article) return;
+    newsForm.elements.id.value = article.id;
+    newsForm.elements.headline.value = article.headline || '';
+    newsForm.elements.dek.value = article.dek || '';
+    newsForm.elements.article_body.value = article.body || '';
+    newsForm.elements.status.value = article.status || 'draft';
+    document.getElementById('newsSave').textContent = 'Save changes';
+    newsForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
   const storylineForm = document.getElementById('storylineForm');
   const resetStorylineForm = () => {
@@ -417,15 +441,15 @@ async function init() {
   document.getElementById('recordResults').addEventListener('click', async () => {
     try {
       const results = JSON.parse(document.getElementById('resultJson').value);
-      await call('record_results', { race_id: document.getElementById('raceSelect').value, results });
-      setMessage('actionMessage', `${results.length} draft result rows saved.`);
+      const response = await call('record_results', { race_id: document.getElementById('raceSelect').value, results });
+      setMessage('actionMessage', `${results.length} draft result rows saved. Generated “${response.generated.recap_headline}” and ${response.generated.storyline_count} review-ready storylines.`);
     } catch (error) { setMessage('actionMessage', error.message, true); }
   });
   document.getElementById('correctResults').addEventListener('click', async () => {
     try {
       const results = JSON.parse(document.getElementById('resultJson').value);
-      await call('correct_results', { race_id: document.getElementById('raceSelect').value, results });
-      setMessage('actionMessage', `${results.length} correction rows saved and republished for appeal review.`);
+      const response = await call('correct_results', { race_id: document.getElementById('raceSelect').value, results });
+      setMessage('actionMessage', `${results.length} correction rows saved. The generated recap and ${response.generated.storyline_count} storylines were refreshed for review.`);
     } catch (error) { setMessage('actionMessage', error.message, true); }
   });
   await refresh();

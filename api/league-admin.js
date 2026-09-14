@@ -90,7 +90,7 @@ async function getSeason(seasonId) {
 async function getSeasonBundle(seasonId) {
   const season = await getSeason(seasonId);
   const raceRows = await supabaseRequest(`/rest/v1/n26_season_races?season_id=eq.${season.id}&select=id`);
-  const [rulesetRows, races, entries, assignments, results, drivers, teams, catalog, applications, storylines] = await Promise.all([
+  const [rulesetRows, races, entries, assignments, results, drivers, teams, catalog, applications, storylines, newsArticles] = await Promise.all([
     supabaseRequest(`/rest/v1/n26_rulesets?id=eq.${season.ruleset_id}&select=*`),
     supabaseRequest(`/rest/v1/n26_season_races?season_id=eq.${season.id}&order=race_number&select=*`),
     supabaseRequest(`/rest/v1/n26_season_entries?season_id=eq.${season.id}&select=*`),
@@ -101,10 +101,11 @@ async function getSeasonBundle(seasonId) {
     supabaseRequest('/rest/v1/n26_team_car_numbers?is_available=eq.true&select=team_id,car_number&order=car_number'),
     supabaseRequest('/rest/v1/n26_claims?select=id,user_id,car_number,team_name,gamertag,first_name,last_name,phone,discord_username,approval_status,claimed_at,reviewed_at&order=claimed_at.desc'),
     supabaseRequest('/rest/v1/n26_storylines?select=*&order=sort_order.asc,updated_at.desc'),
+    supabaseRequest('/rest/v1/n26_news_articles?select=*&order=updated_at.desc'),
   ]);
   if (!rulesetRows?.length) throw new Error('Season ruleset not found.');
   const contracts = await supabaseRequest(`/rest/v1/n26_contracts?start_season=lte.${season.season_number}&end_season=gte.${season.season_number}&status=in.(introductory,active)&order=created_at.desc&select=*`);
-  return { season, ruleset: rulesetRows[0], races, entries, assignments, results, drivers, teams, catalog, contracts, applications, storylines };
+  return { season, ruleset: rulesetRows[0], races, entries, assignments, results, drivers, teams, catalog, contracts, applications, storylines, newsArticles };
 }
 
 function makeResultsVersion(bundle) {
@@ -164,6 +165,89 @@ async function calculateRatings(seasonId) {
     });
   }
   return { season: bundle.season, snapshots, standings };
+}
+
+function driverName(driver, carNumber) {
+  return driver?.display_name || driver?.gamertag || `Car #${carNumber}`;
+}
+
+async function generateRaceContent(raceId, userId) {
+  const raceRows = await supabaseRequest(`/rest/v1/n26_season_races?id=eq.${encodeURIComponent(raceId)}&select=*`);
+  if (!raceRows.length) throw Object.assign(new Error('Race not found after results were saved.'), { status: 404 });
+  const race = raceRows[0];
+  const seasonRaceRows = await supabaseRequest(`/rest/v1/n26_season_races?season_id=eq.${encodeURIComponent(race.season_id)}&select=id`);
+  const seasonRaceIds = seasonRaceRows.map(item => item.id);
+  const [raceResults, seasonResults, drivers] = await Promise.all([
+    supabaseRequest(`/rest/v1/n26_race_results?race_id=eq.${encodeURIComponent(raceId)}&select=*&order=finish_position.asc`),
+    supabaseRequest(`/rest/v1/n26_race_results?race_id=in.(${seasonRaceIds.join(',')})&select=*`),
+    supabaseRequest('/rest/v1/n26_drivers?select=id,display_name,gamertag'),
+  ]);
+  const classified = raceResults.filter(result => result.finish_status !== 'disqualified').sort((a, b) => Number(a.finish_position) - Number(b.finish_position));
+  if (!classified.length) throw new Error('At least one classified result is required to generate race content.');
+  const driversById = Object.fromEntries(drivers.map(driver => [driver.id, driver]));
+  const winner = classified[0];
+  const runnerUp = classified[1];
+  const winnerName = driverName(driversById[winner.driver_id], winner.car_number);
+  const runnerUpName = runnerUp ? driverName(driversById[runnerUp.driver_id], runnerUp.car_number) : null;
+  const track = race.track_name || race.track_short || `Race ${race.race_number}`;
+  const generatedAt = new Date().toISOString();
+  const marginCopy = runnerUpName ? ` ahead of ${runnerUpName}` : '';
+  const recap = {
+    season_id: race.season_id,
+    race_id: race.id,
+    headline: `${winnerName} Wins at ${track}`.slice(0, 160),
+    dek: `The #${winner.car_number} of ${winnerName} claimed the victory${marginCopy}. Review the full finishing order before publishing this recap.`.slice(0, 500),
+    body: classified.map((result, index) => `${index + 1}. ${driverName(driversById[result.driver_id], result.car_number)} — #${result.car_number} — ${Number(result.points_earned || 0)} points`).join('\n'),
+    image_url: '/assets/news/barl-season-1-launch.jpg',
+    status: 'draft',
+    published_at: null,
+    created_by: userId,
+    generation_kind: 'race_recap',
+    generated_at: generatedAt,
+    updated_at: generatedAt,
+  };
+  await supabaseRequest('/rest/v1/n26_news_articles?on_conflict=race_id,generation_kind', {
+    method: 'POST', headers: { Prefer: 'resolution=merge-duplicates,return=representation' }, body: JSON.stringify(recap),
+  });
+
+  const points = {};
+  seasonResults.forEach(result => {
+    if (result.finish_status === 'disqualified') return;
+    points[result.driver_id] = (points[result.driver_id] || 0) + Number(result.points_earned || 0);
+  });
+  const championship = Object.entries(points).sort((a, b) => b[1] - a[1]);
+  const leader = championship[0];
+  const second = championship[1];
+  const leaderName = leader ? driverName(driversById[leader[0]], '') : winnerName;
+  const pointsGap = leader && second ? leader[1] - second[1] : 0;
+  const rivalryType = runnerUp && winner.team_id === runnerUp.team_id ? 'team_battle' : 'featured_rivalry';
+  const rivalryHeadline = runnerUpName
+    ? `${winnerName} vs. ${runnerUpName}: ${track} Sets The Tone`
+    : `${winnerName} Becomes The Driver To Beat`;
+  const storylines = [
+    {
+      generation_kind: 'race_winner', story_type: 'driver_on_the_rise',
+      headline: `${winnerName} Owns The Moment at ${track}`.slice(0, 120),
+      summary: `The #${winner.car_number} took the checkered flag in Race ${race.race_number}. The next question is whether ${winnerName} can turn one victory into a streak.`.slice(0, 500),
+      primary_driver_id: winner.driver_id, secondary_driver_id: null, intensity: 'building', sort_order: 1,
+    },
+    {
+      generation_kind: 'race_rivalry', story_type: rivalryType,
+      headline: rivalryHeadline.slice(0, 120),
+      summary: runnerUpName ? `${winnerName} finished ahead of ${runnerUpName} at ${track}. Their next head-to-head race could turn this matchup from close competition into a real rivalry.`.slice(0, 500) : `All eyes move to the next race after ${winnerName}'s win at ${track}.`,
+      primary_driver_id: winner.driver_id, secondary_driver_id: runnerUp?.driver_id || null, intensity: runnerUp ? 'building' : null, sort_order: 2,
+    },
+    {
+      generation_kind: 'championship_watch', story_type: 'championship_watch',
+      headline: (second ? `${leaderName} Leads The Title Fight By ${pointsGap}` : `${leaderName} Sets The Early Championship Pace`).slice(0, 120),
+      summary: (second ? `${leaderName} holds a ${pointsGap}-point advantage over ${driverName(driversById[second[0]], '')} after Race ${race.race_number}. Every position now matters.` : `${leaderName} sits atop the BARL standings after Race ${race.race_number}.`).slice(0, 500),
+      primary_driver_id: leader?.[0] || winner.driver_id, secondary_driver_id: second?.[0] || null, intensity: pointsGap <= 10 && second ? 'must_watch' : 'building', sort_order: 3,
+    },
+  ].map(story => ({ ...story, season_id: race.season_id, source_race_id: race.id, status: 'draft', published_at: null, created_by: userId, generated_at: generatedAt, updated_at: generatedAt }));
+  await supabaseRequest('/rest/v1/n26_storylines?on_conflict=source_race_id,generation_kind', {
+    method: 'POST', headers: { Prefer: 'resolution=merge-duplicates,return=representation' }, body: JSON.stringify(storylines),
+  });
+  return { recap_headline: recap.headline, storyline_count: storylines.length };
 }
 
 async function handleAction(action, body, user) {
@@ -313,20 +397,30 @@ async function handleAction(action, body, user) {
     case 'void_race':
       if (!body.reason || String(body.reason).trim().length < 3) throw new Error('A reason is required to void a race.');
       return rpc('n26_void_race', { p_race_id: body.race_id, p_reason: String(body.reason).trim() });
-    case 'record_results':
-      return rpc('n26_upsert_race_results_with_stages', {
+    case 'record_results': {
+      const result = await rpc('n26_upsert_race_results_with_stages', {
         p_race_id: body.race_id,
         p_results: body.results,
         p_source_version: body.source_version || 'manual-v1',
         p_corrected_by: user.id,
       });
-    case 'correct_results':
-      return rpc('n26_correct_race_results', {
+      let generated;
+      try { generated = await generateRaceContent(body.race_id, user.id); }
+      catch (error) { throw new Error(`Results were saved, but automatic content generation failed: ${error.message}`); }
+      return { results: result, generated };
+    }
+    case 'correct_results': {
+      const result = await rpc('n26_correct_race_results', {
         p_race_id: body.race_id,
         p_results: body.results,
         p_source_version: body.source_version || 'manual-correction-v1',
         p_corrected_by: user.id,
       });
+      let generated;
+      try { generated = await generateRaceContent(body.race_id, user.id); }
+      catch (error) { throw new Error(`Corrections were saved, but automatic content generation failed: ${error.message}`); }
+      return { results: result, generated };
+    }
     case 'publish_race':
       return rpc('n26_publish_race_results', { p_race_id: body.race_id, p_appeal_hours: body.appeal_hours === undefined ? 48 : Number(body.appeal_hours) });
     case 'finalize_race':

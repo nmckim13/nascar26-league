@@ -181,13 +181,16 @@
    <h2>News Desk</h2>
    <p class="muted">Draft race debriefs here, then publish only after the official results are certified.</p>
    <form id="newsForm" class="form">
+    <input type="hidden" name="id" id="newsId">
     <label>Headline<input name="headline" required minlength="3" maxlength="160"></label>
     <label>Deck / summary<input name="dek" maxlength="500"></label>
     <label>Article body<textarea name="article_body" rows="6"></textarea></label>
     <input type="hidden" name="image_url" value="/assets/news/barl-season-1-launch.jpg">
     <label>Status<select name="status"><option value="draft">Save as draft</option><option value="published">Publish</option></select></label>
-    <button>Create article</button>
+    <div class="row"><button id="newsSave" type="submit">Create article</button><button id="newsReset" type="button" class="secondary">Clear editor</button></div>
    </form>
+   <div style="overflow:auto;margin-top:16px"><table><thead><tr><th>Headline</th><th>Source</th><th>Status</th><th>Manage</th></tr></thead><tbody id="newsList"></tbody></table></div>
+   <div id="newsMessage" class="message"></div>
   </section>
   <section class="card">
     <h2>Season Actions</h2>
