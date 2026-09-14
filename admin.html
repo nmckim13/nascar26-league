@@ -67,6 +67,15 @@
    </form>
   </section>
   <section class="card">
+   <h2>Link Driver Login</h2>
+   <p class="muted">Connect an existing roster driver to the email account they use on the BARL login page.</p>
+   <form id="linkLoginForm" class="form">
+    <label>Driver<select name="driver_id" id="loginDriver" required></select></label>
+    <label>Login email<input name="email" type="email" required placeholder="driver@example.com"></label>
+    <button>Link Account</button>
+   </form>
+  </section>
+  <section class="card">
    <h2>Team Profile Desk</h2>
    <form id="teamProfileForm" class="form">
     <label>Team<select name="team_id" id="profileTeam" required></select></label>

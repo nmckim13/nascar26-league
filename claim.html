@@ -486,6 +486,9 @@
  .car-num-img { width: 52px; height: 42px; }
  .form-row { grid-template-columns: 1fr; }
  }
+ .combined-profiles{max-width:1160px;margin:56px auto 0;padding:0 20px;}
+ .combined-profiles-head{margin-bottom:18px;}
+ .combined-profiles-frame{display:block;width:100%;min-height:720px;border:0;background:transparent;overflow:hidden;}
  </style>
  <link rel="stylesheet" href="n26.css">
 </head>
@@ -508,10 +511,9 @@
  <li><a href="results.html">Results</a></li>
  <li><a href="schedule.html">Schedule</a></li>
  <li><a href="rules.html">Rules</a></li>
- <li><a href="claim.html" class="active">Roster</a></li>
- <li><a href="join.html">Join</a></li>
+ <li><a href="claim.html" class="active">Drivers</a></li>
  </ul>
- <a href="claim.html" class="nav-cta">Claim a Car →</a>
+ <a href="auth.html" class="nav-cta">Log In / Join →</a>
  <div class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu">
  <span></span><span></span><span></span>
  </div>
@@ -522,9 +524,8 @@
   <a href="results.html">Results</a>
   <a href="schedule.html">Schedule</a>
   <a href="rules.html">Rules</a>
-  <a href="claim.html" class="active">Roster</a>
-  <a href="join.html">Join</a>
-  <a href="claim.html" class="drawer-cta">Claim a Car →</a>
+  <a href="claim.html" class="active">Drivers</a>
+  <a href="auth.html" class="drawer-cta">Log In / Join →</a>
 </div>
 
 <!-- HERO -->
@@ -732,6 +733,15 @@
  <p class="catalog-note">These are the unique Cup Series number options available in NASCAR 26. They are shown without real-world driver names. BARL claims are limited to the open seats above and are assigned to one of our eight league organizations.</p>
  <div class="cup-catalog" id="cupCatalog" aria-live="polite"></div>
 </div>
+
+<section class="combined-profiles" id="profiles">
+ <div class="combined-profiles-head">
+  <div class="s-label">Driver Profiles</div>
+  <div class="s-title">Meet the Grid</div>
+  <p class="catalog-note">See every approved driver, their team, car number, rating, and season history.</p>
+ </div>
+ <iframe id="profilesFrame" class="combined-profiles-frame" src="profiles.html?embed=1" title="BARL driver and team profiles" loading="lazy"></iframe>
+</section>
 
 <!-- SELECTION BANNER -->
 <div class="selection-banner" id="selBanner">

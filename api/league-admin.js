@@ -200,6 +200,18 @@ async function handleAction(action, body, user) {
       });
       return Array.isArray(created) ? created[0] : created;
     }
+    case 'link_driver_account': {
+      if (!body.driver_id || !body.email) throw new Error('A driver and login email are required.');
+      const email = String(body.email).trim().toLowerCase();
+      const authUsers = await supabaseRequest('/auth/v1/admin/users?page=1&per_page=1000');
+      const account = (authUsers.users || []).find(candidate => String(candidate.email || '').toLowerCase() === email);
+      if (!account) throw Object.assign(new Error('No BARL login account exists for that email yet. Ask the driver to create one first.'), { status: 404 });
+      const updated = await supabaseRequest(`/rest/v1/n26_drivers?id=eq.${encodeURIComponent(body.driver_id)}`, {
+        method: 'PATCH', headers: { Prefer: 'return=representation' }, body: JSON.stringify({ auth_user_id: account.id }),
+      });
+      if (!updated.length) throw Object.assign(new Error('Driver not found.'), { status: 404 });
+      return { driver_id: body.driver_id, email };
+    }
     case 'update_team_profile': {
       if (!body.team_id) throw new Error('A team is required.');
       const honors = body.honors === undefined ? [] : body.honors;

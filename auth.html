@@ -4,7 +4,7 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>BARL Auth</title>
- <meta name="description" content="Sign in to BARL with Supabase Auth to access protected league routes.">
+ <meta name="description" content="Driver and commissioner login for the Below Average Racing League.">
  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="n26.css">
  <style>
@@ -264,20 +264,20 @@
  <div class="shell">
   <nav class="nav">
   <a href="index.html" class="nav-logo"><img src="assets/brand/barl-logo.png" alt="BARL Racing League"></a>
-   <a href="claim.html" class="nav-link">Protected Roster</a>
+   <a href="claim.html" class="nav-link">Drivers &amp; Roster</a>
   </nav>
 
   <main class="page">
    <section class="hero">
-    <div class="eyebrow">Supabase Auth</div>
-    <h1>Sign In Before You <span>Claim.</span></h1>
-    <p>BARL now uses Supabase Auth for roster access. Create an account once, then your claim runs as an authenticated user instead of a public form post.</p>
+    <div class="eyebrow">BARL Member Access</div>
+    <h1>Your League. Your <span>Profile.</span></h1>
+    <p>Drivers and commissioners use one secure login. Drivers can manage their information and view their team and contract from the member portal.</p>
    </section>
 
    <section class="layout">
     <div class="card">
-     <h2 id="authTitle">Sign In To Claim</h2>
-     <p class="card-sub" id="authSubtitle">Your BARL claim page is protected. Sign in to continue to the roster.</p>
+     <h2 id="authTitle">BARL Member Login</h2>
+     <p class="card-sub" id="authSubtitle">Drivers and commissioners use the same secure login.</p>
 
      <div class="button-row">
      <button type="button" class="tab-btn" id="showSignIn">I Have An Account</button>
@@ -314,23 +314,23 @@
     </div>
 
     <aside class="card">
-     <h2>What Changed</h2>
-     <p class="card-sub">The public site stays readable, but claiming a car now requires a Supabase session.</p>
+     <h2>Inside Your Account</h2>
+     <p class="card-sub">The public league stays open to everyone. Member tools require your login.</p>
      <div class="aside-list">
       <div class="aside-item">
-       <strong>Protected Route</strong>
-       <p>`claim.html` redirects here when there is no active Supabase session.</p>
+       <strong>Driver Profile</strong>
+       <p>Edit your public name and gamertag without changing your permanent racing history.</p>
       </div>
       <div class="aside-item">
-       <strong>RLS Backstop</strong>
-       <p>Database policies now decide who can insert a claim, so bypassing the UI is not enough.</p>
+       <strong>Team &amp; Contract</strong>
+       <p>See your car, teammates, contract length, status, and current season at a glance.</p>
       </div>
       <div class="aside-item">
-       <strong>Driver Identity</strong>
-       <p>Each signed-in account can be tied to one claim through `auth.users`.</p>
+       <strong>Commissioner Access</strong>
+       <p>Commissioners use this same login to reach the restricted league console.</p>
       </div>
      </div>
-     <div class="route-pill">Next stop <code id="nextPath">claim.html</code></div>
+     <div class="route-pill">Next stop <code id="nextPath">driver.html</code></div>
     </aside>
    </section>
   </main>

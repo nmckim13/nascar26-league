@@ -367,6 +367,18 @@ async function signOut() {
 }
 
 async function init() {
+  const profilesFrame = document.getElementById('profilesFrame');
+  if (profilesFrame) {
+    profilesFrame.addEventListener('load', () => {
+      const resize = () => {
+        const height = profilesFrame.contentDocument?.documentElement?.scrollHeight;
+        if (height) profilesFrame.style.height = `${height + 12}px`;
+      };
+      resize();
+      const content = profilesFrame.contentDocument?.documentElement;
+      if (content && 'ResizeObserver' in window) new ResizeObserver(resize).observe(content);
+    });
+  }
   const { data: { session } } = await supabase.auth.getSession();
   state.user = session?.user || null;
   fillAuthCard(state.user);

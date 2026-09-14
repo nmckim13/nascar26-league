@@ -4,7 +4,7 @@ import {
   supabase,
 } from './supabase-auth.js';
 
-const nextPath = getNextPath();
+const nextPath = getNextPath('driver.html');
 
 const state = {
   mode: 'signin',
@@ -58,10 +58,10 @@ function setMode(mode) {
 
   if (mode === 'signup') {
     title.textContent = 'Create Your Driver Account';
-    sub.textContent = 'Use your email to unlock the protected roster page and claim your car.';
+    sub.textContent = 'Create one account for your driver profile, car requests, and league access.';
   } else {
-    title.textContent = 'Sign In To Claim';
-    sub.textContent = 'Your BARL claim page is protected. Sign in to continue to the roster.';
+    title.textContent = 'BARL Member Login';
+    sub.textContent = 'Drivers and commissioners use the same secure login.';
   }
 
   setMessage('');

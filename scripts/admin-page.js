@@ -71,6 +71,7 @@ function render(bundle) {
   document.getElementById('contractDriver').innerHTML = driverOptions;
   document.getElementById('departingDriver').innerHTML = driverOptions;
   document.getElementById('replacementDriver').innerHTML = driverOptions;
+  document.getElementById('loginDriver').innerHTML = driverOptions;
   document.getElementById('seatTeam').innerHTML = bundle.teams.map(team => `<option value="${escapeHtml(team.id)}">${escapeHtml(team.name)}</option>`).join('');
   document.getElementById('contractTeam').innerHTML = bundle.teams.map(team => `<option value="${escapeHtml(team.id)}">${escapeHtml(team.name)}</option>`).join('');
   document.getElementById('profileTeam').innerHTML = bundle.teams.map(team => `<option value="${escapeHtml(team.id)}">${escapeHtml(team.name)}</option>`).join('');
@@ -177,6 +178,17 @@ async function init() {
       await call('create_driver', { ...Object.fromEntries(form.entries()), season_id: state.bundle?.season.id });
       event.currentTarget.reset();
       setMessage('actionMessage', 'Permanent driver identity added.');
+      await refresh();
+    } catch (error) { setMessage('actionMessage', error.message, true); }
+  });
+  document.getElementById('linkLoginForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    setMessage('actionMessage', 'Linking driver login...');
+    try {
+      const values = Object.fromEntries(new FormData(event.currentTarget).entries());
+      await call('link_driver_account', values);
+      event.currentTarget.reset();
+      setMessage('actionMessage', 'Driver login linked. Their portal is ready.');
       await refresh();
     } catch (error) { setMessage('actionMessage', error.message, true); }
   });
