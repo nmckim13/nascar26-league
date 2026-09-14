@@ -32,8 +32,10 @@ function render(bundle) {
   state.bundle = bundle;
   const active = bundle.assignments.filter(assignment => assignment.assignment_status === 'active');
   const fullTime = bundle.entries.filter(entry => entry.entry_status === 'full_time');
+  const pendingApplications = (bundle.applications || []).filter(application => application.approval_status === 'pending');
   document.getElementById('stats').innerHTML = [
     ['Drivers', bundle.drivers.length],
+    ['Awaiting approval', pendingApplications.length],
     ['Full-time / target', `${fullTime.length} / 24`],
     ['Active seats', active.length],
     ['Races', bundle.races.length],
@@ -48,6 +50,20 @@ function render(bundle) {
     const assignment = activeAssignments[entry.driver_id];
     return `<tr><td>${escapeHtml(driver.display_name || 'Unknown')}</td><td>${escapeHtml(driver.gamertag || '—')}</td><td>${escapeHtml(entry.entry_status)}</td><td>${escapeHtml(assignment ? (teams[assignment.team_id] || assignment.team_id) : 'Unassigned')}</td><td>${assignment ? `#${escapeHtml(assignment.car_number)}` : '—'}</td></tr>`;
   }).join('');
+
+  document.getElementById('applications').innerHTML = pendingApplications.length
+    ? pendingApplications.map(application => {
+      const name = [application.first_name, application.last_name].filter(Boolean).join(' ').trim() || application.gamertag || 'Unknown';
+      return `<tr>
+        <td>${escapeHtml(name)}</td>
+        <td>${escapeHtml(application.gamertag || '—')}</td>
+        <td>#${escapeHtml(application.car_number)} · ${escapeHtml(application.team_name)}</td>
+        <td>${escapeHtml(application.discord_username || '—')}</td>
+        <td>${escapeHtml(new Date(application.claimed_at).toLocaleDateString())}</td>
+        <td><div style="display:flex;gap:6px;min-width:170px"><button type="button" data-application-action="approve_application" data-application-id="${escapeHtml(application.id)}" style="width:auto;padding:8px 10px">Approve</button><button type="button" class="secondary" data-application-action="reject_application" data-application-id="${escapeHtml(application.id)}" style="width:auto;padding:8px 10px">Decline</button></div></td>
+      </tr>`;
+    }).join('')
+    : '<tr><td colspan="6" class="muted">No applications are waiting for approval.</td></tr>';
 
   const driverOptions = bundle.drivers.map(driver => `<option value="${escapeHtml(driver.id)}">${escapeHtml(driver.display_name)}${driver.gamertag ? ` (${escapeHtml(driver.gamertag)})` : ''}</option>`).join('');
   document.getElementById('seatDriver').innerHTML = driverOptions;
@@ -137,6 +153,22 @@ async function runAction(action) {
 async function init() {
   state.auth = await requireUser('admin.html');
   if (!state.auth) return;
+  document.getElementById('applications').addEventListener('click', async event => {
+    const button = event.target.closest('[data-application-action]');
+    if (!button) return;
+    const action = button.dataset.applicationAction;
+    const applicationId = button.dataset.applicationId;
+    button.disabled = true;
+    setMessage('applicationMessage', action === 'approve_application' ? 'Approving applicant and assigning the requested seat...' : 'Declining application...');
+    try {
+      await call(action, { application_id: applicationId, season_id: state.bundle?.season.id });
+      setMessage('applicationMessage', action === 'approve_application' ? 'Applicant approved and added to the league.' : 'Application declined. The car is available again.');
+      await refresh();
+    } catch (error) {
+      button.disabled = false;
+      setMessage('applicationMessage', error.message, true);
+    }
+  });
   document.getElementById('driverForm').addEventListener('submit', async event => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);

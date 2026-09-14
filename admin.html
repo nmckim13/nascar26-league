@@ -48,8 +48,14 @@
     <h2>Season Overview</h2>
     <div id="stats" class="stat-row"></div>
     <div id="overviewMessage" class="message">Loading commissioner data...</div>
-    <div style="overflow:auto"><table><thead><tr><th>Driver</th><th>Gamertag</th><th>Entry</th><th>Team</th><th>Car</th></tr></thead><tbody id="roster"></tbody></table></div>
+   <div style="overflow:auto"><table><thead><tr><th>Driver</th><th>Gamertag</th><th>Entry</th><th>Team</th><th>Car</th></tr></thead><tbody id="roster"></tbody></table></div>
    </section>
+  <section class="card wide">
+   <h2>Join Approvals</h2>
+   <p class="muted">New car requests stay private and off the roster until you approve them.</p>
+   <div style="overflow:auto;margin-top:12px"><table><thead><tr><th>Applicant</th><th>Gamertag</th><th>Requested seat</th><th>Discord</th><th>Submitted</th><th>Decision</th></tr></thead><tbody id="applications"></tbody></table></div>
+   <div id="applicationMessage" class="message"></div>
+  </section>
   <section class="card">
    <h2>Add Driver</h2>
     <form id="driverForm" class="form">

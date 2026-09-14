@@ -50,6 +50,7 @@ async function renderCupCatalog() {
 }
 
 function formatDriverName(claim) {
+  if (claim.approval_status === 'pending') return 'Pending approval';
   return [claim.first_name, claim.last_name].filter(Boolean).join(' ').trim() || claim.gamertag;
 }
 
@@ -111,6 +112,12 @@ function renderClaimedCars() {
 }
 
 async function loadClaims() {
+  const { data: availability } = await supabase
+    .from('n26_claim_availability')
+    .select('car_number, approval_status');
+  const pending = (availability || [])
+    .filter(row => row.approval_status === 'pending')
+    .map(row => ({ car_number: row.car_number, approval_status: 'pending' }));
   const publishedSeason = await loadPublishedSeason();
   const catalog = await loadTeamCatalog();
   if (catalog.source === 'normalized' && catalog.teams.length) {
@@ -125,6 +132,7 @@ async function loadClaims() {
     if (publishedSeason) lockClaiming(publishedSeason);
     try {
       state.claimedCars = await loadSeasonRosterClaims(rosterSeason);
+      state.claimedCars.push(...pending.filter(row => !state.claimedCars.some(claim => claim.car_number === row.car_number)));
       renderClaimedCars();
     } catch (error) {
       console.warn('Could not load the published normalized roster', error);
@@ -143,6 +151,7 @@ async function loadClaims() {
   }
 
   state.claimedCars = data || [];
+  state.claimedCars.push(...pending.filter(row => !state.claimedCars.some(claim => claim.car_number === row.car_number)));
   renderClaimedCars();
 }
 
@@ -239,15 +248,16 @@ function showExistingClaimState(claim) {
     state.selectedCard = null;
   }
 
-  document.getElementById('authState').textContent = `Already claimed car #${claim.car_number}`;
+  const pending = claim.approval_status === 'pending';
+  document.getElementById('authState').textContent = pending ? `Car #${claim.car_number} request awaiting approval` : `Already claimed car #${claim.car_number}`;
   document.getElementById('claimForm').style.display = 'none';
   document.getElementById('successState').style.display = 'block';
-  document.querySelector('#successState h2').textContent = 'Already Locked In';
+  document.querySelector('#successState h2').textContent = pending ? 'Application Pending' : 'Already Locked In';
   const successCopy = document.querySelector('#successState p');
   successCopy.replaceChildren(
-    document.createTextNode(`This account already owns car #${claim.car_number}.`),
+    document.createTextNode(pending ? `Your request for car #${claim.car_number} is waiting for commissioner approval.` : `This account already owns car #${claim.car_number}.`),
     document.createElement('br'),
-    document.createTextNode(`${formatDriverName(claim)} is already on the roster.`),
+    document.createTextNode(pending ? 'You will appear on the roster after approval.' : `${formatDriverName(claim)} is already on the roster.`),
   );
   setClaimFormDisabled(true);
 }
@@ -261,7 +271,7 @@ async function handleSubmit(event) {
 
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
-  btn.textContent = 'Saving Claim...';
+  btn.textContent = 'Sending Request...';
 
   const form = event.currentTarget;
   const payload = {
@@ -279,12 +289,12 @@ async function handleSubmit(event) {
   const { data, error } = await supabase
     .from('n26_claims')
     .insert(payload)
-    .select('car_number, gamertag, first_name, last_name')
+    .select('car_number, gamertag, first_name, last_name, approval_status')
     .single();
 
   if (error) {
     btn.disabled = false;
-    btn.textContent = 'Lock In My Car';
+    btn.textContent = 'Submit for Approval';
 
     if (error.code === '23505') {
       window.alert('That car or account is already locked in. Refresh and pick another open spot.');
@@ -301,6 +311,7 @@ async function handleSubmit(event) {
     return;
   }
 
+  data.approval_status = 'pending';
   state.claimedCars.push(data);
   state.existingClaim = data;
 
@@ -310,7 +321,7 @@ async function handleSubmit(event) {
 
     const tag = document.createElement('span');
     tag.className = 'car-claimer';
-    tag.textContent = formatDriverName(data);
+    tag.textContent = 'Pending approval';
     state.selectedCard.appendChild(tag);
     state.selectedCard = null;
   }
@@ -319,6 +330,12 @@ async function handleSubmit(event) {
   updateAllSlotCounts();
   document.getElementById('claimForm').style.display = 'none';
   document.getElementById('successState').style.display = 'block';
+  document.querySelector('#successState h2').textContent = 'Application Sent';
+  document.querySelector('#successState p').replaceChildren(
+    document.createTextNode(`Your request for car #${data.car_number} is waiting for commissioner approval.`),
+    document.createElement('br'),
+    document.createTextNode('It will appear on the roster after approval.'),
+  );
 }
 
 function closeModalOutside(event) {
@@ -382,7 +399,7 @@ async function init() {
   if (state.user) {
     const { data: existingClaim, error: existingClaimError } = await supabase
       .from('n26_claims')
-      .select('car_number, gamertag, first_name, last_name')
+      .select('car_number, gamertag, first_name, last_name, approval_status')
       .eq('user_id', state.user.id)
       .maybeSingle();
 

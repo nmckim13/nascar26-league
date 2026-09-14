@@ -137,7 +137,9 @@ export default async function handler(req, res) {
 
   try {
     const payload = req.body;
-    if (payload.type !== 'INSERT' || !payload.record) {
+    const wasApproved = payload.old_record?.approval_status === 'approved';
+    const isNewApproval = payload.record?.approval_status === 'approved' && !wasApproved;
+    if (!isNewApproval) {
       return res.status(200).json({ message: 'Ignored' });
     }
 
@@ -194,7 +196,7 @@ export default async function handler(req, res) {
       : spotsLeft === 1 ? `\n⚠️ **Last spot — one car left!**` : '';
 
     const message = [
-      `**🚗 New Driver Claimed**`,
+      `**✅ Driver Application Approved**`,
       `**#${car_number}** — ${emoji} ${team}`,
       `**Gamertag:** ${gamertag}`,
       spotsText,

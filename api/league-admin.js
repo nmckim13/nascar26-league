@@ -90,7 +90,7 @@ async function getSeason(seasonId) {
 async function getSeasonBundle(seasonId) {
   const season = await getSeason(seasonId);
   const raceRows = await supabaseRequest(`/rest/v1/n26_season_races?season_id=eq.${season.id}&select=id`);
-  const [rulesetRows, races, entries, assignments, results, drivers, teams, catalog] = await Promise.all([
+  const [rulesetRows, races, entries, assignments, results, drivers, teams, catalog, applications] = await Promise.all([
     supabaseRequest(`/rest/v1/n26_rulesets?id=eq.${season.ruleset_id}&select=*`),
     supabaseRequest(`/rest/v1/n26_season_races?season_id=eq.${season.id}&order=race_number&select=*`),
     supabaseRequest(`/rest/v1/n26_season_entries?season_id=eq.${season.id}&select=*`),
@@ -99,10 +99,11 @@ async function getSeasonBundle(seasonId) {
     supabaseRequest('/rest/v1/n26_drivers?select=*'),
     supabaseRequest('/rest/v1/n26_teams?status=eq.active&select=id,name,slug,seat_limit,owner_name,honors&order=name'),
     supabaseRequest('/rest/v1/n26_team_car_numbers?is_available=eq.true&select=team_id,car_number&order=car_number'),
+    supabaseRequest('/rest/v1/n26_claims?select=id,user_id,car_number,team_name,gamertag,first_name,last_name,phone,discord_username,approval_status,claimed_at,reviewed_at&order=claimed_at.desc'),
   ]);
   if (!rulesetRows?.length) throw new Error('Season ruleset not found.');
   const contracts = await supabaseRequest(`/rest/v1/n26_contracts?start_season=lte.${season.season_number}&end_season=gte.${season.season_number}&status=in.(introductory,active)&order=created_at.desc&select=*`);
-  return { season, ruleset: rulesetRows[0], races, entries, assignments, results, drivers, teams, catalog, contracts };
+  return { season, ruleset: rulesetRows[0], races, entries, assignments, results, drivers, teams, catalog, contracts, applications };
 }
 
 function makeResultsVersion(bundle) {
@@ -168,6 +169,24 @@ async function handleAction(action, body, user) {
   switch (action) {
     case 'overview':
       return getSeasonBundle(body.season_id);
+    case 'approve_application': {
+      if (!body.application_id || !body.season_id) throw new Error('An application and draft season are required.');
+      return rpc('n26_review_claim', {
+        p_claim_id: body.application_id,
+        p_decision: 'approved',
+        p_reviewer: user.id,
+        p_season_id: body.season_id,
+      });
+    }
+    case 'reject_application': {
+      if (!body.application_id) throw new Error('An application is required.');
+      return rpc('n26_review_claim', {
+        p_claim_id: body.application_id,
+        p_decision: 'rejected',
+        p_reviewer: user.id,
+        p_season_id: body.season_id || null,
+      });
+    }
     case 'create_driver': {
       if (!body.display_name || String(body.display_name).trim().length < 2) throw new Error('Display name is required.');
       const created = await rpc('n26_create_driver', {
