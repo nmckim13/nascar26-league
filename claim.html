@@ -528,28 +528,12 @@
   <a href="auth.html" class="drawer-cta">Log In / Join →</a>
 </div>
 
-<!-- HERO -->
-<div class="hero">
- <div class="eyebrow">Season 1 — Claim Your Car</div>
- <h1>Pick Your<br><em>Number.</em></h1>
- <p class="hero-sub" style="margin-bottom:8px;">You're claiming a car number in the NASCAR 26 video game league. Your car's in-game finishes are your score.</p>
-  <p class="hero-sub">First come, first served. Click a car, fill out the form, and that number is yours for the season. Once it's gone, it's gone.</p>
-
- <div class="rules-strip">
- <div class="rule-pill"><span class="rn">1</span><span class="rl">Car per person</span></div>
- <div class="rule-pill"><span class="rn">3</span><span class="rl">Max per team</span></div>
- <div class="rule-pill"><span class="rn">24</span><span class="rl">Total spots</span></div>
- </div>
- <div class="auth-panel">
- <div class="auth-copy">
- <div class="auth-kicker">Roster Access</div>
- <div class="auth-email" id="authEmail">Checking session...</div>
- <div class="auth-state" id="authState">Verifying your protected route</div>
- </div>
- <button type="button" class="auth-signout" id="signOutBtn" hidden>Sign Out</button>
- </div>
-  <p id="claimStatus" hidden style="margin-top:12px;color:var(--yellow);font-size:12px;line-height:1.5;"></p>
-  <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6;">NASCAR 26 releases September 2026 on PlayStation, Xbox, and PC</p>
+<!-- Session state remains available to the claim flow without occupying page space. -->
+<div hidden aria-hidden="true">
+ <span id="authEmail"></span>
+ <span id="authState"></span>
+ <button type="button" id="signOutBtn"></button>
+ <span id="claimStatus"></span>
 </div>
 
 <!-- DRIVER CARDS -->
