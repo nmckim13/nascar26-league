@@ -72,6 +72,12 @@ function render(bundle) {
   document.getElementById('departingDriver').innerHTML = driverOptions;
   document.getElementById('replacementDriver').innerHTML = driverOptions;
   document.getElementById('loginDriver').innerHTML = driverOptions;
+  const optionalDriverOptions = `<option value="">None</option>${driverOptions}`;
+  document.getElementById('storylinePrimary').innerHTML = optionalDriverOptions;
+  document.getElementById('storylineSecondary').innerHTML = optionalDriverOptions;
+  document.getElementById('storylinesList').innerHTML = (bundle.storylines || []).length
+    ? bundle.storylines.map(story => `<tr><td>${escapeHtml(story.sort_order)}</td><td>${escapeHtml(story.headline)}</td><td>${escapeHtml(story.story_type.replaceAll('_', ' '))}</td><td>${escapeHtml(story.status)}</td><td><div style="display:flex;gap:6px;min-width:150px"><button type="button" data-story-edit="${escapeHtml(story.id)}" style="width:auto;padding:8px 10px">Edit</button><button type="button" class="secondary" data-story-archive="${escapeHtml(story.id)}" style="width:auto;padding:8px 10px">Archive</button></div></td></tr>`).join('')
+    : '<tr><td colspan="5" class="muted">No custom storylines yet.</td></tr>';
   document.getElementById('seatTeam').innerHTML = bundle.teams.map(team => `<option value="${escapeHtml(team.id)}">${escapeHtml(team.name)}</option>`).join('');
   document.getElementById('contractTeam').innerHTML = bundle.teams.map(team => `<option value="${escapeHtml(team.id)}">${escapeHtml(team.name)}</option>`).join('');
   document.getElementById('profileTeam').innerHTML = bundle.teams.map(team => `<option value="${escapeHtml(team.id)}">${escapeHtml(team.name)}</option>`).join('');
@@ -246,6 +252,42 @@ async function init() {
       event.currentTarget.reset();
       setMessage('actionMessage', 'News article created.');
     } catch (error) { setMessage('actionMessage', error.message, true); }
+  });
+  const storylineForm = document.getElementById('storylineForm');
+  const resetStorylineForm = () => {
+    storylineForm.reset();
+    document.getElementById('storylineId').value = '';
+    storylineForm.elements.sort_order.value = '1';
+    document.getElementById('storylineSave').textContent = 'Create storyline';
+  };
+  storylineForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    try {
+      const values = Object.fromEntries(new FormData(storylineForm).entries());
+      await call('save_storyline', { ...values, season_id: state.bundle.season.id });
+      setMessage('storylineMessage', values.id ? 'Storyline updated.' : 'Storyline created.');
+      resetStorylineForm();
+      await refresh();
+    } catch (error) { setMessage('storylineMessage', error.message, true); }
+  });
+  document.getElementById('storylineReset').addEventListener('click', resetStorylineForm);
+  document.getElementById('storylinesList').addEventListener('click', async event => {
+    const editButton = event.target.closest('[data-story-edit]');
+    const archiveButton = event.target.closest('[data-story-archive]');
+    if (editButton) {
+      const story = state.bundle.storylines.find(item => item.id === editButton.dataset.storyEdit);
+      if (!story) return;
+      for (const field of ['id', 'story_type', 'headline', 'summary', 'primary_driver_id', 'secondary_driver_id', 'intensity', 'sort_order', 'status']) storylineForm.elements[field].value = story[field] ?? '';
+      document.getElementById('storylineSave').textContent = 'Save changes';
+      storylineForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    if (archiveButton) {
+      try {
+        await call('archive_storyline', { id: archiveButton.dataset.storyArchive });
+        setMessage('storylineMessage', 'Storyline archived and removed from the homepage.');
+        await refresh();
+      } catch (error) { setMessage('storylineMessage', error.message, true); }
+    }
   });
   document.getElementById('seatTeam').addEventListener('change', updateCarOptions);
   document.getElementById('seatDriver').addEventListener('change', updateCarOptions);

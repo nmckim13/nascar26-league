@@ -163,6 +163,21 @@
    <div class="row" style="margin-top:10px"><button id="recordResults" type="button">Save draft results</button><button id="correctResults" type="button" class="secondary">Apply appeal correction</button></div>
   </section>
   <section class="card wide">
+   <h2>Storylines Desk</h2>
+   <p class="muted">Control the rivalry and narrative cards featured on the homepage. Published stories appear in display order.</p>
+   <form id="storylineForm" class="form" style="margin-top:12px">
+    <input type="hidden" name="id" id="storylineId">
+    <div class="row"><label>Story type<select name="story_type"><option value="championship_watch">Championship Watch</option><option value="featured_rivalry">Featured Rivalry</option><option value="driver_on_the_rise">Driver on the Rise</option><option value="team_battle">Team Battle</option><option value="contract_watch">Contract Watch</option><option value="commissioner_spotlight">Commissioner's Spotlight</option></select></label><label>Rivalry level<select name="intensity"><option value="">None</option><option value="friendly">Friendly</option><option value="building">Building</option><option value="heated">Heated</option><option value="must_watch">Must-Watch</option></select></label></div>
+    <label>Headline<input name="headline" required minlength="3" maxlength="120" placeholder="The battle for Trackhouse begins"></label>
+    <label>Short story<textarea name="summary" rows="3" maxlength="500" placeholder="Tell fans why this matchup matters."></textarea></label>
+    <div class="row"><label>Primary driver<select name="primary_driver_id" id="storylinePrimary"><option value="">None</option></select></label><label>Second driver<select name="secondary_driver_id" id="storylineSecondary"><option value="">None</option></select></label></div>
+    <div class="row"><label>Display order<input name="sort_order" type="number" min="1" max="99" value="1"></label><label>Status<select name="status"><option value="draft">Draft</option><option value="published">Published</option><option value="archived">Archived</option></select></label></div>
+    <div class="row"><button id="storylineSave" type="submit">Create storyline</button><button id="storylineReset" type="button" class="secondary">Clear editor</button></div>
+   </form>
+   <div style="overflow:auto;margin-top:16px"><table><thead><tr><th>Order</th><th>Headline</th><th>Type</th><th>Status</th><th>Manage</th></tr></thead><tbody id="storylinesList"></tbody></table></div>
+   <div id="storylineMessage" class="message"></div>
+  </section>
+  <section class="card wide">
    <h2>News Desk</h2>
    <p class="muted">Draft race debriefs here, then publish only after the official results are certified.</p>
    <form id="newsForm" class="form">

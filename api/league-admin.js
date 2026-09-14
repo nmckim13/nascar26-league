@@ -90,7 +90,7 @@ async function getSeason(seasonId) {
 async function getSeasonBundle(seasonId) {
   const season = await getSeason(seasonId);
   const raceRows = await supabaseRequest(`/rest/v1/n26_season_races?season_id=eq.${season.id}&select=id`);
-  const [rulesetRows, races, entries, assignments, results, drivers, teams, catalog, applications] = await Promise.all([
+  const [rulesetRows, races, entries, assignments, results, drivers, teams, catalog, applications, storylines] = await Promise.all([
     supabaseRequest(`/rest/v1/n26_rulesets?id=eq.${season.ruleset_id}&select=*`),
     supabaseRequest(`/rest/v1/n26_season_races?season_id=eq.${season.id}&order=race_number&select=*`),
     supabaseRequest(`/rest/v1/n26_season_entries?season_id=eq.${season.id}&select=*`),
@@ -100,10 +100,11 @@ async function getSeasonBundle(seasonId) {
     supabaseRequest('/rest/v1/n26_teams?status=eq.active&select=id,name,slug,seat_limit,owner_name,honors&order=name'),
     supabaseRequest('/rest/v1/n26_team_car_numbers?is_available=eq.true&select=team_id,car_number&order=car_number'),
     supabaseRequest('/rest/v1/n26_claims?select=id,user_id,car_number,team_name,gamertag,first_name,last_name,phone,discord_username,approval_status,claimed_at,reviewed_at&order=claimed_at.desc'),
+    supabaseRequest('/rest/v1/n26_storylines?select=*&order=sort_order.asc,updated_at.desc'),
   ]);
   if (!rulesetRows?.length) throw new Error('Season ruleset not found.');
   const contracts = await supabaseRequest(`/rest/v1/n26_contracts?start_season=lte.${season.season_number}&end_season=gte.${season.season_number}&status=in.(introductory,active)&order=created_at.desc&select=*`);
-  return { season, ruleset: rulesetRows[0], races, entries, assignments, results, drivers, teams, catalog, contracts, applications };
+  return { season, ruleset: rulesetRows[0], races, entries, assignments, results, drivers, teams, catalog, contracts, applications, storylines };
 }
 
 function makeResultsVersion(bundle) {
@@ -431,6 +432,51 @@ async function handleAction(action, body, user) {
       updates.updated_at = new Date().toISOString();
       const rows = await supabaseRequest(`/rest/v1/n26_news_articles?id=eq.${encodeURIComponent(body.id)}`, { method: 'PATCH', headers: { Prefer: 'return=representation' }, body: JSON.stringify(updates) });
       if (!rows.length) throw Object.assign(new Error('Article not found.'), { status: 404 });
+      return rows[0];
+    }
+    case 'save_storyline': {
+      const allowedTypes = ['championship_watch', 'featured_rivalry', 'driver_on_the_rise', 'team_battle', 'contract_watch', 'commissioner_spotlight'];
+      const allowedIntensity = ['friendly', 'building', 'heated', 'must_watch'];
+      const headline = String(body.headline || '').trim();
+      const summary = String(body.summary || '').trim();
+      const storyType = allowedTypes.includes(body.story_type) ? body.story_type : 'commissioner_spotlight';
+      const status = ['draft', 'published', 'archived'].includes(body.status) ? body.status : 'draft';
+      const sortOrder = Number(body.sort_order || 1);
+      if (headline.length < 3 || headline.length > 120) throw new Error('Storyline headlines must be 3–120 characters.');
+      if (summary.length > 500) throw new Error('Storyline summaries cannot exceed 500 characters.');
+      if (!Number.isInteger(sortOrder) || sortOrder < 1 || sortOrder > 99) throw new Error('Display order must be between 1 and 99.');
+      const payload = {
+        season_id: body.season_id || null,
+        story_type: storyType,
+        headline,
+        summary,
+        primary_driver_id: body.primary_driver_id || null,
+        secondary_driver_id: body.secondary_driver_id || null,
+        intensity: allowedIntensity.includes(body.intensity) ? body.intensity : null,
+        status,
+        sort_order: sortOrder,
+        updated_at: new Date().toISOString(),
+      };
+      if (status === 'published') payload.published_at = new Date().toISOString();
+      if (body.id) {
+        const rows = await supabaseRequest(`/rest/v1/n26_storylines?id=eq.${encodeURIComponent(body.id)}`, {
+          method: 'PATCH', headers: { Prefer: 'return=representation' }, body: JSON.stringify(payload),
+        });
+        if (!rows.length) throw Object.assign(new Error('Storyline not found.'), { status: 404 });
+        return rows[0];
+      }
+      const rows = await supabaseRequest('/rest/v1/n26_storylines', {
+        method: 'POST', headers: { Prefer: 'return=representation' }, body: JSON.stringify({ ...payload, created_by: user.id }),
+      });
+      return rows[0];
+    }
+    case 'archive_storyline': {
+      if (!body.id) throw new Error('A storyline is required.');
+      const rows = await supabaseRequest(`/rest/v1/n26_storylines?id=eq.${encodeURIComponent(body.id)}`, {
+        method: 'PATCH', headers: { Prefer: 'return=representation' },
+        body: JSON.stringify({ status: 'archived', updated_at: new Date().toISOString() }),
+      });
+      if (!rows.length) throw Object.assign(new Error('Storyline not found.'), { status: 404 });
       return rows[0];
     }
     case 'extend_contract': {

@@ -220,6 +220,17 @@
  .news-card h3 { margin:0 0 8px; font-size:18px; line-height:1.1; }
  .news-card p { margin:0; color:var(--muted); line-height:1.55; font-size:13px; }
  .news-date { color:var(--yellow); font-size:10px; font-weight:800; text-transform:uppercase; margin-bottom:10px; }
+ .storyline-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+ .storyline-card { position:relative; min-height:220px; padding:20px; overflow:hidden; border:1px solid var(--border2); border-radius:var(--radius-lg); background:linear-gradient(145deg,#1c1c24 0%,#101015 75%); display:flex; flex-direction:column; }
+ .storyline-card::before { content:''; position:absolute; inset:0 auto 0 0; width:5px; background:var(--yellow); }
+ .storyline-card[data-intensity="heated"]::before { background:var(--red); }
+ .storyline-card[data-intensity="must_watch"] { border-color:rgba(232,0,45,.55); box-shadow:0 12px 36px rgba(232,0,45,.1); }
+ .storyline-type { color:var(--yellow); font-size:10px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+ .storyline-card h3 { margin:20px 0 9px; font-size:clamp(19px,3vw,25px); line-height:1; text-transform:uppercase; letter-spacing:-.03em; }
+ .storyline-card p { margin:0; color:var(--muted); font-size:13px; line-height:1.55; }
+ .storyline-matchup { margin-top:auto; padding-top:18px; color:#fff; font-size:11px; font-weight:800; text-transform:uppercase; }
+ .storyline-level { display:inline-block; margin-top:10px; padding:4px 8px; border-radius:999px; background:rgba(255,194,0,.13); color:var(--yellow); font-size:9px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+ @media (max-width:767px) { .storyline-grid { grid-template-columns:1fr; } .storyline-card { min-height:190px; } }
  </style>
  <link rel="stylesheet" href="n26.css">
 </head>
@@ -314,7 +325,13 @@
  </div>
 </div>
 
-<!-- STANDINGS -->
+<!-- STORYLINES -->
+<section class="page section-block" id="storylines">
+ <div class="s-hdr"><div><div class="s-eyebrow">Inside The Garage</div><div class="s-title">BARL Storylines</div></div><span class="s-hdr-right">Commissioner curated</span></div>
+ <div id="storyline-rows" class="storyline-grid"><div class="s-empty"><strong>The stories start here</strong>Rivalries, team battles, and drivers on the rise will live here.</div></div>
+</section>
+
+<!-- LEAGUE NEWS -->
 <section class="page section-block" id="news">
  <div class="s-hdr"><div><div class="s-eyebrow">From The Paddock</div><div class="s-title">League News</div></div><span class="s-hdr-right">Commissioner reviewed</span></div>
  <div id="news-rows" class="news-grid"><div class="s-empty"><strong>No race reports yet</strong>Published debriefs will appear here after each certified race.</div></div>
@@ -422,7 +439,7 @@
 </footer>
 
 <script src="./scripts/league-rules.js"></script>
-<script src="./scripts/public-bootstrap.js"></script>
+<script src="./scripts/public-bootstrap.js?v=storylines-1"></script>
 <script>
  const SB_URL = 'https://txipxisumngvzkuqsysq.supabase.co';
  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
@@ -450,6 +467,7 @@
    }];
   }
   renderNews(news);
+  renderStorylines(display.storylines || [], display.claims || []);
   const { claims, races, results } = display;
   const isNormalized = display.source === 'normalized';
   leagueRaceCount = races.length || leagueRaceCount;
@@ -558,6 +576,18 @@
   const target = document.getElementById('news-rows');
   if (!target || !news.length) return;
   target.innerHTML = news.map(article => `<article class="news-card">${article.image_url ? `<img src="${escapeHtml(article.image_url)}" alt="" loading="lazy">` : ''}<div class="news-date">${new Date(article.published_at).toLocaleDateString()}</div><h3>${escapeHtml(article.headline)}</h3><p>${escapeHtml(article.dek || '')}</p></article>`).join('');
+ }
+ function renderStorylines(storylines, claims) {
+  const target = document.getElementById('storyline-rows');
+  if (!target) return;
+  const fallback = [{ story_type:'commissioner_spotlight', headline:'Season 1: Every Seat Is A Fresh Start', summary:'The first BARL season will establish the rivalries, underdogs, and title contenders everyone talks about next.', intensity:'building' }];
+  const driverById = Object.fromEntries(claims.filter(claim => claim.driver_id).map(claim => [claim.driver_id, [claim.first_name, claim.last_name].filter(Boolean).join(' ').trim() || claim.gamertag]));
+  const labels = { championship_watch:'Championship Watch', featured_rivalry:'Featured Rivalry', driver_on_the_rise:'On The Rise', team_battle:'Team Battle', contract_watch:'Contract Watch', commissioner_spotlight:"Commissioner's Spotlight" };
+  target.innerHTML = (storylines.length ? storylines : fallback).slice(0, 3).map(story => {
+   const names = [driverById[story.primary_driver_id], driverById[story.secondary_driver_id]].filter(Boolean);
+   const level = story.intensity ? story.intensity.replace('_', ' ') : '';
+   return `<article class="storyline-card" data-intensity="${escapeHtml(story.intensity || '')}"><div class="storyline-type">${escapeHtml(labels[story.story_type] || 'BARL Storyline')}</div><h3>${escapeHtml(story.headline)}</h3><p>${escapeHtml(story.summary || '')}</p>${names.length ? `<div class="storyline-matchup">${escapeHtml(names.join(' vs. '))}</div>` : ''}${level ? `<span class="storyline-level">${escapeHtml(level)}</span>` : ''}</article>`;
+  }).join('');
  }
  function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
 
