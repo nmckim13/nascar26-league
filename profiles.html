@@ -16,7 +16,7 @@
   .profile-tabs { display:flex; gap:8px; margin-bottom:18px; }
   .profile-tab { background:var(--surface2); color:var(--muted); border:1px solid var(--border); border-radius:var(--radius); padding:9px 14px; font:inherit; font-size:11px; font-weight:800; text-transform:uppercase; cursor:pointer; }
   .profile-tab.active { color:#000; background:var(--yellow); border-color:var(--yellow); }
-  .profile-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+  .profile-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; }
   .profile-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; }
   .profile-card:hover { border-color:rgba(255,201,6,.45); }
   .profile-card.roster-card { position:relative; overflow:hidden; }
@@ -30,6 +30,27 @@
   .roster-status::before { content:''; width:6px; height:6px; border-radius:50%; background:#41c878; }
   .roster-summary { grid-column:1/-1; display:flex; justify-content:space-between; gap:18px; align-items:center; background:linear-gradient(110deg,rgba(255,201,6,.14),var(--surface)); border:1px solid rgba(255,201,6,.35); border-radius:10px; padding:16px 18px; }
   .roster-summary strong { color:var(--yellow); font:800 24px var(--font-mono); }
+  .player-card { --card-accent:var(--yellow); --card-accent-rgb:255,201,6; position:relative; min-height:430px; isolation:isolate; overflow:hidden; clip-path:polygon(8% 0,92% 0,100% 6%,100% 94%,92% 100%,8% 100%,0 94%,0 6%); background:linear-gradient(145deg,#f8e19a 0%,#9b741b 4%,#161616 11%,#272727 64%,#090909 100%); padding:3px; filter:drop-shadow(0 16px 24px rgba(0,0,0,.32)); transition:transform .2s ease,filter .2s ease; }
+  .player-card:hover { transform:translateY(-6px) scale(1.012); filter:drop-shadow(0 22px 30px rgba(0,0,0,.48)); }
+  .player-card-shell { position:relative; min-height:424px; overflow:hidden; clip-path:inherit; background:radial-gradient(circle at 72% 23%,rgba(var(--card-accent-rgb),.34),transparent 34%),linear-gradient(160deg,#262626 0%,#111 52%,#080808 100%); }
+  .player-card-shell::before { content:''; position:absolute; inset:0; z-index:-1; opacity:.23; background:repeating-linear-gradient(118deg,transparent 0 18px,rgba(255,255,255,.08) 19px 20px),linear-gradient(90deg,transparent 49%,rgba(var(--card-accent-rgb),.7) 50%,transparent 51%); }
+  .player-card-shell::after { content:''; position:absolute; width:230px; height:230px; border:1px solid rgba(var(--card-accent-rgb),.42); border-radius:50%; right:-95px; top:68px; box-shadow:0 0 0 18px rgba(var(--card-accent-rgb),.05),0 0 0 38px rgba(var(--card-accent-rgb),.035); z-index:-1; }
+  .player-card-kicker { display:flex; justify-content:space-between; align-items:center; padding:16px 17px 0; color:rgba(255,255,255,.62); font-size:9px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+  .player-card-rating { position:absolute; top:40px; left:17px; z-index:2; text-align:center; color:#fff; text-shadow:0 2px 8px #000; }
+  .player-card-rating strong { display:block; font:900 62px/.82 var(--font-mono); letter-spacing:-.1em; }
+  .player-card-rating span { color:var(--card-accent); font-size:10px; font-weight:900; letter-spacing:.18em; }
+  .player-card-number { position:absolute; top:112px; left:23px; z-index:2; color:rgba(255,255,255,.72); font:800 13px var(--font-mono); }
+  .player-card-art { height:235px; display:flex; justify-content:flex-end; align-items:center; padding:36px 18px 0 90px; }
+  .player-card-art img { width:100%; max-width:205px; height:150px; object-fit:contain; filter:drop-shadow(0 18px 14px rgba(0,0,0,.72)); transform:rotate(-4deg) scale(1.12); }
+  .player-card-nameplate { position:relative; margin:0 13px; padding:12px 12px 10px; text-align:center; background:linear-gradient(90deg,rgba(var(--card-accent-rgb),.13),rgba(0,0,0,.82),rgba(var(--card-accent-rgb),.13)); border-top:1px solid rgba(var(--card-accent-rgb),.78); border-bottom:1px solid rgba(var(--card-accent-rgb),.38); }
+  .player-card-nameplate h2 { margin:0; color:#fff; font-size:23px; line-height:.95; letter-spacing:-.04em; text-transform:uppercase; }
+  .player-card-nameplate p { margin:7px 0 0; color:var(--card-accent); font-size:10px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+  .player-card-attributes { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin:13px 16px 0; background:rgba(255,255,255,.12); }
+  .player-card-attribute { background:rgba(5,5,5,.88); padding:9px 4px; text-align:center; }
+  .player-card-attribute strong { display:block; color:#fff; font:800 17px var(--font-mono); }
+  .player-card-attribute span { display:block; margin-top:2px; color:rgba(255,255,255,.45); font-size:8px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .player-card-footer { display:flex; justify-content:space-between; align-items:center; padding:13px 17px 15px; color:rgba(255,255,255,.45); font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .player-card-footer strong { color:var(--card-accent); }
   .ovr { margin-left:auto; text-align:right; }
   .ovr strong { display:block; color:var(--yellow); font:800 30px/1 var(--font-mono); }
   .ovr span { color:var(--muted); font-size:9px; font-weight:800; text-transform:uppercase; }
@@ -55,7 +76,7 @@
   .seat strong { color:var(--yellow); font-family:var(--font-mono); }
   .empty { padding:26px; background:var(--surface); border:1px solid var(--border); color:var(--muted); border-radius:10px; }
   @media (max-width:900px) { .profile-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-  @media (max-width:600px) { .profile-head { display:block; } .profile-head a { display:inline-block; margin-top:12px; } .profile-grid { grid-template-columns:1fr; } }
+  @media (max-width:600px) { .profile-head { display:block; } .profile-head a { display:inline-block; margin-top:12px; } .profile-grid { grid-template-columns:minmax(0,390px); justify-content:center; } .roster-summary { width:100%; } }
  </style>
 </head>
 <body>
@@ -141,6 +162,19 @@
    document.getElementById('team-grid').innerHTML = '';
   }
 
+  function teamCardTheme(slug) {
+   return ({
+    hendrick:['#006fba','0,111,186'],
+    jgr:['#e31b23','227,27,35'],
+    penske:['#ffffff','255,255,255'],
+    '23xi':['#23d5e8','35,213,232'],
+    rfk:['#b7d433','183,212,51'],
+    spire:['#2e8b57','46,139,87'],
+    trackhouse:['#7b5cff','123,92,255'],
+    legacy:['#d9b15d','217,177,93'],
+   })[slug] || ['#ffc906','255,201,6'];
+  }
+
   async function renderPreseasonRoster(data) {
    const assignments = await publicGet(`/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number,assignment_status&season_id=eq.${data.season.id}&assignment_status=eq.active`);
    const driverIds = [...new Set(assignments.map(assignment => assignment.driver_id))];
@@ -160,7 +194,8 @@
     const driver = drivers[assignment.driver_id] || {};
     const team = teamsById[assignment.team_id] || {};
     const name = driver.display_name || driver.gamertag || [driver.first_name, driver.last_name].filter(Boolean).join(' ') || 'Driver pending';
-    return `<article class="profile-card roster-card"><div class="profile-top"><img class="car-badge" src="https://cf.nascar.com/data/images/carbadges/1/${encodeURIComponent(assignment.car_number)}.png" alt="Car #${esc(assignment.car_number)}"><div><h2>${esc(name)}</h2><div class="profile-sub">${esc(team.name || 'Team pending')} · ${displayNumber(assignment.car_number)}</div><div class="roster-status">Full-time driver</div></div></div><div class="stat-line"><span>Season</span><strong>Season ${esc(data.season.season_number)}</strong></div><div class="stat-line"><span>Car</span><strong>${displayNumber(assignment.car_number)}</strong></div><div class="stat-line"><span>Team</span><strong>${esc(team.name || 'Pending')}</strong></div></article>`;
+    const [accent, accentRgb] = teamCardTheme(team.slug);
+    return `<article class="player-card" style="--card-accent:${accent};--card-accent-rgb:${accentRgb}" aria-label="${esc(name)}, car ${esc(assignment.car_number)}, ${esc(team.name || 'team pending')}"><div class="player-card-shell"><div class="player-card-kicker"><span>BARL Ultimate Driver</span><span>S${esc(data.season.season_number)}</span></div><div class="player-card-rating"><strong>60</strong><span>OVR</span></div><div class="player-card-number">${displayNumber(assignment.car_number)}</div><div class="player-card-art"><img src="https://cf.nascar.com/data/images/carbadges/1/${encodeURIComponent(assignment.car_number)}.png" alt="Car #${esc(assignment.car_number)}"></div><div class="player-card-nameplate"><h2>${esc(name)}</h2><p>${esc(team.name || 'Team pending')}</p></div><div class="player-card-attributes"><div class="player-card-attribute"><strong>60</strong><span>Start OVR</span></div><div class="player-card-attribute"><strong>${esc(assignment.car_number)}</strong><span>Car</span></div><div class="player-card-attribute"><strong>FT</strong><span>Status</span></div></div><div class="player-card-footer"><span>Season ${esc(data.season.season_number)}</span><strong>Founders Series</strong></div></div></article>`;
    }).join('') || '<div class="empty">No drivers have been assigned yet.</div>';
 
    document.getElementById('team-grid').innerHTML = teams.map(team => {
