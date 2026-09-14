@@ -54,7 +54,11 @@ async function loadPortal(user, token) {
     car_number: row.car_number,
     display_name: names[row.driver_id]?.display_name || names[row.driver_id]?.gamertag || 'Driver pending',
   })).sort((a, b) => Number(a.car_number) - Number(b.car_number));
-  return { user: { email: user.email }, driver, season, commissioner, assignment, team: teamRows[0] || null, teammates, contract: contractRows[0] || null };
+  const contract = contractRows[0] || (Number(season.season_number) === 1 ? {
+    status: 'introductory', start_season: 1, end_season: 1,
+    original_term_seasons: 1, cap_charge_cents: 5000,
+  } : null);
+  return { user: { email: user.email }, driver, season, commissioner, assignment, team: teamRows[0] || null, teammates, contract };
 }
 
 export default async function handler(req, res) {
