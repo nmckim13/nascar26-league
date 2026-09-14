@@ -58,6 +58,9 @@
  </div>
 
  <div id="tab-driver">
+ <div id="standings-note" style="padding:8px 12px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border2);display:none;">
+ Preseason order is based only on car number. Every driver begins tied at 0 points.
+ </div>
  <div class="table-wrap"><table class="data-table">
  <thead>
  <tr>
@@ -118,17 +121,46 @@
 <script src="./scripts/public-bootstrap.js"></script>
 <script>
  const SB_URL = 'https://txipxisumngvzkuqsysq.supabase.co';
- const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
- const H = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
+ const SB_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4aXB4aXN1bW5ndnprdXFzeXNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzExMTYsImV4cCI6MjEwNDY0NzExNn0.NxrJIAkWWfg-5ezHni_z56IRmLD9HHxM-VAALiT22io';
+ const H = { 'apikey': SB_API_KEY, 'Authorization': 'Bearer ' + SB_API_KEY };
  const TEAM_MAP = {'5':'Hendrick','9':'Hendrick','24':'Hendrick','48':'Hendrick','11':'JGR','19':'JGR','20':'JGR','54':'JGR','2':'Penske','12':'Penske','22':'Penske','23':'23XI','35':'23XI','45':'23XI','6':'RFK','17':'RFK','60':'RFK','7':'Spire','71':'Spire','77':'Spire','1':'Trackhouse','88':'Trackhouse','97':'Trackhouse','42':'Legacy Motor Club','43':'Legacy Motor Club','84':'Legacy Motor Club'};
 
- async function get(path) { return (await fetch(SB_URL+path,{headers:H})).json(); }
+ async function get(path) {
+   const response = await fetch(SB_URL+path,{headers:H});
+   if (!response.ok) throw new Error(`Standings request failed (${response.status})`);
+   return response.json();
+ }
+
+ async function loadPreseasonRoster(display) {
+   const seasons = display.season?.id ? [display.season] : await get('/rest/v1/n26_seasons?select=id,season_number,name,status&season_number=eq.1&limit=1');
+   const season = seasons[0];
+   if (!season?.id) return [];
+   const assignments = await get(`/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number&season_id=eq.${season.id}&assignment_status=eq.active`);
+   const driverIds = [...new Set(assignments.map(assignment => assignment.driver_id).filter(Boolean))];
+   const drivers = driverIds.length ? await get(`/rest/v1/n26_drivers?select=id,display_name,gamertag,first_name,last_name&id=in.(${driverIds.join(',')})`) : [];
+   const driverById = Object.fromEntries(drivers.map(driver => [driver.id, driver]));
+   const teams = display.catalog?.teams?.length ? display.catalog.teams : await get('/rest/v1/n26_teams?select=id,name&order=name');
+   display.catalog = { ...(display.catalog || {}), teams };
+   const teamById = Object.fromEntries(teams.map(team => [team.id, team.name]));
+   return assignments.map(assignment => {
+     const driver = driverById[assignment.driver_id] || {};
+     return {
+       driver_id: assignment.driver_id, car_number: assignment.car_number,
+       team_id: assignment.team_id, team_name: teamById[assignment.team_id] || '',
+       gamertag: driver.gamertag || '', first_name: driver.first_name || '',
+       last_name: driver.last_name || '', displayName: driver.display_name || '',
+     };
+   });
+ }
 
  async function load() {
  const display = await window.__leagueDataReady;
  const races = display.races;
  const isNormalized = display.source === 'normalized';
-   const claimsRaw = display.claims;
+   let claimsRaw = display.claims || [];
+   if (!claimsRaw.length && (!display.races?.length || display.season?.status === 'prelaunch' || display.season?.status === 'draft')) {
+     claimsRaw = await loadPreseasonRoster(display);
+   }
    const results = display.results;
 
  // Show only identities that have actually been claimed or imported.
@@ -149,9 +181,10 @@
  const racesRun = completedForDisplay.length;
 
  document.getElementById('ticker-text').textContent =
- racesRun > 0 ? `Season 1 · ${racesRun} of ${races.length} races complete` : 'Season 1 · Season has not started';
+ racesRun > 0 ? `Season 1 · ${racesRun} of ${races.length} races complete` : 'Season 1 · Preseason standings · Numerical order';
  document.getElementById('races-run-label').innerHTML =
- racesRun > 0 ? `After Race ${racesRun}: <span>${completedForDisplay[racesRun-1].track_short}</span>` : '';
+ racesRun > 0 ? `After Race ${racesRun}: <span>${completedForDisplay[racesRun-1].track_short}</span>` : 'Preseason: <span>0 points</span>';
+ document.getElementById('standings-note').style.display = racesRun === 0 ? 'block' : 'none';
 
  const stats = {};
  let drivers;
@@ -179,7 +212,7 @@
  } else {
    claims.forEach(c => {
      const key = c.car_number;
-     stats[key] = { key, driverId:c.driver_id, car:c.car_number, team:c.team_name || TEAM_MAP[c.car_number], gamertag:c.gamertag, name:[c.first_name,c.last_name].filter(Boolean).join(' ').trim()||c.gamertag, starts:0,wins:0,top5:0,top10:0,racePts:0 };
+     stats[key] = { key, driverId:c.driver_id, car:c.car_number, team:c.team_name || TEAM_MAP[c.car_number], gamertag:c.gamertag, name:c.displayName||[c.first_name,c.last_name].filter(Boolean).join(' ').trim()||c.gamertag, starts:0,wins:0,top5:0,top10:0,racePts:0 };
    });
    results.filter(r => completedIds.has(r.race_id)).forEach(r => {
      const d = stats[r.car_number]; if (!d) return;
@@ -191,18 +224,19 @@
      return tb-ta||b.wins-a.wins||b.top5-a.top5||b.top10-a.top10||String(a.key).localeCompare(String(b.key));
    });
  }
+ if (racesRun === 0) drivers.sort((a,b) => Number(a.car) - Number(b.car) || String(a.car).localeCompare(String(b.car)));
  const leader = drivers.length ? drivers[0].racePts : 0;
 
  const tbody = document.getElementById('driver-tbody');
  tbody.innerHTML = drivers.map((d,i) => {
    const pos = i+1, total = d.racePts;
    const behind = racesRun === 0 ? '<span style="color:var(--muted2)">—</span>' : pos===1 ? '<span style="color:var(--muted)">—</span>' : `-${leader-total}`;
-   const gamertag = d.gamertag ? d.name : `<span style="color:var(--muted2)">${d.name}</span>`;
+   const driverName = d.name || d.gamertag || `Car #${d.car}`;
    return `<tr>
      <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
      <td><div class="driver-cell">
        <img class="car-badge" src="https://cf.nascar.com/data/images/carbadges/1/${d.car}.png" alt="#${d.car}">
-       <div><div class="driver-name">${gamertag}</div>
+       <div><div class="driver-name">${driverName}</div>
        <div class="driver-sub">${d.team||'—'}</div></div>
      </div></td>
      <td class="c hide-mobile">${d.starts}</td>
@@ -224,20 +258,22 @@
      ownerWins[teamName] = team.wins;
    });
  } else {
+   (display.catalog?.teams || []).forEach(team => { ownerPts[team.name] = 0; ownerWins[team.name] = 0; });
    Object.values(stats).forEach(d => {
-     const t = TEAM_MAP[d.car]; if (!t) return;
+     const t = d.team || TEAM_MAP[d.car]; if (!t) return;
      ownerPts[t] = (ownerPts[t]||0) + d.racePts;
      ownerWins[t] = (ownerWins[t]||0) + d.wins;
    });
  }
- const teams = Object.entries(ownerPts).sort((a,b)=>b[1]-a[1]||ownerWins[b[0]]-ownerWins[a[0]]);
+ const teams = Object.entries(ownerPts).sort((a,b)=>racesRun === 0 ? a[0].localeCompare(b[0]) : b[1]-a[1]||ownerWins[b[0]]-ownerWins[a[0]]);
  const ownerLeader = teams.length ? teams[0][1] : 0;
  const CARS = {'Hendrick':['5','9','24','48'],'JGR':['11','19','20','54'],'Penske':['2','12','22'],'23XI':['23','35','45'],'RFK':['6','17','60'],'Spire':['7','71','77'],'Trackhouse':['1','88','97'],'Legacy Motor Club':['42','43','84']};
 
  const otbody = document.getElementById('owner-tbody');
  otbody.innerHTML = teams.map(([team,pts],i) => {
    const pos=i+1, behind=racesRun===0?'<span style="color:var(--muted2)">—</span>':pos===1?'<span style="color:var(--muted)">—</span>':`-${ownerLeader-pts}`;
-   const cars = (isNormalized ? claims.filter(cl => cl.team_name === team).map(cl => cl.car_number) : (CARS[team]||[]).filter(c=>claims.find(cl=>cl.car_number===c))).map(c=>`<img class="car-badge sm" src="https://cf.nascar.com/data/images/carbadges/1/${c}.png" alt="#${c}">`).join(' ');
+   const claimedCars = claims.filter(cl => cl.team_name === team).map(cl => cl.car_number);
+   const cars = (claimedCars.length ? claimedCars : (CARS[team]||[]).filter(c=>claims.find(cl=>cl.car_number===c))).sort((a,b)=>Number(a)-Number(b)).map(c=>`<img class="car-badge sm" src="https://cf.nascar.com/data/images/carbadges/1/${c}.png" alt="#${c}">`).join(' ');
    return `<tr>
      <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
      <td><span class="driver-name">${team}</span></td>
