@@ -274,6 +274,16 @@ async function handleSubmit(event) {
   btn.textContent = 'Sending Request...';
 
   const form = event.currentTarget;
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError || !userData.user) {
+    btn.disabled = false;
+    btn.textContent = 'Submit for Approval';
+    window.alert('Your login expired. Sign in again and your car will still be available if nobody else claims it first.');
+    redirectToAuth('claim.html');
+    return;
+  }
+
+  state.user = userData.user;
   const payload = {
     car_number: document.getElementById('hiddenCar').value,
     driver_name: document.getElementById('hiddenDriver').value,
@@ -283,7 +293,7 @@ async function handleSubmit(event) {
     last_name: form.last_name.value.trim(),
     phone: form.phone.value.trim(),
     discord_username: form.discord_username.value.trim().replace(/^@/, ''),
-    user_id: state.user.id,
+    user_id: userData.user.id,
   };
 
   const { data, error } = await supabase
@@ -303,7 +313,8 @@ async function handleSubmit(event) {
     }
 
     if (error.code === '42501') {
-      window.alert('Your session is missing the permission to create a claim. Apply the new Supabase migration, then try again.');
+      console.error('Claim permission failure', error);
+      window.alert('We could not submit your request right now. Your information is still here. Please try once more, then contact the commissioner if it continues.');
       return;
     }
 
@@ -413,6 +424,9 @@ async function init() {
       .from('n26_claims')
       .select('car_number, gamertag, first_name, last_name, approval_status')
       .eq('user_id', state.user.id)
+      .in('approval_status', ['pending', 'approved'])
+      .order('claimed_at', { ascending: false })
+      .limit(1)
       .maybeSingle();
 
     if (!existingClaimError && existingClaim) {

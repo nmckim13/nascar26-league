@@ -17,11 +17,15 @@ jobs:
         run: |
           node scripts/verify-league-model.js
           node scripts/verify-rulebook-fixture.js
+          node scripts/verify-claim-flow.js
       - name: Check JavaScript syntax
         run: |
           node --check api/league-admin.js
           node --check scripts/admin-page.js
+          node --check scripts/auth-nav.js
+          node --check scripts/auth-page.js
           node --check scripts/claim-page.js
+          node --check scripts/supabase-auth.js
           node --check scripts/league-public.js
           node --check scripts/league-rules.js
           node --check scripts/public-bootstrap.js
