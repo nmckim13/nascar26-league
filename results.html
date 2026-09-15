@@ -108,6 +108,7 @@
 </footer>
 
 <script src="./scripts/public-bootstrap.js"></script>
+<script src="./scripts/number-style-defaults.js"></script>
 <script>
  const SB_URL = 'https://txipxisumngvzkuqsysq.supabase.co';
  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
@@ -223,7 +224,7 @@
  return `<tr>
  <td><span class="num-cell ${posColor}">${r.finish_position ?? 'DNS'}</span></td>
  <td><div class="driver-cell">
- <img class="car-badge" src="https://cf.nascar.com/data/images/carbadges/1/${r.car_number}.png" alt="#${r.car_number}">
+ <img class="car-badge" src="${window.BARLNumberImage(r.car_number)}" alt="#${r.car_number}">
  <div><div class="driver-name">${cl?cl.displayName:'—'}</div>
  <div class="driver-sub">${r.team_name || TEAM_MAP[r.car_number] || '—'}</div></div>
  </div></td>

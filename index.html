@@ -440,6 +440,7 @@
 
 <script src="./scripts/league-rules.js"></script>
 <script src="./scripts/public-bootstrap.js?v=storylines-1"></script>
+<script src="./scripts/number-style-defaults.js"></script>
 <script>
  const SB_URL = 'https://txipxisumngvzkuqsysq.supabase.co';
  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInJlZiI6InZ2dWpoa3J5cXpobWVtb2plZHhzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMzNDAwOTksImV4cCI6MjA5ODkxNjA5OX0.9TmFZBDBig8qG1iostl4-GoQL10CBgKSL_DvBHJ7lIc';
@@ -538,7 +539,7 @@
     <div class="s-row">
      <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
      <span>
-      <img style="width:40px;height:25px;object-fit:contain;margin-right:6px;vertical-align:middle" src="https://cf.nascar.com/data/images/carbadges/1/${d.car}.png" alt="#${d.car}">
+      <img style="width:40px;height:25px;object-fit:contain;margin-right:6px;vertical-align:middle" src="${window.BARLNumberImage(d.car)}" alt="#${d.car}">
       <span style="font-family: var(--font);font-size:14px;font-weight:800;text-transform:uppercase;">${d.name||'—'}</span>
      </span>
      <span style="font-family: var(--font);font-size:16px;font-weight:900;">${d.pts}</span>

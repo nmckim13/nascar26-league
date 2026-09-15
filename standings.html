@@ -117,6 +117,7 @@
 
 <script src="./scripts/league-rules.js"></script>
 <script src="./scripts/public-bootstrap.js"></script>
+<script src="./scripts/number-style-defaults.js"></script>
 <script>
  const SB_URL = 'https://txipxisumngvzkuqsysq.supabase.co';
  const SB_API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4aXB4aXN1bW5ndnprdXFzeXNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzExMTYsImV4cCI6MjEwNDY0NzExNn0.NxrJIAkWWfg-5ezHni_z56IRmLD9HHxM-VAALiT22io';
@@ -233,7 +234,7 @@
    return `<tr>
      <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
      <td><div class="driver-cell">
-       <img class="car-badge" src="https://cf.nascar.com/data/images/carbadges/1/${d.car}.png" alt="#${d.car}">
+       <img class="car-badge" src="${window.BARLNumberImage(d.car)}" alt="#${d.car}">
        <div><div class="driver-name">${driverName}</div>
        <div class="driver-sub">${d.team||'—'}</div></div>
      </div></td>
@@ -271,7 +272,7 @@
  otbody.innerHTML = teams.map(([team,pts],i) => {
    const pos=i+1, behind=racesRun===0?'<span style="color:var(--muted2)">—</span>':pos===1?'<span style="color:var(--muted)">—</span>':`-${ownerLeader-pts}`;
    const claimedCars = claims.filter(cl => cl.team_name === team).map(cl => cl.car_number);
-   const cars = (claimedCars.length ? claimedCars : (CARS[team]||[]).filter(c=>claims.find(cl=>cl.car_number===c))).sort((a,b)=>Number(a)-Number(b)).map(c=>`<img class="car-badge sm" src="https://cf.nascar.com/data/images/carbadges/1/${c}.png" alt="#${c}">`).join(' ');
+   const cars = (claimedCars.length ? claimedCars : (CARS[team]||[]).filter(c=>claims.find(cl=>cl.car_number===c))).sort((a,b)=>Number(a)-Number(b)).map(c=>`<img class="car-badge sm" src="${window.BARLNumberImage(c)}" alt="#${c}">`).join(' ');
    return `<tr>
      <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
      <td><span class="driver-name">${team}</span></td>

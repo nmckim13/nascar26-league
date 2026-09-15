@@ -26,6 +26,7 @@
   .profile-sub { color:var(--muted); font-size:11px; margin-top:4px; }
   .profile-top { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
   .car-number { width:42px; height:42px; display:grid; place-items:center; border:1px solid var(--yellow); color:var(--yellow); border-radius:50%; font:800 14px var(--font-mono); flex-shrink:0; }
+  .car-number img { width:60px; height:52px; object-fit:contain; max-width:none; }
   .car-badge { width:68px; height:52px; object-fit:contain; flex-shrink:0; }
   .roster-status { display:inline-flex; align-items:center; gap:6px; margin-top:12px; color:#8ee0ad; font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
   .roster-status::before { content:''; width:6px; height:6px; border-radius:50%; background:#41c878; }
@@ -183,7 +184,13 @@
   }
 
   async function renderPreseasonRoster(data) {
-   const assignments = await publicGet(`/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number,assignment_status&season_id=eq.${data.season.id}&assignment_status=eq.active`);
+   const [assignments, numberStyleRows, styleModule] = await Promise.all([
+    publicGet(`/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number,assignment_status&season_id=eq.${data.season.id}&assignment_status=eq.active`),
+    publicGet('/rest/v1/n26_driver_number_styles?select=driver_id,car_number,style_key').catch(() => []),
+    import('./data/driver-number-styles.js'),
+   ]);
+   const selectedStyles = Object.fromEntries(numberStyleRows.map(row => [`${row.driver_id}:${row.car_number}`, row.style_key]));
+   const styleFor = (driverId, carNumber) => { const styles = styleModule.NUMBER_STYLES[String(carNumber)] || []; return styles.find(style => style.key === selectedStyles[`${driverId}:${carNumber}`]) || styles[0]; };
    const driverIds = [...new Set(assignments.map(assignment => assignment.driver_id))];
    const driverRows = driverIds.length
     ? await publicGet(`/rest/v1/n26_drivers?select=id,display_name,gamertag,first_name,last_name&id=in.(${driverIds.join(',')})`)
@@ -202,7 +209,9 @@
     const team = teamsById[assignment.team_id] || {};
     const name = driver.display_name || driver.gamertag || [driver.first_name, driver.last_name].filter(Boolean).join(' ') || 'Driver pending';
     const [accent, accentRgb] = teamCardTheme(team.slug);
-    return `<article class="player-card" style="--card-accent:${accent};--card-accent-rgb:${accentRgb}" aria-label="${esc(name)}, car ${esc(assignment.car_number)}, ${esc(team.name || 'team pending')}"><div class="player-card-shell"><div class="player-card-kicker"><span>BARL Ultimate Driver</span><span>S${esc(data.season.season_number)}</span></div><div class="player-card-rating"><strong>60</strong><span>OVR</span></div><div class="player-card-number">${displayNumber(assignment.car_number)}</div><div class="player-card-art"><div class="number-medallion"><img src="https://cf.nascar.com/data/images/carbadges/1/${encodeURIComponent(assignment.car_number)}.png" width="78" height="70" alt="NASCAR car number ${esc(assignment.car_number)}"></div></div><div class="player-card-nameplate"><h2>${esc(name)}</h2><p>${esc(team.name || 'Team pending')}</p></div><div class="player-card-attributes"><div class="player-card-attribute"><strong>60</strong><span>Start OVR</span></div><div class="player-card-attribute"><strong>${esc(assignment.car_number)}</strong><span>Car</span></div><div class="player-card-attribute"><strong>FT</strong><span>Status</span></div></div><div class="player-card-footer"><span>Season ${esc(data.season.season_number)}</span><strong>Founders Series</strong></div></div></article>`;
+    const numberStyle = styleFor(assignment.driver_id, assignment.car_number);
+    const numberImage = numberStyle?.image || '';
+    return `<article class="player-card" style="--card-accent:${accent};--card-accent-rgb:${accentRgb}" aria-label="${esc(name)}, car ${esc(assignment.car_number)}, ${esc(team.name || 'team pending')}"><div class="player-card-shell"><div class="player-card-kicker"><span>BARL Ultimate Driver</span><span>S${esc(data.season.season_number)}</span></div><div class="player-card-rating"><strong>60</strong><span>OVR</span></div><div class="player-card-number">${displayNumber(assignment.car_number)}</div><div class="player-card-art"><div class="number-medallion"><img src="${esc(numberImage)}" width="78" height="70" alt="${esc(numberStyle?.label || 'NASCAR')} car number ${esc(assignment.car_number)}"></div></div><div class="player-card-nameplate"><h2>${esc(name)}</h2><p>${esc(team.name || 'Team pending')}</p></div><div class="player-card-attributes"><div class="player-card-attribute"><strong>60</strong><span>Start OVR</span></div><div class="player-card-attribute"><strong>${esc(assignment.car_number)}</strong><span>Car</span></div><div class="player-card-attribute"><strong>FT</strong><span>Status</span></div></div><div class="player-card-footer"><span>Season ${esc(data.season.season_number)}</span><strong>Founders Series</strong></div></div></article>`;
    }).join('') || '<div class="empty">No drivers have been assigned yet.</div>';
    document.querySelectorAll('#driver-grid .player-card').forEach((card,index) => { card.dataset.driverId=sortedAssignments[index].driver_id; card.tabIndex=0; card.setAttribute('role','link'); card.setAttribute('aria-label',`Open ${card.getAttribute('aria-label')} career profile`); });
 
@@ -239,12 +248,16 @@
    const drivers = Object.fromEntries([...data.drivers || [], ...history.drivers].map(driver => [driver.id, driver]));
    const teams = Object.fromEntries((data.catalog?.teams || []).map(team => [team.id, team]));
    const teamNames = Object.fromEntries([...history.teams, ...Object.values(teams)].map(team => [team.id, team.name]));
-   const [teamSummaries, publicContracts] = await Promise.all([
+   const [teamSummaries, publicContracts, numberStyleRows, styleModule] = await Promise.all([
     publicGet(`/rest/v1/n26_public_team_season_summary?season_id=eq.${data.season.id}`).catch(() => []),
     publicGet(`/rest/v1/n26_public_driver_season_contract?season_id=eq.${data.season.id}`).catch(() => []),
+    publicGet('/rest/v1/n26_driver_number_styles?select=driver_id,car_number,style_key').catch(() => []),
+    import('./data/driver-number-styles.js'),
    ]);
    const teamSummaryById = Object.fromEntries(teamSummaries.map(summary => [summary.team_id, summary]));
    const contractByDriver = Object.fromEntries(publicContracts.map(contract => [contract.driver_id, contract]));
+   const selectedStyles = Object.fromEntries(numberStyleRows.map(row => [`${row.driver_id}:${row.car_number}`, row.style_key]));
+   const styleFor = (driverId, carNumber) => { const styles = styleModule.NUMBER_STYLES[String(carNumber)] || []; return styles.find(style => style.key === selectedStyles[`${driverId}:${carNumber}`]) || styles[0]; };
    const assignments = Object.fromEntries((data.assignments || []).map(assignment => [assignment.driver_id, assignment]));
    const standings = window.N26LeagueRules.calculateSeasonStandings({
     entries: (data.entries || []).map(entry => ({ driverId: entry.driver_id, teamId: (data.assignments || []).find(assignment => assignment.driver_id === entry.driver_id)?.team_id || null, entryStatus: entry.entry_status })),
@@ -278,7 +291,9 @@
      : data.season.season_number === 1 ? '50.00 intro' : 'Contract pending';
     const career = driverHistory(entry.driver_id, history, teamNames);
     const historyRows = career.map(row => `<div class="history-row"><strong>S${esc(row.season.season_number)}</strong><span>${esc(row.teamName)} ${displayNumber(row.carNumber)} · ${esc(row.starts)} starts · ${esc(row.wins)} wins</span><strong>${esc(row.points)} pts${row.ovr === undefined ? '' : ` · OVR ${esc(row.ovr)}`}</strong></div>`).join('');
-    return `<article class="profile-card"><div class="profile-top"><div class="car-number">${esc(car || '?')}</div><div><h2>${esc(driver.display_name || driver.gamertag || 'Unnamed driver')}</h2><div class="profile-sub">${esc(team.name || 'Seat pending')} · ${displayNumber(car)}</div></div><div class="ovr"><strong>${esc(ovr ?? '—')}</strong><span>${status}</span></div></div><div class="attribute-grid">${[['CH',values[0]],['FQ',values[1]],['WI',values[2]],['AT',values[3]],['QU',values[4]]].map(([label,value]) => `<div class="attribute"><strong>${format(value)}</strong><span>${label}</span></div>`).join('')}</div><div class="stat-line"><span>Starts</span><strong>${esc(stat.starts || 0)}</strong></div><div class="stat-line"><span>Wins / Poles</span><strong>${esc(stat.wins || 0)} / ${esc(stat.poles || 0)}</strong></div><div class="stat-line"><span>Top fives</span><strong>${esc(stat.topFives || 0)}</strong></div><div class="stat-line"><span>Average finish</span><strong>${averageFinish === null ? '—' : format(averageFinish)}</strong></div><div class="stat-line"><span>Contract</span><strong>${esc(contractLabel)}</strong></div><details class="calc-details"><summary>Calculation breakdown</summary><div class="calc-grid"><span>OVR raw <strong>${rawOverall === undefined ? '—' : Number(rawOverall).toFixed(8)}</strong></span><span>Rank <strong>${esc(stat.rank || '—')}</strong></span><span>Finish credit <strong>${stat.finishCredits === undefined ? '—' : Number(stat.finishCredits).toFixed(8)}</strong></span><span>Qualifying credit <strong>${stat.qualifyingCredits === undefined ? '—' : Number(stat.qualifyingCredits).toFixed(8)}</strong></span><span>Rating source <strong>${esc(rating?.source_results_version || 'provisional')}</strong></span><span>Ruleset <strong>${esc(data.ruleset.version)}</strong></span></div></details><details class="history-details"><summary>Career history (${career.length} season${career.length === 1 ? '' : 's'})</summary><div class="history-list">${historyRows || '<span class="muted">No public seasons recorded.</span>'}</div></details></article>`;
+    const numberStyle = styleFor(entry.driver_id, car);
+    const carBadge = numberStyle ? `<img src="${esc(numberStyle.image)}" alt="${esc(numberStyle.label)} number ${esc(car)}">` : esc(car || '?');
+    return `<article class="profile-card"><div class="profile-top"><div class="car-number">${carBadge}</div><div><h2>${esc(driver.display_name || driver.gamertag || 'Unnamed driver')}</h2><div class="profile-sub">${esc(team.name || 'Seat pending')} · ${displayNumber(car)}</div></div><div class="ovr"><strong>${esc(ovr ?? '—')}</strong><span>${status}</span></div></div><div class="attribute-grid">${[['CH',values[0]],['FQ',values[1]],['WI',values[2]],['AT',values[3]],['QU',values[4]]].map(([label,value]) => `<div class="attribute"><strong>${format(value)}</strong><span>${label}</span></div>`).join('')}</div><div class="stat-line"><span>Starts</span><strong>${esc(stat.starts || 0)}</strong></div><div class="stat-line"><span>Wins / Poles</span><strong>${esc(stat.wins || 0)} / ${esc(stat.poles || 0)}</strong></div><div class="stat-line"><span>Top fives</span><strong>${esc(stat.topFives || 0)}</strong></div><div class="stat-line"><span>Average finish</span><strong>${averageFinish === null ? '—' : format(averageFinish)}</strong></div><div class="stat-line"><span>Contract</span><strong>${esc(contractLabel)}</strong></div><details class="calc-details"><summary>Calculation breakdown</summary><div class="calc-grid"><span>OVR raw <strong>${rawOverall === undefined ? '—' : Number(rawOverall).toFixed(8)}</strong></span><span>Rank <strong>${esc(stat.rank || '—')}</strong></span><span>Finish credit <strong>${stat.finishCredits === undefined ? '—' : Number(stat.finishCredits).toFixed(8)}</strong></span><span>Qualifying credit <strong>${stat.qualifyingCredits === undefined ? '—' : Number(stat.qualifyingCredits).toFixed(8)}</strong></span><span>Rating source <strong>${esc(rating?.source_results_version || 'provisional')}</strong></span><span>Ruleset <strong>${esc(data.ruleset.version)}</strong></span></div></details><details class="history-details"><summary>Career history (${career.length} season${career.length === 1 ? '' : 's'})</summary><div class="history-list">${historyRows || '<span class="muted">No public seasons recorded.</span>'}</div></details></article>`;
    }).join('') || '<div class="empty">No full-time public profiles are available yet.</div>';
    document.querySelectorAll('#driver-grid .profile-card').forEach((card,index) => { card.dataset.driverId=fullTime[index].driver_id; card.tabIndex=0; card.setAttribute('role','link'); });
 

@@ -36,7 +36,7 @@ async function renderCupCatalog() {
       card.className = 'catalog-card';
       const image = document.createElement('img');
       image.className = 'car-num-img';
-      image.src = `https://cf.nascar.com/data/images/carbadges/1/${entry.number}.png`;
+      image.src = window.BARLNumberImage(entry.number);
       image.alt = `Number ${entry.number}`;
       const copy = document.createElement('div');
       copy.innerHTML = `<div class="catalog-number">#${entry.number}</div><div class="catalog-meta"></div>`;
