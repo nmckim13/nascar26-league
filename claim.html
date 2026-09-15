@@ -319,12 +319,12 @@
  position: relative; z-index: 1;
  }
  .car-num-img {
- width: 88px; height: 72px; object-fit: contain;
+ width: 104px; height: 84px; object-fit: contain; object-position: center; image-rendering: auto;
  }
  .catalog-note { max-width: 760px; color: var(--muted); font-size: 13px; line-height: 1.65; margin: 8px 0 22px; }
  .cup-catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
  .catalog-card { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
- .catalog-card .car-num-img { width: 44px; height: 36px; }
+ .catalog-card .car-num-img { width: 56px; height: 46px; }
  .catalog-number { font-size: 18px; font-weight: 900; color: var(--white); }
  .catalog-meta { font-size: 10px; color: var(--muted); line-height: 1.35; }
  
@@ -483,7 +483,7 @@
  @media (max-width: 520px) {
  .rules-strip { grid-template-columns: repeat(3,1fr); gap: 6px; }
  .car-card { padding: 10px 8px 8px; }
- .car-num-img { width: 76px; height: 60px; }
+ .car-num-img { width: 90px; height: 72px; }
  .form-row { grid-template-columns: 1fr; }
  }
  .combined-profiles{max-width:1160px;margin:56px auto 48px;padding:0 20px;}
@@ -628,7 +628,7 @@
  </div>
  <div class="cars-row">
  <div class="car-card" data-car="23" data-driver="" data-team="23XI Racing" onclick="selectCar(this)">
- <img src="assets/driver-numbers/23/robinhood.png" class="car-num-img" alt="#23">
+ <img src="assets/driver-numbers/23/columbia-sportswear.png" class="car-num-img" alt="#23">
  </div>
  <div class="car-card" data-car="35" data-driver="" data-team="23XI Racing" onclick="selectCar(this)">
  <img src="assets/driver-numbers/35/monster-energy-zero-sugar.png" class="car-num-img" alt="#35">
@@ -724,7 +724,7 @@
 <div class="page" id="cupCatalogSection">
  <div class="s-label">NASCAR Cup reference</div>
  <div class="s-title">More numbers. More possibilities.</div>
- <p class="catalog-note">These are the unique Cup Series number options available in NASCAR 26. They are shown without real-world driver names. BARL claims are limited to the open seats above and are assigned to one of our eight league organizations.</p>
+ <p class="catalog-note">These are the Cup Series number graphics approved for BARL use. They are shown without real-world driver names. Claims are limited to the open seats above and assigned to one of our eight league organizations.</p>
  <div class="cup-catalog" id="cupCatalog" aria-live="polite"></div>
 </div>
 

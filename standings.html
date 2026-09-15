@@ -154,6 +154,7 @@
 
  async function load() {
  const display = await window.__leagueDataReady;
+ window.BARLSetNumberStyles(display.numberStyles || []);
  const races = display.races;
  const isNormalized = display.source === 'normalized';
    let claimsRaw = display.claims || [];
@@ -234,7 +235,7 @@
    return `<tr>
      <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
      <td><div class="driver-cell">
-       <img class="car-badge" src="${window.BARLNumberImage(d.car)}" alt="#${d.car}">
+       <img class="car-badge" data-barl-number="${d.car}" src="${window.BARLNumberImage(d.car, d.driverId)}" alt="#${d.car}">
        <div><div class="driver-name">${driverName}</div>
        <div class="driver-sub">${d.team||'—'}</div></div>
      </div></td>
@@ -271,8 +272,9 @@
  const otbody = document.getElementById('owner-tbody');
  otbody.innerHTML = teams.map(([team,pts],i) => {
    const pos=i+1, behind=racesRun===0?'<span style="color:var(--muted2)">—</span>':pos===1?'<span style="color:var(--muted)">—</span>':`-${ownerLeader-pts}`;
-   const claimedCars = claims.filter(cl => cl.team_name === team).map(cl => cl.car_number);
-   const cars = (claimedCars.length ? claimedCars : (CARS[team]||[]).filter(c=>claims.find(cl=>cl.car_number===c))).sort((a,b)=>Number(a)-Number(b)).map(c=>`<img class="car-badge sm" src="${window.BARLNumberImage(c)}" alt="#${c}">`).join(' ');
+   const claimedCars = claims.filter(cl => cl.team_name === team);
+   const teamCars = claimedCars.length ? claimedCars : (CARS[team]||[]).map(carNumber => claims.find(claim => claim.car_number === carNumber)).filter(Boolean);
+   const cars = teamCars.sort((a,b)=>Number(a.car_number)-Number(b.car_number)).map(claim=>`<img class="car-badge sm" data-barl-number="${claim.car_number}" src="${window.BARLNumberImage(claim.car_number, claim.driver_id)}" alt="#${claim.car_number}">`).join(' ');
    return `<tr>
      <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
      <td><span class="driver-name">${team}</span></td>

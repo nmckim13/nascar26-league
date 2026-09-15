@@ -31,12 +31,13 @@ async function renderCupCatalog() {
     const response = await fetch('./data/cup-number-catalog.json');
     if (!response.ok) throw new Error(`Catalog request failed (${response.status})`);
     const catalog = await response.json();
-    target.replaceChildren(...catalog.numbers.map((entry) => {
+    const approvedNumbers = catalog.numbers.filter((entry) => window.BARLNumberImage(entry.number));
+    target.replaceChildren(...approvedNumbers.map((entry) => {
       const card = document.createElement('div');
       card.className = 'catalog-card';
       const image = document.createElement('img');
       image.className = 'car-num-img';
-      image.src = window.BARLNumberImage(entry.number);
+      window.BARLApplyNumberImage(image, entry.number);
       image.alt = `Number ${entry.number}`;
       const copy = document.createElement('div');
       copy.innerHTML = `<div class="catalog-number">#${entry.number}</div><div class="catalog-meta"></div>`;
@@ -101,6 +102,8 @@ function renderClaimedCars() {
     }
 
     el.classList.add('claimed');
+
+    window.BARLApplyNumberImage(el.querySelector('.car-num-img'), claim.car_number, claim.driver_id);
 
     const tag = document.createElement('span');
     tag.className = 'car-claimer';
@@ -413,6 +416,14 @@ async function init() {
       hamburger.classList.remove('open');
       drawer.classList.remove('open');
     }
+  });
+
+  const { data: numberStyles, error: numberStylesError } = await supabase
+    .from('n26_driver_number_styles')
+    .select('driver_id, car_number, style_key');
+  if (!numberStylesError) window.BARLSetNumberStyles(numberStyles || []);
+  document.querySelectorAll('.car-card').forEach((card) => {
+    window.BARLApplyNumberImage(card.querySelector('.car-num-img'), card.dataset.car);
   });
 
   await loadClaims();

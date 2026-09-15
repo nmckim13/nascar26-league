@@ -32,9 +32,10 @@
   }
 
   async function load() {
-    const [news, storylines] = await Promise.all([
+    const [news, storylines, numberStyles] = await Promise.all([
       rest('/rest/v1/n26_news_articles?select=id,headline,dek,body,image_url,published_at&status=eq.published&order=published_at.desc&limit=6').catch(function () { return []; }),
       rest('/rest/v1/n26_storylines?select=id,story_type,headline,summary,primary_driver_id,secondary_driver_id,intensity,sort_order,published_at&status=eq.published&order=sort_order.asc,published_at.desc&limit=6').catch(function () { return []; }),
+      rest('/rest/v1/n26_driver_number_styles?select=driver_id,car_number,style_key').catch(function () { return []; }),
     ]);
     const seasons = await rest('/rest/v1/n26_seasons?select=id,season_number,name,ruleset_id,status,rated_field_size,roster_lock_at,results_certified_at&status=in.(draft,open,in_progress,appeal_window,certified,archived)&order=season_number.desc&limit=1');
     const catalog = await loadCatalog().catch(function () { return null; });
@@ -45,7 +46,7 @@
         races: [],
         claims: [],
         results: [],
-        catalog, news, storylines,
+        catalog, news, storylines, numberStyles,
       };
     }
     const season = seasons[0];
@@ -57,7 +58,7 @@
         claims: [],
         results: [],
         catalog,
-        news, storylines,
+        news, storylines, numberStyles,
       };
     }
     const values = await Promise.all([
@@ -73,7 +74,7 @@
     const drivers = driverIds.length ? await rest('/rest/v1/n26_drivers?select=id,display_name,gamertag,first_name,last_name&id=in.(' + driverIds.join(',') + ')') : [];
     return {
       source: 'normalized', season, ruleset: values[0][0] || null, races: values[1], entries: values[2], assignments: values[3],
-      results: values[4].filter(result => values[1].some(race => race.id === result.race_id)), ratings: values[5], drivers, catalog, news, storylines,
+      results: values[4].filter(result => values[1].some(race => race.id === result.race_id)), ratings: values[5], drivers, catalog, news, storylines, numberStyles,
     };
   }
 
@@ -103,6 +104,7 @@
       catalog: null,
       news: [],
       storylines: [],
+      numberStyles: [],
     };
   });
 }());

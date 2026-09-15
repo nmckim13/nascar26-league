@@ -174,6 +174,7 @@
   .tab-btn.active { background: var(--yellow); color: #000; }
   .standings-card { background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
   .s-row { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 12px; padding: 13px 18px; border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  .home-number-art { display:inline-block; width:56px; height:40px; object-fit:contain; object-position:center; image-rendering:auto; margin-right:8px; vertical-align:middle; }
   .s-row:last-child { border-bottom: none; }
   .s-row:not(.s-row-hdr):hover { background: var(--surface2); }
   .s-row-hdr { background: var(--surface2); padding: 9px 18px; }
@@ -454,6 +455,7 @@
  }
  async function loadHomeStandings() {
   const display = await window.__leagueDataReady;
+  window.BARLSetNumberStyles(display.numberStyles || []);
   let news = display.news || [];
   if (!news.length) {
    news = await sbFetch('/rest/v1/n26_news_articles?select=id,headline,dek,body,image_url,published_at&status=eq.published&order=published_at.desc&limit=6').catch(() => []);
@@ -538,7 +540,7 @@
     <div class="s-row">
      <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
      <span>
-      <img style="width:40px;height:25px;object-fit:contain;margin-right:6px;vertical-align:middle" src="${window.BARLNumberImage(d.car)}" alt="#${d.car}">
+      <img class="home-number-art" data-barl-number="${d.car}" src="${window.BARLNumberImage(d.car, d.driverId)}" alt="#${d.car}">
       <span style="font-family: var(--font);font-size:14px;font-weight:800;text-transform:uppercase;">${d.name||'—'}</span>
      </span>
      <span style="font-family: var(--font);font-size:16px;font-weight:900;">${d.pts}</span>

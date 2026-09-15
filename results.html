@@ -128,6 +128,7 @@
 
  async function loadAll() {
  const display = await window.__leagueDataReady;
+ window.BARLSetNumberStyles(display.numberStyles || []);
  isNormalized = display.source === 'normalized';
  document.getElementById('results-description').textContent = display.source === 'prelaunch'
    ? 'Season 1 — roster assembly is in progress; official results will appear after publication'
@@ -224,7 +225,7 @@
  return `<tr>
  <td><span class="num-cell ${posColor}">${r.finish_position ?? 'DNS'}</span></td>
  <td><div class="driver-cell">
- <img class="car-badge" src="${window.BARLNumberImage(r.car_number)}" alt="#${r.car_number}">
+ <img class="car-badge" data-barl-number="${r.car_number}" src="${window.BARLNumberImage(r.car_number, r.driver_id || cl?.driver_id)}" alt="#${r.car_number}">
  <div><div class="driver-name">${cl?cl.displayName:'—'}</div>
  <div class="driver-sub">${r.team_name || TEAM_MAP[r.car_number] || '—'}</div></div>
  </div></td>
