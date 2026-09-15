@@ -393,7 +393,6 @@ async function init() {
   const { data: { session } } = await supabase.auth.getSession();
   state.user = session?.user || null;
   fillAuthCard(state.user);
-  revealProtectedPage();
 
   supabase.auth.onAuthStateChange((event, session) => {
     state.user = session?.user || null;
@@ -433,6 +432,8 @@ async function init() {
       showExistingClaimState(existingClaim);
     }
   }
+
+  revealProtectedPage();
 }
 
 init().catch((error) => {

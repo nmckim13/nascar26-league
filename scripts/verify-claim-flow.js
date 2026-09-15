@@ -18,6 +18,7 @@ assert.match(claim, /supabase\.auth\.getUser\(\)/);
 assert.match(claim, /\.from\('n26_claims'\)[\s\S]*?\.insert\(payload\)/);
 assert.match(claim, /\.in\('approval_status', \['pending', 'approved'\]\)/);
 assert.doesNotMatch(claim, /Apply the new Supabase migration/);
+assert.ok(claim.lastIndexOf('revealProtectedPage();') > claim.indexOf('await loadClaims();'));
 assert.match(styles, /\[hidden\]\s*\{\s*display:\s*none\s*!important;\s*\}/);
 assert.match(migration, /grant select on table public\.n26_claims to authenticated;/i);
 
