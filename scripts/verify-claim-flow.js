@@ -6,12 +6,23 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
+const runtimeFiles = [
+  ...fs.readdirSync(root).filter(file => file.endsWith('.html')),
+  ...fs.readdirSync(path.join(root, 'scripts')).filter(file => file.endsWith('.js')).map(file => `scripts/${file}`),
+];
 const auth = read('scripts/supabase-auth.js');
 const claim = read('scripts/claim-page.js');
 const styles = read('n26.css');
 const migration = read('supabase/migrations/20260915182528_authenticated_claim_table_select.sql');
 
 assert.match(auth, /https:\/\/txipxisumngvzkuqsysq\.supabase\.co/);
+runtimeFiles.forEach((file) => {
+  const tokens = read(file).match(/eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g) || [];
+  tokens.forEach((token) => {
+    const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64url').toString('utf8'));
+    if (payload.role === 'anon') assert.equal(payload.ref, 'txipxisumngvzkuqsysq', `${file} uses a stale Supabase key`);
+  });
+});
 assert.match(auth, /storageKey:\s*'barl-auth-session'/);
 assert.match(auth, /persistSession:\s*true/);
 assert.match(claim, /supabase\.auth\.getUser\(\)/);
