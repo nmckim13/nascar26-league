@@ -39,6 +39,24 @@ body {
 a { text-decoration: none; color: inherit; }
 img { display: block; max-width: 100%; }
 
+/* The single-digit source marks fill more vertical canvas than the two-digit
+   set. These per-number optical corrections equalize their visible height. */
+img[src*="/driver-numbers/1/"] { --barl-number-scale: .64; }
+img[src*="/driver-numbers/2/"] { --barl-number-scale: .82; }
+img[src*="/driver-numbers/5/"] { --barl-number-scale: .82; }
+img[src*="/driver-numbers/6/"] { --barl-number-scale: .88; }
+img[src*="/driver-numbers/7/"] { --barl-number-scale: .64; }
+img[src*="/driver-numbers/9/"] { --barl-number-scale: .81; }
+img[src*="/driver-numbers/1/"],
+img[src*="/driver-numbers/2/"],
+img[src*="/driver-numbers/5/"],
+img[src*="/driver-numbers/6/"],
+img[src*="/driver-numbers/7/"],
+img[src*="/driver-numbers/9/"] {
+  scale: var(--barl-number-scale);
+  transform-origin: center;
+}
+
 /* ── TICKER ─────────────────────────────────── */
 .ticker {
   background: var(--surface);
