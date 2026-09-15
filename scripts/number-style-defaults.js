@@ -18,13 +18,13 @@ window.BARL_NUMBER_IMAGES = {
   "42": "assets/driver-numbers/42/dollar-tree-red-outline.png",
   "43": "assets/driver-numbers/43/advent-health.png",
   "45": "assets/driver-numbers/45/chumba-casino.png",
-  "48": "assets/driver-numbers/48/ally-bank.png",
+  "48": "assets/driver-numbers/48/ally-bank-patriotic.png",
   "54": "assets/driver-numbers/54/monster-energy.png",
   "60": "assets/driver-numbers/60/coca-cola.png",
   "71": "assets/driver-numbers/71/modo-casino-patriotic.png",
-  "77": "assets/driver-numbers/77/spectrum.png",
+  "77": "assets/driver-numbers/77/chili-s-ride-the-dente-black.png",
   "84": "assets/driver-numbers/84/carvana.png",
-  "88": "assets/driver-numbers/88/trackhouse-racing.png",
-  "97": "assets/driver-numbers/97/trackhouse-racing.png"
+  "88": "assets/driver-numbers/88/red-bull.png",
+  "97": "assets/driver-numbers/97/superfile.png"
 };
 window.BARLNumberImage = function (number) { return window.BARL_NUMBER_IMAGES[String(number)] || ''; };

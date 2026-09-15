@@ -50,6 +50,29 @@ const EXCLUDED_KEYS = new Set([
   '97:superfile-mr-brainwash',
   '97:superfile-camo',
   '97:super-file-lefty-out-there',
+  // These source cards have artwork physically joined to the number. Automated
+  // background removal cannot separate it without damaging the authentic mark.
+  '6:castrol-greg-biffle-tribute',
+  '17:fastenal-body-guard-greg-biffle-tribute',
+  '24:anduril-industrie-patriotic',
+  '35:gogo-swueez',
+  '42:dollar-tree-40th-anniversary',
+  '42:dollar-tree-white',
+  '42:drive-value',
+  '42:rexel',
+  '43:dollar-tree-dorito-s',
+  '43:ziploc',
+  '48:ally-bank-best-friends',
+  '48:ally-bank-dragon',
+  '48:ally-bank-rebrand',
+  '48:ally-bank-uso',
+  '48:ally-bank',
+  '60:heinz-oscar-mayer-darlington-throwback-2009-greg-biffle-3m-ford',
+  '60:kroger-viva-paper-towels-greg-biffle-tribute',
+  '71:fly-alliance',
+  '77:spectrum',
+  '88:trackhouse-racing',
+  '97:trackhouse-racing',
 ]);
 
 const slugify = value => value.toLowerCase().replace(/\\\|/g, ' ').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 70);
@@ -59,6 +82,60 @@ const colorDistance = (data, a, b) => {
   const db = data[a + 2] - data[b + 2];
   return dr * dr + dg * dg + db * db;
 };
+
+// Remove detached specks, crop marks, and background decoration while keeping
+// every substantial connected part of the number. A 1.2% floor is conservative
+// enough to retain intentional patriotic stars but removes the random dots and
+// hairline fragments found on several source cards.
+function removeDetachedArtifacts(data, info) {
+  const { width, height, channels } = info;
+  const count = width * height;
+  const labels = new Uint32Array(count);
+  const queue = new Uint32Array(count);
+  const sizes = [0];
+  let nextLabel = 0;
+  let totalForeground = 0;
+
+  for (let pixel = 0; pixel < count; pixel += 1) {
+    if (labels[pixel] || data[pixel * channels + 3] < 24) continue;
+    const label = ++nextLabel;
+    let head = 0;
+    let tail = 0;
+    let size = 0;
+    labels[pixel] = label;
+    queue[tail++] = pixel;
+
+    while (head < tail) {
+      const current = queue[head++];
+      const x = current % width;
+      size += 1;
+      const visit = neighbor => {
+        if (labels[neighbor] || data[neighbor * channels + 3] < 24) return;
+        labels[neighbor] = label;
+        queue[tail++] = neighbor;
+      };
+      if (x > 0) visit(current - 1);
+      if (x + 1 < width) visit(current + 1);
+      if (current >= width) visit(current - width);
+      if (current + width < count) visit(current + width);
+    }
+
+    sizes[label] = size;
+    totalForeground += size;
+  }
+
+  const minimumSize = Math.max(80, Math.floor(totalForeground * .012));
+  let keptForeground = 0;
+  for (let pixel = 0; pixel < count; pixel += 1) {
+    const alphaOffset = pixel * channels + 3;
+    if (!labels[pixel] || sizes[labels[pixel]] < minimumSize) {
+      data[alphaOffset] = 0;
+    } else {
+      keptForeground += 1;
+    }
+  }
+  return keptForeground / count;
+}
 
 // The source cards place the number in the middle of a flat background. Removing
 // only pixels connected to the outer edge preserves multicolor fills and outlines.
@@ -95,36 +172,30 @@ async function removeEdgeBackground(input) {
     if (pixel + width < count) visit(pixel + width);
   }
 
-  let foreground = 0;
-  let minX = width;
-  let minY = height;
-  let maxX = -1;
-  let maxY = -1;
   for (let pixel = 0; pixel < count; pixel += 1) {
     const alphaOffset = pixel * channels + 3;
     if (background[pixel]) {
       data[alphaOffset] = 0;
-      continue;
     }
-    foreground += 1;
-    const x = pixel % width;
-    const y = Math.floor(pixel / width);
-    minX = Math.min(minX, x);
-    minY = Math.min(minY, y);
-    maxX = Math.max(maxX, x);
-    maxY = Math.max(maxY, y);
   }
 
-  const ratio = foreground / count;
+  const ratio = removeDetachedArtifacts(data, info);
   const valid = ratio >= .08 && ratio <= .70;
   if (!valid) return { valid, ratio, output: null };
 
   const output = await sharp(data, { raw: info })
     .trim({ background: { r: 0, g: 0, b: 0, alpha: 0 } })
-    .resize(512, 512, {
+    .resize(464, 464, {
       fit: 'contain',
       background: { r: 0, g: 0, b: 0, alpha: 0 },
       withoutEnlargement: false,
+    })
+    .extend({
+      top: 24,
+      bottom: 24,
+      left: 24,
+      right: 24,
+      background: { r: 0, g: 0, b: 0, alpha: 0 },
     })
     .png({ compressionLevel: 9 })
     .toBuffer();
