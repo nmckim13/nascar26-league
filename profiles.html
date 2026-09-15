@@ -288,7 +288,7 @@
     const contract = contractByDriver[entry.driver_id];
     const contractLabel = contract
      ? `${(Number(contract.cap_charge_cents || 0) / 100).toFixed(2)} credits · ${contract.original_term_seasons}-season ${contract.status}`
-     : data.season.season_number === 1 ? '50.00 intro' : 'Contract pending';
+     : data.season.season_number === 1 ? '60.00 intro' : 'Contract pending';
     const career = driverHistory(entry.driver_id, history, teamNames);
     const historyRows = career.map(row => `<div class="history-row"><strong>S${esc(row.season.season_number)}</strong><span>${esc(row.teamName)} ${displayNumber(row.carNumber)} · ${esc(row.starts)} starts · ${esc(row.wins)} wins</span><strong>${esc(row.points)} pts${row.ovr === undefined ? '' : ` · OVR ${esc(row.ovr)}`}</strong></div>`).join('');
     const numberStyle = styleFor(entry.driver_id, car);
@@ -300,9 +300,9 @@
    document.getElementById('team-grid').innerHTML = Object.values(teams).map(team => {
     const seats = (data.assignments || []).filter(assignment => assignment.team_id === team.id).sort((a,b) => String(a.car_number).localeCompare(String(b.car_number), undefined, { numeric:true }));
     const teamStats = standings.teams.find(candidate => candidate.teamId === team.id);
-    const cap = data.ruleset.config?.cap_credits ?? (data.season.season_number === 1 ? 155 : null);
+    const cap = data.ruleset.config?.cap_credits ?? (data.season.season_number === 1 ? 240 : null);
     const summary = teamSummaryById[team.id];
-    const used = summary ? Number(summary.cap_charge_cents || 0) / 100 : data.season.season_number === 1 ? seats.length * 50 : null;
+    const used = summary ? Number(summary.cap_charge_cents || 0) / 100 : data.season.season_number === 1 ? seats.length * 60 : null;
     const honors = Array.isArray(team.honors) ? team.honors : [];
     const honorsText = honors.length ? honors.map(honor => typeof honor === 'string' ? honor : honor.title || `${honor.season || ''} ${honor.award || ''}`.trim()).filter(Boolean).join(' · ') : 'No league honors yet';
     const expiration = summary?.latest_contract_expiration_season ? `S${summary.latest_contract_expiration_season}` : data.season.season_number === 1 && seats.length ? 'S1' : '—';
@@ -316,5 +316,6 @@
   function toggleNav() { document.getElementById('hamburger').classList.toggle('open'); document.getElementById('nav-drawer').classList.toggle('open'); }
   window.__leagueDataReady.then(render).catch(() => renderEmpty('Public league data is unavailable right now.'));
  </script>
+<script type="module" src="scripts/auth-nav.js"></script>
 </body>
 </html>

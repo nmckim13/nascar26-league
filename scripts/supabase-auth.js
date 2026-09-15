@@ -9,6 +9,7 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_NEW_PUBLIC_KEY, {
     autoRefreshToken: true,
     detectSessionInUrl: true,
     flowType: 'pkce',
+    storageKey: 'barl-auth-session',
     persistSession: true,
   },
 });
