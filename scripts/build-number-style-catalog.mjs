@@ -13,7 +13,7 @@ const DEFAULTS_OUTPUT = path.join(ROOT, 'scripts', 'number-style-defaults.js');
 const PREFERRED_DEFAULTS = {
   '12': '12:menards-black',
   '23': '23:hardee-s',
-  '42': '42:mobil-1',
+  '42': '42:dollar-tree-red-outline',
   '43': '43:dollar-tree-patriotic',
   '48': '48:ally-bank',
   '84': '84:carvana-sunset',

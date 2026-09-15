@@ -15,7 +15,7 @@ window.BARL_NUMBER_IMAGES = {
   "23": "assets/driver-numbers/23/hardee-s.png",
   "24": "assets/driver-numbers/24/valvoline.png",
   "35": "assets/driver-numbers/35/monster-energy-zero-sugar.png",
-  "42": "assets/driver-numbers/42/mobil-1.png",
+  "42": "assets/driver-numbers/42/dollar-tree-red-outline.png",
   "43": "assets/driver-numbers/43/dollar-tree-patriotic.png",
   "45": "assets/driver-numbers/45/chumba-casino.png",
   "48": "assets/driver-numbers/48/ally-bank.png",
