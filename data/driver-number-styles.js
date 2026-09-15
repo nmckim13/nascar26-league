@@ -1052,6 +1052,12 @@ export const NUMBER_STYLES = {
   ],
   "48": [
     {
+      "key": "48:ally-bank",
+      "label": "ALLY BANK",
+      "image": "assets/driver-numbers/48/ally-bank.png",
+      "sourcePage": "https://diecastcharv.com/2026-alex-bowman-cup-number-cards/"
+    },
+    {
       "key": "48:ally-bank-patriotic",
       "label": "ALLY BANK | PATRIOTIC",
       "image": "assets/driver-numbers/48/ally-bank-patriotic.png",

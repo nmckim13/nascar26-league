@@ -11,7 +11,12 @@ const ASSET_DIR = path.join(ROOT, 'assets', 'driver-numbers');
 const OUTPUT = path.join(ROOT, 'data', 'driver-number-styles.js');
 const DEFAULTS_OUTPUT = path.join(ROOT, 'scripts', 'number-style-defaults.js');
 const PREFERRED_DEFAULTS = {
-  '23': '23:columbia-sportswear',
+  '12': '12:wurth',
+  '23': '23:hardee-s',
+  '42': '42:mobil-1',
+  '43': '43:dollar-tree-patriotic',
+  '48': '48:ally-bank',
+  '84': '84:carvana-sunset',
 };
 
 const DRIVERS = {
@@ -69,7 +74,6 @@ const EXCLUDED_KEYS = new Set([
   '48:ally-bank-dragon',
   '48:ally-bank-rebrand',
   '48:ally-bank-uso',
-  '48:ally-bank',
   '60:heinz-oscar-mayer-darlington-throwback-2009-greg-biffle-3m-ford',
   '60:kroger-viva-paper-towels-greg-biffle-tribute',
   '71:fly-alliance',
@@ -205,6 +209,83 @@ async function removeEdgeBackground(input) {
   return { valid, ratio, output };
 }
 
+// The standard Ally #48 roof card uses a complex purple field, so edge-color
+// removal cannot separate it cleanly. Isolate its two near-white numeral
+// components and rebuild only the original dark-purple outline.
+async function extractLightNumber(input) {
+  const { data, info } = await sharp(input).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  const { width, height, channels } = info;
+  const count = width * height;
+  const number = Buffer.alloc(count * 4);
+
+  for (let pixel = 0; pixel < count; pixel += 1) {
+    const source = pixel * channels;
+    const red = data[source];
+    const green = data[source + 1];
+    const blue = data[source + 2];
+    const minimum = Math.min(red, green, blue);
+    const maximum = Math.max(red, green, blue);
+    if (minimum >= 225 && maximum - minimum <= 22) {
+      const target = pixel * 4;
+      number[target] = 255;
+      number[target + 1] = 255;
+      number[target + 2] = 255;
+      number[target + 3] = 255;
+    }
+  }
+
+  const cleanInfo = { width, height, channels: 4 };
+  const ratio = removeDetachedArtifacts(number, cleanInfo);
+  if (ratio < .08 || ratio > .35) return { valid: false, ratio, output: null };
+
+  const radius = 12;
+  const horizontal = new Uint8Array(count);
+  const outline = new Uint8Array(count);
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      if (number[(y * width + x) * 4 + 3] < 24) continue;
+      for (let dx = -radius; dx <= radius; dx += 1) {
+        const neighborX = x + dx;
+        if (neighborX >= 0 && neighborX < width) horizontal[y * width + neighborX] = 255;
+      }
+    }
+  }
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      if (!horizontal[y * width + x]) continue;
+      for (let dy = -radius; dy <= radius; dy += 1) {
+        const neighborY = y + dy;
+        if (neighborY >= 0 && neighborY < height) outline[neighborY * width + x] = 255;
+      }
+    }
+  }
+
+  const outlined = Buffer.alloc(count * 4);
+  for (let pixel = 0; pixel < count; pixel += 1) {
+    if (!outline[pixel]) continue;
+    const target = pixel * 4;
+    if (number[target + 3] >= 24) {
+      outlined[target] = 255;
+      outlined[target + 1] = 255;
+      outlined[target + 2] = 255;
+    } else {
+      outlined[target] = 58;
+      outlined[target + 1] = 35;
+      outlined[target + 2] = 91;
+    }
+    outlined[target + 3] = 255;
+  }
+
+  const output = await sharp(outlined, { raw: cleanInfo })
+    .blur(.7)
+    .trim({ background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .resize(464, 464, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .extend({ top: 24, bottom: 24, left: 24, right: 24, background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .png({ compressionLevel: 9 })
+    .toBuffer();
+  return { valid: true, ratio, output };
+}
+
 async function mapLimit(items, limit, callback) {
   let cursor = 0;
   const results = new Array(items.length);
@@ -248,7 +329,8 @@ async function main() {
     const results = await mapLimit(candidates, 6, async item => {
       const response = await fetch(item.sourceImage);
       if (!response.ok) throw new Error(`${response.status} downloading ${item.sourceImage}`);
-      const processed = await removeEdgeBackground(Buffer.from(await response.arrayBuffer()));
+      const source = Buffer.from(await response.arrayBuffer());
+      const processed = item.key === '48:ally-bank' ? await extractLightNumber(source) : await removeEdgeBackground(source);
       return { item, ...processed };
     });
 
