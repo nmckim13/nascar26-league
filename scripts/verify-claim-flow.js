@@ -16,6 +16,7 @@ const styles = read('n26.css');
 const migration = read('supabase/migrations/20260915182528_authenticated_claim_table_select.sql');
 const claimWebhook = read('api/claim-webhook.js');
 const discordMigration = read('supabase/migrations/20260915185410_discord_approval_webhook.sql');
+const discordLockMigration = read('supabase/migrations/20260915191253_lock_discord_webhook_trigger.sql');
 
 assert.match(auth, /https:\/\/txipxisumngvzkuqsysq\.supabase\.co/);
 runtimeFiles.forEach((file) => {
@@ -40,5 +41,7 @@ assert.match(discordMigration, /create extension if not exists pg_net/i);
 assert.match(discordMigration, /n26_notify_discord_on_approval/);
 assert.match(discordMigration, /where name = 'n26_discord_webhook_secret'/);
 assert.doesNotMatch(discordMigration, /new\.phone/);
+assert.match(discordLockMigration, /revoke execute on function public\.notify_discord_on_claim\(\) from anon/i);
+assert.match(discordLockMigration, /revoke execute on function public\.notify_discord_on_claim\(\) from authenticated/i);
 
 console.log('Claim flow verified: persistent auth, owned-row lookup, authenticated insert, PostgREST return access, and approval notifications.');
