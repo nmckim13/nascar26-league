@@ -7,7 +7,7 @@ window.BARL_NUMBER_IMAGES = {
   "7": "assets/driver-numbers/7/cal-ripken-sr-foundation.png",
   "9": "assets/driver-numbers/9/napa-auto-parts.png",
   "11": "assets/driver-numbers/11/bob-s-discount-furniture.png",
-  "12": "assets/driver-numbers/12/wurth.png",
+  "12": "assets/driver-numbers/12/menards-black.png",
   "17": "assets/driver-numbers/17/5-3-bank.png",
   "19": "assets/driver-numbers/19/bass-pro-shops.png",
   "20": "assets/driver-numbers/20/mobil-1.png",

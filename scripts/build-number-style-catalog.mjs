@@ -11,7 +11,7 @@ const ASSET_DIR = path.join(ROOT, 'assets', 'driver-numbers');
 const OUTPUT = path.join(ROOT, 'data', 'driver-number-styles.js');
 const DEFAULTS_OUTPUT = path.join(ROOT, 'scripts', 'number-style-defaults.js');
 const PREFERRED_DEFAULTS = {
-  '12': '12:wurth',
+  '12': '12:menards-black',
   '23': '23:hardee-s',
   '42': '42:mobil-1',
   '43': '43:dollar-tree-patriotic',
