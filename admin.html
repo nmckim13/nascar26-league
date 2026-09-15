@@ -34,11 +34,13 @@
   th { color:#88889b; font-size:10px; text-transform:uppercase; }
   .message { min-height:22px; margin-top:12px; color:#ffc200; line-height:1.5; }
   .message.error { color:#ff8793; }
+  .access-gate { max-width:560px; margin:18vh auto 0; text-align:center; }
   @media (max-width:760px) { .grid { grid-template-columns:1fr; } .wide { grid-column:auto; } .admin-head { display:block; } .admin-head a { display:inline-block; margin-top:14px; } }
  </style>
 </head>
 <body>
- <main>
+ <div id="accessGate" class="card access-gate">Checking commissioner access...</div>
+ <main id="commissionerConsole" hidden>
   <div class="admin-head">
    <div><div class="eyebrow">Restricted route</div><h1>Commissioner <span>Console</span></h1><p class="muted">Roster identity, seats, results, certification, and ratings. Every write is checked server-side.</p></div>
    <a href="index.html" class="muted">Back to public site</a>

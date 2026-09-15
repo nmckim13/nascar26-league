@@ -24,7 +24,11 @@ async function call(action, payload = {}) {
     body: JSON.stringify({ action, ...payload }),
   });
   const body = await response.json().catch(() => ({}));
-  if (!response.ok || !body.ok) throw new Error(body.error || 'Commissioner request failed.');
+  if (!response.ok || !body.ok) {
+    const error = new Error(body.error || 'Commissioner request failed.');
+    error.status = response.status;
+    throw error;
+  }
   return body.result;
 }
 
@@ -143,8 +147,15 @@ async function refresh() {
   try {
     const bundle = await call('overview');
     render(bundle);
+    document.getElementById('accessGate').hidden = true;
+    document.getElementById('commissionerConsole').hidden = false;
     setMessage('overviewMessage', `Season ${bundle.season.season_number} is ${bundle.season.status}.`);
   } catch (error) {
+    if (error.status === 403) {
+      window.location.replace('driver.html?notice=commissioner-required');
+      return;
+    }
+    document.getElementById('accessGate').textContent = error.message;
     setMessage('overviewMessage', error.message, true);
   }
 }
