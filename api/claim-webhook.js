@@ -128,15 +128,110 @@ async function postToDiscord(content) {
   return discordAPI('POST', `/channels/${ANNOUNCEMENTS_CHANNEL}/messages`, { content });
 }
 
+function permissionBit(bit) {
+  return 1n << BigInt(bit);
+}
+
+function applyOverwrite(permissions, overwrite) {
+  if (!overwrite) return permissions;
+  return (permissions & ~BigInt(overwrite.deny || 0)) | BigInt(overwrite.allow || 0);
+}
+
+async function checkDiscordConfiguration() {
+  const [bot, member, roles, channel, memberSearch] = await Promise.all([
+    discordAPI('GET', '/users/@me'),
+    discordAPI('GET', `/guilds/${GUILD_ID}/members/@me`),
+    discordAPI('GET', `/guilds/${GUILD_ID}/roles`),
+    discordAPI('GET', `/channels/${ANNOUNCEMENTS_CHANNEL}`),
+    discordAPI('GET', `/guilds/${GUILD_ID}/members/search?query=a&limit=1`),
+  ]);
+
+  if (!bot.ok || !member.ok || !roles.ok || !channel.ok || !memberSearch.ok) {
+    return {
+      ok: false,
+      authenticated: bot.ok,
+      guildMember: member.ok,
+      rolesReadable: roles.ok,
+      channelReadable: channel.ok,
+      memberSearchAvailable: memberSearch.ok,
+    };
+  }
+
+  const rolesById = Object.fromEntries(roles.map(role => [role.id, role]));
+  let permissions = BigInt(rolesById[GUILD_ID]?.permissions || 0);
+  member.roles.forEach(roleId => {
+    permissions |= BigInt(rolesById[roleId]?.permissions || 0);
+  });
+
+  const administrator = Boolean(permissions & permissionBit(3));
+  const canManageRoles = administrator || Boolean(permissions & permissionBit(28));
+  let channelPermissions = permissions;
+  channelPermissions = applyOverwrite(
+    channelPermissions,
+    channel.permission_overwrites?.find(overwrite => overwrite.id === GUILD_ID),
+  );
+
+  let roleAllow = 0n;
+  let roleDeny = 0n;
+  (channel.permission_overwrites || []).forEach(overwrite => {
+    if (overwrite.type === 0 && member.roles.includes(overwrite.id)) {
+      roleAllow |= BigInt(overwrite.allow || 0);
+      roleDeny |= BigInt(overwrite.deny || 0);
+    }
+  });
+  channelPermissions = (channelPermissions & ~roleDeny) | roleAllow;
+  channelPermissions = applyOverwrite(
+    channelPermissions,
+    channel.permission_overwrites?.find(overwrite => overwrite.type === 1 && overwrite.id === bot.id),
+  );
+
+  const configuredRoleIds = Object.values(TEAM_ROLES);
+  const missingRoleIds = configuredRoleIds.filter(roleId => !rolesById[roleId]);
+  const botHighestPosition = Math.max(0, ...member.roles.map(roleId => rolesById[roleId]?.position || 0));
+  const hierarchyBlockedRoleIds = configuredRoleIds.filter(roleId => (
+    rolesById[roleId] && rolesById[roleId].position >= botHighestPosition
+  ));
+  const canViewChannel = administrator || Boolean(channelPermissions & permissionBit(10));
+  const canSendMessages = administrator || Boolean(channelPermissions & permissionBit(11));
+  const channelMatchesGuild = channel.guild_id === GUILD_ID;
+  const botMatchesMember = member.user?.id === bot.id;
+  const ok = canManageRoles && canViewChannel && canSendMessages && channelMatchesGuild
+    && botMatchesMember && missingRoleIds.length === 0 && hierarchyBlockedRoleIds.length === 0;
+
+  return {
+    ok,
+    authenticated: true,
+    guildMember: botMatchesMember,
+    channelMatchesGuild,
+    canViewChannel,
+    canSendMessages,
+    canManageRoles,
+    memberSearchAvailable: true,
+    configuredTeamRoles: configuredRoleIds.length,
+    missingTeamRoles: missingRoleIds.length,
+    rolesBlockedByHierarchy: hierarchyBlockedRoleIds.length,
+  };
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  if (WEBHOOK_SECRET && req.headers['x-webhook-secret'] !== WEBHOOK_SECRET) {
+  if (!WEBHOOK_SECRET || !DISCORD_TOKEN) {
+    console.error('Discord webhook configuration is incomplete');
+    return res.status(503).json({ error: 'Webhook configuration is incomplete' });
+  }
+
+  if (req.headers['x-webhook-secret'] !== WEBHOOK_SECRET) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
   try {
     const payload = req.body;
+    if (payload?.type === 'PING') {
+      const health = await checkDiscordConfiguration();
+      return res.status(health.ok ? 200 : 502).json(health);
+    }
+
     const wasApproved = payload.old_record?.approval_status === 'approved';
     const isNewApproval = payload.record?.approval_status === 'approved' && !wasApproved;
     if (!isNewApproval) {

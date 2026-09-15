@@ -21,6 +21,7 @@ jobs:
       - name: Check JavaScript syntax
         run: |
           node --check api/league-admin.js
+          node --check api/claim-webhook.js
           node --check scripts/admin-page.js
           node --check scripts/auth-nav.js
           node --check scripts/auth-page.js

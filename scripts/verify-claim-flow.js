@@ -14,6 +14,8 @@ const auth = read('scripts/supabase-auth.js');
 const claim = read('scripts/claim-page.js');
 const styles = read('n26.css');
 const migration = read('supabase/migrations/20260915182528_authenticated_claim_table_select.sql');
+const claimWebhook = read('api/claim-webhook.js');
+const discordMigration = read('supabase/migrations/20260915185410_discord_approval_webhook.sql');
 
 assert.match(auth, /https:\/\/txipxisumngvzkuqsysq\.supabase\.co/);
 runtimeFiles.forEach((file) => {
@@ -32,5 +34,11 @@ assert.doesNotMatch(claim, /Apply the new Supabase migration/);
 assert.ok(claim.lastIndexOf('revealProtectedPage();') > claim.indexOf('await loadClaims();'));
 assert.match(styles, /\[hidden\]\s*\{\s*display:\s*none\s*!important;\s*\}/);
 assert.match(migration, /grant select on table public\.n26_claims to authenticated;/i);
+assert.match(claimWebhook, /if \(!WEBHOOK_SECRET \|\| !DISCORD_TOKEN\)/);
+assert.match(claimWebhook, /payload\?\.type === 'PING'/);
+assert.match(discordMigration, /create extension if not exists pg_net/i);
+assert.match(discordMigration, /n26_notify_discord_on_approval/);
+assert.match(discordMigration, /where name = 'n26_discord_webhook_secret'/);
+assert.doesNotMatch(discordMigration, /new\.phone/);
 
-console.log('Claim flow verified: persistent auth, owned-row lookup, authenticated insert, and PostgREST return access.');
+console.log('Claim flow verified: persistent auth, owned-row lookup, authenticated insert, PostgREST return access, and approval notifications.');
