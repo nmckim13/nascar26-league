@@ -138,18 +138,22 @@ function applyOverwrite(permissions, overwrite) {
 }
 
 async function checkDiscordConfiguration() {
-  const [bot, member, roles, channel, memberSearch] = await Promise.all([
-    discordAPI('GET', '/users/@me'),
-    discordAPI('GET', `/guilds/${GUILD_ID}/members/@me`),
+  const bot = await discordAPI('GET', '/users/@me');
+  if (!bot.ok) {
+    return { ok: false, authenticated: false };
+  }
+
+  const [member, roles, channel, memberSearch] = await Promise.all([
+    discordAPI('GET', `/guilds/${GUILD_ID}/members/${bot.id}`),
     discordAPI('GET', `/guilds/${GUILD_ID}/roles`),
     discordAPI('GET', `/channels/${ANNOUNCEMENTS_CHANNEL}`),
     discordAPI('GET', `/guilds/${GUILD_ID}/members/search?query=a&limit=1`),
   ]);
 
-  if (!bot.ok || !member.ok || !roles.ok || !channel.ok || !memberSearch.ok) {
+  if (!member.ok || !roles.ok || !channel.ok || !memberSearch.ok) {
     return {
       ok: false,
-      authenticated: bot.ok,
+      authenticated: true,
       guildMember: member.ok,
       rolesReadable: roles.ok,
       channelReadable: channel.ok,
