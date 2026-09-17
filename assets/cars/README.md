@@ -41,4 +41,6 @@ Car images use normal compositing in an isolated stage, above the halftone backg
 
 ## Transparent car backgrounds
 
+Nolan McKim's #88 now uses the user-supplied Diet Mountain Dew / National Guard throwback paint scheme, adapted to the existing Chevrolet body and camera angle. Its matching number badge and green accents replace the Red Bull presentation. See `nolan-livery-prompts.json` for the edit prompts. The #88 source entry above records the original artwork, superseded by this user reference.
+
 The eleven original studio-background renders were edited into transparent cutouts, matching the existing #7 asset. This exposes the card's color and halftone pattern around the car while preserving the bodywork and tires. The extraction prompt and source outputs are recorded in `cutout-prompts.json`. Website images retain their alpha channel when converted to WebP.

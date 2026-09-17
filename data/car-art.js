@@ -10,6 +10,6 @@ window.BARLCarArt = Object.freeze({
   '24': { numberImage: 'assets/cars/numbers/24.webp', sponsor: 'RAPTOR', make: 'Chevrolet', color: '#daef26' },
   '54': { numberImage: 'assets/cars/numbers/54.webp', sponsor: 'SAIA', make: 'Toyota', color: '#f24045' },
   '60': { numberImage: 'assets/cars/numbers/60.webp', sponsor: 'Kroger', make: 'Ford', color: '#3d8dff' },
-  '88': { numberImage: 'assets/driver-numbers/88/red-bull.png', sponsor: 'Red Bull', make: 'Chevrolet', color: '#3982ec' },
+  '88': { numberImage: 'assets/cars/numbers/88.webp', sponsor: 'Diet Mountain Dew / National Guard', make: 'Chevrolet', color: '#26ba7b' },
   '97': { numberImage: 'assets/driver-numbers/97/superfile.png', sponsor: 'SuperFile', make: 'Chevrolet', color: '#c8ef38' },
 });
