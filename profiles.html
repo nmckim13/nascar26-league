@@ -7,6 +7,7 @@
  <title>Profiles | N26 Racing League</title>
  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
  <link rel="stylesheet" href="n26.css">
+ <link rel="stylesheet" href="assets/cars/profile-cards.css">
  <style>
   main { width:min(1160px,calc(100% - 28px)); margin:0 auto; padding:34px 0 64px; }
   .profile-head { display:flex; justify-content:space-between; align-items:end; gap:20px; margin-bottom:24px; }
@@ -32,29 +33,6 @@
   .roster-status::before { content:''; width:6px; height:6px; border-radius:50%; background:#41c878; }
   .roster-summary { grid-column:1/-1; display:flex; justify-content:space-between; gap:18px; align-items:center; background:linear-gradient(110deg,rgba(255,201,6,.14),var(--surface)); border:1px solid rgba(255,201,6,.35); border-radius:10px; padding:16px 18px; }
   .roster-summary strong { color:var(--yellow); font:800 24px var(--font-mono); }
-  .player-card { --card-accent:var(--yellow); --card-accent-rgb:255,201,6; position:relative; min-height:430px; isolation:isolate; overflow:hidden; clip-path:polygon(8% 0,92% 0,100% 6%,100% 94%,92% 100%,8% 100%,0 94%,0 6%); background:linear-gradient(145deg,#f8e19a 0%,#9b741b 4%,#161616 11%,#272727 64%,#090909 100%); padding:3px; filter:drop-shadow(0 16px 24px rgba(0,0,0,.32)); transition:transform .2s ease,filter .2s ease; }
-  .player-card:hover { transform:translateY(-6px) scale(1.012); filter:drop-shadow(0 22px 30px rgba(0,0,0,.48)); }
-  .player-card[data-driver-id],.profile-card[data-driver-id] { cursor:pointer; }
-  .player-card-shell { position:relative; min-height:424px; overflow:hidden; clip-path:inherit; background:radial-gradient(circle at 72% 23%,rgba(var(--card-accent-rgb),.34),transparent 34%),linear-gradient(160deg,#262626 0%,#111 52%,#080808 100%); }
-  .player-card-shell::before { content:''; position:absolute; inset:0; z-index:-1; opacity:.23; background:repeating-linear-gradient(118deg,transparent 0 18px,rgba(255,255,255,.08) 19px 20px),linear-gradient(90deg,transparent 49%,rgba(var(--card-accent-rgb),.7) 50%,transparent 51%); }
-  .player-card-shell::after { content:''; position:absolute; width:230px; height:230px; border:1px solid rgba(var(--card-accent-rgb),.42); border-radius:50%; right:-95px; top:68px; box-shadow:0 0 0 18px rgba(var(--card-accent-rgb),.05),0 0 0 38px rgba(var(--card-accent-rgb),.035); z-index:-1; }
-  .player-card-kicker { display:flex; justify-content:space-between; align-items:center; padding:16px 17px 0; color:rgba(255,255,255,.62); font-size:9px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
-  .player-card-rating { position:absolute; top:40px; left:17px; z-index:2; text-align:center; color:#fff; text-shadow:0 2px 8px #000; }
-  .player-card-rating strong { display:block; font:800 62px/.82 'Inter',sans-serif; letter-spacing:-.08em; }
-  .player-card-rating span { color:var(--card-accent); font-size:10px; font-weight:900; letter-spacing:.18em; }
-  .player-card-number { position:absolute; top:112px; left:23px; z-index:2; color:rgba(255,255,255,.72); font:800 13px var(--font-mono); }
-  .player-card-art { height:235px; display:flex; justify-content:flex-end; align-items:center; padding:36px 29px 0 92px; }
-  .number-medallion { width:154px; height:154px; display:grid; place-items:center; border-radius:50%; background:radial-gradient(circle,rgba(var(--card-accent-rgb),.25),rgba(0,0,0,.38) 62%,transparent 64%); border:1px solid rgba(var(--card-accent-rgb),.34); box-shadow:0 18px 28px rgba(0,0,0,.48),inset 0 0 28px rgba(var(--card-accent-rgb),.13); }
-  .number-medallion img { width:128px; height:116px; object-fit:contain; image-rendering:auto; filter:drop-shadow(0 9px 7px rgba(0,0,0,.72)); }
-  .player-card-nameplate { position:relative; margin:0 13px; padding:12px 12px 10px; text-align:center; background:linear-gradient(90deg,rgba(var(--card-accent-rgb),.13),rgba(0,0,0,.82),rgba(var(--card-accent-rgb),.13)); border-top:1px solid rgba(var(--card-accent-rgb),.78); border-bottom:1px solid rgba(var(--card-accent-rgb),.38); }
-  .player-card-nameplate h2 { margin:0; color:#fff; font-size:23px; line-height:.95; letter-spacing:-.04em; text-transform:uppercase; }
-  .player-card-nameplate p { margin:7px 0 0; color:var(--card-accent); font-size:10px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
-  .player-card-attributes { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; margin:13px 16px 0; background:rgba(255,255,255,.12); }
-  .player-card-attribute { background:rgba(5,5,5,.88); padding:9px 4px; text-align:center; }
-  .player-card-attribute strong { display:block; color:#fff; font:800 17px var(--font-mono); }
-  .player-card-attribute span { display:block; margin-top:2px; color:rgba(255,255,255,.45); font-size:8px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
-  .player-card-footer { display:flex; justify-content:space-between; align-items:center; padding:13px 17px 15px; color:rgba(255,255,255,.45); font-size:9px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
-  .player-card-footer strong { color:var(--card-accent); }
   .ovr { margin-left:auto; text-align:right; }
   .ovr strong { display:block; color:var(--yellow); font:800 30px/1 'Inter',sans-serif; }
   .ovr span { color:var(--muted); font-size:9px; font-weight:800; text-transform:uppercase; }
@@ -101,13 +79,15 @@
   <a href="index.html">Home</a><a href="standings.html">Standings</a><a href="results.html">Results</a><a href="schedule.html">Schedule</a><a href="rules.html">Rules</a><a href="claim.html" class="active">Drivers</a><a href="auth.html" class="drawer-cta">Log In / Join -></a>
  </div>
  <main>
-  <div class="profile-head"><div><div class="eyebrow">People, seats, history</div><h1>League <span>Profiles</span></h1><p class="muted" style="margin-top:12px">Permanent driver identities stay attached to their careers, even when a seat changes teams.</p></div><a href="rules.html" class="muted">Read the rating rules -></a></div>
+  <div class="profile-head"><div><div class="eyebrow">The BARL grid</div><h1>League <span>Profiles</span></h1><p class="muted" style="margin-top:12px">Your drivers. Their machines. One championship.</p></div><a href="rules.html" class="muted">Read the rating rules -></a></div>
   <div class="profile-tabs"><button class="profile-tab active" data-panel="drivers">Drivers</button><button class="profile-tab" data-panel="teams">Teams</button></div>
   <section id="drivers"><div class="profile-grid" id="driver-grid"><div class="empty">Loading public profiles...</div></div></section>
   <section id="teams" hidden><div class="profile-grid" id="team-grid"></div></section>
  </main>
  <footer class="footer"><div class="footer-links"><a href="index.html">Home</a><a href="standings.html">Standings</a><a href="profiles.html">Profiles</a><a href="results.html">Results</a><a href="schedule.html">Schedule</a><a href="rules.html">Rules</a><a href="claim.html">Roster</a></div>N26 Racing League · Permanent identities. Historical seats.</footer>
  <script src="./scripts/league-rules.js"></script>
+ <script src="./data/car-art.js"></script>
+ <script src="./scripts/profile-car-card.js"></script>
  <script src="./scripts/public-bootstrap.js"></script>
  <script>
   const esc = value => String(value ?? '').replace(/[&<>'"]/g, character => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[character]));
@@ -170,27 +150,8 @@
    document.getElementById('team-grid').innerHTML = '';
   }
 
-  function teamCardTheme(slug) {
-   return ({
-    hendrick:['#006fba','0,111,186'],
-    jgr:['#e31b23','227,27,35'],
-    penske:['#ffffff','255,255,255'],
-    '23xi':['#23d5e8','35,213,232'],
-    rfk:['#b7d433','183,212,51'],
-    spire:['#2e8b57','46,139,87'],
-    trackhouse:['#7b5cff','123,92,255'],
-    legacy:['#d9b15d','217,177,93'],
-   })[slug] || ['#ffc906','255,201,6'];
-  }
-
   async function renderPreseasonRoster(data) {
-   const [assignments, numberStyleRows, styleModule] = await Promise.all([
-    publicGet(`/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number,assignment_status&season_id=eq.${data.season.id}&assignment_status=eq.active`),
-    publicGet('/rest/v1/n26_driver_number_styles?select=driver_id,car_number,style_key').catch(() => []),
-    import('./data/driver-number-styles.js'),
-   ]);
-   const selectedStyles = Object.fromEntries(numberStyleRows.map(row => [`${row.driver_id}:${row.car_number}`, row.style_key]));
-   const styleFor = (driverId, carNumber) => { const styles = styleModule.NUMBER_STYLES[String(carNumber)] || []; return styles.find(style => style.key === selectedStyles[`${driverId}:${carNumber}`]) || styles[0]; };
+   const assignments = await publicGet(`/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number,assignment_status&season_id=eq.${data.season.id}&assignment_status=eq.active`);
    const driverIds = [...new Set(assignments.map(assignment => assignment.driver_id))];
    const driverRows = driverIds.length
     ? await publicGet(`/rest/v1/n26_drivers?select=id,display_name,gamertag,first_name,last_name&id=in.(${driverIds.join(',')})`)
@@ -208,12 +169,9 @@
     const driver = drivers[assignment.driver_id] || {};
     const team = teamsById[assignment.team_id] || {};
     const name = driver.display_name || driver.gamertag || [driver.first_name, driver.last_name].filter(Boolean).join(' ') || 'Driver pending';
-    const [accent, accentRgb] = teamCardTheme(team.slug);
-    const numberStyle = styleFor(assignment.driver_id, assignment.car_number);
-    const numberImage = numberStyle?.image || '';
-    return `<article class="player-card" style="--card-accent:${accent};--card-accent-rgb:${accentRgb}" aria-label="${esc(name)}, car ${esc(assignment.car_number)}, ${esc(team.name || 'team pending')}"><div class="player-card-shell"><div class="player-card-kicker"><span>BARL Ultimate Driver</span><span>S${esc(data.season.season_number)}</span></div><div class="player-card-rating"><strong>60</strong><span>OVR</span></div><div class="player-card-number">${displayNumber(assignment.car_number)}</div><div class="player-card-art"><div class="number-medallion"><img src="${esc(numberImage)}" width="128" height="116" alt="${esc(numberStyle?.label || 'NASCAR')} car number ${esc(assignment.car_number)}"></div></div><div class="player-card-nameplate"><h2>${esc(name)}</h2><p>${esc(team.name || 'Team pending')}</p></div><div class="player-card-attributes"><div class="player-card-attribute"><strong>60</strong><span>Start OVR</span></div><div class="player-card-attribute"><strong>${esc(assignment.car_number)}</strong><span>Car</span></div><div class="player-card-attribute"><strong>FT</strong><span>Status</span></div></div><div class="player-card-footer"><span>Season ${esc(data.season.season_number)}</span><strong>Founders Series</strong></div></div></article>`;
+    return window.BARLCarCards.render({ driverId: assignment.driver_id, name, number: assignment.car_number, team: team.name, season: data.season.season_number });
    }).join('') || '<div class="empty">No drivers have been assigned yet.</div>';
-   document.querySelectorAll('#driver-grid .player-card').forEach((card,index) => { card.dataset.driverId=sortedAssignments[index].driver_id; card.tabIndex=0; card.setAttribute('role','link'); card.setAttribute('aria-label',`Open ${card.getAttribute('aria-label')} career profile`); });
+
 
    document.getElementById('team-grid').innerHTML = teams.map(team => {
     const seats = assignments.filter(assignment => assignment.team_id === team.id).sort((a,b) => String(a.car_number).localeCompare(String(b.car_number), undefined, { numeric:true }));
@@ -293,9 +251,9 @@
     const historyRows = career.map(row => `<div class="history-row"><strong>S${esc(row.season.season_number)}</strong><span>${esc(row.teamName)} ${displayNumber(row.carNumber)} · ${esc(row.starts)} starts · ${esc(row.wins)} wins</span><strong>${esc(row.points)} pts${row.ovr === undefined ? '' : ` · OVR ${esc(row.ovr)}`}</strong></div>`).join('');
     const numberStyle = styleFor(entry.driver_id, car);
     const carBadge = numberStyle ? `<img src="${esc(numberStyle.image)}" alt="${esc(numberStyle.label)} number ${esc(car)}">` : esc(car || '?');
-    return `<article class="profile-card"><div class="profile-top"><div class="car-number">${carBadge}</div><div><h2>${esc(driver.display_name || driver.gamertag || 'Unnamed driver')}</h2><div class="profile-sub">${esc(team.name || 'Seat pending')} · ${displayNumber(car)}</div></div><div class="ovr"><strong>${esc(ovr ?? '—')}</strong><span>${status}</span></div></div><div class="attribute-grid">${[['CH',values[0]],['FQ',values[1]],['WI',values[2]],['AT',values[3]],['QU',values[4]]].map(([label,value]) => `<div class="attribute"><strong>${format(value)}</strong><span>${label}</span></div>`).join('')}</div><div class="stat-line"><span>Starts</span><strong>${esc(stat.starts || 0)}</strong></div><div class="stat-line"><span>Wins / Poles</span><strong>${esc(stat.wins || 0)} / ${esc(stat.poles || 0)}</strong></div><div class="stat-line"><span>Top fives</span><strong>${esc(stat.topFives || 0)}</strong></div><div class="stat-line"><span>Average finish</span><strong>${averageFinish === null ? '—' : format(averageFinish)}</strong></div><div class="stat-line"><span>Contract</span><strong>${esc(contractLabel)}</strong></div><details class="calc-details"><summary>Calculation breakdown</summary><div class="calc-grid"><span>OVR raw <strong>${rawOverall === undefined ? '—' : Number(rawOverall).toFixed(8)}</strong></span><span>Rank <strong>${esc(stat.rank || '—')}</strong></span><span>Finish credit <strong>${stat.finishCredits === undefined ? '—' : Number(stat.finishCredits).toFixed(8)}</strong></span><span>Qualifying credit <strong>${stat.qualifyingCredits === undefined ? '—' : Number(stat.qualifyingCredits).toFixed(8)}</strong></span><span>Rating source <strong>${esc(rating?.source_results_version || 'provisional')}</strong></span><span>Ruleset <strong>${esc(data.ruleset.version)}</strong></span></div></details><details class="history-details"><summary>Career history (${career.length} season${career.length === 1 ? '' : 's'})</summary><div class="history-list">${historyRows || '<span class="muted">No public seasons recorded.</span>'}</div></details></article>`;
+    return `<article class="profile-card season-driver-card">${window.BARLCarCards.render({ driverId: entry.driver_id, name: driver.display_name || driver.gamertag || 'Unnamed driver', number: car, team: team.name, season: data.season.season_number })}<div class="profile-top"><div class="car-number">${carBadge}</div><div><h2>${esc(driver.display_name || driver.gamertag || 'Unnamed driver')}</h2><div class="profile-sub">${esc(team.name || 'Seat pending')} · ${displayNumber(car)}</div></div><div class="ovr"><strong>${esc(ovr ?? '—')}</strong><span>${status}</span></div></div><div class="attribute-grid">${[['CH',values[0]],['FQ',values[1]],['WI',values[2]],['AT',values[3]],['QU',values[4]]].map(([label,value]) => `<div class="attribute"><strong>${format(value)}</strong><span>${label}</span></div>`).join('')}</div><div class="stat-line"><span>Starts</span><strong>${esc(stat.starts || 0)}</strong></div><div class="stat-line"><span>Wins / Poles</span><strong>${esc(stat.wins || 0)} / ${esc(stat.poles || 0)}</strong></div><div class="stat-line"><span>Top fives</span><strong>${esc(stat.topFives || 0)}</strong></div><div class="stat-line"><span>Average finish</span><strong>${averageFinish === null ? '—' : format(averageFinish)}</strong></div><div class="stat-line"><span>Contract</span><strong>${esc(contractLabel)}</strong></div><details class="calc-details"><summary>Calculation breakdown</summary><div class="calc-grid"><span>OVR raw <strong>${rawOverall === undefined ? '—' : Number(rawOverall).toFixed(8)}</strong></span><span>Rank <strong>${esc(stat.rank || '—')}</strong></span><span>Finish credit <strong>${stat.finishCredits === undefined ? '—' : Number(stat.finishCredits).toFixed(8)}</strong></span><span>Qualifying credit <strong>${stat.qualifyingCredits === undefined ? '—' : Number(stat.qualifyingCredits).toFixed(8)}</strong></span><span>Rating source <strong>${esc(rating?.source_results_version || 'provisional')}</strong></span><span>Ruleset <strong>${esc(data.ruleset.version)}</strong></span></div></details><details class="history-details"><summary>Career history (${career.length} season${career.length === 1 ? '' : 's'})</summary><div class="history-list">${historyRows || '<span class="muted">No public seasons recorded.</span>'}</div></details></article>`;
    }).join('') || '<div class="empty">No full-time public profiles are available yet.</div>';
-   document.querySelectorAll('#driver-grid .profile-card').forEach((card,index) => { card.dataset.driverId=fullTime[index].driver_id; card.tabIndex=0; card.setAttribute('role','link'); });
+
 
    document.getElementById('team-grid').innerHTML = Object.values(teams).map(team => {
     const seats = (data.assignments || []).filter(assignment => assignment.team_id === team.id).sort((a,b) => String(a.car_number).localeCompare(String(b.car_number), undefined, { numeric:true }));
@@ -311,8 +269,6 @@
   }
 
   document.querySelectorAll('.profile-tab').forEach(button => button.addEventListener('click', () => { document.querySelectorAll('.profile-tab').forEach(candidate => candidate.classList.toggle('active', candidate === button)); document.getElementById('drivers').hidden = button.dataset.panel !== 'drivers'; document.getElementById('teams').hidden = button.dataset.panel !== 'teams'; }));
-  document.addEventListener('click', event => { const card=event.target.closest('[data-driver-id]'); if(card) window.top.location.href=`career.html?id=${encodeURIComponent(card.dataset.driverId)}`; });
-  document.addEventListener('keydown', event => { const card=event.target.closest('[data-driver-id]'); if(card && (event.key==='Enter' || event.key===' ')){ event.preventDefault(); window.top.location.href=`career.html?id=${encodeURIComponent(card.dataset.driverId)}`; } });
   function toggleNav() { document.getElementById('hamburger').classList.toggle('open'); document.getElementById('nav-drawer').classList.toggle('open'); }
   window.__leagueDataReady.then(render).catch(() => renderEmpty('Public league data is unavailable right now.'));
  </script>

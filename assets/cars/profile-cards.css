@@ -1,0 +1,35 @@
+/* Wide, car-first profile cards. Names remain live HTML, separate from artwork. */
+#driver-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; }
+.grid-driver-card { --livery:#ffc906; display:block; position:relative; overflow:hidden; isolation:isolate; border:1px solid #303034; border-radius:13px; background:#030304; color:#fff; transition:border-color .2s,transform .2s; }
+.grid-driver-card::before { content:''; position:absolute; inset:0; z-index:-1; background:radial-gradient(ellipse at 90% 0%,color-mix(in srgb,var(--livery) 36%,transparent),transparent 68%); }
+.grid-driver-card::after { content:''; position:absolute; inset:0 auto 0 0; width:3px; background:var(--livery); }
+.grid-driver-card:hover { border-color:var(--livery); transform:translateY(-3px); }
+.grid-driver-card:focus-visible { outline:3px solid var(--livery); outline-offset:4px; }
+.grid-driver-heading { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:24px 27px 0; position:relative; z-index:2; }
+.grid-driver-heading > div { min-width:0; }
+.grid-driver-team { margin:0 0 9px; color:var(--livery); font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.15em; }
+.grid-driver-heading h2 { margin:0; font:800 clamp(21px,2.2vw,31px)/1.05 'Inter',sans-serif; letter-spacing:-.055em; text-transform:uppercase; overflow-wrap:anywhere; }
+.grid-driver-number { flex-shrink:0; color:#fff; font:800 italic 65px/.95 'Inter',sans-serif; letter-spacing:-.08em; padding-right:4px; }
+.grid-driver-number img { width:104px; height:88px; object-fit:contain; }
+/* This one badge has an opaque black canvas; blend only the badge, never the car. */
+.grid-driver-heading:has(img[src$="/6.webp"]) { z-index:auto; }
+.grid-driver-number img[src$="/6.webp"] { mix-blend-mode:screen; }
+.grid-car-stage { position:relative; isolation:isolate; aspect-ratio:2.25; margin:4px 10px 0; overflow:hidden; }
+.grid-car-stage::before { z-index:0; pointer-events:none; content:''; position:absolute; inset:15% 3% 6%; opacity:.22; background-image:radial-gradient(var(--livery) .8px,transparent .8px); background-size:5px 5px; mask-image:linear-gradient(90deg,#000,transparent 85%); }
+.grid-car-image { position:relative; z-index:1; width:100%; height:100%; object-fit:cover; object-position:center 51%; mix-blend-mode:normal; mask-image:linear-gradient(0deg,transparent 0%,#000 6%,#000 94%,transparent 100%); }
+.grid-driver-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 27px 17px; color:#aaaab2; font-size:9px; font-weight:600; letter-spacing:.065em; text-transform:uppercase; }
+.grid-profile-link { white-space:nowrap; color:#fff; }
+.grid-profile-link b { display:inline-block; color:var(--livery); font-size:18px; margin-left:7px; }
+.grid-car-pending { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#94949e; }
+.grid-car-pending strong { color:var(--livery); font:800 italic 90px/1 'Inter',sans-serif; }
+.grid-car-pending small { margin-top:10px; }
+.season-driver-card .grid-driver-card { margin:-16px -16px 18px; }
+@media(max-width:700px) {
+  #driver-grid { grid-template-columns:minmax(0,1fr); gap:18px; }
+  .grid-driver-heading { padding:21px 22px 0; }
+  .grid-driver-heading h2 { font-size:clamp(22px,5.9vw,32px); }
+  .grid-driver-number { font-size:58px; }
+  .grid-driver-number img { width:82px; height:74px; }
+  .grid-driver-footer { padding:9px 22px 16px; font-size:8px; }
+}
+@media(prefers-reduced-motion:reduce) { .grid-driver-card { transition:none; } .grid-driver-card:hover { transform:none; } }

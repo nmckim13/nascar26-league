@@ -1,0 +1,62 @@
+[
+  {
+    "number": "7",
+    "referenceIndex": 43,
+    "prompt": "Use case: product-mockup. Create a premium photorealistic car-only render for a NASCAR league website profile. The attached NASCAR 26 screenshot is a paint-scheme reference only. Extract and faithfully reconstruct the FULL number 7 Chevrolet Camaro stock car with this exact Freeway Insurance blue, white and lime green livery and sponsor placement. Remove ALL game interface, text outside the car, portrait, signature and background. Show the complete car from a low almost-side-on front three-quarter view, nose pointing LEFT, rear to RIGHT; emphasize the side so number 7 and Freeway read clearly. All wheels and bumpers fully visible, no clipping. Long-lens studio catalog lighting, crisp realistic bodywork, black racing wheels, subtle contact shadow. Isolated on a genuinely transparent alpha background, no floor plane, no checkerboard drawn in. Wide 3:2 canvas, car fills 90% of width, centered vertically. Preserve the paint colors, sponsor wording, manufacturer shape and number exactly from reference. No people, no standalone typography, no border."
+  },
+  {
+    "number": "5",
+    "referenceIndex": 30,
+    "prompt": "Use case: product-mockup. Generate ONE premium car-only studio render for a NASCAR league website. Reference screenshot supplies the exact NASCAR 26 number 5 HendrickCars.com Chevrolet Camaro base livery (blue, white and red). Reconstruct the full car and faithfully preserve its number, sponsor logos and paint layout. Remove game UI, people, portraits, signatures and all text outside the car. Full car low side/front three-quarter angle, mostly side profile so door sponsor is legible, nose LEFT and rear RIGHT, both wheels visible. Entire vehicle visible with generous 8% left and right margin. Realistic crisp bodywork, dramatic but clean softbox lighting, black racing wheels. Wide 1536x1024 canvas. Car centered vertically and fills 84% of width, about 45% of image height. Seamless pure black studio background, black ground and subtle contact shadow. No borders, no floating typography, no other cars. Exact number 5."
+  },
+  {
+    "number": "6",
+    "referenceIndex": 28,
+    "prompt": "Use case: product-mockup. Generate ONE premium car-only studio render for a NASCAR league website. Reference screenshot supplies the exact NASCAR 26 number 6 BuildSubmarines.com Ford Mustang base livery (black and teal). Reconstruct the full car and faithfully preserve its number, sponsor logos and paint layout. Remove game UI, people, portraits, signatures and all text outside the car. Full car low side/front three-quarter angle, mostly side profile so door sponsor is legible, nose LEFT and rear RIGHT, both wheels visible. Entire vehicle visible with generous 8% left and right margin. Realistic crisp bodywork, dramatic but clean softbox lighting, black racing wheels. Wide 1536x1024 canvas. Car centered vertically and fills 84% of width, about 45% of image height. Seamless pure black studio background, black ground and subtle contact shadow. No borders, no floating typography, no other cars. Exact number 6."
+  },
+  {
+    "number": "9",
+    "referenceIndex": 16,
+    "prompt": "Use case: product-mockup. Generate ONE premium car-only studio render for a NASCAR league website. Reference screenshot supplies the exact NASCAR 26 number 9 NAPA Auto Parts Chevrolet Camaro base livery (blue, white and yellow). Reconstruct the full car and faithfully preserve its number, sponsor logos and paint layout. Remove game UI, people, portraits, signatures and all text outside the car. Full car low side/front three-quarter angle, mostly side profile so door sponsor is legible, nose LEFT and rear RIGHT, both wheels visible. Entire vehicle visible with generous 8% left and right margin. Realistic crisp bodywork, dramatic but clean softbox lighting, black racing wheels. Wide 1536x1024 canvas. Car centered vertically and fills 84% of width, about 45% of image height. Seamless pure black studio background, black ground and subtle contact shadow. No borders, no floating typography, no other cars. Exact number 9."
+  },
+  {
+    "number": "17",
+    "referenceIndex": 7,
+    "prompt": "Use case: product-mockup. Generate ONE premium car-only studio render for a NASCAR league website. Reference screenshot supplies the exact NASCAR 26 number 17 Body Guard Ford Mustang base livery (orange and black). Reconstruct the full car and faithfully preserve its number, sponsor logos and paint layout. Remove game UI, people, portraits, signatures and all text outside the car. Full car low side/front three-quarter angle, mostly side profile so door sponsor is legible, nose LEFT and rear RIGHT, both wheels visible. Entire vehicle visible with generous 8% left and right margin. Realistic crisp bodywork, dramatic but clean softbox lighting, black racing wheels. Wide 1536x1024 canvas. Car centered vertically and fills 84% of width, about 45% of image height. Seamless pure black studio background, black ground and subtle contact shadow. No borders, no floating typography, no other cars. Exact number 17."
+  },
+  {
+    "number": "19",
+    "referenceIndex": 6,
+    "prompt": "Use case: product-mockup. Generate ONE premium car-only studio render for a NASCAR league website. Reference screenshot supplies the exact NASCAR 26 number 19 Bass Pro Shops Toyota Camry base livery (black, orange and camouflage). Reconstruct the full car and faithfully preserve its number, sponsor logos and paint layout. Remove game UI, people, portraits, signatures and all text outside the car. Full car low side/front three-quarter angle, mostly side profile so door sponsor is legible, nose LEFT and rear RIGHT, both wheels visible. Entire vehicle visible with generous 8% left and right margin. Realistic crisp bodywork, dramatic but clean softbox lighting, black racing wheels. Wide 1536x1024 canvas. Car centered vertically and fills 84% of width, about 45% of image height. Seamless pure black studio background, black ground and subtle contact shadow. No borders, no floating typography, no other cars. Exact number 19."
+  },
+  {
+    "number": "20",
+    "referenceIndex": 2,
+    "prompt": "Use case: product-mockup. Generate ONE premium car-only studio render for a NASCAR league website. Reference screenshot supplies the exact NASCAR 26 number 20 Rheem Toyota Camry base livery (black, white and red). Reconstruct the full car and faithfully preserve its number, sponsor logos and paint layout. Remove game UI, people, portraits, signatures and all text outside the car. Full car low side/front three-quarter angle, mostly side profile so door sponsor is legible, nose LEFT and rear RIGHT, both wheels visible. Entire vehicle visible with generous 8% left and right margin. Realistic crisp bodywork, dramatic but clean softbox lighting, black racing wheels. Wide 1536x1024 canvas. Car centered vertically and fills 84% of width, about 45% of image height. Seamless pure black studio background, black ground and subtle contact shadow. No borders, no floating typography, no other cars. Exact number 20."
+  },
+  {
+    "number": "24",
+    "referenceIndex": 9,
+    "prompt": "Use case: product-mockup. Generate ONE premium car-only studio render for a NASCAR league website. Reference screenshot supplies the exact NASCAR 26 number 24 RAPTOR Chevrolet Camaro base livery (red, white and blue with fluorescent yellow number). Reconstruct the full car and faithfully preserve its number, sponsor logos and paint layout. Remove game UI, people, portraits, signatures and all text outside the car. Full car low side/front three-quarter angle, mostly side profile so door sponsor is legible, nose LEFT and rear RIGHT, both wheels visible. Entire vehicle visible with generous 8% left and right margin. Realistic crisp bodywork, dramatic but clean softbox lighting, black racing wheels. Wide 1536x1024 canvas. Car centered vertically and fills 84% of width, about 45% of image height. Seamless pure black studio background, black ground and subtle contact shadow. No borders, no floating typography, no other cars. Exact number 24."
+  },
+  {
+    "number": "54",
+    "referenceIndex": 18,
+    "prompt": "Use case: product-mockup. Generate ONE premium car-only studio render for a NASCAR league website. Reference screenshot supplies the exact NASCAR 26 number 54 SAIA Toyota Camry base livery (red and white). Reconstruct the full car and faithfully preserve its number, sponsor logos and paint layout. Remove game UI, people, portraits, signatures and all text outside the car. Full car low side/front three-quarter angle, mostly side profile so door sponsor is legible, nose LEFT and rear RIGHT, both wheels visible. Entire vehicle visible with generous 8% left and right margin. Realistic crisp bodywork, dramatic but clean softbox lighting, black racing wheels. Wide 1536x1024 canvas. Car centered vertically and fills 84% of width, about 45% of image height. Seamless pure black studio background, black ground and subtle contact shadow. No borders, no floating typography, no other cars. Exact number 54."
+  },
+  {
+    "number": "60",
+    "referenceIndex": 38,
+    "prompt": "Use case: product-mockup. Generate ONE premium car-only studio render for a NASCAR league website. Reference screenshot supplies the exact NASCAR 26 number 60 Kroger Ford Mustang base livery (blue and white). Reconstruct the full car and faithfully preserve its number, sponsor logos and paint layout. Remove game UI, people, portraits, signatures and all text outside the car. Full car low side/front three-quarter angle, mostly side profile so door sponsor is legible, nose LEFT and rear RIGHT, both wheels visible. Entire vehicle visible with generous 8% left and right margin. Realistic crisp bodywork, dramatic but clean softbox lighting, black racing wheels. Wide 1536x1024 canvas. Car centered vertically and fills 84% of width, about 45% of image height. Seamless pure black studio background, black ground and subtle contact shadow. No borders, no floating typography, no other cars. Exact number 60."
+  },
+  {
+    "number": "88",
+    "referenceIndex": 48,
+    "prompt": "Use case: product-mockup. Generate ONE premium car-only studio render for a NASCAR league website. Reference screenshot supplies the exact NASCAR 26 number 88 Red Bull Chevrolet Camaro base livery (navy blue, vivid blue, red and yellow). Reconstruct the full car and faithfully preserve its number, sponsor logos and paint layout. Remove game UI, people, portraits, signatures and all text outside the car. Full car low side/front three-quarter angle, mostly side profile so door sponsor is legible, nose LEFT and rear RIGHT, both wheels visible. Entire vehicle visible with generous 8% left and right margin. Realistic crisp bodywork, dramatic but clean softbox lighting, black racing wheels. Wide 1536x1024 canvas. Car centered vertically and fills 84% of width, about 45% of image height. Seamless pure black studio background, black ground and subtle contact shadow. No borders, no floating typography, no other cars. Exact number 88."
+  },
+  {
+    "number": "97",
+    "referenceIndex": 44,
+    "prompt": "Use case: product-mockup. Generate ONE premium car-only studio render for a NASCAR league website. Reference screenshot supplies the exact NASCAR 26 number 97 Super File Chevrolet Camaro base livery (black and neon yellow-green). Reconstruct the full car and faithfully preserve its number, sponsor logos and paint layout. Remove game UI, people, portraits, signatures and all text outside the car. Full car low side/front three-quarter angle, mostly side profile so door sponsor is legible, nose LEFT and rear RIGHT, both wheels visible. Entire vehicle visible with generous 8% left and right margin. Realistic crisp bodywork, dramatic but clean softbox lighting, black racing wheels. Wide 1536x1024 canvas. Car centered vertically and fills 84% of width, about 45% of image height. Seamless pure black studio background, black ground and subtle contact shadow. No borders, no floating typography, no other cars. Exact number 97."
+  }
+]

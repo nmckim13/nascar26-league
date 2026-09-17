@@ -1,0 +1,51 @@
+{
+  "tool": "image_gen.imagegen",
+  "purpose": "Number artwork matched to the car door references",
+  "entries": [
+    {
+      "number": "5",
+      "prompt": "Extract the racing number 5 from the DOOR of the reference car as a standalone flat graphic badge. Output ONLY the number \"5\", absolutely NO car or other text or logos. Faithfully match the door number's unique lettering shape, stroke proportions, racing slant, colors and outlines: deep royal blue fill, thin white inner outline, red outer outline; distinctive slanted Hendrick 5. Remove camera perspective while retaining the intrinsic racing italic slant. Clean sharp logo-like edges. Center the complete number, including all outlines, at 80% of a square canvas. GENUINELY TRANSPARENT alpha background; no solid backdrop, no checkerboard, no shadow or texture outside the digits. All interior holes transparent. This is a precise extraction/reconstruction of the supplied door numeral, not a generic font.",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-50b60fa5-4041-4030-832a-419cf330395f.png"
+    },
+    {
+      "number": "6",
+      "prompt": "Create an isolated racing numeral 6 matching the door of this RFK number 6 car. A clean flat 2D decal, not a photo. Black fill with a small subtle teal gradient, white inner outline and teal outer outline. Rounded squared italic RFK geometry. CRITICAL: the upper interior notch and lower enclosed hole must have clean smooth edges, no white/gray patches or texture inside. Fill these negative spaces solid black. Surrounding canvas must also be solid pure black, fully opaque; do not make a transparent image. Center the number with 10% margin. Nothing else: no car, no text, no texture.",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-01c4f19c-9f46-4471-8b36-fe2c9c70fdef.png"
+    },
+    {
+      "number": "7",
+      "prompt": "Extract the racing number 7 from the DOOR of the reference car as a standalone flat graphic badge. Output ONLY the number \"7\", absolutely NO car or other text or logos. Faithfully match the door number's unique lettering shape, stroke proportions, racing slant, colors and outlines: vivid lime green fill, thin white inline and thick black outline with fine white outer edge; Spire racing 7. Remove camera perspective while retaining the intrinsic racing italic slant. Clean sharp logo-like edges. Center the complete number, including all outlines, at 80% of a square canvas. GENUINELY TRANSPARENT alpha background; no solid backdrop, no checkerboard, no shadow or texture outside the digits. All interior holes transparent. This is a precise extraction/reconstruction of the supplied door numeral, not a generic font.",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-e513d49b-0433-4507-82e7-ca9617c82044.png"
+    },
+    {
+      "number": "9",
+      "prompt": "Extract the racing number 9 from the DOOR of the reference car as a standalone flat graphic badge. Output ONLY the number \"9\", absolutely NO car or other text or logos. Faithfully match the door number's unique lettering shape, stroke proportions, racing slant, colors and outlines: deep navy blue fill, fine white inner border and golden yellow outer outline; rounded slanted Hendrick 9. Remove camera perspective while retaining the intrinsic racing italic slant. Clean sharp logo-like edges. Center the complete number, including all outlines, at 80% of a square canvas. GENUINELY TRANSPARENT alpha background; no solid backdrop, no checkerboard, no shadow or texture outside the digits. All interior holes perfectly clean transparent. This is a precise extraction/reconstruction of the supplied door numeral, not a generic font.",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-baeb5957-02d6-479c-8e8e-eb0eaa44eb26.png"
+    },
+    {
+      "number": "17",
+      "prompt": "Extract the racing number 17 from the DOOR of the reference car as a standalone flat graphic badge. Output ONLY the number \"17\", absolutely NO car or other text or logos. Faithfully match the door number's unique lettering shape, stroke proportions, racing slant, colors and outlines: burnt orange upper fill fading into nearly black at bottom, white inner outline and orange outer edge; tall condensed slanted RFK 17. Remove camera perspective while retaining the intrinsic racing italic slant. Clean sharp logo-like edges. Center the complete number, including all outlines, at 80% of a square canvas. GENUINELY TRANSPARENT alpha background; no solid backdrop, no checkerboard, no shadow or texture outside the digits. All interior holes perfectly clean transparent. This is a precise extraction/reconstruction of the supplied door numeral, not a generic font.",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-bea9d580-f66e-4963-ae9a-0257f4cfb73c.png"
+    },
+    {
+      "number": "20",
+      "prompt": "Extract the racing number 20 from the DOOR of the reference car as a standalone flat graphic badge. Output ONLY the number \"20\", absolutely NO car or other text or logos. Faithfully match the door number's unique lettering shape, stroke proportions, racing slant, colors and outlines: black fill with thin white inner outline, bright red middle outline, white outside outline; JGR condensed rounded 20. Remove camera perspective while retaining the intrinsic racing italic slant. Clean sharp logo-like edges. Center the complete number, including all outlines, at 80% of a square canvas. GENUINELY TRANSPARENT alpha background; no solid backdrop, no checkerboard, no shadow or texture outside the digits. All interior holes perfectly clean transparent. This is a precise extraction/reconstruction of the supplied door numeral, not a generic font.",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-29b58f55-6e5a-407d-839a-9ae37f2198ce.png"
+    },
+    {
+      "number": "24",
+      "prompt": "Extract the racing number 24 from the DOOR of the reference car as a standalone flat graphic badge. Output ONLY the number \"24\", absolutely NO car or other text or logos. Faithfully match the door number's unique lettering shape, stroke proportions, racing slant, colors and outlines: fluorescent yellow-green fill, thin black outline with black lower/right offset edge; slanted Hendrick 24. Remove camera perspective while retaining the intrinsic racing italic slant. Clean sharp logo-like edges. Center the complete number, including all outlines, at 80% of a square canvas. GENUINELY TRANSPARENT alpha background; no solid backdrop, no checkerboard, no shadow or texture outside the digits. All interior holes perfectly clean transparent. This is a precise extraction/reconstruction of the supplied door numeral, not a generic font.",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-2463f66b-4e3c-4c1e-a19e-9137666384b3.png"
+    },
+    {
+      "number": "54",
+      "prompt": "Extract the racing number 54 from the DOOR of the reference car as a standalone flat graphic badge. Output ONLY the number \"54\", absolutely NO car or other text or logos. Faithfully match the door number's unique lettering shape, stroke proportions, racing slant, colors and outlines: solid SAIA red fill, no decorative outline; tall condensed racing italic JGR 54 exactly as on the white door. Remove camera perspective while retaining the intrinsic racing italic slant. Clean sharp logo-like edges. Center the complete number, including all outlines, at 80% of a square canvas. GENUINELY TRANSPARENT alpha background; no solid backdrop, no checkerboard, no shadow or texture outside the digits. All interior holes perfectly clean transparent. This is a precise extraction/reconstruction of the supplied door numeral, not a generic font.",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-3f23e812-c229-415b-a867-5b02f230ac4f.png"
+    },
+    {
+      "number": "60",
+      "prompt": "Extract the racing number 60 from the DOOR of the reference car as a standalone flat graphic badge. Output ONLY the number \"60\", absolutely NO car or other text or logos. Faithfully match the door number's unique lettering shape, stroke proportions, racing slant, colors and outlines: metallic silver upper fill shading to dark graphite below, black outline and thin white outer edge; slanted squared RFK 60. Remove camera perspective while retaining the intrinsic racing italic slant. Clean sharp logo-like edges. Center the complete number, including all outlines, at 80% of a square canvas. GENUINELY TRANSPARENT alpha background; no solid backdrop, no checkerboard, no shadow or texture outside the digits. All interior holes perfectly clean transparent. This is a precise extraction/reconstruction of the supplied door numeral, not a generic font.",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-d6ab2998-b6fd-43be-8a2b-1b3dedf0e010.png"
+    }
+  ]
+}
