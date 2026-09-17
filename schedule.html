@@ -23,53 +23,115 @@
  justify-content: space-between;
  }
  .finale-tag { color: var(--yellow); }
- .schedule-section { margin-bottom: 32px; }
+ .schedule-section { margin-bottom: 42px; }
+ .schedule-grid { display: grid; gap: 18px; margin-top: 18px; }
  .race-row {
+ --track-accent: #ffc200;
+ --track-accent-2: #e0192b;
+ position: relative;
  display: grid;
- grid-template-columns: 52px 1fr auto;
- align-items: center;
- gap: 16px;
- padding: 14px 8px;
- border-bottom: 1px solid var(--border2);
- border-radius: var(--radius);
- transition: background 0.12s;
+ grid-template-columns: minmax(260px, .8fr) minmax(360px, 1.2fr);
+ min-height: 258px;
+ overflow: hidden;
+ isolation: isolate;
+ padding: 0;
+ border: 1px solid rgba(255,255,255,.11);
+ border-radius: 18px;
+ background:
+ radial-gradient(circle at 78% 32%, color-mix(in srgb, var(--track-accent) 24%, transparent), transparent 32%),
+ linear-gradient(112deg, #090a0d 0%, #101218 45%, color-mix(in srgb, var(--track-accent-2) 16%, #08090c) 100%);
+ box-shadow: 0 24px 60px rgba(0,0,0,.28), inset 0 1px rgba(255,255,255,.035);
+ transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
  }
- .race-row:hover { background: var(--surface2); }
+ .race-row::before {
+ content: '';
+ position: absolute;
+ inset: 0;
+ z-index: -1;
+ opacity: .28;
+ background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+ background-size: 38px 38px;
+ mask-image: linear-gradient(90deg, transparent 20%, #000 68%);
+ }
+ .race-row::after {
+ content: '';
+ position: absolute;
+ inset: 0;
+ z-index: 1;
+ pointer-events: none;
+ background: linear-gradient(90deg, #090a0d 0%, rgba(9,10,13,.96) 34%, rgba(9,10,13,.16) 69%, rgba(9,10,13,.05) 100%);
+ }
+ .race-row:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--track-accent) 50%, #fff 12%); box-shadow: 0 30px 70px rgba(0,0,0,.4); }
+ .race-row.is-next { border-color: rgba(255,194,0,.48); }
  .race-row.is-next .rr-num { color: var(--yellow); }
+ .race-row.is-completed { filter: saturate(.72); }
  .race-row.is-completed .rr-num { color: var(--muted2); }
- .rr-num {
- font-family: var(--font-cond);
- font-size: 32px;
- font-weight: 900;
- color: var(--surface3);
- line-height: 1;
- text-align: center;
+ .rr-content {
+ position: relative;
+ z-index: 3;
+ align-self: stretch;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ padding: 34px 16px 34px 34px;
  }
+ .rr-kicker { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+ .rr-num {
+ font-family: var(--font-display, var(--font-cond));
+ font-size: 44px;
+ font-weight: 900;
+ color: var(--track-accent);
+ line-height: 1;
+ letter-spacing: -.08em;
+ text-shadow: 0 0 28px color-mix(in srgb, var(--track-accent) 48%, transparent);
+ }
+ .rr-round { color: rgba(255,255,255,.48); font-size: 10px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; }
  .rr-track {
- font-family: var(--font-cond);
- font-size: 16px;
- font-weight: 800;
+ max-width: 390px;
+ margin: 0;
+ font-family: var(--font-display, var(--font-cond));
+ font-size: clamp(22px, 2.4vw, 34px);
+ font-weight: 900;
  text-transform: uppercase;
- letter-spacing: -0.01em;
+ letter-spacing: -.045em;
+ line-height: .98;
  color: var(--white);
  }
- .rr-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
- .track-type {
- display: inline-block;
- font-family: var(--font-cond);
- font-size: 9px;
- font-weight: 700;
- letter-spacing: -0.01em;
- text-transform: uppercase;
- padding: 2px 6px;
- border-radius: 2px;
- margin-left: 6px;
- vertical-align: middle;
+ .rr-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 20px; color: rgba(255,255,255,.68); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+ .rr-meta span + span::before { content: '·'; margin-right: 14px; color: var(--track-accent); }
+ .rr-art { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+ .rr-art::before { content: ''; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(7,8,11,.96) 0%, rgba(7,8,11,.7) 32%, transparent 58%); }
+ .rr-art img { width: 100%; height: 100%; object-fit: cover; object-position: center; transform: scale(1.01); transition: transform .7s cubic-bezier(.2,.7,.2,1); }
+ .race-row:hover .rr-art img { transform: scale(1.035); }
+ .rr-status { position: absolute; z-index: 4; top: 18px; right: 18px; }
+ .track-daytona { --track-accent: #52a7ff; --track-accent-2: #083b72; }
+ .track-nashville { --track-accent: #f0a33e; --track-accent-2: #7b351c; }
+ .track-bristol { --track-accent: #ff533d; --track-accent-2: #5d111b; }
+ .track-watkins { --track-accent: #3cbcff; --track-accent-2: #174f4c; }
+ .track-charlotte { --track-accent: #9fb9ff; --track-accent-2: #3f285c; }
+ .track-iowa { --track-accent: #e7b14b; --track-accent-2: #654b17; }
+ .track-talladega { --track-accent: #ffbf43; --track-accent-2: #5c291c; }
+ .track-chicagoland { --track-accent: #8caeff; --track-accent-2: #30364d; }
+ .off-week-banner { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px; min-height: 76px; padding: 16px 22px; border: 1px dashed rgba(255,255,255,.15); border-radius: 14px; background: rgba(255,255,255,.025); }
+ .off-week-mark { font-family: var(--font-display, var(--font-cond)); font-size: 25px; color: rgba(255,255,255,.25); }
+ .off-week-title { font-family: var(--font-cond); font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+ .off-week-date { color: var(--muted); font-size: 11px; text-transform: uppercase; }
+ @media (max-width: 760px) {
+ .schedule-grid { gap: 14px; }
+ .race-row { grid-template-columns: 1fr; min-height: 430px; }
+ .race-row::after { background: linear-gradient(180deg, #090a0d 0%, rgba(9,10,13,.94) 44%, rgba(9,10,13,.12) 76%); }
+ .race-row::before { mask-image: linear-gradient(180deg, transparent 15%, #000 75%); }
+ .rr-content { align-self: start; min-height: 220px; padding: 28px 26px 12px; }
+ .rr-kicker { margin-bottom: 13px; }
+ .rr-num { font-size: 38px; }
+ .rr-track { max-width: 310px; font-size: 25px; }
+ .rr-meta { margin-top: 14px; }
+ .rr-art { position: absolute; inset: auto 0 0; height: 225px; }
+ .rr-art::before { background: linear-gradient(180deg, #090a0d 0%, rgba(9,10,13,.38) 32%, transparent 72%); }
+ .rr-art img { width: 100%; height: 100%; object-fit: cover; object-position: 72% center; }
+ .off-week-banner { grid-template-columns: auto 1fr; }
+ .off-week-date { grid-column: 2; }
  }
- .tt-road { background: rgba(34,197,94,0.12); color: var(--green); }
- .tt-super { background: rgba(255,201,6,0.12); color: var(--yellow); }
- .tt-short { background: rgba(224,25,43,0.12); color: var(--red); }
- .tt-mid { background: var(--surface3); color: var(--muted); }
  </style>
 </head>
 <body>
@@ -118,55 +180,82 @@
  <span>Championship Rounds</span>
  <span>Races 1–7</span>
  </div>
+ <div class="schedule-grid">
+  <article class="race-row track-daytona is-next" id="row-1">
+   <div class="rr-content">
+    <div class="rr-kicker"><div class="rr-num">01</div><span class="rr-round">Season opener</span></div>
+    <h2 class="rr-track">Daytona International Speedway</h2>
+    <div class="rr-meta"><span>Sun · Sep 27</span><span>2:00 PM CT</span></div>
+   </div>
+   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/daytona.jpg" alt=""></div>
+   <div class="rr-status" id="status-1"><span class="pill yellow">Next</span></div>
+  </article>
 
- <div class="race-row is-next" id="row-1">
- <div class="rr-num">1</div>
- <div>
- <div class="rr-track">Daytona International Speedway <span class="track-type tt-super">Super</span></div>
- <div class="rr-meta">Season Opener</div>
- </div>
- <div id="status-1"><span class="pill yellow">Next</span></div>
- </div>
+  <article class="race-row track-nashville" id="row-2">
+   <div class="rr-content">
+    <div class="rr-kicker"><div class="rr-num">02</div><span class="rr-round">Round two</span></div>
+    <h2 class="rr-track">Nashville Superspeedway</h2>
+    <div class="rr-meta"><span>Sun · Oct 4</span><span>2:00 PM CT</span></div>
+   </div>
+   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/nashville.jpg" alt=""></div>
+   <div class="rr-status" id="status-2"><span class="pill gray">Upcoming</span></div>
+  </article>
 
- <div class="race-row" id="row-2">
- <div class="rr-num">2</div>
- <div><div class="rr-track">Nashville Superspeedway <span class="track-type tt-mid">Mid</span></div></div>
- <div id="status-2"><span class="pill gray">Upcoming</span></div>
- </div>
+  <article class="race-row track-bristol" id="row-3">
+   <div class="rr-content">
+    <div class="rr-kicker"><div class="rr-num">03</div><span class="rr-round">Thunder Valley</span></div>
+    <h2 class="rr-track">Bristol Motor Speedway</h2>
+    <div class="rr-meta"><span>Sun · Oct 11</span><span>2:00 PM CT</span></div>
+   </div>
+   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/bristol.jpg" alt=""></div>
+   <div class="rr-status" id="status-3"><span class="pill gray">Upcoming</span></div>
+  </article>
 
- <div class="race-row" id="row-3">
- <div class="rr-num">3</div>
- <div><div class="rr-track">Bristol Motor Speedway <span class="track-type tt-short">Short</span></div></div>
- <div id="status-3"><span class="pill gray">Upcoming</span></div>
- </div>
+  <article class="race-row track-watkins" id="row-4">
+   <div class="rr-content">
+    <div class="rr-kicker"><div class="rr-num">04</div><span class="rr-round">Seven-turn short course</span></div>
+    <h2 class="rr-track">Watkins Glen International</h2>
+    <div class="rr-meta"><span>Sun · Oct 18</span><span>2:00 PM CT</span></div>
+   </div>
+   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/watkins-glen.jpg" alt=""></div>
+   <div class="rr-status" id="status-4"><span class="pill gray">Upcoming</span></div>
+  </article>
 
- <div class="race-row" id="row-4">
- <div class="rr-num">4</div>
- <div><div class="rr-track">Watkins Glen International <span class="track-type tt-road">Road</span></div></div>
- <div id="status-4"><span class="pill gray">Upcoming</span></div>
- </div>
+  <article class="race-row track-charlotte" id="row-5">
+   <div class="rr-content">
+    <div class="rr-kicker"><div class="rr-num">05</div><span class="rr-round">Queen City</span></div>
+    <h2 class="rr-track">Charlotte Motor Speedway</h2>
+    <div class="rr-meta"><span>Sun · Oct 25</span><span>2:00 PM CT</span></div>
+   </div>
+   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/charlotte.jpg" alt=""></div>
+   <div class="rr-status" id="status-5"><span class="pill gray">Upcoming</span></div>
+  </article>
 
- <div class="race-row" id="row-5">
- <div class="rr-num">5</div>
- <div>
- <div class="rr-track">Charlotte Motor Speedway <span class="track-type tt-mid">Mid</span></div>
- </div>
- <div id="status-5"><span class="pill gray">Upcoming</span></div>
- </div>
+  <article class="race-row track-iowa" id="row-6">
+   <div class="rr-content">
+    <div class="rr-kicker"><div class="rr-num">06</div><span class="rr-round">Heartland short track</span></div>
+    <h2 class="rr-track">Iowa Speedway</h2>
+    <div class="rr-meta"><span>Sun · Nov 1</span><span>2:00 PM CT</span></div>
+   </div>
+   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/iowa.jpg" alt=""></div>
+   <div class="rr-status" id="status-6"><span class="pill gray">Upcoming</span></div>
+  </article>
 
- <div class="race-row" id="row-6">
- <div class="rr-num">6</div>
- <div><div class="rr-track">Iowa Speedway <span class="track-type tt-short">Short</span></div></div>
- <div id="status-6"><span class="pill gray">Upcoming</span></div>
- </div>
+  <div class="off-week-banner" role="note">
+   <div class="off-week-mark">—</div>
+   <div><div class="off-week-title">Off week</div><div class="off-week-date">No points race</div></div>
+   <div class="off-week-date">Sunday · November 8</div>
+  </div>
 
- <div class="race-row" id="row-7">
- <div class="rr-num">7</div>
- <div>
- <div class="rr-track">Talladega Superspeedway <span class="track-type tt-super">Super</span></div>
- <div class="rr-meta">Race 7</div>
- </div>
- <div id="status-7"><span class="pill gray">Upcoming</span></div>
+  <article class="race-row track-talladega" id="row-7">
+   <div class="rr-content">
+    <div class="rr-kicker"><div class="rr-num">07</div><span class="rr-round">Finale tune-up</span></div>
+    <h2 class="rr-track">Talladega Superspeedway</h2>
+    <div class="rr-meta"><span>Sun · Nov 15</span><span>2:00 PM CT</span></div>
+   </div>
+   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/talladega.jpg" alt=""></div>
+   <div class="rr-status" id="status-7"><span class="pill gray">Upcoming</span></div>
+  </article>
  </div>
  </div>
 
@@ -177,13 +266,16 @@
  <span>Race 8 · Championship</span>
  </div>
 
- <div class="race-row" id="row-8">
- <div class="rr-num">8</div>
- <div>
- <div class="rr-track">Chicagoland Speedway <span class="track-type tt-mid">Mid</span></div>
- <div class="rr-meta">Season Finale</div>
- </div>
- <div id="status-8"><span class="pill yellow">Finale</span></div>
+ <div class="schedule-grid">
+  <article class="race-row track-chicagoland" id="row-8">
+   <div class="rr-content">
+    <div class="rr-kicker"><div class="rr-num">08</div><span class="rr-round">Championship</span></div>
+    <h2 class="rr-track">Chicagoland Speedway</h2>
+    <div class="rr-meta"><span>Sun · Nov 22</span><span>2:00 PM CT</span></div>
+   </div>
+   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/chicagoland.jpg" alt=""></div>
+   <div class="rr-status" id="status-8"><span class="pill yellow">Finale</span></div>
+  </article>
  </div>
  </div>
 </div>
@@ -207,18 +299,13 @@
  const races = display.races;
  const isNormalized = display.source === 'normalized';
  const scheduleText = display.source === 'prelaunch'
-   ? 'Season 1 · Prelaunch · roster and rules pending'
+   ? 'Season 1 · Eight Sundays · September 27 to November 22'
    : `Season 1 · ${races.length} Races · Daytona to Chicagoland`;
  document.getElementById('schedule-ticker-summary').textContent = scheduleText;
  document.getElementById('schedule-summary').textContent = display.source === 'prelaunch'
-   ? 'The eight-race schedule will appear after the season is published.'
-   : `${races.length} races · no playoff reset · Daytona to Chicagoland`;
- const raceNumbers = new Set(races.map(r => String(r.race_number)));
+   ? '8 races · Sundays at 2:00 PM Central · off November 8'
+   : `${races.length} races · Sundays at 2:00 PM Central · off November 8`;
  const raceState = r => r.status === 'voided' ? 'Voided' : isNormalized && r.certification_status === 'appeal_window' ? 'Appeals open' : isNormalized && r.certification_status === 'certified' ? 'Final' : r.status === 'completed' ? 'Final' : null;
- document.querySelectorAll('.race-row').forEach(row => {
-   const raceNumber = row.id.replace('row-', '');
-   row.hidden = !raceNumbers.has(raceNumber);
- });
  let foundNext = false;
  races.forEach(r => {
  const row = document.getElementById('row-' + r.race_number);
@@ -247,9 +334,7 @@
    const tag = document.querySelector('#finale-section .finale-tag');
    if (tag) tag.textContent = 'Season Finale';
    const label = document.querySelector('#finale-section .section-label span:last-child');
-   if (label) label.textContent = `Race ${races.length} · Championship`;
-   const finaleMeta = document.querySelector('#finale-section #row-8 .rr-meta');
-   if (finaleMeta) finaleMeta.textContent = 'Season Finale';
+   if (label) label.textContent = 'Race 8 · Championship';
  }
  }
  syncSchedule().catch(() => {});

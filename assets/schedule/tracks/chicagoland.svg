@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 768" role="img" aria-label="Accurate chicagoland track layout">
+  <defs>
+    <linearGradient id="track" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#dce9ff"/>
+      <stop offset=".46" stop-color="#626873"/>
+      <stop offset="1" stop-color="#5e6f94"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="170%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 .55 0"/>
+    </filter>
+  </defs>
+  <g opacity=".42" filter="url(#glow)">
+    <path d="M 512,112 C 437.049,112 352.907,141.843 296.5,171.5 199.5,222.5 96,276 96,404 96,548.5 233.5,626 512,626 773.5,626 928,555.5 928,404 928,277.5 845,222.5 737.5,170.5 653.312,129.776 577.5,112 512,112 z" transform="translate(0 18)" fill="none" stroke="#020307" stroke-width="76" stroke-linecap="round" stroke-linejoin="round" opacity=".92"/>
+    <path d="M 512,112 C 437.049,112 352.907,141.843 296.5,171.5 199.5,222.5 96,276 96,404 96,548.5 233.5,626 512,626 773.5,626 928,555.5 928,404 928,277.5 845,222.5 737.5,170.5 653.312,129.776 577.5,112 512,112 z" fill="none" stroke="url(#track)" stroke-width="60" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 512,112 C 437.049,112 352.907,141.843 296.5,171.5 199.5,222.5 96,276 96,404 96,548.5 233.5,626 512,626 773.5,626 928,555.5 928,404 928,277.5 845,222.5 737.5,170.5 653.312,129.776 577.5,112 512,112 z" fill="none" stroke="rgba(255,255,255,.42)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <g>
+    <path d="M 512,112 C 437.049,112 352.907,141.843 296.5,171.5 199.5,222.5 96,276 96,404 96,548.5 233.5,626 512,626 773.5,626 928,555.5 928,404 928,277.5 845,222.5 737.5,170.5 653.312,129.776 577.5,112 512,112 z" transform="translate(0 18)" fill="none" stroke="#020307" stroke-width="76" stroke-linecap="round" stroke-linejoin="round" opacity=".92"/>
+    <path d="M 512,112 C 437.049,112 352.907,141.843 296.5,171.5 199.5,222.5 96,276 96,404 96,548.5 233.5,626 512,626 773.5,626 928,555.5 928,404 928,277.5 845,222.5 737.5,170.5 653.312,129.776 577.5,112 512,112 z" fill="none" stroke="url(#track)" stroke-width="60" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 512,112 C 437.049,112 352.907,141.843 296.5,171.5 199.5,222.5 96,276 96,404 96,548.5 233.5,626 512,626 773.5,626 928,555.5 928,404 928,277.5 845,222.5 737.5,170.5 653.312,129.776 577.5,112 512,112 z" fill="none" stroke="rgba(255,255,255,.42)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></g>
+</svg>
