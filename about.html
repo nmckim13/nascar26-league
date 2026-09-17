@@ -85,7 +85,7 @@
  .spire-logo{filter:invert(1) brightness(0.85);}
  .team-label{font-family: var(--font);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing: -0.01em;color:var(--muted);text-align:center;line-height:1.3;}
  .team-nums{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;}
- .team-num-img{width:38px;height:34px;object-fit:contain;}
+ .team-num-img{width:52px;height:46px;object-fit:contain;object-position:center;image-rendering:auto;}
 
  /* RULES */
  .rules-list{display:flex;flex-direction:column;gap:0;}
@@ -131,7 +131,8 @@
  .nav-hamburger{display:flex;}
  }
  </style>
- <link rel="stylesheet" href="n26.css">
+ <link rel="stylesheet" href="n26.css?v=barl-2026-4">
+ <script src="./scripts/site-header.js?v=4" defer></script>
 </head>
 <body>
 
@@ -282,7 +283,7 @@
  <div class="team-logo-wrap"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/23XI_racing_logo_%282023%29.png/250px-23XI_racing_logo_%282023%29.png" alt="23XI" class="team-logo"></div>
  <div class="team-label">23XI<br>Racing</div>
  <div class="team-nums">
- <img src="assets/driver-numbers/23/robinhood.png" alt="#23" class="team-num-img">
+ <img src="assets/driver-numbers/23/hardee-s.png" alt="#23" class="team-num-img">
  <img src="assets/driver-numbers/35/monster-energy-zero-sugar.png" alt="#35" class="team-num-img">
  <img src="assets/driver-numbers/45/chumba-casino.png" alt="#45" class="team-num-img">
  </div>
@@ -302,7 +303,7 @@
  <div class="team-nums">
  <img src="assets/driver-numbers/7/cal-ripken-sr-foundation.png" alt="#7" class="team-num-img">
  <img src="assets/driver-numbers/71/modo-casino-patriotic.png" alt="#71" class="team-num-img">
- <img src="assets/driver-numbers/77/spectrum.png" alt="#77" class="team-num-img">
+ <img src="assets/driver-numbers/77/chili-s-ride-the-dente-black.png" alt="#77" class="team-num-img">
  </div>
  </div>
  <div class="team-card">
@@ -310,16 +311,16 @@
  <div class="team-label">Trackhouse<br>Racing</div>
  <div class="team-nums">
  <img src="assets/driver-numbers/1/choice-privileges.png" alt="#1" class="team-num-img">
- <img src="assets/driver-numbers/88/trackhouse-racing.png" alt="#88" class="team-num-img">
- <img src="assets/driver-numbers/97/trackhouse-racing.png" alt="#97" class="team-num-img">
+ <img src="assets/driver-numbers/88/red-bull.png" alt="#88" class="team-num-img">
+ <img src="assets/driver-numbers/97/superfile.png" alt="#97" class="team-num-img">
  </div>
  </div>
  <div class="team-card">
  <div class="team-label">Legacy<br>Motor Club</div>
  <div class="team-nums">
  <img src="assets/driver-numbers/42/dollar-tree-red-outline.png" alt="#42" class="team-num-img">
- <img src="assets/driver-numbers/43/advent-health.png" alt="#43" class="team-num-img">
- <img src="assets/driver-numbers/84/carvana.png" alt="#84" class="team-num-img">
+ <img src="assets/driver-numbers/43/dollar-tree-patriotic.png" alt="#43" class="team-num-img">
+ <img src="assets/driver-numbers/84/carvana-sunset.png" alt="#84" class="team-num-img">
  </div>
  </div>
  </div>
@@ -363,7 +364,12 @@
  </div>
 </footer>
 
+<script src="scripts/number-style-defaults.js"></script>
 <script>
+ document.querySelectorAll('.team-num-img').forEach(function (image) {
+   window.BARLApplyNumberImage(image, image.alt.replace('#', ''));
+ });
+
  function toggleMenu() {
  const links = document.querySelector('.nav-links');
  if (!links) return;

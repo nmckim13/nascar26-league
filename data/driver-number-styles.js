@@ -14,12 +14,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-ross-chastain-cup-number-cards/"
     },
     {
-      "key": "1:wendy-s",
-      "label": "WENDY’S",
-      "image": "assets/driver-numbers/1/wendy-s.png",
-      "sourcePage": "https://diecastcharv.com/2026-ross-chastain-cup-number-cards/"
-    },
-    {
       "key": "1:busch-light-austin",
       "label": "BUSCH LIGHT | AUSTIN",
       "image": "assets/driver-numbers/1/busch-light-austin.png",
@@ -179,12 +173,6 @@ export const NUMBER_STYLES = {
       "key": "6:solomon-plumbing",
       "label": "SOLOMON PLUMBING",
       "image": "assets/driver-numbers/6/solomon-plumbing.png",
-      "sourcePage": "https://diecastcharv.com/2026-brad-keselowski-cup-number-cards/"
-    },
-    {
-      "key": "6:castrol-greg-biffle-tribute",
-      "label": "CASTROL | GREG BIFFLE TRIBUTE",
-      "image": "assets/driver-numbers/6/castrol-greg-biffle-tribute.png",
       "sourcePage": "https://diecastcharv.com/2026-brad-keselowski-cup-number-cards/"
     },
     {
@@ -489,12 +477,6 @@ export const NUMBER_STYLES = {
       "key": "17:5-3-bank",
       "label": "5/3 BANK",
       "image": "assets/driver-numbers/17/5-3-bank.png",
-      "sourcePage": "https://diecastcharv.com/2026-chris-buescher-cup-number-cards/"
-    },
-    {
-      "key": "17:fastenal-body-guard-greg-biffle-tribute",
-      "label": "FASTENAL BODY GUARD | GREG BIFFLE TRIBUTE",
-      "image": "assets/driver-numbers/17/fastenal-body-guard-greg-biffle-tribute.png",
       "sourcePage": "https://diecastcharv.com/2026-chris-buescher-cup-number-cards/"
     },
     {
@@ -868,12 +850,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-william-byron-cup-number-cards/"
     },
     {
-      "key": "24:anduril-industrie-patriotic",
-      "label": "ANDURIL INDUSTRIE | PATRIOTIC",
-      "image": "assets/driver-numbers/24/anduril-industrie-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-william-byron-cup-number-cards/"
-    },
-    {
       "key": "24:hp",
       "label": "HP",
       "image": "assets/driver-numbers/24/hp.png",
@@ -910,12 +886,6 @@ export const NUMBER_STYLES = {
       "label": "BEATBOX",
       "image": "assets/driver-numbers/35/beatbox.png",
       "sourcePage": "https://diecastcharv.com/2026-riley-herbst-cup-number-cards/"
-    },
-    {
-      "key": "35:gogo-swueez",
-      "label": "GOGO SWUEEZ",
-      "image": "assets/driver-numbers/35/gogo-swueez.png",
-      "sourcePage": "https://diecastcharv.com/2026-riley-herbst-cup-number-cards/"
     }
   ],
   "42": [
@@ -938,12 +908,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
     },
     {
-      "key": "42:dollar-tree-white",
-      "label": "DOLLAR TREE | WHITE",
-      "image": "assets/driver-numbers/42/dollar-tree-white.png",
-      "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
-    },
-    {
       "key": "42:dollar-tree-4",
       "label": "DOLLAR TREE 4",
       "image": "assets/driver-numbers/42/dollar-tree-4.png",
@@ -962,27 +926,9 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
     },
     {
-      "key": "42:drive-value",
-      "label": "DRIVE VALUE",
-      "image": "assets/driver-numbers/42/drive-value.png",
-      "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
-    },
-    {
       "key": "42:raid",
       "label": "RAID",
       "image": "assets/driver-numbers/42/raid.png",
-      "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
-    },
-    {
-      "key": "42:rexel",
-      "label": "REXEL",
-      "image": "assets/driver-numbers/42/rexel.png",
-      "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
-    },
-    {
-      "key": "42:dollar-tree-40th-anniversary",
-      "label": "DOLLAR TREE | 40TH ANNIVERSARY",
-      "image": "assets/driver-numbers/42/dollar-tree-40th-anniversary.png",
       "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
     }
   ],
@@ -1000,12 +946,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-erik-jones-cup-number-cards/"
     },
     {
-      "key": "43:dollar-tree-dorito-s",
-      "label": "DOLLAR TREE / DORITO’S",
-      "image": "assets/driver-numbers/43/dollar-tree-dorito-s.png",
-      "sourcePage": "https://diecastcharv.com/2026-erik-jones-cup-number-cards/"
-    },
-    {
       "key": "43:advent-health-patriotic",
       "label": "ADVENT HEALTH | PATRIOTIC",
       "image": "assets/driver-numbers/43/advent-health-patriotic.png",
@@ -1015,12 +955,6 @@ export const NUMBER_STYLES = {
       "key": "43:dollar-tree-patriotic",
       "label": "DOLLAR TREE | PATRIOTIC",
       "image": "assets/driver-numbers/43/dollar-tree-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-erik-jones-cup-number-cards/"
-    },
-    {
-      "key": "43:ziploc",
-      "label": "ZIPLOC",
-      "image": "assets/driver-numbers/43/ziploc.png",
       "sourcePage": "https://diecastcharv.com/2026-erik-jones-cup-number-cards/"
     },
     {
@@ -1124,33 +1058,9 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-alex-bowman-cup-number-cards/"
     },
     {
-      "key": "48:ally-bank-best-friends",
-      "label": "ALLY BANK | BEST FRIENDS",
-      "image": "assets/driver-numbers/48/ally-bank-best-friends.png",
-      "sourcePage": "https://diecastcharv.com/2026-alex-bowman-cup-number-cards/"
-    },
-    {
-      "key": "48:ally-bank-dragon",
-      "label": "ALLY BANK | DRAGON",
-      "image": "assets/driver-numbers/48/ally-bank-dragon.png",
-      "sourcePage": "https://diecastcharv.com/2026-alex-bowman-cup-number-cards/"
-    },
-    {
       "key": "48:ally-bank-patriotic",
       "label": "ALLY BANK | PATRIOTIC",
       "image": "assets/driver-numbers/48/ally-bank-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-alex-bowman-cup-number-cards/"
-    },
-    {
-      "key": "48:ally-bank-rebrand",
-      "label": "ALLY BANK | REBRAND",
-      "image": "assets/driver-numbers/48/ally-bank-rebrand.png",
-      "sourcePage": "https://diecastcharv.com/2026-alex-bowman-cup-number-cards/"
-    },
-    {
-      "key": "48:ally-bank-uso",
-      "label": "ALLY BANK / USO",
-      "image": "assets/driver-numbers/48/ally-bank-uso.png",
       "sourcePage": "https://diecastcharv.com/2026-alex-bowman-cup-number-cards/"
     }
   ],
@@ -1194,12 +1104,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-ryan-preece-cup-number-cards/"
     },
     {
-      "key": "60:kroger-viva-paper-towels-greg-biffle-tribute",
-      "label": "KROGER VIVA PAPER TOWELS | GREG BIFFLE TRIBUTE",
-      "image": "assets/driver-numbers/60/kroger-viva-paper-towels-greg-biffle-tribute.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-preece-cup-number-cards/"
-    },
-    {
       "key": "60:kroger-red-barron",
       "label": "KROGER RED BARRON",
       "image": "assets/driver-numbers/60/kroger-red-barron.png",
@@ -1215,12 +1119,6 @@ export const NUMBER_STYLES = {
       "key": "60:fastenal-body-guard",
       "label": "FASTENAL BODY GUARD",
       "image": "assets/driver-numbers/60/fastenal-body-guard.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-preece-cup-number-cards/"
-    },
-    {
-      "key": "60:heinz-oscar-mayer-darlington-throwback-2009-greg-biffle-3m-ford",
-      "label": "HEINZ / OSCAR MAYER | DARLINGTON THROWBACK | 2009 GREG BIFFLE 3M FORD",
-      "image": "assets/driver-numbers/60/heinz-oscar-mayer-darlington-throwback-2009-greg-biffle-3m-ford.png",
       "sourcePage": "https://diecastcharv.com/2026-ryan-preece-cup-number-cards/"
     },
     {
@@ -1374,21 +1272,9 @@ export const NUMBER_STYLES = {
       "label": "NEFCO",
       "image": "assets/driver-numbers/71/nefco.png",
       "sourcePage": "https://diecastcharv.com/2026-michael-mcdowell-cup-number-cards/"
-    },
-    {
-      "key": "71:fly-alliance",
-      "label": "FLY ALLIANCE",
-      "image": "assets/driver-numbers/71/fly-alliance.png",
-      "sourcePage": "https://diecastcharv.com/2026-michael-mcdowell-cup-number-cards/"
     }
   ],
   "77": [
-    {
-      "key": "77:spectrum",
-      "label": "SPECTRUM",
-      "image": "assets/driver-numbers/77/spectrum.png",
-      "sourcePage": "https://diecastcharv.com/2026-carson-hocevar-cup-number-cards/"
-    },
     {
       "key": "77:chili-s-ride-the-dente-black",
       "label": "CHILI’S RIDE THE DENTE | BLACK",
@@ -1448,12 +1334,6 @@ export const NUMBER_STYLES = {
   ],
   "88": [
     {
-      "key": "88:trackhouse-racing",
-      "label": "TRACKHOUSE RACING",
-      "image": "assets/driver-numbers/88/trackhouse-racing.png",
-      "sourcePage": "https://diecastcharv.com/2026-connor-zilisch-cup-number-cards/"
-    },
-    {
       "key": "88:red-bull",
       "label": "RED BULL",
       "image": "assets/driver-numbers/88/red-bull.png",
@@ -1503,12 +1383,6 @@ export const NUMBER_STYLES = {
     }
   ],
   "97": [
-    {
-      "key": "97:trackhouse-racing",
-      "label": "TRACKHOUSE RACING",
-      "image": "assets/driver-numbers/97/trackhouse-racing.png",
-      "sourcePage": "https://diecastcharv.com/2026-shane-van-gisbergen-cup-number-cards/"
-    },
     {
       "key": "97:superfile",
       "label": "SUPERFILE",

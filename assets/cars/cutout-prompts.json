@@ -1,0 +1,50 @@
+{
+  "tool": "image_gen.imagegen",
+  "prompt": "Use case: background-extraction. Edit target: attached NASCAR car render. Remove ONLY the black studio background and floor, producing an actual transparent alpha background (not checkerboard pixels, not white/black). Preserve the complete car exactly: all black bodywork and tires must remain fully opaque; keep all paint graphics, exact number styling, sponsor lettering, windows, wheels, proportions, lighting and camera angle. Retain the same landscape 1536x1024 canvas and exact size/position of the car within it; do not crop or zoom. Clean antialiased silhouette. Remove floor reflections and external shadow; only the opaque car on genuine transparency. No design changes, no added elements.",
+  "entries": [
+    {
+      "number": "5",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-ff6c7c33-c6f9-4e24-be73-6aa2f0e36005.png"
+    },
+    {
+      "number": "6",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-b515f197-9aa9-41e1-837b-a68ef6e640bb.png"
+    },
+    {
+      "number": "9",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-eb14be02-e9a0-4530-93ee-04897d4d0da0.png"
+    },
+    {
+      "number": "17",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-55ba23a2-c9b6-4565-ae1f-5bc0fa9955f0.png"
+    },
+    {
+      "number": "19",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-2a43d010-2b94-48aa-bf74-961590637d1c.png"
+    },
+    {
+      "number": "20",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-ec9cbd35-01ef-4cc9-98ac-8b50174640d5.png"
+    },
+    {
+      "number": "24",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-f59ded2c-037e-4f23-aaa1-b197afe912ac.png"
+    },
+    {
+      "number": "54",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-699c9896-afdb-4b27-8226-a5ee024a3da8.png"
+    },
+    {
+      "number": "60",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-7f68b2d9-2095-4451-9e3b-79ef35c47e5f.png"
+    },
+    {
+      "number": "88",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-c754797a-577c-40ab-9d38-114178d2feaf.png"
+    },
+    {
+      "number": "97",
+      "source": "/Users/noahfry/.codex/generated_images/01a0b0df-4f2f-7d80-8e0a-95f07d40c3b0/exec-7c946163-c8dc-4dcf-be1f-06957411c43a.png"
+    }
+  ]
+}

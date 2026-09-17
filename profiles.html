@@ -6,8 +6,9 @@
  <script>if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('embed');</script>
  <title>Profiles | N26 Racing League</title>
  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
- <link rel="stylesheet" href="n26.css">
+ <link rel="stylesheet" href="n26.css?v=barl-2026-4">
  <link rel="stylesheet" href="assets/cars/profile-cards.css">
+ <script src="./scripts/site-header.js?v=4" defer></script>
  <style>
   main { width:min(1160px,calc(100% - 28px)); margin:0 auto; padding:34px 0 64px; }
   .profile-head { display:flex; justify-content:space-between; align-items:end; gap:20px; margin-bottom:24px; }
@@ -164,7 +165,8 @@
    );
    const totalSeats = teams.reduce((sum, team) => sum + Number(team.seat_limit || 0), 0) || 24;
 
-   document.getElementById('ticker-text').textContent = `${data.season.name} · ${assignments.length}/${totalSeats} seats filled`;
+   const ticker = document.getElementById('ticker-text');
+   if (ticker) ticker.textContent = `${data.season.name} · ${assignments.length}/${totalSeats} seats filled`;
    document.getElementById('driver-grid').innerHTML = `<div class="roster-summary"><div><div class="eyebrow">Current preseason roster</div><span class="muted">Driver ratings and race statistics will populate once racing begins.</span></div><strong>${assignments.length}/${totalSeats}</strong></div>` + sortedAssignments.map(assignment => {
     const driver = drivers[assignment.driver_id] || {};
     const team = teamsById[assignment.team_id] || {};
@@ -224,7 +226,8 @@
    const stats = Object.fromEntries(standings.drivers.map(driver => [driver.driverId, driver]));
    const ratings = Object.fromEntries((data.ratings || []).map(rating => [rating.driver_id, rating]));
    const fullTime = (data.entries || []).filter(entry => entry.entry_status === 'full_time');
-   document.getElementById('ticker-text').textContent = `${esc(data.season.name)} · ${fullTime.length}/${data.ruleset.driver_count} full-time seats`;
+   const ticker = document.getElementById('ticker-text');
+   if (ticker) ticker.textContent = `${data.season.name} · ${fullTime.length}/${data.ruleset.driver_count} full-time seats`;
 
    document.getElementById('driver-grid').innerHTML = fullTime.map(entry => {
     const driver = drivers[entry.driver_id] || {};

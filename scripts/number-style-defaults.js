@@ -12,19 +12,55 @@ window.BARL_NUMBER_IMAGES = {
   "19": "assets/driver-numbers/19/bass-pro-shops.png",
   "20": "assets/driver-numbers/20/mobil-1.png",
   "22": "assets/driver-numbers/22/shell-pennzoil.png",
-  "23": "assets/driver-numbers/23/robinhood.png",
+  "23": "assets/driver-numbers/23/hardee-s.png",
   "24": "assets/driver-numbers/24/valvoline.png",
   "35": "assets/driver-numbers/35/monster-energy-zero-sugar.png",
   "42": "assets/driver-numbers/42/dollar-tree-red-outline.png",
-  "43": "assets/driver-numbers/43/advent-health.png",
+  "43": "assets/driver-numbers/43/dollar-tree-patriotic.png",
   "45": "assets/driver-numbers/45/chumba-casino.png",
   "48": "assets/driver-numbers/48/ally-bank.png",
   "54": "assets/driver-numbers/54/monster-energy.png",
   "60": "assets/driver-numbers/60/coca-cola.png",
   "71": "assets/driver-numbers/71/modo-casino-patriotic.png",
-  "77": "assets/driver-numbers/77/spectrum.png",
-  "84": "assets/driver-numbers/84/carvana.png",
-  "88": "assets/driver-numbers/88/trackhouse-racing.png",
-  "97": "assets/driver-numbers/97/trackhouse-racing.png"
+  "77": "assets/driver-numbers/77/chili-s-ride-the-dente-black.png",
+  "84": "assets/driver-numbers/84/carvana-sunset.png",
+  "88": "assets/driver-numbers/88/red-bull.png",
+  "97": "assets/driver-numbers/97/superfile.png"
 };
-window.BARLNumberImage = function (number) { return window.BARL_NUMBER_IMAGES[String(number)] || ''; };
+window.BARL_SELECTED_NUMBER_STYLES = Object.create(null);
+window.BARLSetNumberStyles = function (rows) {
+  window.BARL_SELECTED_NUMBER_STYLES = Object.create(null);
+  (rows || []).forEach(function (row) {
+    const number = String(row.car_number || '');
+    const driverId = String(row.driver_id || '');
+    const key = String(row.style_key || '');
+    const prefix = number + ':';
+    const slug = key.startsWith(prefix) ? key.slice(prefix.length) : '';
+    if (driverId && slug && /^[a-z0-9-]+$/.test(slug)) {
+      window.BARL_SELECTED_NUMBER_STYLES[driverId + ':' + number] = slug;
+    }
+  });
+};
+window.BARLNumberImage = function (number, driverId) {
+  const normalizedNumber = String(number || '');
+  const selectedSlug = driverId ? window.BARL_SELECTED_NUMBER_STYLES[String(driverId) + ':' + normalizedNumber] : '';
+  return selectedSlug
+    ? 'assets/driver-numbers/' + normalizedNumber + '/' + selectedSlug + '.png'
+    : (window.BARL_NUMBER_IMAGES[normalizedNumber] || '');
+};
+window.BARLApplyNumberImage = function (image, number, driverId) {
+  if (!image) return;
+  const normalizedNumber = String(number || '');
+  image.dataset.barlNumber = normalizedNumber;
+  image.dataset.barlFallbackApplied = '';
+  image.src = window.BARLNumberImage(normalizedNumber, driverId);
+};
+document.addEventListener('error', function (event) {
+  const image = event.target;
+  if (!(image instanceof HTMLImageElement) || !image.dataset.barlNumber || image.dataset.barlFallbackApplied) return;
+  const fallback = window.BARL_NUMBER_IMAGES[image.dataset.barlNumber] || '';
+  if (fallback && image.src !== new URL(fallback, document.baseURI).href) {
+    image.dataset.barlFallbackApplied = 'true';
+    image.src = fallback;
+  }
+}, true);

@@ -38,3 +38,7 @@ Both preseason and active-season paths in `profiles.html` use the shared cards. 
 Header numbers use paint-specific artwork through `numberImage` in the car catalog. The existing #19, #88 and #97 decals are reused. Nine badges under `numbers/` were reconstructed from the displayed car-door numerals with the built-in image generation tool. Generation prompts are in `numbers/prompts.json`.
 
 Car images use normal compositing in an isolated stage, above the halftone background. They never use lighten/screen blending, which would let background dots show through dark bodywork.
+
+## Transparent car backgrounds
+
+The eleven original studio-background renders were edited into transparent cutouts, matching the existing #7 asset. This exposes the card's color and halftone pattern around the car while preserving the bodywork and tires. The extraction prompt and source outputs are recorded in `cutout-prompts.json`. Website images retain their alpha channel when converted to WebP.
