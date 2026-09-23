@@ -9,6 +9,7 @@ Sources:
 - [Bristol Motor Speedway 2024](https://commons.wikimedia.org/wiki/File:Bristol_Motor_Speedway_2024.svg): CC BY-SA track map by Stl66dmk.
 - [Watkins Glen International Short Circuit 2024](https://commons.wikimedia.org/wiki/File:Watkins_Glen_International_Short_Circuit_2024.svg): CC BY-SA track map by Stl66dmk. The short NASCAR layout is used (Inner Loop, no Boot).
 - [Charlotte Motor Speedway](https://commons.wikimedia.org/wiki/File:Charlotte_Motor_Speedway_diagram.svg): CC BY-SA track diagram.
+- [Dover Motor Speedway 2024](https://commons.wikimedia.org/wiki/File:Dover_Motor_Speedway_2024.svg): CC BY-SA 4.0 track map by Stl66dmk.
 - [Iowa Speedway 2024](https://commons.wikimedia.org/wiki/File:Iowa_Speedway_2024.svg): CC BY-SA track map by Stl66dmk.
 - [Talladega Superspeedway](https://commons.wikimedia.org/wiki/File:Talladega_Superspeedway.svg): public-domain simple geometry derived by Sn1per.
 - [Chicagoland Speedway](https://commons.wikimedia.org/wiki/File:Chicagoland_Speedway_diagram.svg): CC BY-SA 3.0 track diagram by Odysseus1479.

@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const sourceDir = process.argv[2] || '/tmp/barl-track-svgs';
+const selectedSlug = process.argv[3] || null;
 const outputDir = path.resolve('assets/schedule/tracks');
 
 const tracks = [
@@ -12,6 +13,7 @@ const tracks = [
   { slug: 'bristol', source: 'bristol.svg', className: 'cls-1', viewBox: '0 0 3000 2013.2', mode: 'fill', colors: ['#ffcf91', '#a8311d'] },
   { slug: 'watkins-glen', source: 'watkins-glen.svg', className: 'cls-1', viewBox: '0 0 3000 1572.9', mode: 'fill', colors: ['#b9e7ff', '#2476a7'] },
   { slug: 'charlotte', source: 'charlotte.svg', id: 'path19', viewBox: '0 0 1024 768', mode: 'stroke', colors: ['#edf2ff', '#5267a3'] },
+  { slug: 'dover', source: 'dover.svg', className: 'cls-1', viewBox: '0 0 3000 1947.2', mode: 'fill', colors: ['#d8dfdc', '#3e6d4b'] },
   { slug: 'iowa', source: 'iowa.svg', className: 'cls-1', viewBox: '0 0 3000 2130.6', mode: 'fill', colors: ['#ffe9a6', '#aa7721'] },
   { slug: 'talladega', source: 'talladega.svg', id: 'path7029', viewBox: '0 0 1338 668.70202', transform: 'translate(-7.2028672 -303.34213) matrix(1.0775928 0 0 1.0775928 -0.55889043 -75.423601)', mode: 'stroke', colors: ['#ffe09c', '#a45224'] },
   { slug: 'chicagoland', source: 'chicagoland.svg', id: 'path5', viewBox: '0 0 1024 768', mode: 'stroke', colors: ['#dce9ff', '#5e6f94'] },
@@ -62,11 +64,14 @@ function buildSvg(track, d) {
 </svg>`;
 }
 
+const tracksToBuild = selectedSlug ? tracks.filter(track => track.slug === selectedSlug) : tracks;
+if (!tracksToBuild.length) throw new Error(`Unknown track slug: ${selectedSlug}`);
+
 fs.mkdirSync(outputDir, { recursive: true });
-for (const track of tracks) {
+for (const track of tracksToBuild) {
   const source = fs.readFileSync(path.join(sourceDir, track.source), 'utf8');
   const d = getPathData(source, track);
   fs.writeFileSync(path.join(outputDir, `${track.slug}.svg`), buildSvg(track, d));
 }
 
-console.log(`Built ${tracks.length} reference-derived track assets in ${outputDir}`);
+console.log(`Built ${tracksToBuild.length} reference-derived track assets in ${outputDir}`);
