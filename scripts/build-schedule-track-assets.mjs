@@ -16,6 +16,7 @@ const tracks = [
   { slug: 'dover', source: 'dover.svg', className: 'cls-1', viewBox: '0 0 3000 1947.2', mode: 'fill', colors: ['#d8dfdc', '#3e6d4b'] },
   { slug: 'iowa', source: 'iowa.svg', className: 'cls-1', viewBox: '0 0 3000 2130.6', mode: 'fill', colors: ['#ffe9a6', '#aa7721'] },
   { slug: 'talladega', source: 'talladega.svg', id: 'path7029', viewBox: '0 0 1338 668.70202', transform: 'translate(-7.2028672 -303.34213) matrix(1.0775928 0 0 1.0775928 -0.55889043 -75.423601)', mode: 'stroke', colors: ['#ffe09c', '#a45224'] },
+  { slug: 'rockingham', source: 'rockingham.svg', pathIndex: 2, viewBox: '0 0 577.29 354.33', mode: 'stroke', colors: ['#ffd79a', '#9a4b27'] },
   { slug: 'chicagoland', source: 'chicagoland.svg', id: 'path5', viewBox: '0 0 1024 768', mode: 'stroke', colors: ['#dce9ff', '#5e6f94'] },
 ];
 
@@ -24,9 +25,11 @@ function getPathData(svg, track) {
     attrs: `${match[1]} ${match[3]}`,
     d: match[2].trim(),
   }));
-  const match = paths.find(item => track.id
-    ? new RegExp(`id="${track.id}"`).test(item.attrs)
-    : new RegExp(`class="[^"]*\\b${track.className}\\b`).test(item.attrs));
+  const match = Number.isInteger(track.pathIndex)
+    ? paths[track.pathIndex]
+    : paths.find(item => track.id
+      ? new RegExp(`id="${track.id}"`).test(item.attrs)
+      : new RegExp(`class="[^"]*\\b${track.className}\\b`).test(item.attrs));
   if (!match) throw new Error(`Could not find track path for ${track.slug}.`);
   return match.d;
 }
