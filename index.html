@@ -665,5 +665,35 @@
   });
 </script>
 <script type="module" src="scripts/auth-nav.js"></script>
+<script>
+(async function BARLHomeLiveFallback(){
+  const U='https://txipxisumngvzkuqsysq.supabase.co';
+  const K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4aXB4aXN1bW5ndnprdXFzeXNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzExMTYsImV4cCI6MjEwNDY0NzExNn0.NxrJIAkWWfg-5ezHni_z56IRmLD9HHxM-VAALiT22io';
+  const H={apikey:K,Authorization:'Bearer '+K};
+  const get=async p=>{const r=await fetch(U+p,{headers:H});if(!r.ok)throw new Error('BARL '+r.status);return r.json();};
+  try{
+    const seasons=await get('/rest/v1/n26_seasons?select=id&season_number=eq.1&limit=1'); if(!seasons[0])return;
+    const sid=seasons[0].id;
+    const [races,results,assignments,drivers,teams]=await Promise.all([
+      get('/rest/v1/n26_season_races?select=id,race_number,track_name,track_short,race_date,status&season_id=eq.'+sid+'&order=race_number'),
+      get('/rest/v1/n26_race_results?select=race_id,driver_id,team_id,car_number,finish_position,points_earned,start_status&certification_status=in.(published,certified)'),
+      get('/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number&season_id=eq.'+sid+'&assignment_status=eq.active'),
+      get('/rest/v1/n26_drivers?select=id,display_name,first_name,last_name,gamertag'),
+      get('/rest/v1/n26_teams?select=id,name&status=eq.active')
+    ]);
+    const completed=races.filter(r=>r.status==='completed'), ids=new Set(completed.map(r=>r.id)); if(!completed.length)return;
+    const db=Object.fromEntries(drivers.map(d=>[d.id,d])), tb=Object.fromEntries(teams.map(t=>[t.id,t.name])), ab=Object.fromEntries(assignments.map(a=>[a.driver_id,a]));
+    const pts={}; results.filter(r=>ids.has(r.race_id)).forEach(r=>pts[r.driver_id]=(pts[r.driver_id]||0)+(r.points_earned||0));
+    const rows=Object.entries(pts).map(([id,p])=>{const d=db[id]||{},a=ab[id]||{};return{id,p,name:d.display_name||[d.first_name,d.last_name].filter(Boolean).join(' ')||d.gamertag||'Driver',car:a.car_number||'',team:tb[a.team_id]||''};}).sort((a,b)=>b.p-a.p);
+    const de=document.getElementById('driver-rows'); if(de)de.innerHTML=rows.slice(0,10).map((d,i)=>'<div class="s-row"><span style="font-size:18px;font-weight:900">'+(i+1)+'</span><span><strong>'+d.name+'</strong><div class="s-team-lbl">#'+d.car+' · '+d.team+'</div></span><span style="font-size:16px;font-weight:900">'+d.p+'</span></div>').join('');
+    const teamPts={}; rows.forEach(d=>teamPts[d.team]=(teamPts[d.team]||0)+d.p);
+    const tr=Object.entries(teamPts).sort((a,b)=>b[1]-a[1]); const oe=document.getElementById('owner-rows'); if(oe)oe.innerHTML=tr.map(([n,p],i)=>'<div class="s-row"><span style="font-size:18px;font-weight:900">'+(i+1)+'</span><span style="font-weight:800">'+n+'</span><span style="font-size:16px;font-weight:900">'+p+'</span></div>').join('');
+    const last=completed[completed.length-1], win=results.find(r=>r.race_id===last.id&&r.finish_position===1), wd=win?db[win.driver_id]:null;
+    if(wd){const t=document.getElementById('last-race-title'),s=document.getElementById('last-race-sub'),i=document.getElementById('last-race-icon');if(t)t.textContent=wd.display_name||wd.gamertag;if(s)s.textContent=(last.track_short||last.track_name)+' · Car #'+win.car_number;if(i)i.textContent='#1';}
+    const next=races.find(r=>!['completed','voided'].includes(r.status)); if(next){const n=document.getElementById('next-race-name'),sub=document.getElementById('next-race-sub'),lab=document.getElementById('next-race-label');if(n)n.textContent=next.track_name;if(sub)sub.textContent='Race '+next.race_number+' · '+(next.race_date||'Date to be announced');if(lab)lab.textContent='Race '+next.race_number+' Of '+races.length;}
+    document.querySelectorAll('.sched-item').forEach(el=>{const num=Number(el.querySelector('.sched-num')?.textContent);const race=races.find(r=>r.race_number===num);if(!race)return;const badge=el.querySelector('.badge');if(badge){badge.textContent=race.status==='completed'?'Complete':race===next?'Next':'Upcoming';badge.className='badge '+(race===next?'badge-next':'badge-up');}});
+  }catch(e){console.error('BARL home live fallback failed',e);}
+})();
+</script>
 </body>
 </html>
