@@ -186,7 +186,7 @@
    return;
  }
  const next = races.find(r=>r.status!=='completed');
- if (next) document.getElementById('ticker-next').textContent = `Next: Race ${next.race_number} — ${next.track_short}`;
+ if (next) { const tickerNext = document.getElementById('ticker-next'); if (tickerNext) tickerNext.textContent = `Next: Race ${next.race_number} — ${next.track_short}`; }
  rail.innerHTML = races.map(r => `
  <div class="race-pill${r.status==='completed'?' completed':''}" id="pill-${r.id}" onclick="selectRace('${r.id}')">
  <div class="rp-num">${r.race_number}</div>
