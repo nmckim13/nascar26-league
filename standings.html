@@ -117,7 +117,7 @@
 </footer>
 
 <script src="./scripts/league-rules.js"></script>
-<script src="./scripts/public-bootstrap.js"></script>
+<script src="./scripts/public-bootstrap.js?v=daytona-20260927"></script>
 <script src="./scripts/number-style-defaults.js"></script>
 <script>
  const SB_URL = 'https://txipxisumngvzkuqsysq.supabase.co';
@@ -181,7 +181,8 @@
  const completedForDisplay = authoritativeStandings?.completedRaces || completed;
  const racesRun = completedForDisplay.length;
 
- document.getElementById('ticker-text').textContent =
+ const tickerText = document.getElementById('ticker-text');
+ if (tickerText) tickerText.textContent =
  racesRun > 0 ? `Season 1 · ${racesRun} of ${races.length} races complete` : 'Season 1 · Preseason standings · Numerical order';
  document.getElementById('races-run-label').innerHTML =
  racesRun > 0 ? `After Race ${racesRun}: <span>${completedForDisplay[racesRun-1].track_short}</span>` : 'Preseason: <span>0 points</span>';
