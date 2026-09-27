@@ -127,8 +127,37 @@
    return { label: 'Upcoming', className: '' };
  }
 
+ async function loadResultsDirect() {
+   const seasons = await get('/rest/v1/n26_seasons?select=id,season_number,name,status&season_number=eq.1&limit=1');
+   const season = seasons[0];
+   if (!season) return { source:'prelaunch', races:[], claims:[], results:[], numberStyles:[] };
+   const [raceRows, assignments, resultRows, teams, drivers, numberStyles] = await Promise.all([
+     get('/rest/v1/n26_season_races?select=*&season_id=eq.'+season.id+'&order=race_number'),
+     get('/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number&season_id=eq.'+season.id+'&assignment_status=eq.active'),
+     get('/rest/v1/n26_race_results?select=*&certification_status=in.(published,certified)'),
+     get('/rest/v1/n26_teams?select=id,name&status=eq.active'),
+     get('/rest/v1/n26_drivers?select=id,display_name,gamertag,first_name,last_name'),
+     get('/rest/v1/n26_driver_number_styles?select=driver_id,car_number,style_key').catch(()=>[])
+   ]);
+   const teamById = Object.fromEntries(teams.map(t=>[t.id,t.name]));
+   const driverById = Object.fromEntries(drivers.map(d=>[d.id,d]));
+   const claims = assignments.map(a => {
+     const d = driverById[a.driver_id] || {};
+     return {
+       driver_id:a.driver_id, team_id:a.team_id, car_number:a.car_number,
+       team_name:teamById[a.team_id] || '',
+       gamertag:d.gamertag || d.display_name || ('Car #'+a.car_number),
+       first_name:d.first_name || '', last_name:d.last_name || ''
+     };
+   });
+   return {
+     source:'normalized', season, races:raceRows, claims, numberStyles,
+     results:resultRows.map(r=>({...r,team_name:teamById[r.team_id]||'',dnf:r.finish_status==='dnf',disqualified:r.finish_status==='disqualified'}))
+   };
+ }
+
  async function loadAll() {
- const display = await window.__leagueDataReady;
+ const display = window.__leagueDataReady ? await window.__leagueDataReady : await loadResultsDirect();
  window.BARLSetNumberStyles(display.numberStyles || []);
  isNormalized = display.source === 'normalized';
  document.getElementById('results-description').textContent = display.source === 'prelaunch'
