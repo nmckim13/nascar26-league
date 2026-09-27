@@ -47,7 +47,7 @@ The publish operation is atomic: it refuses to open the season unless there are 
 
 Set these Vercel environment variables for the commissioner API:
 
-- `SUPABASE_URL`: `https://vvujhkryqzhmemojedxs.supabase.co`
+- `SUPABASE_URL`: `https://txipxisumngvzkuqsysq.supabase.co`
 - `SUPABASE_SERVICE_ROLE_KEY`: the Supabase service-role key, server-side only
 - `SUPABASE_ANON_KEY`: optional; if omitted, the API uses the service key for the server-side Auth check
 - `SUPABASE_WEBHOOK_SECRET`: required by the Discord claim webhook and must match the secret configured on the Supabase webhook
