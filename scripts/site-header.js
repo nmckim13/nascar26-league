@@ -7,7 +7,7 @@
   document.head.append(fontLink);
   const themeLink = document.createElement('link');
   themeLink.rel = 'stylesheet';
-  themeLink.href = 'barl-theme.css?v=4';
+  themeLink.href = 'barl-theme.css?v=5';
   document.head.append(themeLink);
   const activePage = ['profiles.html', 'career.html', 'driver.html'].includes(page) ? 'claim.html' : page;
   const links = [
@@ -27,9 +27,9 @@
   const headerMarkup = `
     <div class="ticker site-ticker">
       <div class="ticker-inner">
-        <div class="ticker-item"><span class="ticker-badge">Next Race</span> Race 1 — Daytona International Speedway</div>
+        <div class="ticker-item"><span class="ticker-badge">Next Race</span> Race 2 — Nashville Superspeedway</div>
         <div class="ticker-sep"></div>
-        <div class="ticker-item"><span class="ticker-badge">Season 1</span> 24 Spots · 8 Teams · 8 Races</div>
+        <div class="ticker-item"><span class="ticker-badge red">Daytona Winner</span> Nolan McKim · #88 Trackhouse</div>
       </div>
     </div>
     <nav class="nav site-nav" aria-label="Primary navigation">
