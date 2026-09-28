@@ -229,3 +229,89 @@ html[data-barl-page="driver"] .portal { padding-top: 42px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+
+/* ===== BARL BROADCAST PACKAGE v5 ===== */
+:root{
+  --barl-bg:#050b13;--barl-panel:#07121f;--barl-panel-raised:#0a1828;--barl-panel-soft:#10243a;
+  --barl-line:rgba(50,139,255,.26);--barl-line-strong:rgba(50,139,255,.62);
+  --barl-blue:#1677ff;--barl-blue2:#35a2ff;--barl-red:#f02036;--barl-yellow:#ffc857;
+}
+body{
+  background:
+    radial-gradient(circle at 15% -10%,rgba(22,119,255,.20),transparent 34rem),
+    radial-gradient(circle at 100% 25%,rgba(240,32,54,.10),transparent 30rem),
+    linear-gradient(180deg,#06101b 0%,#03070c 100%) !important;
+}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.18;background-image:linear-gradient(120deg,transparent 0 48%,rgba(22,119,255,.12) 48% 49%,transparent 49% 100%);background-size:90px 90px}
+.site-header .ticker{background:#06111e;color:#fff;border-bottom:1px solid rgba(22,119,255,.35);box-shadow:0 10px 32px rgba(0,0,0,.32)}
+.site-header .ticker-item{color:#dce9ff}.site-header .ticker-badge{background:var(--barl-blue)!important}
+.site-header .ticker-badge.red{background:var(--barl-red)!important}
+.site-header .nav{height:72px;background:linear-gradient(180deg,#07111d 0%,#030812 100%);border-bottom:2px solid var(--barl-blue);box-shadow:0 10px 32px rgba(0,0,0,.38)}
+.site-header .nav-logo img{width:155px;height:52px}
+.site-header .nav-links a{font-family:var(--barl-display);font-size:12px;color:#d2d8e4;padding:11px 14px;position:relative}
+.site-header .nav-links a.active{color:#fff}.site-header .nav-links a.active:after{content:"";position:absolute;height:3px;left:14px;right:14px;bottom:0;background:var(--barl-red);box-shadow:0 0 18px rgba(240,32,54,.7)}
+.site-header .nav-cta{background:linear-gradient(135deg,var(--barl-blue),#244cff);color:#fff;border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 28px rgba(22,119,255,.25)}
+.page-wrap,.page,.hero,html[data-barl-page="profiles"] main,html[data-barl-page="archive"] main,.shell,.portal{max-width:1280px!important}
+.page-header,.profile-head,.archive-head{padding-top:54px}
+.page-header h1,.profile-head h1,.archive-head h1,.s-title{font-style:italic;text-transform:uppercase;text-shadow:0 5px 28px rgba(0,0,0,.45)}
+.page-header h1{font-size:clamp(42px,6vw,72px)}
+.page-tag,.pill,.badge,.track-type,.finale-tag,.route-pill{border:1px solid rgba(53,162,255,.32);background:rgba(16,36,58,.8);color:#cfe5ff}
+.card,.rule-card,.points-card,.team-card,.profile-card,.player-card-shell,.season-card,.pitch-card,.stat-box,.step,.how-item,.join-card,.quick-callout,.toc,.race-detail,.upcoming-box,.selection-banner,.team-block,.standings-card{
+  background:linear-gradient(145deg,rgba(13,31,51,.96),rgba(5,13,24,.98));
+  border:1px solid var(--barl-line);border-radius:18px;box-shadow:0 18px 55px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.03)
+}
+.data-table{background:#06111e;border:1px solid var(--barl-line-strong);box-shadow:0 18px 55px rgba(0,0,0,.3)}
+.data-table thead th{background:linear-gradient(180deg,#10243a,#091625);color:#89a9d0;text-transform:uppercase;font-family:var(--barl-display);font-size:11px;letter-spacing:.05em}
+.data-table tbody tr{background:rgba(5,13,24,.72)}.data-table tbody tr:hover{background:rgba(22,119,255,.09)}
+.data-table tbody td{border-bottom:1px solid rgba(255,255,255,.055)}
+.car-badge,.home-number-art{filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))}
+.num-cell{font-family:var(--barl-display)!important;font-style:italic}.num-cell.yellow{color:var(--barl-yellow)!important}
+.tabs,.standings-tabs{background:#06101c;border:1px solid var(--barl-line);padding:4px;border-radius:10px}
+.tab-btn,.profile-tab{background:transparent;border:0!important;border-radius:7px}
+.tab-btn.active,.profile-tab.active{background:linear-gradient(135deg,var(--barl-blue),#234fff);color:white;box-shadow:0 6px 20px rgba(22,119,255,.24)}
+.btn-big,.btn-dark,.btn-claim,.btn-submit,.button,.submit-btn,button:not(.nav-hamburger):not(.profile-tab):not(.tab-btn),input[type="submit"]{background:linear-gradient(135deg,var(--barl-blue),#234fff);color:#fff;border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 26px rgba(22,119,255,.22)}
+.btn-big:hover,.btn-dark:hover,.btn-claim:hover,.btn-submit:hover,.button:hover,.submit-btn:hover,button:not(.nav-hamburger):not(.profile-tab):not(.tab-btn):hover{background:linear-gradient(135deg,#2693ff,#3158ff)}
+.site-footer{background:linear-gradient(180deg,#06101b,#020508);border-top:2px solid var(--barl-blue)}
+
+/* Homepage broadcast composition */
+html[data-barl-page="index"] .site-hero{padding:36px 24px 34px;background:linear-gradient(90deg,rgba(2,8,14,.94),rgba(4,14,25,.84)),url('assets/news/barl-season-1-launch.jpg') center/cover;border-bottom:2px solid var(--barl-blue)}
+html[data-barl-page="index"] .site-hero-inner{max-width:1280px}
+html[data-barl-page="index"] .site-hero-headline{font-size:clamp(36px,5vw,72px);max-width:900px}
+html[data-barl-page="index"] .hero{padding:22px 24px 0;max-width:1280px}
+html[data-barl-page="index"] .hero>div{grid-template-columns:minmax(0,.85fr) minmax(0,1.45fr)!important;gap:16px!important}
+.next-race-card,.last-race-card{position:relative;min-height:430px;border:1px solid rgba(53,162,255,.65)!important;overflow:hidden;background:#07111e!important;box-shadow:0 22px 70px rgba(0,0,0,.42)}
+.next-race-card:before,.last-race-card:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,7,13,.05),rgba(2,7,13,.82));z-index:0}
+.next-race-card{background-image:linear-gradient(135deg,rgba(2,7,13,.38),rgba(2,7,13,.92)),url('assets/schedule/scenes/nashville.jpg')!important;background-size:cover!important;background-position:center!important}
+.last-race-card{background-image:linear-gradient(90deg,rgba(2,7,13,.95) 0%,rgba(2,7,13,.66) 52%,rgba(2,7,13,.20) 100%),url('assets/schedule/scenes/daytona.jpg')!important;background-size:cover!important;background-position:center!important}
+.nrc-header,.lrc-header{position:relative;z-index:2;background:transparent!important;padding:24px 26px 0!important}
+.nrc-header-left,.lrc-header span{font-family:var(--barl-display)!important;color:var(--barl-blue2)!important;font-size:22px!important;font-style:italic!important}
+.lrc-header span{color:var(--barl-yellow)!important}
+.nrc-header-right{color:#d6e3f6!important;font-family:var(--barl-display);font-size:12px}
+.nrc-body,.lrc-body{position:relative;z-index:2;text-align:left!important;padding:20px 26px 28px!important}
+.nrc-name{font-family:var(--barl-display)!important;font-style:italic;font-size:clamp(44px,5vw,76px)!important;line-height:.92!important;text-shadow:0 8px 30px rgba(0,0,0,.55)}
+.nrc-sub{color:#c0d1e8!important;font-size:14px!important}.nrc-meta{margin-top:20px;border-top:1px solid rgba(255,255,255,.12)!important}
+.lrc-body{display:grid;grid-template-columns:minmax(130px,210px) 1fr;align-items:center;gap:18px;min-height:330px}
+#last-race-icon{font-size:0;margin:0!important}
+#last-race-icon img{width:min(100%,210px);max-height:170px;object-fit:contain;filter:drop-shadow(0 12px 18px rgba(0,0,0,.55))}
+#last-race-title{font-family:var(--barl-display)!important;font-size:clamp(34px,4vw,62px)!important;font-style:italic;line-height:1!important;text-transform:uppercase!important}
+#last-race-sub{font-size:14px!important;color:#c2d2e7!important}
+#last-race-sub:after{content:"";display:block;width:min(420px,100%);height:150px;margin-top:14px;background:url('assets/cars/88.webp') left center/contain no-repeat;filter:drop-shadow(0 12px 20px rgba(0,0,0,.5))}
+.section-block{padding-top:48px!important}.s-eyebrow{color:var(--barl-blue2)!important}.s-title{font-family:var(--barl-display)!important;font-size:clamp(30px,4vw,48px)!important}
+.storyline-card,.news-card{border:1px solid var(--barl-line)!important;background:linear-gradient(145deg,#0d1e31,#06101c)!important;box-shadow:0 16px 44px rgba(0,0,0,.28)}
+.storyline-card:before{background:var(--barl-blue)!important}.storyline-card[data-intensity="heated"]:before{background:var(--barl-red)!important}
+.s-row{border-color:rgba(255,255,255,.06)!important}.s-row-hdr{background:#10243a!important}.s-row:not(.s-row-hdr):hover{background:rgba(22,119,255,.08)!important}
+.sched-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.sched-item{border:1px solid var(--barl-line)!important;border-radius:14px;padding:16px!important;background:linear-gradient(145deg,#0b1a2b,#06101b);position:relative;overflow:hidden}
+.sched-item:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,16,27,.96),rgba(6,16,27,.72));pointer-events:none}.sched-item>*{position:relative;z-index:1}
+.sched-num{color:var(--barl-blue2)!important}.badge-next{background:var(--barl-blue)!important;color:#fff!important}.badge-up{background:#132337!important;color:#9fb6d2!important}
+
+/* Results / schedule / standings feel like broadcast boards */
+.race-rail{border:1px solid var(--barl-line-strong)!important;background:#06101b!important;box-shadow:0 18px 50px rgba(0,0,0,.28)}
+.race-pill{background:#07121f!important;border-color:rgba(255,255,255,.06)!important}.race-pill.active{background:linear-gradient(180deg,#12345d,#0a1a2d)!important;box-shadow:inset 0 -3px 0 var(--barl-blue)}
+.rp-num{color:#dceaff!important}.race-pill.active .rp-num{color:var(--barl-yellow)!important}
+.race-detail-hdr .track-name{font-family:var(--barl-display)!important;font-size:clamp(30px,4vw,50px)!important;font-style:italic}
+.upcoming-box{min-height:320px;display:grid;place-items:center;align-content:center;background-size:cover!important;background-position:center!important}
+html[data-barl-page="schedule"] .race-row{background:linear-gradient(90deg,rgba(5,13,24,.95),rgba(5,13,24,.78));border:1px solid var(--barl-line)!important;box-shadow:0 14px 36px rgba(0,0,0,.22)}
+@media(max-width:900px){html[data-barl-page="index"] .hero>div{grid-template-columns:1fr!important}.next-race-card,.last-race-card{min-height:360px}.lrc-body{grid-template-columns:120px 1fr}.sched-list{grid-template-columns:1fr}.site-header .nav{height:64px}}
+@media(max-width:620px){html[data-barl-page="index"] .hero{padding-inline:14px}.lrc-body{grid-template-columns:95px 1fr;padding-inline:18px!important}.nrc-name{font-size:42px!important}#last-race-title{font-size:30px!important}#last-race-sub:after{height:105px}.site-header .nav-logo img{width:125px}}
