@@ -633,7 +633,7 @@
   const icon = document.getElementById('last-race-icon');
   const title = document.getElementById('last-race-title');
   const sub = document.getElementById('last-race-sub');
-  if (icon) icon.textContent = '#1';
+  if (icon) icon.innerHTML = `<img src="assets/driver-numbers/${winner.car_number}/choice-privileges.png" alt="#${winner.car_number}">`;
   if (title) title.textContent = name;
   if (sub) sub.textContent = `${race.track_short || race.track_name} · Car #${winner.car_number}`;
  }
@@ -689,7 +689,7 @@
     const teamPts={}; rows.forEach(d=>teamPts[d.team]=(teamPts[d.team]||0)+d.p);
     const tr=Object.entries(teamPts).sort((a,b)=>b[1]-a[1]); const oe=document.getElementById('owner-rows'); if(oe)oe.innerHTML=tr.map(([n,p],i)=>'<div class="s-row"><span style="font-size:18px;font-weight:900">'+(i+1)+'</span><span style="font-weight:800">'+n+'</span><span style="font-size:16px;font-weight:900">'+p+'</span></div>').join('');
     const last=completed[completed.length-1], win=results.find(r=>r.race_id===last.id&&r.finish_position===1), wd=win?db[win.driver_id]:null;
-    if(wd){const t=document.getElementById('last-race-title'),s=document.getElementById('last-race-sub'),i=document.getElementById('last-race-icon');if(t)t.textContent=wd.display_name||wd.gamertag;if(s)s.textContent=(last.track_short||last.track_name)+' · Car #'+win.car_number;if(i)i.textContent='#1';}
+    if(wd){const t=document.getElementById('last-race-title'),s=document.getElementById('last-race-sub'),i=document.getElementById('last-race-icon');if(t)t.textContent=wd.display_name||wd.gamertag;if(s)s.textContent=(last.track_short||last.track_name)+' · Car #'+win.car_number;if(i)i.innerHTML='<img src="assets/driver-numbers/'+win.car_number+'/choice-privileges.png" alt="#'+win.car_number+'">';}
     const next=races.find(r=>!['completed','voided'].includes(r.status)); if(next){const n=document.getElementById('next-race-name'),sub=document.getElementById('next-race-sub'),lab=document.getElementById('next-race-label');if(n)n.textContent=next.track_name;if(sub)sub.textContent='Race '+next.race_number+' · '+(next.race_date||'Date to be announced');if(lab)lab.textContent='Race '+next.race_number+' Of '+races.length;}
     document.querySelectorAll('.sched-item').forEach(el=>{const num=Number(el.querySelector('.sched-num')?.textContent);const race=races.find(r=>r.race_number===num);if(!race)return;const badge=el.querySelector('.badge');if(badge){badge.textContent=race.status==='completed'?'Complete':race===next?'Next':'Upcoming';badge.className='badge '+(race===next?'badge-next':'badge-up');}});
   }catch(e){console.error('BARL home live fallback failed',e);}
