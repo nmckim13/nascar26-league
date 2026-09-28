@@ -10,7 +10,7 @@ join (values
   (4, 'Watkins Glen International', 'Watkins Glen'),
   (5, 'Charlotte Motor Speedway', 'Charlotte'),
   (6, 'Iowa Speedway', 'Iowa'),
-  (7, 'Talladega Superspeedway', 'Talladega'),
+  (7, 'Phoenix Raceway', 'Phoenix'),
   (8, 'Chicagoland Speedway', 'Chicagoland')
 ) as v(race_number, track_name, track_short)
 where r.season_id = s.id
@@ -28,7 +28,7 @@ from (values
   (4, 'Watkins Glen International', 'Watkins Glen'),
   (5, 'Charlotte Motor Speedway', 'Charlotte'),
   (6, 'Iowa Speedway', 'Iowa'),
-  (7, 'Talladega Superspeedway', 'Talladega'),
+  (7, 'Phoenix Raceway', 'Phoenix'),
   (8, 'Chicagoland Speedway', 'Chicagoland')
 ) as v(race_number, track_name, track_short)
 where r.race_number = v.race_number;
