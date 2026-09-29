@@ -63,6 +63,11 @@ function hideBanner() {
   document.getElementById('selBanner').classList.remove('visible');
 }
 
+function isRosterLocked(season) {
+  return Boolean(season?.roster_lock_at)
+    || ['appeal_window', 'certified', 'archived'].includes(season?.status);
+}
+
 function lockClaiming(season) {
   state.claimingClosed = true;
   document.querySelectorAll('.car-card').forEach((card) => card.classList.add('claiming-closed'));
@@ -70,7 +75,7 @@ function lockClaiming(season) {
   const status = document.getElementById('claimStatus');
   if (status) {
     status.hidden = false;
-    status.textContent = `Season ${season.season_number} is published and the roster is locked. New claims are closed.`;
+    status.textContent = `Season ${season.season_number} roster is locked. New claims are closed.`;
   }
   document.getElementById('authState').textContent = 'Roster locked for the published season';
 }
@@ -132,7 +137,7 @@ async function loadClaims() {
 
   const rosterSeason = publishedSeason || await loadCurrentRosterSeason();
   if (rosterSeason) {
-    if (publishedSeason) lockClaiming(publishedSeason);
+    if (isRosterLocked(rosterSeason)) lockClaiming(rosterSeason);
     try {
       state.claimedCars = await loadSeasonRosterClaims(rosterSeason);
       state.claimedCars.push(...pending.filter(row => !state.claimedCars.some(claim => claim.car_number === row.car_number)));
