@@ -158,15 +158,6 @@
   .nrc-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); padding-top: 12px; border-top: 1px solid var(--border); }
   .nrc-meta strong { color: var(--white); font-weight: 600; }
 
-  /* ── LAST RACE ── */
-  .last-race-card { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden; }
-  .lrc-header { background: var(--red); padding: 9px 18px; }
-  .lrc-header span { font-family: var(--font); font-size: 12px; font-weight: 900; letter-spacing: -0.01em; text-transform: uppercase; color: #fff; }
-  .lrc-body { padding: 24px 18px; text-align: center; }
-  .lrc-body .placeholder-icon { font-size: 36px; margin-bottom: 10px; }
-  .lrc-body .placeholder-title { font-family: var(--font); font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; color: var(--white); margin-bottom: 4px; }
-  .lrc-body .placeholder-sub { font-size: 12px; color: var(--muted); }
-
   /* ── STANDINGS ── */
   .section-block { padding: 40px 0 0; }
   .standings-tabs { display: flex; gap: 3px; background: var(--surface); border-radius: var(--radius-sm); padding: 3px; border: 1px solid var(--border); }
@@ -174,7 +165,8 @@
   .tab-btn.active { background: var(--yellow); color: #000; }
   .standings-card { background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
   .s-row { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 12px; padding: 13px 18px; border-bottom: 1px solid var(--border); transition: background 0.1s; }
-  .home-number-art { display:inline-block; width:56px; height:40px; object-fit:contain; object-position:center; image-rendering:auto; margin-right:8px; vertical-align:middle; }
+  .home-driver-cell { display:flex; align-items:center; gap:8px; min-width:0; }
+  .home-number-art { flex-shrink:0; display:inline-block; width:56px; height:40px; object-fit:contain; object-position:center; image-rendering:auto; margin-right:0; vertical-align:middle; }
   .s-row:last-child { border-bottom: none; }
   .s-row:not(.s-row-hdr):hover { background: var(--surface2); }
   .s-row-hdr { background: var(--surface2); padding: 9px 18px; }
@@ -287,7 +279,7 @@
 <!-- MAIN -->
 <div class="hero">
 
- <!-- NEXT RACE + LAST RACE side by side on desktop, stacked on mobile -->
+ <!-- Next race, followed by the current championship standings -->
  <div style="display:grid;grid-template-columns:1fr;gap:12px;">
 
  <!-- Next Race -->
@@ -313,37 +305,17 @@
   </div>
  </div>
 
- <!-- Last Race / Winner -->
- <div class="last-race-card">
-  <div class="lrc-header"><span> Last Race Winner</span></div>
-  <div class="lrc-body">
-   <div class="placeholder-icon" id="last-race-icon"></div>
-   <div class="placeholder-title" id="last-race-title">Season 1 Hasn't Started</div>
-   <div class="placeholder-sub" id="last-race-sub">The winner will be posted here after Race 1</div>
-  </div>
- </div>
 
  </div>
 </div>
-
-<!-- STORYLINES -->
-<section class="page section-block" id="storylines">
- <div class="s-hdr"><div><div class="s-eyebrow">Inside The Garage</div><div class="s-title">BARL Storylines</div></div><span class="s-hdr-right">Commissioner curated</span></div>
- <div id="storyline-rows" class="storyline-grid"><div class="s-empty"><strong>The stories start here</strong>Rivalries, team battles, and drivers on the rise will live here.</div></div>
-</section>
-
-<!-- LEAGUE NEWS -->
-<section class="page section-block" id="news">
- <div class="s-hdr"><div><div class="s-eyebrow">From The Paddock</div><div class="s-title">League News</div></div><span class="s-hdr-right">Commissioner reviewed</span></div>
- <div id="news-rows" class="news-grid"><div class="s-empty"><strong>No race reports yet</strong>Published debriefs will appear here after each certified race.</div></div>
-</section>
 
 <!-- STANDINGS -->
 <div class="page section-block" id="standings">
  <div class="s-hdr">
   <div>
    <div class="s-eyebrow">Points</div>
-   <div class="s-title">Driver Standings</div>
+   <div class="s-title">Standings</div>
+   <div class="s-team-lbl" id="home-standings-summary">Loading current championship points…</div>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
    <div class="standings-tabs">
@@ -372,6 +344,18 @@
   <a href="standings.html" style="display:block;text-align:center;padding:10px;font-family: var(--font);font-size:13px;font-weight:700;letter-spacing: -0.01em;text-transform:uppercase;color:var(--blue);border-top:1px solid var(--border);">Full Standings →</a>
  </div>
 </div>
+
+<!-- STORYLINES -->
+<section class="page section-block" id="storylines">
+ <div class="s-hdr"><div><div class="s-eyebrow">Inside The Garage</div><div class="s-title">BARL Storylines</div></div><span class="s-hdr-right">Commissioner curated</span></div>
+ <div id="storyline-rows" class="storyline-grid"><div class="s-empty"><strong>The stories start here</strong>Rivalries, team battles, and drivers on the rise will live here.</div></div>
+</section>
+
+<!-- LEAGUE NEWS -->
+<section class="page section-block" id="news">
+ <div class="s-hdr"><div><div class="s-eyebrow">From The Paddock</div><div class="s-title">League News</div></div><span class="s-hdr-right">Commissioner reviewed</span></div>
+ <div id="news-rows" class="news-grid"><div class="s-empty"><strong>No race reports yet</strong>Published debriefs will appear here after each certified race.</div></div>
+</section>
 
 <!-- SCHEDULE -->
 <div class="page section-block" id="schedule">
@@ -504,9 +488,10 @@
   const completedIds = new Set((authoritativeStandings?.completedRaces || races.filter(r => r.status === 'completed')).map(r => r.id));
   const racesRun = completedIds.size;
   const nextRace = races.find(r => !['completed', 'voided'].includes(r.status));
-  const lastCompletedRace = [...races].reverse().find(r => r.status === 'completed');
   startNextRaceCountdown(nextRace);
-  updateLastRaceWinner(lastCompletedRace, results, claims);
+  document.getElementById('home-standings-summary').textContent = racesRun
+   ? `Season ${display.season.season_number} · After ${racesRun} races`
+   : `Season ${display.season.season_number} · Preseason`;
 
   // Driver stats
   const stats = {};
@@ -536,11 +521,11 @@
   if (racesRun === 0) {
    driverEl.innerHTML = '<div class="s-empty"><strong>Season 1 Hasn\'t Started</strong>Standings update after Race 1 at Daytona.</div>';
   } else {
-   driverEl.innerHTML = drivers.slice(0,10).map((d,i) => `
+   driverEl.innerHTML = drivers.map((d,i) => `
     <div class="s-row">
-     <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
-     <span>
-      <img class="home-number-art" data-barl-number="${d.car}" src="${window.BARLNumberImage(d.car, d.driverId)}" alt="#${d.car}">
+     <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'var(--yellow)':'var(--muted)'}">${i+1}</span>
+     <span class="home-driver-cell">
+      <img class="home-number-art" data-barl-number="${d.car}" data-driver-id="${d.driverId || ''}" src="${window.BARLNumberImage(d.car, d.driverId)}" alt="#${d.car}">
       <span style="font-family: var(--font);font-size:14px;font-weight:800;text-transform:uppercase;">${d.name||'—'}</span>
      </span>
      <span style="font-family: var(--font);font-size:16px;font-weight:900;">${d.pts}</span>
@@ -568,7 +553,7 @@
   } else {
    ownerEl.innerHTML = teams.map(([team,pts],i) => `
     <div class="s-row">
-     <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
+     <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'var(--yellow)':'var(--muted)'}">${i+1}</span>
      <span style="font-family: var(--font);font-size:14px;font-weight:800;text-transform:uppercase;">${team}</span>
      <span style="font-family: var(--font);font-size:16px;font-weight:900;">${pts}</span>
     </div>`).join('');
@@ -623,19 +608,6 @@
   };
   tick();
   setInterval(tick, 1000);
- }
- function updateLastRaceWinner(race, results, claims) {
-  if (!race) return;
-  const winner = results.find(r => r.race_id === race.id && r.finish_position === 1);
-  if (!winner) return;
-  const claim = claims.find(c => winner.driver_id ? c.driver_id === winner.driver_id : c.car_number === winner.car_number);
-  const name = claim ? ([claim.first_name, claim.last_name].filter(Boolean).join(' ').trim() || claim.gamertag) : `Car #${winner.car_number}`;
-  const icon = document.getElementById('last-race-icon');
-  const title = document.getElementById('last-race-title');
-  const sub = document.getElementById('last-race-sub');
-  if (icon) icon.textContent = '#1';
-  if (title) title.textContent = name;
-  if (sub) sub.textContent = `${race.track_short || race.track_name} · Car #${winner.car_number}`;
  }
  function toggleMenu() {
   const links = document.querySelector('.nav-links');
