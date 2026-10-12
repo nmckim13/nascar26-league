@@ -27,9 +27,9 @@
   const headerMarkup = `
     <div class="ticker site-ticker">
       <div class="ticker-inner">
-        <div class="ticker-item"><span class="ticker-badge">Next Race</span> Race 1 — Daytona International Speedway</div>
+        <div class="ticker-item"><span class="ticker-badge">Next Race</span> <span id="ticker-next">Race 1 — Daytona International Speedway</span></div>
         <div class="ticker-sep"></div>
-        <div class="ticker-item"><span class="ticker-badge">Season 1</span> 24 Spots · 8 Teams · 8 Races</div>
+        <div class="ticker-item"><span class="ticker-badge">Season 1</span> <span data-season-summary>24 Spots · 8 Teams · <span id="season-race-count">8 Races</span></span></div>
       </div>
     </div>
     <nav class="nav site-nav" aria-label="Primary navigation">
@@ -43,14 +43,26 @@
   const currentNav = document.querySelector('nav.nav');
   const currentDrawer = document.querySelector('.nav-drawer');
   const currentTicker = document.querySelector('.ticker');
+  // Page renderers still update these nodes after league data arrives.
+  const tickerSummary = currentTicker?.querySelector('#ticker-text, #schedule-ticker-summary');
+  const raceCount = currentTicker?.querySelector('#season-race-count');
   const mount = document.createElement('header');
   mount.className = 'site-header';
   mount.innerHTML = headerMarkup;
+  if (tickerSummary) mount.querySelector('[data-season-summary]').replaceWith(tickerSummary);
+  else if (raceCount) mount.querySelector('#season-race-count').replaceWith(raceCount);
   if (currentTicker || currentNav) (currentTicker || currentNav).before(mount);
   else document.body.prepend(mount);
   currentTicker?.remove();
   currentNav?.remove();
   currentDrawer?.remove();
+
+  window.__leagueDataReady?.then(data => {
+    const next = data.races.find(race => race.status !== 'completed' && race.status !== 'voided');
+    mount.querySelector('#ticker-next').textContent = next
+      ? `Race ${next.race_number} — ${next.track_name || next.track_short}`
+      : data.races.length ? 'Season complete' : 'Schedule pending publication';
+  }).catch(console.error);
 
   const button = mount.querySelector('.nav-hamburger');
   const drawer = mount.querySelector('.nav-drawer');
