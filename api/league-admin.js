@@ -175,7 +175,7 @@ async function generateRaceContent(raceId, userId) {
   const raceRows = await supabaseRequest(`/rest/v1/n26_season_races?id=eq.${encodeURIComponent(raceId)}&select=*`);
   if (!raceRows.length) throw Object.assign(new Error('Race not found after results were saved.'), { status: 404 });
   const race = raceRows[0];
-  const seasonRaceRows = await supabaseRequest(`/rest/v1/n26_season_races?season_id=eq.${encodeURIComponent(race.season_id)}&select=id`);
+  const seasonRaceRows = await supabaseRequest(`/rest/v1/n26_season_races?season_id=eq.${encodeURIComponent(race.season_id)}&select=id,status,race_type,starters_count`);
   const seasonRaceIds = seasonRaceRows.map(item => item.id);
   const [raceResults, seasonResults, drivers] = await Promise.all([
     supabaseRequest(`/rest/v1/n26_race_results?race_id=eq.${encodeURIComponent(raceId)}&select=*&order=finish_position.asc`),
@@ -210,11 +210,10 @@ async function generateRaceContent(raceId, userId) {
     method: 'POST', headers: { Prefer: 'resolution=merge-duplicates,return=representation' }, body: JSON.stringify(recap),
   });
 
-  const points = {};
-  seasonResults.forEach(result => {
-    if (result.finish_status === 'disqualified') return;
-    points[result.driver_id] = (points[result.driver_id] || 0) + Number(result.points_earned || 0);
-  });
+  const points = Object.fromEntries([...new Set(seasonResults.map(result => result.driver_id))].map(driverId => [
+    driverId, rules.calculateChampionshipPoints(seasonRaceRows,
+      seasonResults.filter(result => result.driver_id === driverId && ['published', 'certified'].includes(result.certification_status))).points,
+  ]));
   const championship = Object.entries(points).sort((a, b) => b[1] - a[1]);
   const leader = championship[0];
   const second = championship[1];

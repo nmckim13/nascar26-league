@@ -7,6 +7,7 @@ const {
   calculateEqualLeagueCap,
   calculateMinimumFeasibleCap,
   calculateRating,
+  calculateChampionshipPoints,
   calculateSeasonStats,
   calculateSeasonStandings,
   calculateTeamStandings,
@@ -295,3 +296,40 @@ assert.equal(transferTeams.find(team => team.teamId === 'team-a').points, 25);
 assert.equal(transferTeams.find(team => team.teamId === 'team-b').points, 20);
 
 console.log('League model verified: 8 teams, 24 seats, #88 OVR 95, cap charges exact.');
+
+
+// Eight rounds, one lowest score removed. Missing rows and DNS are equivalent.
+const dropRaces = Array.from({ length: 8 }, (_, i) => ({
+  id: `drop-${i + 1}`, status: 'completed', starters_count: 2, qualifying_status: 'canceled',
+}));
+const dropResults = dropRaces.map((race, i) => ({
+  race_id: race.id, driver_id: 'drop-driver', team_id: 'drop-team',
+  start_status: 'started', finish_position: i === 0 ? 2 : 1,
+  points_earned: i === 0 ? 30 : 25, stage1_points: i === 0 ? 10 : 0,
+}));
+const dropInput = { entries: [{ driverId: 'drop-driver', teamId: 'drop-team' }],
+  races: dropRaces, results: dropResults, pointsByPosition: { 1: 25, 2: 20 } };
+const droppedSeason = calculateSeasonStandings(dropInput);
+assert.equal(droppedSeason.drivers[0].rawPoints, 205);
+assert.equal(droppedSeason.drivers[0].points, 180); // Stage points keep the P2 ahead of a P1.
+assert.equal(droppedSeason.drivers[0].droppedPoints, 25);
+assert.equal(droppedSeason.drivers[0].droppedRaceIds.length, 1);
+assert.equal(droppedSeason.drivers[0].starts, 8);
+assert.equal(droppedSeason.drivers[0].wins, 7);
+assert.equal(droppedSeason.teams[0].points, 205);
+const dnsRow = { ...dropResults[0], start_status: 'dns', finish_position: null, points_earned: 0, stage1_points: 0 };
+assert.equal(calculateChampionshipPoints(dropRaces, [dnsRow, ...dropResults.slice(1)]).points, 175);
+assert.equal(calculateChampionshipPoints(dropRaces, dropResults.slice(1)).points, 175);
+assert.equal(calculateChampionshipPoints(dropRaces, dropResults.slice(2)).points, 150); // Two absences: only one zero is discarded.
+assert.equal(calculateChampionshipPoints(dropRaces.slice(0, 7), dropResults).points, 180);
+assert.equal(calculateChampionshipPoints(dropRaces.slice(0, 1), dropResults).points, 30);
+assert.equal(calculateChampionshipPoints([], dropResults).points, 0);
+for (const excluded of [{ status: 'scheduled' }, { status: 'voided' }, { race_type: 'exhibition' }, { starters_count: 1 }]) {
+  assert.equal(calculateChampionshipPoints([{ ...dropRaces[0], ...excluded }, ...dropRaces.slice(1)], dropResults).points, 175);
+}
+assert.equal(calculateChampionshipPoints(dropRaces, [...dropResults.slice(0, 7), { ...dropResults[7], finish_status: 'disqualified' }]).points, 180);
+const corrected = dropResults.map((row, i) => i === 0 ? { ...row, points_earned: 10 } : row);
+assert.equal(calculateChampionshipPoints(dropRaces, corrected).points, 175);
+assert.deepEqual(calculateChampionshipPoints([...dropRaces].reverse(), [...dropResults].reverse()), calculateChampionshipPoints(dropRaces, dropResults));
+assert.throws(() => calculateSeasonStandings({ ...dropInput, results: dropResults.slice(1) }), /Missing result row/);
+console.log('Best-seven scoring verified: stages, DNS, two absences, exclusions, corrections and unchanged team totals.');

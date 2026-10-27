@@ -186,6 +186,7 @@ export function toLegacyDisplayData(data) {
       track_name: race.track_name,
       track_short: race.track_short,
       race_type: race.race_type,
+      starters_count: race.starters_count,
       race_date: race.race_date,
       status: race.status,
       certification_status: race.certification_status,

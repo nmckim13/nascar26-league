@@ -167,6 +167,25 @@ function isChampionshipRound(race) {
   return startersCount === undefined || startersCount === null || startersCount >= 2;
 }
 
+// The eight-race driver championship counts at most seven complete race scores.
+// Missing results and explicit DNS rows both contribute zero; future, voided,
+// exhibition and undersized rounds never enter the scoring pool.
+function calculateChampionshipPoints(races, results) {
+  const resultByRace = new Map(results.map(result => [result.raceId || result.race_id, result]));
+  const scores = races.filter(isChampionshipRound).map(race => {
+    const result = resultByRace.get(race.id);
+    const zero = !result || resultValue(result, 'startStatus', 'start_status') === 'dns'
+      || resultValue(result, 'finishStatus', 'finish_status') === 'disqualified';
+    return { raceId: race.id, points: zero ? 0 : Number(resultValue(result, 'pointsEarned', 'points_earned') || 0) };
+  }).sort((a, b) => b.points - a.points || String(a.raceId).localeCompare(String(b.raceId)));
+  const counted = scores.slice(0, 7);
+  const dropped = scores.slice(7);
+  const rawPoints = scores.reduce((sum, score) => sum + score.points, 0);
+  const droppedPoints = dropped.reduce((sum, score) => sum + score.points, 0);
+  return { points: rawPoints - droppedPoints, rawPoints, droppedPoints,
+    droppedRaceIds: dropped.map(score => score.raceId), countedRaces: counted.length };
+}
+
 function calculateSeasonStats({ entries, races, results, pointsByPosition, strict = true }) {
   const completedRaces = races.filter(isChampionshipRound);
   const raceById = new Map(races.map(race => [race.id, race]));
@@ -239,7 +258,7 @@ function calculateSeasonStats({ entries, races, results, pointsByPosition, stric
     if (!isDisqualified && Number.isInteger(startersCount) && startersCount >= 1) {
       driver.finishCredits += (startersCount + 1 - finishPosition) / startersCount;
     }
-    driver.raceResults.set(raceKey, result);
+    driver.raceResults.set(raceKey, { ...result, pointsEarned: expectedPoints });
 
     const qualifyingStatus = race.qualifyingStatus || race.qualifying_status || 'not_recorded';
     if (qualifyingStatus === 'valid' && resultValue(result, 'qualifyingValid', 'qualifying_valid') === true) {
@@ -277,6 +296,7 @@ function calculateSeasonStats({ entries, races, results, pointsByPosition, stric
     });
   }
 
+  stats.forEach(driver => Object.assign(driver, calculateChampionshipPoints(completedRaces, [...driver.raceResults.values()])));
   return { completedRaces, stats: [...stats.values()] };
 }
 
@@ -524,6 +544,7 @@ const exportedRules = {
   validatePointsSchedule,
   requireValidStructure,
   calculateStandings,
+  calculateChampionshipPoints,
   calculateSeasonStats,
   calculateSeasonStandings,
   calculateTeamStandings,

@@ -60,6 +60,7 @@
  <div id="standings-note" style="padding:8px 12px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border2);display:none;">
  Preseason order is based only on car number. Every driver begins tied at 0 points.
  </div>
+ <p style="padding:8px 12px;color:var(--muted);font-size:12px">Best 7 of 8 races count. One lowest race score (finish + stages), including a missed race, is dropped after Race 8. Only one absence is covered.</p>
  <div class="table-wrap"><table class="data-table">
  <thead>
  <tr>
@@ -69,8 +70,8 @@
  <th class="c">Wins</th>
  <th class="c hide-mobile">Top 5</th>
  <th class="c hide-mobile">Top 10</th>
- <th class="c hide-mobile">Race Pts</th>
- <th class="c">Total</th>
+ <th class="c hide-mobile">Dropped</th>
+ <th class="c">Best 7 Pts</th>
  <th class="c">Behind</th>
  </tr>
  </thead>
@@ -83,7 +84,7 @@
 
  <div id="tab-owner" style="display:none">
  <div style="padding:8px 12px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border2);">
- Full-season players only. Mid-season joiners do not count toward team totals.
+ Team totals count every race result, including reserve replacements. The driver drop rule applies only to the driver championship.
  </div>
  <div class="table-wrap"><table class="data-table">
  <thead>
@@ -209,6 +210,7 @@
        top5: driver.topFives,
        top10: driver.finishes.filter(finish => finish <= 10).length,
        racePts: driver.points,
+       droppedPoints: driver.droppedPoints,
      };
    });
  } else {
@@ -245,7 +247,7 @@
      <td class="c"><span class="num-cell ${d.wins?'red':''}">${d.wins}</span></td>
      <td class="c hide-mobile">${d.top5}</td>
      <td class="c hide-mobile">${d.top10}</td>
-     <td class="c hide-mobile">${d.racePts}</td>
+     <td class="c hide-mobile">${d.droppedPoints || 0}</td>
      <td class="c"><span class="num-cell">${total}</span></td>
      <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
    </tr>`;
