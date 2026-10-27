@@ -109,6 +109,8 @@
  .track-bristol { --track-accent: #ff533d; --track-accent-2: #5d111b; }
  .track-watkins { --track-accent: #3cbcff; --track-accent-2: #174f4c; }
  .track-charlotte { --track-accent: #9fb9ff; --track-accent-2: #3f285c; }
+ .track-dover { --track-accent: #97c9f2; --track-accent-2: #254b72; }
+ .track-rockingham { --track-accent: #e6b65d; --track-accent-2: #5f401f; }
  .track-iowa { --track-accent: #e7b14b; --track-accent-2: #654b17; }
  .track-phoenix { --track-accent: #f04a3a; --track-accent-2: #6a251d; }
  .track-chicagoland { --track-accent: #8caeff; --track-accent-2: #30364d; }
@@ -237,7 +239,7 @@
     <h2 class="rr-track">Dover Motor Speedway</h2>
     <div class="rr-meta"><span>Sun · Nov 1</span><span>2:00 PM CT</span></div>
    </div>
-   <div class="rr-art" aria-hidden="true" hidden></div>
+   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/dover.jpg" alt=""></div>
    <div class="rr-status" id="status-6"><span class="pill gray">Upcoming</span></div>
   </article>
 
@@ -253,7 +255,7 @@
     <h2 class="rr-track">Phoenix Raceway</h2>
     <div class="rr-meta"><span>Sun · Nov 15</span><span>2:00 PM CT</span></div>
    </div>
-   <div class="rr-art" aria-hidden="true" hidden></div>
+   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/phoenix.jpg" alt=""></div>
    <div class="rr-status" id="status-7"><span class="pill gray">Upcoming</span></div>
   </article>
  </div>
@@ -273,7 +275,7 @@
     <h2 class="rr-track">Rockingham Speedway</h2>
     <div class="rr-meta"><span>Sun · Nov 22</span><span>2:00 PM CT</span></div>
    </div>
-   <div class="rr-art" aria-hidden="true" hidden></div>
+   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/rockingham.jpg" alt=""></div>
    <div class="rr-status" id="status-8"><span class="pill yellow">Finale</span></div>
   </article>
  </div>
@@ -312,7 +314,7 @@
  const status = document.getElementById('status-' + r.race_number);
  if (!row) return;
  row.querySelector('.rr-track').textContent = r.track_name || r.track_short;
- const sceneByTrack = { Daytona: 'daytona', Nashville: 'nashville', Bristol: 'bristol', 'Watkins Glen': 'watkins-glen', Charlotte: 'charlotte', Iowa: 'iowa', Chicagoland: 'chicagoland' };
+ const sceneByTrack = { Dover: 'dover', Phoenix: 'phoenix', Rockingham: 'rockingham', Daytona: 'daytona', Nashville: 'nashville', Bristol: 'bristol', 'Watkins Glen': 'watkins-glen', Charlotte: 'charlotte', Iowa: 'iowa', Chicagoland: 'chicagoland' };
  const art = row.querySelector('.rr-art');
  const scene = sceneByTrack[r.track_short];
  if (art) {
