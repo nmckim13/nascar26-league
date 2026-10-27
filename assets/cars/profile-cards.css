@@ -14,9 +14,9 @@
 /* This one badge has an opaque black canvas; blend only the badge, never the car. */
 .grid-driver-heading:has(img[src$="/6.webp"]) { z-index:auto; }
 .grid-driver-number img[src$="/6.webp"] { mix-blend-mode:screen; }
-.grid-car-stage { position:relative; isolation:isolate; aspect-ratio:2.25; margin:4px 10px 0; overflow:hidden; }
+.grid-car-stage { position:relative; isolation:isolate; aspect-ratio:1.8; margin:4px 10px 0; overflow:hidden; }
 .grid-car-stage::before { z-index:0; pointer-events:none; content:''; position:absolute; inset:15% 3% 6%; opacity:.22; background-image:radial-gradient(var(--livery) .8px,transparent .8px); background-size:5px 5px; mask-image:linear-gradient(90deg,#000,transparent 85%); }
-.grid-car-image { position:relative; z-index:1; width:100%; height:100%; object-fit:cover; object-position:center 51%; mix-blend-mode:normal; mask-image:linear-gradient(0deg,transparent 0%,#000 6%,#000 94%,transparent 100%); }
+.grid-car-image { position:relative; z-index:1; width:100%; height:100%; object-fit:cover; object-position:center; mix-blend-mode:normal; mask-image:none; }
 .grid-driver-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 27px 17px; color:#aaaab2; font-size:9px; font-weight:600; letter-spacing:.065em; text-transform:uppercase; }
 .grid-profile-link { white-space:nowrap; color:#fff; }
 .grid-profile-link b { display:inline-block; color:var(--livery); font-size:18px; margin-left:7px; }
