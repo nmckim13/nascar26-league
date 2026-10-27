@@ -167,7 +167,7 @@ function isChampionshipRound(race) {
   return startersCount === undefined || startersCount === null || startersCount >= 2;
 }
 
-// The eight-race driver championship counts at most seven complete race scores.
+// Drop exactly one lowest completed race score throughout the season.
 // Missing results and explicit DNS rows both contribute zero; future, voided,
 // exhibition and undersized rounds never enter the scoring pool.
 function calculateChampionshipPoints(races, results) {
@@ -178,8 +178,8 @@ function calculateChampionshipPoints(races, results) {
       || resultValue(result, 'finishStatus', 'finish_status') === 'disqualified';
     return { raceId: race.id, points: zero ? 0 : Number(resultValue(result, 'pointsEarned', 'points_earned') || 0) };
   }).sort((a, b) => b.points - a.points || String(a.raceId).localeCompare(String(b.raceId)));
-  const counted = scores.slice(0, 7);
-  const dropped = scores.slice(7);
+  const counted = scores.slice(0, Math.max(0, scores.length - 1));
+  const dropped = scores.slice(counted.length);
   const rawPoints = scores.reduce((sum, score) => sum + score.points, 0);
   const droppedPoints = dropped.reduce((sum, score) => sum + score.points, 0);
   return { points: rawPoints - droppedPoints, rawPoints, droppedPoints,
@@ -296,7 +296,6 @@ function calculateSeasonStats({ entries, races, results, pointsByPosition, stric
     });
   }
 
-  stats.forEach(driver => Object.assign(driver, calculateChampionshipPoints(completedRaces, [...driver.raceResults.values()])));
   return { completedRaces, stats: [...stats.values()] };
 }
 
@@ -411,7 +410,10 @@ function calculateTeamStandings(stats, races) {
 
 function calculateSeasonStandings(input) {
   const { completedRaces, stats } = calculateSeasonStats(input);
-  const drivers = rankDrivers(stats, completedRaces);
+  const scoredDrivers = stats.map(driver => ({ ...driver,
+    ...calculateChampionshipPoints(completedRaces, [...driver.raceResults.values()]),
+  }));
+  const drivers = rankDrivers(scoredDrivers, completedRaces);
   const teams = calculateTeamStandings(drivers, completedRaces);
   return { completedRaces, drivers, teams };
 }

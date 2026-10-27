@@ -218,7 +218,7 @@ const reserveTeamStandings = calculateSeasonStandings({
   pointsByPosition: { '1': 25, '2': 20 },
   strict: true,
 });
-assert.equal(reserveTeamStandings.drivers.find(driver => driver.driverId === 'reserve').points, 20);
+assert.equal(reserveTeamStandings.drivers.find(driver => driver.driverId === 'reserve').points, 0);
 assert.equal(reserveTeamStandings.teams.find(team => team.teamId === 'team-a').points, 45);
 
 const incompleteSourceData = calculateSeasonStats({
@@ -321,11 +321,11 @@ const dnsRow = { ...dropResults[0], start_status: 'dns', finish_position: null, 
 assert.equal(calculateChampionshipPoints(dropRaces, [dnsRow, ...dropResults.slice(1)]).points, 175);
 assert.equal(calculateChampionshipPoints(dropRaces, dropResults.slice(1)).points, 175);
 assert.equal(calculateChampionshipPoints(dropRaces, dropResults.slice(2)).points, 150); // Two absences: only one zero is discarded.
-assert.equal(calculateChampionshipPoints(dropRaces.slice(0, 7), dropResults).points, 180);
-assert.equal(calculateChampionshipPoints(dropRaces.slice(0, 1), dropResults).points, 30);
+assert.equal(calculateChampionshipPoints(dropRaces.slice(0, 7), dropResults).points, 155);
+assert.equal(calculateChampionshipPoints(dropRaces.slice(0, 1), dropResults).points, 0);
 assert.equal(calculateChampionshipPoints([], dropResults).points, 0);
 for (const excluded of [{ status: 'scheduled' }, { status: 'voided' }, { race_type: 'exhibition' }, { starters_count: 1 }]) {
-  assert.equal(calculateChampionshipPoints([{ ...dropRaces[0], ...excluded }, ...dropRaces.slice(1)], dropResults).points, 175);
+  assert.equal(calculateChampionshipPoints([{ ...dropRaces[0], ...excluded }, ...dropRaces.slice(1)], dropResults).points, 150);
 }
 assert.equal(calculateChampionshipPoints(dropRaces, [...dropResults.slice(0, 7), { ...dropResults[7], finish_status: 'disqualified' }]).points, 180);
 const corrected = dropResults.map((row, i) => i === 0 ? { ...row, points_earned: 10 } : row);
@@ -333,3 +333,18 @@ assert.equal(calculateChampionshipPoints(dropRaces, corrected).points, 175);
 assert.deepEqual(calculateChampionshipPoints([...dropRaces].reverse(), [...dropResults].reverse()), calculateChampionshipPoints(dropRaces, dropResults));
 assert.throws(() => calculateSeasonStandings({ ...dropInput, results: dropResults.slice(1) }), /Missing result row/);
 console.log('Best-seven scoring verified: stages, DNS, two absences, exclusions, corrections and unchanged team totals.');
+
+// Running standings always show N-1 counting scores, including the opener.
+for (let rounds = 1; rounds <= 8; rounds += 1) {
+  const running = calculateSeasonStandings({ ...dropInput, races: dropRaces.slice(0, rounds) }).drivers[0];
+  assert.equal(running.countedRaces, rounds - 1);
+  assert.equal(running.droppedRaceIds.length, 1);
+  assert.equal(running.points, rounds === 1 ? 0 : 30 + (rounds - 2) * 25);
+  const absent = calculateChampionshipPoints(dropRaces.slice(0, rounds), dropResults.slice(1));
+  assert.equal(absent.points, (rounds - 1) * 25);
+  assert.equal(absent.droppedPoints, 0);
+}
+const fiveRounds = dropRaces.slice(0, 5);
+assert.equal(calculateChampionshipPoints(fiveRounds, dropResults.slice(2)).points, 75);
+assert.equal(calculateChampionshipPoints([...fiveRounds, { id: 'future', status: 'scheduled' }], dropResults).points, 105);
+console.log('Running standings verified after every round: best N-1 scores, exactly one drop.');
