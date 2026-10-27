@@ -315,3 +315,24 @@ html[data-barl-page="index"] .hero>div{grid-template-columns:minmax(0,.85fr) min
 html[data-barl-page="schedule"] .race-row{background:linear-gradient(90deg,rgba(5,13,24,.95),rgba(5,13,24,.78));border:1px solid var(--barl-line)!important;box-shadow:0 14px 36px rgba(0,0,0,.22)}
 @media(max-width:900px){html[data-barl-page="index"] .hero>div{grid-template-columns:1fr!important}.next-race-card,.last-race-card{min-height:360px}.lrc-body{grid-template-columns:120px 1fr}.sched-list{grid-template-columns:1fr}.site-header .nav{height:64px}}
 @media(max-width:620px){html[data-barl-page="index"] .hero{padding-inline:14px}.lrc-body{grid-template-columns:95px 1fr;padding-inline:18px!important}.nrc-name{font-size:42px!important}#last-race-title{font-size:30px!important}#last-race-sub:after{height:105px}.site-header .nav-logo img{width:125px}}
+
+/* Public teams are paused. Restore with teamsVisible in site-header.js.
+   Keep the hidden DOM hooks so existing rendering and admin data remain intact. */
+html[data-barl-teams="paused"] :is([data-team-ui], #teams, #tab-owner,
+  .profile-tabs, .standings-tabs, .team-hdr, .grid-driver-team,
+  #teamName, #selTeam, #modalTeam, #currentTeam, .season-team),
+html[data-barl-teams="paused"][data-barl-page="standings"] .tabs,
+html[data-barl-teams="paused"] :is(#standings, .data-table) .driver-sub {
+  display: none !important;
+}
+html[data-barl-teams="paused"] #teamsWrap {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px; margin-bottom: 40px;
+}
+html[data-barl-teams="paused"] #teamsWrap :is(.team-block, .cars-row) {
+  display: contents !important;
+}
+html[data-barl-teams="paused"] #teamsWrap .car-card {
+  width: auto; min-width: 0; margin: 0;
+}
+html[data-barl-teams="paused"] .champions { grid-template-columns: 1fr; }

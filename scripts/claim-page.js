@@ -41,7 +41,7 @@ async function renderCupCatalog() {
       image.alt = `Number ${entry.number}`;
       const copy = document.createElement('div');
       copy.innerHTML = `<div class="catalog-number">#${entry.number}</div><div class="catalog-meta"></div>`;
-      copy.querySelector('.catalog-meta').textContent = `${entry.organization} | ${entry.manufacturer}`;
+      copy.querySelector('.catalog-meta').textContent = entry.manufacturer;
       card.append(image, copy);
       return card;
     }));
@@ -195,7 +195,7 @@ function selectCar(card) {
   const teamClaimed = team ? state.teamMap[team].filter((car) => state.claimedCars.find((entry) => entry.car_number === car)).length : 0;
 
   if (teamClaimed >= 3) {
-    window.alert('This team is full (3 drivers max).');
+    window.alert('This car is unavailable. Choose another number or contact the commissioner.');
     return;
   }
 
