@@ -1,0 +1,119 @@
+{
+  "tool": "image_gen.imagegen",
+  "transparent_background": true,
+  "commonPrompt": "Transform the supplied livery into ONE NASCAR CRAFTSMAN TRUCK SERIES racing pickup truck. Keep the reference's paint colors, sponsor identity and exact racing number, but CHANGE THE VEHICLE BODY substantially into a proper single-cab purpose-built racing pickup: taller squared cab and upright windshield, clearly separate flat covered pickup bed behind cab, wide rear fenders and short rear spoiler, blunt truck front with correct manufacturer grille. NOT a stock car, NOT a Camaro/Mustang/Camry coupe, NOT a street truck. Low racing stance, black steel racing wheels, slick Goodyear tires, front splitter, window net, roll cage and realistic race bodywork. Photoreal premium studio product rendering. Consistent front-left three-quarter angle, nose pointing left, driver's door and front grille both clearly visible. Entire truck fully in frame, centered, fills about 88% of canvas width and 48% of canvas height, wheel baseline around 75% canvas height. Landscape 3:2 canvas. Genuine transparent alpha background, no studio backdrop, no floor or reflection or shadow outside the vehicle, NO opaque black rectangle, no checkerboard pixels. All black body panels, tires and windows remain opaque. No separate title, no driver portrait, no human driver names; windshield banner BARL only, small CRAFTSMAN series contingency badge. Number must be exact and sponsor wordmarks clearly legible on hood and sides. ",
+  "entries": [
+    {
+      "n": "5",
+      "make": "Chevrolet Silverado",
+      "sponsor": "HendrickCars.com",
+      "scheme": "royal blue nose, hood and roof, white side panels, red diagonal stripes; navy blue italic 5 with white and red trim",
+      "source": "/workspace/generated_images/exec-0fd665fe-3464-4c60-961f-60f4b0bf19f8.png",
+      "image": "assets/trucks/5.webp"
+    },
+    {
+      "n": "6",
+      "make": "Ford F-150",
+      "sponsor": "BuildSubmarines.com",
+      "scheme": "bright turquoise and deep black panels, white italic 6 with teal outline, white BUILDSUBMARINES.COM lettering",
+      "source": "/workspace/generated_images/exec-ab335ee9-ca77-44db-a819-3d7cced1d5a2.png",
+      "image": "assets/trucks/6.webp"
+    },
+    {
+      "n": "7",
+      "make": "Chevrolet Silverado",
+      "sponsor": "Freeway Insurance",
+      "scheme": "royal blue hood and upper sides, white lower panels, electric lime green swooshes, green 7 with white/black outlines",
+      "source": "/workspace/generated_images/exec-f6de6be2-3d7f-4684-aefa-c02ad5a9f561.png",
+      "image": "assets/trucks/7.webp"
+    },
+    {
+      "n": "9",
+      "make": "Chevrolet Silverado",
+      "sponsor": "NAPA Auto Parts",
+      "scheme": "NAPA royal blue, white panels and bright yellow accents, navy 9 with yellow outline, yellow hexagon NAPA logos",
+      "source": "/workspace/generated_images/exec-ba67e9d2-5aa7-452b-bb66-fc11ffb23af7.png",
+      "image": "assets/trucks/9.webp"
+    },
+    {
+      "n": "17",
+      "make": "Ford F-150",
+      "sponsor": "Body Guard",
+      "scheme": "bright orange hood, roof and front fenders, black sides with orange striping, orange/black 17 with white outline, white BODY GUARD wordmark",
+      "source": "/workspace/generated_images/exec-d34f3c80-309c-4c3a-a030-2919e5922c63.png",
+      "image": "assets/trucks/17.webp"
+    },
+    {
+      "n": "19",
+      "make": "Toyota Tundra",
+      "sponsor": "Bass Pro Shops",
+      "scheme": "woodland hunting camouflage, fluorescent orange roof and accent panels, white 19 outlined black, yellow oval Bass Pro Shops logo and white TRACKER lettering",
+      "source": "/workspace/generated_images/exec-7003e554-bf4e-4a7a-a364-bf7d35938d30.png",
+      "image": "assets/trucks/19.webp"
+    },
+    {
+      "n": "20",
+      "make": "Toyota Tundra",
+      "sponsor": "Rheem",
+      "scheme": "black hood and sides, white lower body and roof, red pinstripes, red circular Rheem logos, black 20 outlined white and red",
+      "source": "/workspace/generated_images/exec-f8493cb1-f797-4428-b3d5-96efd83bd803.png",
+      "image": "assets/trucks/20.webp"
+    },
+    {
+      "n": "24",
+      "make": "Chevrolet Silverado",
+      "sponsor": "RAPTOR",
+      "scheme": "red nose, royal blue rear body, white decorative flames, neon yellow 24 outlined black, white RAPTOR logo",
+      "source": "/workspace/generated_images/exec-04f89bf6-533b-410c-aeae-9ffff5bfafaf.png",
+      "image": "assets/trucks/24.webp"
+    },
+    {
+      "n": "54",
+      "make": "Toyota Tundra",
+      "sponsor": "SAIA",
+      "scheme": "bright red hood, roof and lower sides, broad white side panel, large red 54 and red SAIA wordmark",
+      "source": "/workspace/generated_images/exec-757463af-1e71-49da-9fd8-26fd989cf0fa.png",
+      "image": "assets/trucks/54.webp"
+    },
+    {
+      "n": "60",
+      "make": "Ford F-150",
+      "sponsor": "Kroger",
+      "scheme": "white hood and roof, blue side panels with bright blue/white geometric stripes, silver 60 outlined black, white Kroger wordmark",
+      "source": "/workspace/generated_images/exec-95f5713b-fe7c-4a39-9843-86fe11197356.png",
+      "image": "assets/trucks/60.webp"
+    },
+    {
+      "n": "88",
+      "make": "Chevrolet Silverado",
+      "sponsor": "Diet Mountain Dew / National Guard",
+      "scheme": "deep emerald green body with sweeping white hood and upper panels, thin red pinstripes, silver-white 88 outlined red, authentic Diet Mountain Dew wordmarks and NATIONAL GUARD rear sides",
+      "source": "/workspace/generated_images/exec-e256a2f5-3c52-4866-9694-d276265aaa93.png",
+      "image": "assets/trucks/88.webp"
+    },
+    {
+      "n": "97",
+      "make": "Chevrolet Silverado",
+      "sponsor": "SuperFile",
+      "scheme": "glossy black body with neon lime electric lightning patterns, large silver-white angular 97 with lime outline, white SUPERFILE wordmark and lime spiral icon",
+      "source": "/workspace/generated_images/exec-d490a2b1-b6fd-49ef-8435-89f07e1686fb.png",
+      "image": "assets/trucks/97.webp"
+    },
+    {
+      "n": "23",
+      "make": "Toyota Tundra",
+      "sponsor": "Hardee's",
+      "scheme": "glossy orange and white body with black accents, large clean orange 23 with white and black outlines, cheerful yellow Hardee's star and white Hardee's wordmark",
+      "source": "/workspace/generated_images/exec-d055e2d4-ad2c-492f-b905-c7a55ea22fe5.png",
+      "image": "assets/trucks/23.webp"
+    },
+    {
+      "n": "42",
+      "make": "Chevrolet Silverado",
+      "sponsor": "BRUNT Workwear",
+      "scheme": "Travis Pastrana BRUNT workwear style: black body, vivid orange slashes and subtle tire-tread accents, white 42 with orange trim and black shadow exactly matching the isolated supplied 42 decal, white BRUNT wordmark",
+      "source": "/workspace/generated_images/exec-5bfa49a8-1287-4c33-87b5-5bd6c945417d.png",
+      "image": "assets/trucks/42.webp"
+    }
+  ]
+}

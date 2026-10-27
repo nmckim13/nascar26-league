@@ -10,7 +10,7 @@
   document.head.append(fontLink);
   const themeLink = document.createElement('link');
   themeLink.rel = 'stylesheet';
-  themeLink.href = 'barl-theme.css?v=6';
+  themeLink.href = 'barl-theme.css?v=7';
   document.head.append(themeLink);
   const activePage = ['profiles.html', 'career.html', 'driver.html'].includes(page) ? 'claim.html' : page;
   const links = [
