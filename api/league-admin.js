@@ -388,7 +388,7 @@ async function handleAction(action, body, user) {
       if (!rows.length) throw Object.assign(new Error('Race not found.'), { status: 404 });
       if (rows[0].status !== 'upcoming' || rows[0].certification_status !== 'draft') throw new Error('Only an upcoming draft race can be opened.');
       const season = await getSeason(rows[0].season_id);
-      if (season.status !== 'open' || season.roster_lock_at === null) throw new Error('Publish the season before opening a race.');
+      if (!['open', 'in_progress'].includes(season.status) || season.roster_lock_at === null) throw new Error('Publish the season before opening a race.');
       await supabaseRequest(`/rest/v1/n26_season_races?id=eq.${raceId}`, { method: 'PATCH', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ status: 'open' }) });
       await supabaseRequest(`/rest/v1/n26_seasons?id=eq.${encodeURIComponent(rows[0].season_id)}&status=eq.open`, { method: 'PATCH', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ status: 'in_progress' }) });
       return { race_id: body.race_id, status: 'open' };
@@ -397,7 +397,7 @@ async function handleAction(action, body, user) {
       if (!body.reason || String(body.reason).trim().length < 3) throw new Error('A reason is required to void a race.');
       return rpc('n26_void_race', { p_race_id: body.race_id, p_reason: String(body.reason).trim() });
     case 'record_results': {
-      const result = await rpc('n26_upsert_race_results_with_stages', {
+      const result = await rpc('n26_upsert_race_results', {
         p_race_id: body.race_id,
         p_results: body.results,
         p_source_version: body.source_version || 'manual-v1',

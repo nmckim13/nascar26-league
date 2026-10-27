@@ -27,8 +27,13 @@ Run `.agents/setup` manually to repair missing prerequisites.
 
 Use `npm test` for the existing league, rulebook, and claim-flow checks. The
 public HTML has no bundler or build step. Asset generators still require their
-source inputs; setup does not regenerate tracked artwork. Start preview servers
-with `amp orb service start` rather than backgrounding them in setup.
+source inputs; setup does not regenerate tracked artwork.
+
+The static preview is declared in `.amp/services.yaml`. Run
+`amp orb services ensure` to start it and print its public portal URL, or open
+**BARL Preview** from Amp's Portals tab to start it on demand. Amp supervises the
+server across CLI updates and orb pause/resume. The service uses Python 3 from
+setup, needs no additional dependencies, and checks `/rules.html` for readiness.
 
 Setup does not create an environment file, log in to external services, start
 databases, apply Supabase migrations, or change production data. Authenticated
@@ -47,6 +52,19 @@ node --check api/league-admin.js
 node --check scripts/admin-page.js
 git diff --check
 ```
+
+`npm test` also covers opening consecutive rounds through the commissioner API
+with a simulated Supabase transport. CI separately runs the actual result-entry
+and appeal-correction SQL against a disposable PostgreSQL 15 database:
+
+```sh
+psql -X -v ON_ERROR_STOP=1 -d league_test -f scripts/verify-race-results.sql
+```
+
+Use an empty local test database and a superuser for this SQL fixture; never run
+it against the live Supabase project. It loads the result-related schema and RPC
+migrations, supplies minimal Supabase auth prerequisites, and rolls back all test
+objects and data. It is not a full Supabase migration/deployment test.
 
 ## Launch Sequence
 

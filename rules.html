@@ -117,15 +117,6 @@
  .chase-table .start { font-family: var(--font); font-size: 16px; font-weight: 900; color: var(--white); }
  .chase-table .label { font-size: 12px; color: var(--muted); }
 
- /* STAGE POINTS */
- .stage-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
- .stage-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
- .stage-card-title { font-family: var(--font); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; color: var(--yellow); margin-bottom: 10px; }
- .stage-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
- .stage-row:last-child { border-bottom: none; }
- .stage-row .pos { color: var(--muted); font-size: 12px; }
- .stage-row .pts { font-family: var(--font); font-size: 15px; font-weight: 900; color: var(--white); }
-
  /* TIEBREAKER LIST */
  .tb-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
  .tb-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface2); border-radius: 10px; border: 1px solid var(--border); }
@@ -209,7 +200,7 @@
   <div class="rule-card" style="border-color:rgba(255,201,6,0.35);">
    <div class="rule-card-title">A Friendly League With A Real Championship</div>
    <p>BARL is an organized online racing league played in the NASCAR 26 video game. You do not need to follow real-world NASCAR or be an expert at racing games. The goal is to give friends a predictable place to race, learn, compete, and build a season-long story together.</p>
-   <p>Each person controls one stock car. Drivers race on the same virtual track at the same time, earn points from their finishing positions and stage results, and compete for the driver championship. After eight races, the driver with the most championship points is the Season 1 champion.</p>
+   <p>Each person controls one stock car. Drivers race on the same virtual track at the same time, earn finish points only, and compete for the driver championship. After eight races, the driver with the most championship points from their best seven results is the Season 1 champion.</p>
    <div class="quick-callout"><strong>The short version:</strong> claim a car, show up on race night, race clean, and collect as many points as possible across the full season.</div>
   </div>
   <div class="rule-card">
@@ -231,8 +222,8 @@
    <p>Finish the scheduled distance before the other drivers. Unlike a time trial, everyone shares the track. Position, drafting, tire condition, fuel, traffic, and avoiding damage all matter. The fastest single lap does not guarantee the best race finish.</p>
   </div>
   <div class="rule-card">
-   <div class="rule-card-title">How A Race Is Divided</div>
-   <p>A race may be split into stages. A stage is a checkpoint that awards bonus points to the top 10 while the overall race continues. The final finishing order awards the main race points. Winning a stage helps, but winning the race pays the most.</p>
+   <div class="rule-card-title">How A Race Works</div>
+   <p>Drivers race the full scheduled distance, and the official finishing order determines finish points. Manage tires, fuel, and traffic throughout the race to reach the checkered flag in the best position possible.</p>
    <ul class="rule-list">
     <li><strong>Qualifying</strong> determines the starting order.</li>
     <li><strong>Green flag</strong> means the race is active at full speed.</li>
@@ -284,7 +275,7 @@
    <div class="plain-grid">
     <div class="plain-item"><strong>1 · Check in</strong><span>Confirm your identity, number, and connection.</span></div>
     <div class="plain-item"><strong>2 · Qualify</strong><span>Set a valid lap to establish the starting grid.</span></div>
-    <div class="plain-item"><strong>3 · Race</strong><span>Complete the stages and full scheduled distance.</span></div>
+    <div class="plain-item"><strong>3 · Race</strong><span>Complete the full scheduled distance.</span></div>
     <div class="plain-item"><strong>4 · Results</strong><span>Race control records the official finishing order and opens review.</span></div>
    </div>
   </div>
@@ -326,7 +317,7 @@
   <div class="section-title">How The Championship Works</div>
   <div class="rule-card">
    <div class="rule-card-title">Eight Races, No Reset</div>
-   <p>Season 1 is a straight points championship. The driver championship counts each driver’s best seven of eight race scores. One lowest score is dropped, including a zero for a missed race. A race score includes finish points plus both stages. Only one race can be dropped: a second missed race still counts as zero. After every completed championship race, each driver’s lowest score so far is removed. After five races, the best four count; after eight, the best seven count. After the opener, everyone has zero counting points, with full-season results used for tiebreakers. There is no playoff cutoff or points reset. The driver with the most points after Race 8 is the champion.</p>
+   <p>Season 1 is a straight points championship. The driver championship counts each driver’s best seven of eight race scores. One lowest score is dropped, including a zero for a missed race. A race score consists of finish points only. Only one race can be dropped: a second missed race still counts as zero. After every completed championship race, each driver’s lowest score so far is removed. After five races, the best four count; after eight, the best seven count. After the opener, everyone has zero counting points, with full-season results used for tiebreakers. There is no playoff cutoff or points reset. The driver with the most points after Race 8 is the champion.</p>
   </div>
   <div class="rule-card">
    <div class="rule-card-title">Race Points</div>
@@ -334,10 +325,6 @@
    <table class="points-table"><thead><tr><th>Finish</th><th>Points</th><th>Finish</th><th>Points</th></tr></thead><tbody id="active-points-body">
     <tr class="highlight"><td>1st</td><td class="pts">55</td><td>13th</td><td class="pts">24</td></tr><tr><td>2nd</td><td class="pts">35</td><td>14th</td><td class="pts">23</td></tr><tr><td>3rd</td><td class="pts">34</td><td>15th</td><td class="pts">22</td></tr><tr><td>4th</td><td class="pts">33</td><td>16th</td><td class="pts">21</td></tr><tr><td>5th</td><td class="pts">32</td><td>17th</td><td class="pts">20</td></tr><tr><td>6th</td><td class="pts">31</td><td>18th</td><td class="pts">19</td></tr><tr><td>7th</td><td class="pts">30</td><td>19th</td><td class="pts">18</td></tr><tr><td>8th</td><td class="pts">29</td><td>20th</td><td class="pts">17</td></tr><tr><td>9th</td><td class="pts">28</td><td>21st</td><td class="pts">16</td></tr><tr><td>10th</td><td class="pts">27</td><td>22nd</td><td class="pts">15</td></tr><tr><td>11th</td><td class="pts">26</td><td>23rd</td><td class="pts">14</td></tr><tr><td>12th</td><td class="pts">25</td><td>24th</td><td class="pts">13</td></tr>
    </tbody></table>
-  </div>
-  <div class="rule-card">
-   <div class="rule-card-title">Stage Points</div>
-   <p>At each scoring stage, the top 10 receive bonus points: 10 for first, 9 for second, continuing down to 1 point for 10th. Stage points are added to race points. A driver can therefore improve a difficult night by running well early.</p>
   </div>
   <div class="rule-card">
    <div class="rule-card-title">Championship Tiebreakers</div>
@@ -350,7 +337,7 @@
   <div class="section-title">Attendance And Technical Problems</div>
   <div class="rule-card">
    <div class="rule-card-title">If You Cannot Race</div>
-   <p>Tell the commissioner as early as possible in Discord. A driver who does not start is recorded as DNS and earns no race, stage, attendance, or qualifying credit for that round. One missed race can be the dropped score for the driver championship; further absences remain zero-point results. Advance notice helps race control prepare the lobby and determine whether a registered reserve is needed.</p>
+   <p>Tell the commissioner as early as possible in Discord. A driver who does not start is recorded as DNS and earns no finish points, attendance, or qualifying credit for that round. One missed race can be the dropped score for the driver championship; further absences remain zero-point results. Advance notice helps race control prepare the lobby and determine whether a registered reserve is needed.</p>
   </div>
   <div class="rule-card">
    <div class="rule-card-title">Disconnects And Game Failures</div>
@@ -361,7 +348,7 @@
    <ul class="rule-list">
     <li><strong>DNS — Did Not Start:</strong> the driver never begins the race and receives zero.</li>
     <li><strong>DNF — Did Not Finish:</strong> the driver started but did not reach the finish; the official classified position is used.</li>
-    <li><strong>DQ — Disqualified:</strong> the start remains on the record, but championship and stage points are zero.</li>
+    <li><strong>DQ — Disqualified:</strong> the start remains on the record, but finish points are zero.</li>
    </ul>
   </div>
  </section>
@@ -412,7 +399,6 @@
    <div class="plain-item"><strong>Tight</strong><span>The front tires lack grip and the car does not want to turn enough.</span></div>
    <div class="plain-item"><strong>Overcut / undercut</strong><span>Pit timing strategies used to gain track position.</span></div>
    <div class="plain-item"><strong>Overlap</strong><span>Part of one car is alongside another, requiring both drivers to leave room.</span></div>
-   <div class="plain-item"><strong>Stage</strong><span>An in-race scoring checkpoint that awards bonus points to the top 10.</span></div>
    <div class="plain-item"><strong>Steward / race control</strong><span>The commissioner or official managing the event and reviewing incidents.</span></div>
   </div>
  </section>

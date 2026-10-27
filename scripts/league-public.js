@@ -202,8 +202,6 @@ export function toLegacyDisplayData(data) {
       car_number: result.car_number,
       finish_position: result.finish_position,
       points_earned: result.points_earned,
-      stage1_points: result.stage1_points || 0,
-      stage2_points: result.stage2_points || 0,
       dnf: result.finish_status === 'dnf',
       disqualified: result.finish_status === 'disqualified',
       playoff_points: 0,

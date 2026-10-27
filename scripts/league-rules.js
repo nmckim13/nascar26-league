@@ -108,11 +108,6 @@ function pointsForPosition(position, pointsByPosition) {
   return points;
 }
 
-function stagePoints(result) {
-  return (resultValue(result, 'stage1Points', 'stage1_points') || 0)
-    + (resultValue(result, 'stage2Points', 'stage2_points') || 0);
-}
-
 function calculateStandings(entries, results, pointsByPosition) {
   const drivers = new Map(entries.map(entry => [entry.driverId, {
     driverId: entry.driverId,
@@ -132,7 +127,7 @@ function calculateStandings(entries, results, pointsByPosition) {
     driver.starts += 1;
     driver.finishes.push(result.finishPosition);
     driver.positions.push(result.finishPosition);
-    driver.points += isDisqualified ? 0 : pointsForPosition(result.finishPosition, pointsByPosition) + stagePoints(result);
+    driver.points += isDisqualified ? 0 : pointsForPosition(result.finishPosition, pointsByPosition);
     if (result.finishPosition === 1 && !isDisqualified) driver.wins += 1;
   });
 
@@ -216,8 +211,6 @@ function calculateSeasonStats({ entries, races, results, pointsByPosition, stric
     const finishPosition = resultValue(result, 'finishPosition', 'finish_position');
     const qualifyingPosition = resultValue(result, 'qualifyingPosition', 'qualifying_position');
     const points = resultValue(result, 'pointsEarned', 'points_earned');
-    const stage1Points = resultValue(result, 'stage1Points', 'stage1_points') || 0;
-    const stage2Points = resultValue(result, 'stage2Points', 'stage2_points') || 0;
     const raceKey = race.id;
     const isDisqualified = resultValue(result, 'finishStatus', 'finish_status') === 'disqualified';
 
@@ -239,11 +232,7 @@ function calculateSeasonStats({ entries, races, results, pointsByPosition, stric
       throw new Error(`Finish position ${finishPosition} exceeds the starter count for race ${race.id}.`);
     }
 
-    const expectedFinishPoints = isDisqualified ? 0 : pointsForPosition(finishPosition, pointsByPosition);
-    const expectedPoints = expectedFinishPoints + (isDisqualified ? 0 : stage1Points + stage2Points);
-    if ([stage1Points, stage2Points].some(value => !Number.isInteger(value) || value < 0)) {
-      throw new Error(`Stage points must be non-negative integers for ${driver.driverId}.`);
-    }
+    const expectedPoints = isDisqualified ? 0 : pointsForPosition(finishPosition, pointsByPosition);
     if (pointsSource !== 'published' && points !== undefined && points !== null && points !== expectedPoints) {
       throw new Error(`Stored points do not match the rules for race ${race.id}, position ${finishPosition}.`);
     }
@@ -252,8 +241,6 @@ function calculateSeasonStats({ entries, races, results, pointsByPosition, stric
     driver.starts += 1;
     driver.finishes.push(finishPosition);
     driver.points += awardedPoints;
-    driver.stage1Points = (driver.stage1Points || 0) + (isDisqualified ? 0 : stage1Points);
-    driver.stage2Points = (driver.stage2Points || 0) + (isDisqualified ? 0 : stage2Points);
     if (finishPosition === 1 && !isDisqualified) driver.wins += 1;
     if (finishPosition <= 5 && !isDisqualified) driver.topFives += 1;
     if (resultValue(result, 'finishStatus', 'finish_status') === 'dnf' || result.dnf === true) driver.dnfs += 1;

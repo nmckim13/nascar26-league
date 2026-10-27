@@ -2,7 +2,7 @@
   "name": "nascar26-league",
   "private": true,
   "scripts": {
-    "test": "node scripts/verify-league-model.js && node scripts/verify-rulebook-fixture.js && node scripts/verify-claim-flow.js"
+    "test": "node scripts/verify-league-model.js && node scripts/verify-rulebook-fixture.js && node scripts/verify-claim-flow.js && node scripts/verify-admin-flow.mjs"
   },
   "devDependencies": {
     "sharp": "0.35.5"

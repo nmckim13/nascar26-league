@@ -89,7 +89,7 @@
         return { car_number: assignment.car_number, gamertag: driver.gamertag || driver.display_name || 'Car #' + assignment.car_number, first_name: driver.first_name || '', last_name: driver.last_name || '', driver_id: assignment.driver_id, team_id: assignment.team_id, team_name: teams[assignment.team_id] || '' };
       }),
       races: data.races.map(race => ({ id: race.id, race_number: race.race_number, track_name: race.track_name, track_short: race.track_short, race_type: race.race_type, starters_count: race.starters_count, race_date: race.race_date, status: race.status, certification_status: race.certification_status, published_at: race.published_at, appeal_ends_at: race.appeal_ends_at, voided_at: race.voided_at, void_reason: race.void_reason })),
-      results: data.results.map(result => ({ ...result, race_id: result.race_id, car_number: result.car_number, team_name: teams[result.team_id] || '', finish_position: result.finish_position, points_earned: result.points_earned, dnf: result.finish_status === 'dnf', disqualified: result.finish_status === 'disqualified', stage1_points: result.stage1_points || 0, stage2_points: result.stage2_points || 0, playoff_points: 0 })),
+      results: data.results.map(result => ({ ...result, race_id: result.race_id, car_number: result.car_number, team_name: teams[result.team_id] || '', finish_position: result.finish_position, points_earned: result.points_earned, dnf: result.finish_status === 'dnf', disqualified: result.finish_status === 'disqualified', playoff_points: 0 })),
     };
   }
 

@@ -161,7 +161,7 @@
     <label>Qualifying status<select id="qualifyingStatus"><option value="not_recorded">Not recorded</option><option value="valid">Valid</option><option value="canceled">Canceled</option><option value="incomplete">Incomplete</option><option value="voided">Voided</option></select></label>
     <div class="form" style="align-content:end"><button id="saveRaceSetup" type="button" class="secondary">Save race setup</button></div>
    </div>
-   <label style="display:block;margin-top:12px">Result JSON<textarea id="resultJson" rows="7" placeholder='[{"driver_id":"...","team_id":"...","car_number":"5","start_status":"started","finish_status":"classified","finish_position":1,"stage1_points":10,"stage2_points":9,"qualifying_valid":true,"qualifying_position":1}]'></textarea></label>
+   <label style="display:block;margin-top:12px">Result JSON<textarea id="resultJson" rows="7" placeholder='[{"driver_id":"...","team_id":"...","car_number":"5","start_status":"started","finish_status":"classified","finish_position":1,"qualifying_valid":true,"qualifying_position":1}]'></textarea></label>
    <div class="muted" style="font-size:11px;line-height:1.45;margin-top:6px">Allowed finish statuses: classified, dnf, or disqualified. A disqualified starter keeps the official finish position but receives zero points and finish-quality credit.</div>
    <div class="row" style="margin-top:10px"><button id="recordResults" type="button">Save draft results</button><button id="correctResults" type="button" class="secondary">Apply appeal correction</button></div>
   </section>

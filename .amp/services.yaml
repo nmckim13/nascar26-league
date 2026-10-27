@@ -1,0 +1,8 @@
+services:
+  league-preview:
+    command: python3 -m http.server "$PORT" --bind 0.0.0.0
+    port: 8000
+    health: /rules.html
+    portal:
+      title: BARL Preview
+      description: Static site preview only. Vercel API handlers do not run here; signed-in pages still require configured authentication.
