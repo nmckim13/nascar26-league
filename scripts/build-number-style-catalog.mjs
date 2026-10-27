@@ -13,11 +13,20 @@ const DEFAULTS_OUTPUT = path.join(ROOT, 'scripts', 'number-style-defaults.js');
 const PREFERRED_DEFAULTS = {
   '12': '12:menards-black',
   '23': '23:hardee-s',
-  '42': '42:dollar-tree-red-outline',
+  '42': '42:travis-pastrana-brunt',
   '43': '43:dollar-tree-patriotic',
   '48': '48:ally-bank',
   '84': '84:carvana-sunset',
 };
+
+const CUSTOM_STYLES = [
+  {
+    "key": "42:travis-pastrana-brunt",
+    "label": "TRAVIS PASTRANA | BRUNT TRUCK",
+    "image": "assets/driver-numbers/42/travis-pastrana-brunt.png",
+    "sourcePage": "https://diecastcharv.com/2026-travis-pastrana-truck-number-cards/"
+  }
+];
 
 const DRIVERS = {
   '1': 'ross-chastain', '2': 'austin-cindric', '5': 'kyle-larson', '6': 'brad-keselowski',
@@ -299,6 +308,10 @@ async function mapLimit(items, limit, callback) {
 }
 
 async function main() {
+  // Preserve commissioned artwork before rebuilding the downloaded Cup catalog.
+  const customArtwork = await Promise.all(CUSTOM_STYLES.map(async style => ({
+    style, buffer: await fs.readFile(path.join(ROOT, style.image)),
+  })));
   await fs.rm(ASSET_DIR, { recursive: true, force: true });
   await fs.mkdir(ASSET_DIR, { recursive: true });
   const catalog = {};
@@ -347,6 +360,14 @@ async function main() {
       await fs.mkdir(path.dirname(destination), { recursive: true });
       await fs.writeFile(destination, output);
     });
+  }
+
+  for (const { style, buffer } of customArtwork) {
+    const number = style.key.split(':')[0];
+    catalog[number] = [style, ...(catalog[number] || []).filter(item => item.key !== style.key)];
+    const destination = path.join(ROOT, style.image);
+    await fs.mkdir(path.dirname(destination), { recursive: true });
+    await fs.writeFile(destination, buffer);
   }
 
   const header = '// Generated from the public 2026 Cup number-card catalog. Rebuild with scripts/build-number-style-catalog.mjs.\n';

@@ -890,6 +890,12 @@ export const NUMBER_STYLES = {
   ],
   "42": [
     {
+      "key": "42:travis-pastrana-brunt",
+      "label": "TRAVIS PASTRANA | BRUNT TRUCK",
+      "image": "assets/driver-numbers/42/travis-pastrana-brunt.png",
+      "sourcePage": "https://diecastcharv.com/2026-travis-pastrana-truck-number-cards/"
+    },
+    {
       "key": "42:dollar-tree-red-outline",
       "label": "DOLLAR TREE | RED OUTLINE",
       "image": "assets/driver-numbers/42/dollar-tree-red-outline.png",
