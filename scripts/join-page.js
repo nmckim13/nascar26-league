@@ -4,6 +4,48 @@ document.querySelectorAll('.site-header .nav-cta, .site-header .drawer-cta').for
   link.textContent = 'Driver login →';
 });
 
+const interestForm = document.getElementById('interest-form');
+interestForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (interestForm.getAttribute('aria-busy') === 'true') return;
+  const fields = new FormData(interestForm);
+  const button = interestForm.querySelector('button[type="submit"]');
+  const message = document.getElementById('interest-error');
+  message.textContent = '';
+  button.disabled = true;
+  button.textContent = 'Saving your interest…';
+  interestForm.setAttribute('aria-busy', 'true');
+  try {
+    const response = await fetch('/api/season-interest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: fields.get('email'), platform: fields.get('platform'), website: fields.get('website') }),
+      signal: AbortSignal.timeout(15000),
+    });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok || body.ok !== true) {
+      throw new Error(response.status === 429
+        ? 'Too many attempts. Please wait 10 minutes and try again.'
+        : response.status === 400
+          ? 'Check your email and choose PlayStation, Xbox, or PC.'
+          : 'The interest list is temporarily unavailable. Please try again shortly.');
+    }
+    interestForm.reset();
+    interestForm.hidden = true;
+    const confirmation = document.getElementById('interest-confirmation');
+    confirmation.hidden = false;
+    confirmation.focus();
+  } catch (error) {
+    message.textContent = error.name === 'TimeoutError' || error.name === 'TypeError'
+      ? 'We could not confirm your submission. Check your connection and try again; repeat submissions will not create duplicate entries.'
+      : error.message;
+  } finally {
+    interestForm.removeAttribute('aria-busy');
+    button.disabled = false;
+    button.textContent = 'Join the interest list →';
+  }
+});
+
 async function loadRecruitmentSummary() {
   const data = await window.__leagueDataReady;
   if (!data) throw new Error('Public season data is unavailable.');

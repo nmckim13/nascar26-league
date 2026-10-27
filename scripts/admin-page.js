@@ -142,6 +142,24 @@ function updateRaceSetup() {
   document.getElementById('qualifyingStatus').value = race.qualifying_status || 'not_recorded';
 }
 
+async function refreshInterest() {
+  const button = document.getElementById('refreshInterest');
+  const list = document.getElementById('seasonInterest');
+  button.disabled = true;
+  list.replaceChildren();
+  setMessage('interestMessage', 'Loading Season 2 interest…');
+  try {
+    const { entries } = await call('season_interest');
+    const platforms = { playstation: 'PlayStation', xbox: 'Xbox', pc: 'PC' };
+    list.innerHTML = entries.map(entry => `<tr><td>${escapeHtml(entry.email)}</td><td>${escapeHtml(platforms[entry.platform] || entry.platform)}</td><td>${escapeHtml(new Date(entry.created_at).toLocaleString())}</td></tr>`).join('');
+    setMessage('interestMessage', entries.length ? `${entries.length} interested ${entries.length === 1 ? 'racer' : 'racers'} · newest first` : 'No Season 2 interest yet. Share the Season 2 page to get started.');
+  } catch (error) {
+    setMessage('interestMessage', 'Unable to load the private interest list. Try refreshing shortly.', true);
+  } finally {
+    button.disabled = false;
+  }
+}
+
 async function refresh() {
   setMessage('overviewMessage', 'Loading commissioner data...');
   try {
@@ -174,6 +192,7 @@ async function runAction(action) {
 async function init() {
   state.auth = await requireUser('admin.html');
   if (!state.auth) return;
+  document.getElementById('refreshInterest').addEventListener('click', refreshInterest);
   document.getElementById('applications').addEventListener('click', async event => {
     const button = event.target.closest('[data-application-action]');
     if (!button) return;
@@ -464,6 +483,7 @@ async function init() {
     } catch (error) { setMessage('actionMessage', error.message, true); }
   });
   await refresh();
+  if (state.bundle) await refreshInterest();
 }
 
 async function runRaceAction(action) {

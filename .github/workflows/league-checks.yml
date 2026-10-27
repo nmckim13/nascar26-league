@@ -19,11 +19,14 @@ jobs:
           node scripts/verify-rulebook-fixture.js
           node scripts/verify-claim-flow.js
           node scripts/verify-admin-flow.mjs
+          node scripts/verify-season-interest.mjs
       - name: Check JavaScript syntax
         run: |
           node --check api/league-admin.js
           node --check api/claim-webhook.js
+          node --check api/season-interest.js
           node --check scripts/admin-page.js
+          node --check scripts/join-page.js
           node --check scripts/auth-nav.js
           node --check scripts/auth-page.js
           node --check scripts/claim-page.js
@@ -73,3 +76,4 @@ jobs:
           psql -X -v ON_ERROR_STOP=1 -f scripts/verify-race-results.sql
           psql -X -v ON_ERROR_STOP=1 -f scripts/verify-claim-sync.sql
           psql -X -v ON_ERROR_STOP=1 -f scripts/verify-season-contracts.sql
+          psql -X -v ON_ERROR_STOP=1 -f scripts/verify-season-interest.sql

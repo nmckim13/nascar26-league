@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Season 2 — Below Average Racing League</title>
-  <meta name="description" content="Below average name. Anything but average racing. Explore BARL Season 2 and follow the current NASCAR 26 championship. Dates and registration details coming soon.">
+  <meta name="description" content="Below average name. Anything but average racing. Join the BARL Season 2 interest list for updates and follow the current NASCAR 26 championship.">
   <link rel="stylesheet" href="n26.css?v=barl-2026-5">
-  <link rel="stylesheet" href="recruitment.css?v=2">
+  <link rel="stylesheet" href="recruitment.css?v=3">
   <script src="scripts/public-bootstrap.js?v=daytona-20260927" defer></script>
   <script src="scripts/site-header.js?v=8" defer></script>
   <script src="scripts/league-rules.js?v=public-results-1" defer></script>
@@ -22,10 +22,10 @@
         <h1 id="recruit-title">Below average name.<br><span>Anything but</span><br><em>average racing.</em></h1>
         <p class="recruit-intro">A NASCAR 26 league for racers who live for close battles, have a good time, and make every lap count.</p>
         <div class="recruit-actions">
-          <a class="recruit-button" href="#season-2">Explore Season 2 <span aria-hidden="true">↗</span></a>
+          <a class="recruit-button" href="#season-2">Join the Season 2 list <span aria-hidden="true">↗</span></a>
           <a class="recruit-button recruit-button-outline" href="index.html">Follow Season 1 <span aria-hidden="true">→</span></a>
         </div>
-        <p class="recruit-notice">Season 2 dates and registration details coming soon.</p>
+        <p class="recruit-notice">Season 2 interest is open. Dates and registration details coming soon.</p>
       </div>
       <div class="recruit-visual">
         <img class="recruit-truck recruit-truck-back" src="assets/trucks/9.webp" alt="" aria-hidden="true" width="1536" height="1024">
@@ -41,8 +41,28 @@
     </section>
 
     <section class="recruit-details" id="season-2" aria-labelledby="season-2-title">
-      <div><p class="recruit-kicker">Season 2 / Coming soon</p><h2 id="season-2-title">Your next chapter<br>starts on the grid.</h2></div>
-      <div><p>Get a feel for BARL by following Season 1: meet the drivers, watch the results come in, and see how the championship takes shape.</p><p><strong>Season 2 dates and registration details are coming soon.</strong> Registration is not open on this page.</p><div class="recruit-detail-links"><a href="index.html">Follow Season 1 →</a><a href="rules.html">Read the league rules →</a></div></div>
+      <div><p class="recruit-kicker">Season 2 / Interest list open</p><h2 id="season-2-title">Your next chapter<br>starts on the grid.</h2><p class="recruit-interest-intro">Want in next season? Leave your email and racing platform so the commissioner can contact you with Season 2 updates.</p><p><strong>No account needed. No seat promised.</strong> This is an interest list, not registration or a roster application.</p><div class="recruit-detail-links"><a href="index.html">Follow Season 1 →</a><a href="rules.html">Read the league rules →</a></div></div>
+      <div class="recruit-interest">
+        <form id="interest-form" aria-labelledby="interest-form-title">
+          <h3 id="interest-form-title">Get on the radar</h3>
+          <label for="interest-email">Email address</label>
+          <input id="interest-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required>
+          <label for="interest-platform">Racing platform</label>
+          <select id="interest-platform" name="platform" required>
+            <option value="">Choose your platform</option>
+            <option value="playstation">PlayStation</option>
+            <option value="xbox">Xbox</option>
+            <option value="pc">PC</option>
+          </select>
+          <div class="recruit-honeypot" aria-hidden="true"><label for="interest-website">Leave this empty</label><input id="interest-website" name="website" tabindex="-1" autocomplete="off"></div>
+          <p class="recruit-interest-privacy" id="interest-privacy">By joining, you agree to be contacted about BARL Season 2. Your email and platform are visible only to the commissioner, never on the public roster. One entry per email; repeat submissions keep your original platform.</p>
+          <button class="recruit-button" type="submit" aria-describedby="interest-privacy">Join the interest list →</button>
+          <p id="interest-error" class="recruit-interest-error" role="alert"></p>
+        </form>
+        <div id="interest-confirmation" class="recruit-interest-confirmation" role="status" tabindex="-1" hidden>
+          <p class="recruit-kicker">Interest received</p><h3>Thanks for raising your hand.</h3><p>Watch your inbox for Season 2 updates from the commissioner. No account or roster spot has been created.</p><a href="index.html" class="recruit-button recruit-button-outline">Follow Season 1 →</a>
+        </div>
+      </div>
     </section>
 
     <section class="recruit-live" aria-labelledby="recruit-live-title">

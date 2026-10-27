@@ -59,6 +59,13 @@
    <div style="overflow:auto;margin-top:12px"><table><thead><tr><th>Applicant</th><th>Gamertag</th><th>Requested seat</th><th>Discord</th><th>Submitted</th><th>Decision</th></tr></thead><tbody id="applications"></tbody></table></div>
    <div id="applicationMessage" class="message"></div>
   </section>
+  <section class="card wide" aria-labelledby="interest-title">
+   <h2 id="interest-title">Season 2 Interest List</h2>
+   <p class="muted">Private contact list, not roster applications. Joining does not create an account, reserve a seat, or send an automatic email.</p>
+   <button id="refreshInterest" class="secondary" type="button" style="width:auto;margin-top:12px">Refresh interest list</button>
+   <p id="interestMessage" class="message" role="status">Loading Season 2 interest…</p>
+   <div style="overflow:auto"><table><thead><tr><th scope="col">Email</th><th scope="col">Platform</th><th scope="col">Joined</th></tr></thead><tbody id="seasonInterest"></tbody></table></div>
+  </section>
   <section class="card">
    <h2>Add Driver</h2>
     <form id="driverForm" class="form">

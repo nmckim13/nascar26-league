@@ -234,6 +234,8 @@ async function handleAction(action, body, user) {
   switch (action) {
     case 'overview':
       return getSeasonBundle(body.season_id);
+    case 'season_interest':
+      return { entries: await supabaseRequest('/rest/v1/n26_season_interest?select=email,platform,created_at&order=created_at.desc') };
     case 'approve_application': {
       if (!body.application_id || !body.season_id) throw new Error('An application and draft season are required.');
       return rpc('n26_review_claim', {

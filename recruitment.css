@@ -57,6 +57,21 @@ html[data-barl-page="join"] body.recruitment .recruit-copy h1 {
 .recruitment .recruit-detail-links { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 22px; }
 .recruitment .recruit-detail-links a, .recruitment .recruit-live a, .recruitment .recruit-member a { color: var(--recruit-yellow); font-size: 11px; font-weight: 700; text-transform: uppercase; }
 .recruitment .recruit-detail-links a:hover, .recruitment .recruit-live a:hover, .recruitment .recruit-member a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.recruitment .recruit-details .recruit-interest-intro { margin-top: 24px; }
+.recruitment .recruit-interest { min-width: 0; padding: clamp(20px, 3vw, 32px); background: var(--barl-panel); border: 1px solid var(--barl-line); border-top: 3px solid var(--recruit-yellow); border-radius: 4px; }
+.recruitment .recruit-interest h3 { margin: 0 0 24px; font: italic 700 32px/1.05 var(--barl-display); text-transform: uppercase; }
+.recruitment #interest-form { display: grid; gap: 12px; }
+.recruitment #interest-form[hidden], .recruitment #interest-confirmation[hidden] { display: none; }
+.recruitment .recruit-interest label { font-size: 12px; font-weight: 600; }
+.recruitment .recruit-interest :is(input, select) { width: 100%; min-height: 48px; padding: 12px; font: inherit; box-sizing: border-box; }
+.recruitment .recruit-details .recruit-interest-privacy { margin: 8px 0; font-size: 12px; line-height: 1.65; }
+.recruitment .recruit-interest .recruit-button { min-height: 48px; font: 700 12px var(--barl-font); }
+.recruitment .recruit-interest .recruit-button:disabled { opacity: .65; cursor: wait; }
+.recruitment .recruit-details .recruit-interest-error { color: #ff9ca9; font-size: 13px; margin: 0; }
+.recruitment .recruit-interest-error:empty { display: none; }
+.recruitment .recruit-interest-confirmation { outline: none; scroll-margin-top: 112px; }
+.recruitment .recruit-interest-confirmation:focus-visible { outline: 2px solid var(--recruit-yellow); outline-offset: 8px; }
+.recruitment .recruit-honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .recruitment .recruit-live { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1.1fr; gap: 12px; padding: 36px clamp(22px, 4vw, 64px); }
 .recruitment .recruit-live-intro { padding: 20px 18px 20px 0; }
 .recruitment .recruit-live-intro h2 { font-size: clamp(25px, 2.7vw, 36px); }

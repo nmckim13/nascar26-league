@@ -62,6 +62,16 @@ Set these Vercel environment variables for the commissioner API:
 
 Never put `SUPABASE_SERVICE_ROLE_KEY` in HTML, browser JavaScript, GitHub, or a public Vercel variable.
 
+## Season 2 interest list
+
+`/join.html#season-2` collects email and one racing platform (PlayStation, Xbox, or PC) without requiring an account. This is permission to contact someone about Season 2, not registration, a roster application, or a reserved seat. No automatic emails, accounts, driver identities, or assignments are created.
+
+The public `/api/season-interest` endpoint requires the existing server-side `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`. Apply `20261027040000_season_two_interest.sql` before deploying the form/API. Until the migration is present, submissions fail closed with a retry message. This migration is additive and does not modify league results, rosters, or existing claims.
+
+Email addresses are trimmed and lowercased; repeat submissions succeed without adding another entry or changing the original platform. Only the commissioner can read the contact list through the authenticated **Season 2 Interest List** panel in `/admin.html`. Use **Refresh interest list** to see new entries. Submissions are newest first and never included in public season data.
+
+The endpoint uses a honeypot and database-backed limit of ten attempts per client per ten-minute window. Only a keyed hash of the client address is retained for rate limiting, not a raw IP. These controls reduce basic spam; they do not verify mailbox ownership. Treat the list as unverified interest and do not send credentials or grant roster access based on an entry. A commissioner should remove an entry from the private database if its owner asks to stop receiving Season 2 updates.
+
 ## Driver championship: best seven of eight
 
 After each completed championship round, driver points drop exactly one lowest finish-points total from the completed rounds so far. Stage points are not awarded. After N rounds, the best N-1 scores count; after eight, the best seven count. After the opener everyone has zero counting points and full-season sporting tiebreakers determine the order. DNS and missing public result rows score zero, so one absence is covered, never two. Future, exhibition, voided and undersized rounds do not enter the pool; if only seven rounds are completed, the best six scores count. Strict certification still requires explicit result/DNS rows. Team points, race history, attendance and performance statistics retain every result. Existing full-season sporting tiebreakers apply after best-seven points. Public standings, profiles, season archives and rating certification share the same scoring calculation.
