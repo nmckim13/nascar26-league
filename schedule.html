@@ -138,7 +138,7 @@
 
 <div class="ticker">
  <span class="ticker-label yellow">Schedule</span>
- <span id="schedule-ticker-summary">Season 1 · Eight Races · Daytona to Chicagoland</span>
+ <span id="schedule-ticker-summary">Season 1 · Eight Races · Daytona to Rockingham</span>
 </div>
 
 <nav class="nav">
@@ -170,7 +170,7 @@
  <div class="page-header">
  <div>
  <h1>Season 1 Schedule</h1>
-<p id="schedule-summary">8 races · no playoff reset · Daytona to Chicagoland</p>
+<p id="schedule-summary">8 races · no playoff reset · Daytona to Rockingham</p>
  </div>
  </div>
 
@@ -231,13 +231,13 @@
    <div class="rr-status" id="status-5"><span class="pill gray">Upcoming</span></div>
   </article>
 
-  <article class="race-row track-iowa" id="row-6">
+  <article class="race-row track-dover" id="row-6">
    <div class="rr-content">
-    <div class="rr-kicker"><div class="rr-num">06</div><span class="rr-round">Heartland short track</span></div>
-    <h2 class="rr-track">Iowa Speedway</h2>
+    <div class="rr-kicker"><div class="rr-num">06</div><span class="rr-round">The Monster Mile</span></div>
+    <h2 class="rr-track">Dover Motor Speedway</h2>
     <div class="rr-meta"><span>Sun · Nov 1</span><span>2:00 PM CT</span></div>
    </div>
-   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/iowa.jpg" alt=""></div>
+   <div class="rr-art" aria-hidden="true" hidden></div>
    <div class="rr-status" id="status-6"><span class="pill gray">Upcoming</span></div>
   </article>
 
@@ -253,7 +253,7 @@
     <h2 class="rr-track">Phoenix Raceway</h2>
     <div class="rr-meta"><span>Sun · Nov 15</span><span>2:00 PM CT</span></div>
    </div>
-   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/iowa.jpg" alt=""></div>
+   <div class="rr-art" aria-hidden="true" hidden></div>
    <div class="rr-status" id="status-7"><span class="pill gray">Upcoming</span></div>
   </article>
  </div>
@@ -267,13 +267,13 @@
  </div>
 
  <div class="schedule-grid">
-  <article class="race-row track-chicagoland" id="row-8">
+  <article class="race-row track-rockingham" id="row-8">
    <div class="rr-content">
     <div class="rr-kicker"><div class="rr-num">08</div><span class="rr-round">Championship</span></div>
-    <h2 class="rr-track">Chicagoland Speedway</h2>
+    <h2 class="rr-track">Rockingham Speedway</h2>
     <div class="rr-meta"><span>Sun · Nov 22</span><span>2:00 PM CT</span></div>
    </div>
-   <div class="rr-art" aria-hidden="true"><img src="assets/schedule/scenes/chicagoland.jpg" alt=""></div>
+   <div class="rr-art" aria-hidden="true" hidden></div>
    <div class="rr-status" id="status-8"><span class="pill yellow">Finale</span></div>
   </article>
  </div>
@@ -300,7 +300,7 @@
  const isNormalized = display.source === 'normalized';
  const scheduleText = display.source === 'prelaunch'
    ? 'Season 1 · Eight Sundays · September 27 to November 22'
-   : `Season 1 · ${races.length} Races · Daytona to Chicagoland`;
+   : `Season 1 · ${races.length} Races · ${races[0]?.track_short || "Season opener"} to ${races.at(-1)?.track_short || "Season finale"}`;
  document.getElementById('schedule-ticker-summary').textContent = scheduleText;
  document.getElementById('schedule-summary').textContent = display.source === 'prelaunch'
    ? '8 races · Sundays at 2:00 PM Central · off November 8'
@@ -311,6 +311,18 @@
  const row = document.getElementById('row-' + r.race_number);
  const status = document.getElementById('status-' + r.race_number);
  if (!row) return;
+ row.querySelector('.rr-track').textContent = r.track_name || r.track_short;
+ const sceneByTrack = { Daytona: 'daytona', Nashville: 'nashville', Bristol: 'bristol', 'Watkins Glen': 'watkins-glen', Charlotte: 'charlotte', Iowa: 'iowa', Chicagoland: 'chicagoland' };
+ const art = row.querySelector('.rr-art');
+ const scene = sceneByTrack[r.track_short];
+ if (art) {
+   art.hidden = !scene;
+   if (scene) {
+     let image = art.querySelector('img');
+     if (!image) { image = document.createElement('img'); image.alt = ''; art.appendChild(image); }
+     image.src = `assets/schedule/scenes/${scene}.jpg`;
+   }
+ }
  row.classList.remove('is-next', 'is-completed');
  if (r.status === 'voided') {
  if (status) status.innerHTML = '<span class="pill gray"> Voided</span>';
