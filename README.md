@@ -55,16 +55,19 @@ git diff --check
 
 `npm test` also covers opening consecutive rounds through the commissioner API
 with a simulated Supabase transport. CI separately runs the actual result-entry
-and appeal-correction SQL against a disposable PostgreSQL 15 database:
+and appeal-correction SQL plus claim promotion/account linking against a
+disposable PostgreSQL 15 database:
 
 ```sh
 psql -X -v ON_ERROR_STOP=1 -d league_test -f scripts/verify-race-results.sql
+psql -X -v ON_ERROR_STOP=1 -d league_test -f scripts/verify-claim-sync.sql
 ```
 
-Use an empty local test database and a superuser for this SQL fixture; never run
-it against the live Supabase project. It loads the result-related schema and RPC
-migrations, supplies minimal Supabase auth prerequisites, and rolls back all test
-objects and data. It is not a full Supabase migration/deployment test.
+Use an empty local test database and a superuser for these SQL fixtures; never
+run them against the live Supabase project. They load the relevant schema and
+RPC migrations, supply minimal Supabase auth and legacy intake prerequisites,
+and roll back all test objects and data. They are not full Supabase
+migration/deployment tests.
 
 ## Launch Sequence
 

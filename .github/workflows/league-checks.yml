@@ -63,10 +63,12 @@ jobs:
           --health-retries 10
     steps:
       - uses: actions/checkout@v4
-      - name: Verify result-entry and appeal RPCs in PostgreSQL
+      - name: Verify result-entry, appeal, and claim-linking RPCs in PostgreSQL
         env:
           PGHOST: localhost
           PGUSER: postgres
           PGDATABASE: league_test
           PGPASSWORD: league-test
-        run: psql -X -v ON_ERROR_STOP=1 -f scripts/verify-race-results.sql
+        run: |
+          psql -X -v ON_ERROR_STOP=1 -f scripts/verify-race-results.sql
+          psql -X -v ON_ERROR_STOP=1 -f scripts/verify-claim-sync.sql
