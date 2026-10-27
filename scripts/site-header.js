@@ -1,5 +1,8 @@
 (function () {
   const page = location.pathname.split('/').pop() || 'index.html';
+  // Presentation switch: retain league records and administration for a later return.
+  const teamsVisible = false;
+  document.documentElement.dataset.barlTeams = teamsVisible || page === 'admin.html' ? 'visible' : 'paused';
   document.documentElement.dataset.barlPage = page.replace('.html', '') || 'index';
   const fontLink = document.createElement('link');
   fontLink.rel = 'stylesheet';
@@ -7,7 +10,7 @@
   document.head.append(fontLink);
   const themeLink = document.createElement('link');
   themeLink.rel = 'stylesheet';
-  themeLink.href = 'barl-theme.css?v=5';
+  themeLink.href = 'barl-theme.css?v=6';
   document.head.append(themeLink);
   const activePage = ['profiles.html', 'career.html', 'driver.html'].includes(page) ? 'claim.html' : page;
   const links = [
@@ -29,7 +32,7 @@
       <div class="ticker-inner">
         <div class="ticker-item"><span class="ticker-badge">Next Race</span> Race 2 — Nashville Superspeedway</div>
         <div class="ticker-sep"></div>
-        <div class="ticker-item"><span class="ticker-badge red">Daytona Winner</span> Nolan McKim · #88 Trackhouse</div>
+        <div class="ticker-item"><span class="ticker-badge red">Daytona Winner</span> Nolan McKim · #88</div>
       </div>
     </div>
     <nav class="nav site-nav" aria-label="Primary navigation">

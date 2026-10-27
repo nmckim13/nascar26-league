@@ -10,7 +10,7 @@
       : escape(label);
     const image = art
       ? `<img class="grid-car-image" src="assets/cars/${escape(number)}.webp" alt="Number ${escape(number)} ${escape(art.sponsor)} ${escape(art.make)}" width="1536" height="1024" loading="lazy" decoding="async">`
-      : `<div class="grid-car-pending"><span>${escape(team || 'BARL Racing')}</span><strong>${escape(label)}</strong><small>Car artwork coming soon</small></div>`;
+      : `<div class="grid-car-pending"><span>BARL Racing</span><strong>${escape(label)}</strong><small>Car artwork coming soon</small></div>`;
     return `<a class="grid-driver-card" href="career.html?id=${encodeURIComponent(driverId)}" target="_top" style="--livery:${color}" aria-label="View ${escape(name)}, car ${escape(label)}, career profile">
       <div class="grid-driver-heading"><div><p class="grid-driver-team">${escape(team || 'Team pending')}</p><h2>${escape(name)}</h2></div><span class="grid-driver-number">${numberBadge}</span></div>
       <div class="grid-car-stage">${image}</div>
