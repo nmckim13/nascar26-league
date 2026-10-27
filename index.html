@@ -234,7 +234,7 @@
  @media (max-width:767px) { .storyline-grid { grid-template-columns:1fr; } .storyline-card { min-height:190px; } }
  </style>
  <link rel="stylesheet" href="n26.css?v=barl-2026-5">
- <script src="./scripts/site-header.js?v=5" defer></script>
+ <script src="./scripts/site-header.js?v=6" defer></script>
 </head>
 <body>
 
@@ -318,8 +318,9 @@
   <div class="lrc-header"><span> Last Race Winner</span></div>
   <div class="lrc-body">
    <div class="placeholder-icon" id="last-race-icon"></div>
-   <div class="placeholder-title" id="last-race-title">Season 1 Hasn't Started</div>
-   <div class="placeholder-sub" id="last-race-sub">The winner will be posted here after Race 1</div>
+   <div class="winner-copy"><div class="placeholder-title" id="last-race-title">Loading results…</div>
+   <div class="placeholder-sub" id="last-race-sub"></div></div>
+   <img id="last-race-truck" alt="" hidden>
   </div>
  </div>
 
@@ -344,6 +345,7 @@
   <div>
    <div class="s-eyebrow">Points</div>
    <div class="s-title">Driver Standings</div>
+   <p id="home-standings-note" style="margin:8px 0 0;color:var(--muted);font-size:12px">Drivers who have raced this season</p>
   </div>
   <div style="display:flex;align-items:center;gap:8px;">
    <div class="standings-tabs">
@@ -439,7 +441,8 @@
  N26 Racing League · Season 1 · B<span style="color:var(--yellow)">A</span>RL · Below Average Racing League
 </footer>
 
-<script src="./scripts/league-rules.js"></script>
+<script src="./data/car-art.js?v=trucks-1"></script>
+<script src="./scripts/league-rules.js?v=public-results-1"></script>
 <script src="./scripts/public-bootstrap.js?v=daytona-20260927"></script>
 <script src="./scripts/number-style-defaults.js"></script>
 <script>
@@ -473,13 +476,19 @@
   const { claims, races, results } = display;
   const isNormalized = display.source === 'normalized';
   leagueRaceCount = races.length || leagueRaceCount;
-  document.getElementById('season-race-count').textContent = `${leagueRaceCount} Races`;
+  const raceCountLabel = document.getElementById('season-race-count');
+  if (raceCountLabel) raceCountLabel.textContent = `${leagueRaceCount} Races`;
   document.getElementById('season-total-races').textContent = `${leagueRaceCount} Races`;
   document.getElementById('season-format-label').textContent = 'No Playoff Reset';
   document.querySelectorAll('.sched-item').forEach(item => {
    const number = item.querySelector('.sched-num')?.textContent.trim();
    const race = races.find(race => String(race.race_number) === number);
-   if (race) item.querySelector('.sched-name').textContent = race.track_name || race.track_short;
+   if (race) {
+     item.querySelector('.sched-name').textContent = race.track_name || race.track_short;
+     const next = races.find(candidate => !['completed','voided'].includes(candidate.status));
+     const badge = item.querySelector('.badge');
+     if (badge) { badge.textContent = race.status === 'completed' ? 'Complete' : race.id === next?.id ? 'Next' : 'Upcoming'; badge.className = 'badge ' + (race.id === next?.id ? 'badge-next' : 'badge-up'); }
+   }
    item.hidden = !race;
    item.style.display = item.hidden ? 'none' : '';
   });
@@ -495,7 +504,7 @@
   }
 
   const authoritativeStandings = isNormalized && display.ruleset && window.N26LeagueRules
-   ? window.N26LeagueRules.calculateSeasonStandings({
+   ? window.N26LeagueRules.calculatePublicSeasonStandings({
      entries: display.entries.map(entry => ({ driverId: entry.driver_id, teamId: (display.assignments || []).find(assignment => assignment.driver_id === entry.driver_id)?.team_id || null, entryStatus: entry.entry_status })),
      races,
      results,
@@ -505,8 +514,9 @@
    : null;
   const completedIds = new Set((authoritativeStandings?.completedRaces || races.filter(r => r.status === 'completed')).map(r => r.id));
   const racesRun = completedIds.size;
+  document.getElementById('home-standings-note').textContent = racesRun ? `Best ${Math.max(0,racesRun-1)} of ${racesRun} completed races count · Drivers who have raced this season` : 'Standings appear after published race results';
   const nextRace = races.find(r => !['completed', 'voided'].includes(r.status));
-  const lastCompletedRace = [...races].reverse().find(r => r.status === 'completed');
+  const lastCompletedRace = [...(authoritativeStandings?.completedRaces || races.filter(race => completedIds.has(race.id)))].reverse().find(r => typeof r === 'object' && results.some(result => result.race_id === r.id && result.start_status === 'started' && result.finish_status !== 'disqualified' && result.finish_position === 1));
   startNextRaceCountdown(nextRace);
   updateLastRaceWinner(lastCompletedRace, results, claims);
 
@@ -540,7 +550,7 @@
   } else {
    driverEl.innerHTML = drivers.slice(0,10).map((d,i) => `
     <div class="s-row">
-     <span style="font-family: var(--font);font-size:18px;font-weight:900;color:${i<3?'#000':'#aaa'}">${i+1}</span>
+     <span class="home-rank">${i+1}</span>
      <span>
       <img class="home-number-art" data-barl-number="${d.car}" src="${window.BARLNumberImage(d.car, d.driverId)}" alt="#${d.car}">
       <span style="font-family: var(--font);font-size:14px;font-weight:800;text-transform:uppercase;">${d.name||'—'}</span>
@@ -595,15 +605,21 @@
  }
  function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
 
- loadHomeStandings().catch(()=>{});
+ loadHomeStandings().catch(error => { console.error('Homepage data failed', error); document.getElementById('driver-rows').innerHTML = '<div class="s-empty">Standings are temporarily unavailable. Please refresh.</div>'; });
 
  function showTab(tab, btn) {
   document.getElementById('tab-driver').style.display = tab === 'driver' ? 'block' : 'none';
   document.getElementById('tab-owner').style.display = tab === 'owner' ? 'block' : 'none';
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b === btn));
  }
+ function setRaceScene(selector, race) {
+  const scenes = { Daytona:'daytona', Nashville:'nashville', Bristol:'bristol', 'Watkins Glen':'watkins-glen', Charlotte:'charlotte', Dover:'dover', Phoenix:'phoenix', Rockingham:'rockingham' };
+  const card = document.querySelector(selector);
+  if (card && scenes[race?.track_short]) card.style.setProperty('--race-scene', `url('assets/schedule/scenes/${scenes[race.track_short]}.jpg')`);
+ }
  function startNextRaceCountdown(race) {
   if (!race) return;
+  setRaceScene('.next-race-card', race);
   const label = document.getElementById('next-race-label');
   if (label) label.textContent = `Race ${race.race_number} Of ${leagueRaceCount}`;
   document.getElementById('next-race-name').textContent = race.track_name || race.track_short;
@@ -627,17 +643,22 @@
   setInterval(tick, 1000);
  }
  function updateLastRaceWinner(race, results, claims) {
-  if (!race) return;
-  const winner = results.find(r => r.race_id === race.id && r.finish_position === 1);
+  if (!race) { document.getElementById('last-race-title').textContent = 'No published race winner yet'; return; }
+  setRaceScene('.last-race-card', race);
+  const winner = results.find(r => r.race_id === race.id && r.start_status === 'started' && r.finish_status !== 'disqualified' && r.finish_position === 1);
   if (!winner) return;
   const claim = claims.find(c => winner.driver_id ? c.driver_id === winner.driver_id : c.car_number === winner.car_number);
-  const name = claim ? ([claim.first_name, claim.last_name].filter(Boolean).join(' ').trim() || claim.gamertag) : `Car #${winner.car_number}`;
+  const name = claim ? (claim.displayName || [claim.first_name, claim.last_name].filter(Boolean).join(' ').trim() || claim.gamertag) : `Car #${winner.car_number}`;
   const icon = document.getElementById('last-race-icon');
   const title = document.getElementById('last-race-title');
   const sub = document.getElementById('last-race-sub');
-  if (icon) icon.innerHTML = `<img src="assets/driver-numbers/${winner.car_number}/choice-privileges.png" alt="#${winner.car_number}">`;
+  if (icon) icon.innerHTML = `<img src="${window.BARLNumberImage(winner.car_number, winner.driver_id)}" alt="#${winner.car_number}">`;
   if (title) title.textContent = name;
-  if (sub) sub.textContent = `${race.track_short || race.track_name} · Car #${winner.car_number}`;
+  if (sub) sub.textContent = `${race.track_short || race.track_name} · Race ${race.race_number} · #${winner.car_number}`;
+  const truck = document.getElementById('last-race-truck');
+  const art = window.BARLCarArt?.[String(winner.car_number)];
+  if (truck && art?.vehicleImage) { truck.src = art.vehicleImage; truck.alt = `${name}'s number ${winner.car_number} racing truck`; truck.hidden = false; }
+  window.dispatchEvent(new CustomEvent('barl:home-summary', { detail: { nextRace: null, race, winnerName: name, number: winner.car_number } }));
  }
  function toggleMenu() {
   const links = document.querySelector('.nav-links');
@@ -667,35 +688,6 @@
   });
 </script>
 <script type="module" src="scripts/auth-nav.js"></script>
-<script>
-(async function BARLHomeLiveFallback(){
-  const U='https://txipxisumngvzkuqsysq.supabase.co';
-  const K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4aXB4aXN1bW5ndnprdXFzeXNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzExMTYsImV4cCI6MjEwNDY0NzExNn0.NxrJIAkWWfg-5ezHni_z56IRmLD9HHxM-VAALiT22io';
-  const H={apikey:K,Authorization:'Bearer '+K};
-  const get=async p=>{const r=await fetch(U+p,{headers:H});if(!r.ok)throw new Error('BARL '+r.status);return r.json();};
-  try{
-    const seasons=await get('/rest/v1/n26_seasons?select=id&season_number=eq.1&limit=1'); if(!seasons[0])return;
-    const sid=seasons[0].id;
-    const [races,results,assignments,drivers,teams]=await Promise.all([
-      get('/rest/v1/n26_season_races?select=id,race_number,track_name,track_short,race_date,status,race_type,starters_count&season_id=eq.'+sid+'&order=race_number'),
-      get('/rest/v1/n26_race_results?select=race_id,driver_id,team_id,car_number,finish_position,finish_status,points_earned,start_status&certification_status=in.(published,certified)'),
-      get('/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number&season_id=eq.'+sid+'&assignment_status=eq.active'),
-      get('/rest/v1/n26_drivers?select=id,display_name,first_name,last_name,gamertag'),
-      get('/rest/v1/n26_teams?select=id,name&status=eq.active')
-    ]);
-    const completed=races.filter(r=>r.status==='completed'&&r.race_type!=='exhibition'&&(r.starters_count==null||r.starters_count>=2)), ids=new Set(completed.map(r=>r.id)); if(!completed.length)return;
-    const db=Object.fromEntries(drivers.map(d=>[d.id,d])), tb=Object.fromEntries(teams.map(t=>[t.id,t.name])), ab=Object.fromEntries(assignments.map(a=>[a.driver_id,a]));
-    const pts=Object.fromEntries([...new Set([...assignments.map(a=>a.driver_id),...results.filter(r=>ids.has(r.race_id)).map(r=>r.driver_id)])].map(id=>[id,window.N26LeagueRules.calculateChampionshipPoints(races,results.filter(r=>r.driver_id===id)).points]));
-    const rows=Object.entries(pts).map(([id,p])=>{const d=db[id]||{},a=ab[id]||{};return{id,p,name:d.display_name||[d.first_name,d.last_name].filter(Boolean).join(' ')||d.gamertag||'Driver',car:a.car_number||'',team:tb[a.team_id]||''};}).sort((a,b)=>b.p-a.p);
-    const de=document.getElementById('driver-rows'); if(de)de.innerHTML=rows.slice(0,10).map((d,i)=>'<div class="s-row"><span style="font-size:18px;font-weight:900">'+(i+1)+'</span><span><strong>'+d.name+'</strong><div class="s-team-lbl">#'+d.car+'<span data-team-ui> · '+d.team+'</span></div></span><span style="font-size:16px;font-weight:900">'+d.p+'</span></div>').join('');
-    const teamPts={}; results.filter(r=>ids.has(r.race_id)).forEach(r=>{const name=tb[r.team_id]||'';teamPts[name]=(teamPts[name]||0)+(r.points_earned||0);});
-    const tr=Object.entries(teamPts).sort((a,b)=>b[1]-a[1]); const oe=document.getElementById('owner-rows'); if(oe)oe.innerHTML=tr.map(([n,p],i)=>'<div class="s-row"><span style="font-size:18px;font-weight:900">'+(i+1)+'</span><span style="font-weight:800">'+n+'</span><span style="font-size:16px;font-weight:900">'+p+'</span></div>').join('');
-    const last=completed[completed.length-1], win=results.find(r=>r.race_id===last.id&&r.finish_position===1), wd=win?db[win.driver_id]:null;
-    if(wd){const t=document.getElementById('last-race-title'),s=document.getElementById('last-race-sub'),i=document.getElementById('last-race-icon');if(t)t.textContent=wd.display_name||wd.gamertag;if(s)s.textContent=(last.track_short||last.track_name)+' · Car #'+win.car_number;if(i)i.innerHTML='<img src="assets/driver-numbers/'+win.car_number+'/choice-privileges.png" alt="#'+win.car_number+'">';}
-    const next=races.find(r=>!['completed','voided'].includes(r.status)); if(next){const n=document.getElementById('next-race-name'),sub=document.getElementById('next-race-sub'),lab=document.getElementById('next-race-label');if(n)n.textContent=next.track_name;if(sub)sub.textContent='Race '+next.race_number+' · '+(next.race_date||'Date to be announced');if(lab)lab.textContent='Race '+next.race_number+' Of '+races.length;}
-    document.querySelectorAll('.sched-item').forEach(el=>{const num=Number(el.querySelector('.sched-num')?.textContent);const race=races.find(r=>r.race_number===num);if(!race)return;const track=el.querySelector('.sched-name');if(track)track.textContent=race.track_name||race.track_short;const badge=el.querySelector('.badge');if(badge){badge.textContent=race.status==='completed'?'Complete':race===next?'Next':'Upcoming';badge.className='badge '+(race===next?'badge-next':'badge-up');}});
-  }catch(e){console.error('BARL home live fallback failed',e);}
-})();
-</script>
+
 </body>
 </html>

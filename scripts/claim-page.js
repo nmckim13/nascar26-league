@@ -2,7 +2,7 @@ import {
   redirectToAuth,
   supabase,
 } from './supabase-auth.js';
-import { loadCurrentRosterSeason, loadPublishedSeason, loadSeasonRosterClaims, loadTeamCatalog } from './league-public.js';
+import { loadCurrentRosterSeason, loadPublishedSeason, loadSeasonRosterClaims, loadTeamCatalog, loadNormalizedSeasonData } from './league-public.js';
 
 const FALLBACK_TEAM_MAP = {
   hms: ['5', '9', '24', '48'],
@@ -137,6 +137,21 @@ async function loadClaims() {
       state.claimedCars = await loadSeasonRosterClaims(rosterSeason);
       state.claimedCars.push(...pending.filter(row => !state.claimedCars.some(claim => claim.car_number === row.car_number)));
       renderClaimedCars();
+      if (publishedSeason && window.N26LeagueRules) {
+        const bundle = await loadNormalizedSeasonData(publishedSeason);
+        const standings = window.N26LeagueRules.calculatePublicSeasonStandings({
+          entries: bundle.entries.map(entry => ({ driverId: entry.driver_id })),
+          races: bundle.races, results: bundle.results, pointsByPosition: bundle.ruleset.points_by_position,
+        });
+        const racedIds = new Set(standings.drivers.map(driver => driver.driverId));
+        const racedNumbers = new Set(state.claimedCars.filter(claim => racedIds.has(claim.driver_id)).map(claim => String(claim.car_number)));
+        document.documentElement.dataset.barlSeasonStarted = 'true';
+        document.querySelectorAll('#teamsWrap .car-card').forEach(card => { card.hidden = !racedNumbers.has(card.dataset.car); });
+        const section = document.getElementById('teamsWrap').closest('.page');
+        section.querySelector('.s-label').textContent = 'Season 1 Racers';
+        section.querySelector('.s-title').textContent = 'Racing Numbers';
+        document.getElementById('cupCatalogSection').hidden = true;
+      }
     } catch (error) {
       console.warn('Could not load the published normalized roster', error);
     }

@@ -206,8 +206,6 @@ export function toLegacyDisplayData(data) {
       stage2_points: result.stage2_points || 0,
       dnf: result.finish_status === 'dnf',
       disqualified: result.finish_status === 'disqualified',
-      stage1_points: 0,
-      stage2_points: 0,
       playoff_points: 0,
     })),
   };
