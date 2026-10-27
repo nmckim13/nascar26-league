@@ -4,9 +4,8 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Results | N26 Racing League</title>
- <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="n26.css?v=barl-2026-4">
-<script src="./scripts/site-header.js?v=6" defer></script>
+<script src="./scripts/site-header.js?v=8" defer></script>
  <style>
  /* Race rail */
  .race-rail {
@@ -265,7 +264,7 @@
  <td class="c">${r.disqualified?'<span class="pill red">DQ</span>':r.dnf?'<span class="pill red">DNF</span>':r.start_status==='dns'?'<span class="pill gray">DNS</span>':'<span style="color:var(--muted2)">—</span>'}</td>
  </tr>`;
  }).join('')}</tbody>
- </table>`;
+ </table></div>`;
  }
 
  function selectRace(id) {

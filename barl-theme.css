@@ -1,26 +1,46 @@
 /* BARL shared visual system — loaded last on every public and member page. */
 :root {
-  --barl-bg: #0c0c0f;
-  --barl-panel: #14141a;
-  --barl-panel-raised: #1c1c24;
-  --barl-panel-soft: #24242e;
-  --barl-line: rgba(255,255,255,.09);
-  --barl-line-strong: rgba(255,255,255,.16);
-  --barl-text: #f4f4f6;
-  --barl-muted: #858596;
-  --barl-yellow: #ffc200;
-  --barl-red: #e8002d;
-  --barl-blue: #003087;
-  --barl-radius-sm: 8px;
-  --barl-radius: 14px;
-  --barl-radius-lg: 20px;
+  --barl-bg: #080808;
+  --barl-panel: #121212;
+  --barl-panel-raised: #1c1c1c;
+  --barl-panel-soft: #262626;
+  --barl-line: #333333;
+  --barl-line-strong: #626262;
+  --barl-text: #f5f7fa;
+  --barl-muted: #b5b5b5;
+  --barl-yellow: #ffc600;
+  --barl-red: #ef1535;
+  --barl-blue: #626262;
+  --barl-blue2: #cccccc;
+  --barl-radius-sm: 4px;
+  --barl-radius: 6px;
+  --barl-radius-lg: 6px;
   --barl-font: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  --barl-display: 'Audiowide', 'Space Grotesk', system-ui, sans-serif;
+  --barl-display: 'Barlow Condensed', 'Impact', sans-serif;
+  /* Older page styles consume these names; keep one palette and type system. */
+  --bg: var(--barl-bg);
+  --surface: var(--barl-panel);
+  --surface2: var(--barl-panel-raised);
+  --surface3: var(--barl-panel-soft);
+  --border: var(--barl-line);
+  --border2: var(--barl-line);
+  --white: var(--barl-text);
+  --off-white: var(--barl-text);
+  --muted: var(--barl-muted);
+  --muted2: #a3a3a3;
+  --yellow: var(--barl-yellow);
+  --red: var(--barl-red);
+  --blue: var(--barl-blue);
+  --font: var(--barl-font);
+  --font-cond: var(--barl-font);
+  --radius: var(--barl-radius);
 }
 
 html { background: var(--barl-bg); }
 body { background: var(--barl-bg); color: var(--barl-text); font-family: var(--barl-font); }
 button, input, select, textarea { font-family: var(--barl-font); }
+:where(a, button, summary):focus-visible { outline: 2px solid var(--barl-yellow); outline-offset: 4px; }
+:where(.muted, .loading, .empty, .profile-sub, .season-meta) { color: var(--barl-muted); }
 
 /* One header on every page. */
 .site-header { display: contents; }
@@ -31,40 +51,43 @@ button, input, select, textarea { font-family: var(--barl-font); }
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: var(--barl-yellow);
-  border: 0;
-  color: #08090b;
+  background: var(--barl-bg);
+  border-bottom: 1px solid var(--barl-line);
+  color: var(--barl-text);
 }
 .site-header .ticker-inner { width: 100%; display: flex; align-items: center; justify-content: center; gap: 22px; overflow-x: auto; scrollbar-width: none; }
 .site-header .ticker-inner::-webkit-scrollbar { display: none; }
-.site-header .ticker-item { display: flex; align-items: center; gap: 7px; flex-shrink: 0; color: #08090b; font-size: 11px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
-.site-header .ticker-badge { padding: 2px 7px; border-radius: 4px; background: var(--barl-blue) !important; color: #fff !important; font-size: 9px; font-weight: 800; }
-.site-header .ticker-sep { width: 1px; height: 12px; flex-shrink: 0; background: rgba(0,0,0,.22); }
+.site-header .ticker-item { display: flex; align-items: center; gap: 7px; flex-shrink: 0; color: var(--barl-muted); font-size: 11px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; }
+.site-header .ticker-badge { padding: 3px 7px; border-radius: 2px; background: var(--barl-panel-soft) !important; color: var(--barl-text) !important; font-size: 10px; font-weight: 700; }
+.site-header .ticker-badge.red { background: #c91832 !important; }
+.site-header .ticker-sep { width: 1px; height: 12px; flex-shrink: 0; background: var(--barl-line); }
 .site-header .nav {
-  height: 58px;
+  height: 68px;
   padding: 0 clamp(18px, 4vw, 48px);
   display: flex;
   align-items: center;
-  background: rgba(12,12,15,.96);
+  background: var(--barl-bg);
   border-bottom: 1px solid var(--barl-line);
   backdrop-filter: blur(18px);
 }
 .site-header .nav-logo { margin-right: auto; }
-.site-header .nav-logo img { width: 118px; height: 38px; object-fit: contain; object-position: left center; }
+.site-header .nav-logo img { width: 140px; height: 48px; object-fit: contain; object-position: left center; }
 .site-header .nav-links { justify-content: center; gap: 2px; }
-.site-header .nav-links a { padding: 8px 11px; border: 0; color: #898995; font-size: 11px; font-weight: 700; letter-spacing: .045em; text-transform: uppercase; }
+.site-header .nav-links a { position: relative; padding: 12px; border: 0; color: var(--barl-muted); font: 600 13px var(--barl-font); letter-spacing: 0; text-transform: none; transition: color .15s; }
 .site-header .nav-links a:hover { color: #fff; }
-.site-header .nav-links a.active { color: var(--barl-yellow); border: 0; }
+.site-header .nav-links a.active { color: var(--barl-text); border: 0; }
+.site-header .nav-links a.active::after { content: ''; position: absolute; height: 2px; left: 12px; right: 12px; bottom: 0; background: var(--barl-yellow); }
+.site-header .nav-links a[href="join.html"] { color: var(--barl-yellow); }
 .site-header .nav-cta,
 .site-header .drawer-cta { border-radius: var(--barl-radius-sm); background: var(--barl-yellow); color: #08090b; font-size: 11px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
 .site-header .nav-cta { padding: 9px 15px; }
 .site-header .nav-cta:hover { background: #ffd641; }
 .site-header .nav-hamburger { border: 0; background: transparent; border-radius: 0; padding: 6px; }
-.site-header .nav-drawer { top: 58px; background: rgba(12,12,15,.98); border-color: var(--barl-line); }
-.site-header .nav-drawer a { font-family: var(--barl-font); }
+.site-header .nav-drawer { top: 68px; background: var(--barl-bg); border-color: var(--barl-line); }
+.site-header .nav-drawer a { font-family: var(--barl-font); text-transform: none; }
 
 /* Consistent page foundations. Homepage keeps its purpose-built composition. */
-html:not([data-barl-page="index"]) body { background: radial-gradient(circle at 80% -10%, rgba(0,48,135,.13), transparent 30rem), var(--barl-bg); }
+html:not([data-barl-page="index"]) body { background: var(--barl-bg); }
 html:not([data-barl-page="index"]) h1,
 html:not([data-barl-page="index"]) .page-header h1,
 html:not([data-barl-page="index"]) .page-hero h1,
@@ -73,12 +96,14 @@ html:not([data-barl-page="index"]) .archive-head h1,
 html:not([data-barl-page="index"]) .head h1,
 html:not([data-barl-page="index"]) .name {
   font-family: var(--barl-display);
-  font-weight: 400;
-  letter-spacing: -.035em;
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: -.015em;
   line-height: 1.02;
 }
-html:not([data-barl-page="index"]) h2,
-html:not([data-barl-page="index"]) h3 { font-family: var(--barl-font); }
+html:not([data-barl-page="index"]) h2 { font-family: var(--barl-display); font-weight: 700; font-style: italic; letter-spacing: .01em; }
+html:not([data-barl-page="index"]) h3 { font-family: var(--barl-font); font-style: normal; }
 .eyebrow, .s-eyebrow, .s-label, .hero-eyebrow, .page-hero-eyebrow, .kicker, .section-eyebrow {
   color: var(--barl-yellow) !important;
   font-size: 10px !important;
@@ -118,10 +143,10 @@ html[data-barl-page="archive"] main,
 .upcoming-box,
 .selection-banner,
 .team-block {
-  background: linear-gradient(145deg, var(--barl-panel-raised), var(--barl-panel));
+  background: var(--barl-panel);
   border: 1px solid var(--barl-line);
   border-radius: var(--barl-radius-lg);
-  box-shadow: 0 14px 36px rgba(0,0,0,.14);
+  box-shadow: none;
 }
 .card,
 .rule-card,
@@ -140,7 +165,7 @@ html[data-barl-page="archive"] main,
 
 /* Buttons and controls. */
 .btn-big, .btn-dark, .btn-claim, .btn-submit, .button, .submit-btn,
-button:not(.nav-hamburger):not(.profile-tab):not(.tab-btn),
+button:where(:not(.nav-hamburger, .profile-tab, .tab-btn, .style-option)),
 input[type="submit"] {
   min-height: 42px;
   padding: 11px 16px;
@@ -153,11 +178,12 @@ input[type="submit"] {
   text-transform: uppercase;
   box-shadow: none;
   cursor: pointer;
-  transition: transform .15s, background .15s, border-color .15s;
+  transition: background .15s, border-color .15s;
 }
 .btn-big:hover, .btn-dark:hover, .btn-claim:hover, .btn-submit:hover, .button:hover, .submit-btn:hover,
-button:not(.nav-hamburger):not(.profile-tab):not(.tab-btn):hover { background: #ffd641; transform: translateY(-1px); }
-.secondary, .button.secondary, button.secondary { background: var(--barl-panel-soft); color: #fff; border: 1px solid var(--barl-line); }
+button:where(:not(.nav-hamburger, .profile-tab, .tab-btn, .style-option)):hover { background: #ffda59; }
+.secondary, .button.secondary, button.secondary { background: var(--barl-panel); color: var(--barl-text); border: 1px solid var(--barl-line-strong); }
+.secondary:hover, .button.secondary:hover, button.secondary:hover { background: var(--barl-panel-raised); border-color: var(--barl-muted); }
 .tabs, .profile-tabs, .button-row { gap: 5px; }
 .tab-btn, .profile-tab {
   min-height: 38px;
@@ -181,6 +207,10 @@ input:focus, select:focus, textarea:focus { outline: 2px solid rgba(255,194,0,.2
 .data-table { border-collapse: separate; border-spacing: 0; background: var(--barl-panel); border: 1px solid var(--barl-line); border-radius: var(--barl-radius); overflow: hidden; }
 .data-table thead th { padding: 11px 12px; background: var(--barl-panel-raised); }
 .data-table tbody td { padding: 13px 12px; }
+.data-table :is(th, td), .stat, .metric, .attribute, .s-row { font-variant-numeric: tabular-nums; }
+.data-table thead th { color: var(--barl-muted); font: 600 12px var(--barl-font); letter-spacing: .03em; }
+.data-table .num-cell { font-family: var(--barl-font) !important; font-style: normal; }
+.data-table tbody tr:hover { background: var(--barl-panel-raised); }
 .race-row, .sched-item, .history-row { border-color: var(--barl-line); }
 .race-row { border-radius: var(--barl-radius-sm); padding-inline: 12px; }
 .race-row:hover, .sched-item:hover, .history-row:hover { background: rgba(255,194,0,.035); }
@@ -198,17 +228,20 @@ html[data-barl-page="claim"] .car-card { border-radius: var(--barl-radius); back
 html[data-barl-page="claim"] .modal { border-radius: var(--barl-radius-lg); background: var(--barl-panel); }
 html[data-barl-page="auth"] .shell { min-height: auto; padding: 48px 0 72px; }
 html[data-barl-page="auth"] .layout { gap: 18px; }
+html[data-barl-page="auth"] .tab-btn { background: var(--barl-panel); color: var(--barl-muted); border: 1px solid var(--barl-line-strong); }
+html[data-barl-page="auth"] body:has(#signInForm:not([hidden])) #showSignIn,
+html[data-barl-page="auth"] body:has(#signUpForm:not([hidden])) #showSignUp { background: var(--barl-yellow); color: var(--barl-bg); border-color: var(--barl-yellow); }
 html[data-barl-page="career"] .hero { border-radius: var(--barl-radius-lg); background: linear-gradient(145deg, var(--barl-panel-raised), var(--barl-panel)); border: 1px solid var(--barl-line); }
 html[data-barl-page="driver"] .portal { padding-top: 42px; }
 
 /* One footer on every page that has a footer. */
-.site-footer { margin-top: 72px; padding: 40px clamp(18px, 4vw, 48px); display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 22px 40px; background: #08090b; border-top: 1px solid var(--barl-line); text-align: left; }
+.site-footer { margin-top: 72px; padding: 40px clamp(18px, 4vw, 48px); display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 22px 40px; background: var(--barl-bg); border-top: 1px solid var(--barl-line); text-align: left; }
 .site-footer .footer-brand img { width: 126px; height: 44px; object-fit: contain; object-position: left center; }
 .site-footer .footer-brand p { margin: 7px 0 0; color: var(--barl-muted); font-size: 12px; }
 .site-footer .footer-links { justify-content: flex-end; gap: 18px; margin: 0; }
 .site-footer .footer-links a { color: var(--barl-muted); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 .site-footer .footer-links a:hover { color: var(--barl-yellow); }
-.site-footer .footer-meta { grid-column: 1 / -1; padding-top: 16px; border-top: 1px solid var(--barl-line); color: #4f4f5c; font-size: 10px; letter-spacing: .05em; text-transform: uppercase; }
+.site-footer .footer-meta { grid-column: 1 / -1; padding-top: 16px; border-top: 1px solid var(--barl-line); color: var(--barl-muted); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
 
 @media (max-width: 1100px) {
   .site-header .ticker-inner { justify-content: flex-start; }
@@ -222,6 +255,15 @@ html[data-barl-page="driver"] .portal { padding-top: 42px; }
   .site-header .nav { padding-inline: 16px; }
   .site-header .nav-logo img { width: 108px; }
   .page-wrap, html[data-barl-page="profiles"] main, html[data-barl-page="archive"] main, .shell, .portal { width: min(100% - 28px, 1100px); }
+  html[data-barl-page="standings"] #tab-driver .data-table { min-width: 0; table-layout: fixed; }
+  html[data-barl-page="standings"] #tab-driver :is(th, td) { padding-inline: 5px; }
+  html[data-barl-page="standings"] #tab-driver th { white-space: normal; font-size: 11px; }
+  html[data-barl-page="standings"] #tab-driver th:first-child { width: 30px !important; }
+  html[data-barl-page="standings"] #tab-driver th:nth-child(4) { width: 36px; }
+  html[data-barl-page="standings"] #tab-driver th:nth-child(8) { width: 62px; }
+  html[data-barl-page="standings"] #tab-driver th:nth-child(9) { width: 48px; }
+  html[data-barl-page="standings"] .car-badge { width: 32px; height: 30px; }
+  html[data-barl-page="standings"] .driver-name { white-space: normal; overflow-wrap: anywhere; }
   .site-footer { grid-template-columns: 1fr; align-items: start; }
   .site-footer .footer-links { justify-content: flex-start; }
 }
@@ -231,60 +273,26 @@ html[data-barl-page="driver"] .portal { padding-top: 42px; }
 }
 
 
-/* ===== BARL BROADCAST PACKAGE v5 ===== */
-:root{
-  --barl-bg:#050b13;--barl-panel:#07121f;--barl-panel-raised:#0a1828;--barl-panel-soft:#10243a;
-  --barl-line:rgba(50,139,255,.26);--barl-line-strong:rgba(50,139,255,.62);
-  --barl-blue:#1677ff;--barl-blue2:#35a2ff;--barl-red:#f02036;--barl-yellow:#ffc857;
-}
-body{
-  background:
-    radial-gradient(circle at 15% -10%,rgba(22,119,255,.20),transparent 34rem),
-    radial-gradient(circle at 100% 25%,rgba(240,32,54,.10),transparent 30rem),
-    linear-gradient(180deg,#06101b 0%,#03070c 100%) !important;
-}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.18;background-image:linear-gradient(120deg,transparent 0 48%,rgba(22,119,255,.12) 48% 49%,transparent 49% 100%);background-size:90px 90px}
-.site-header .ticker{background:#06111e;color:#fff;border-bottom:1px solid rgba(22,119,255,.35);box-shadow:0 10px 32px rgba(0,0,0,.32)}
-.site-header .ticker-item{color:#dce9ff}.site-header .ticker-badge{background:var(--barl-blue)!important}
-.site-header .ticker-badge.red{background:var(--barl-red)!important}
-.site-header .nav{height:72px;background:linear-gradient(180deg,#07111d 0%,#030812 100%);border-bottom:2px solid var(--barl-blue);box-shadow:0 10px 32px rgba(0,0,0,.38)}
-.site-header .nav-logo img{width:155px;height:52px}
-.site-header .nav-links a{font-family:var(--barl-display);font-size:12px;color:#d2d8e4;padding:11px 14px;position:relative}
-.site-header .nav-links a.active{color:#fff}.site-header .nav-links a.active:after{content:"";position:absolute;height:3px;left:14px;right:14px;bottom:0;background:var(--barl-red);box-shadow:0 0 18px rgba(240,32,54,.7)}
-.site-header .nav-links a[href="join.html"] { color: var(--barl-yellow); }
-.site-header .nav-cta{background:linear-gradient(135deg,var(--barl-blue),#244cff);color:#fff;border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 28px rgba(22,119,255,.25)}
+/* Shared broadcast layouts. Visual tokens and controls are defined above. */
 .page-wrap,.page,.hero,html[data-barl-page="profiles"] main,html[data-barl-page="archive"] main,.shell,.portal{max-width:1280px!important}
 .page-header,.profile-head,.archive-head{padding-top:54px}
-.page-header h1,.profile-head h1,.archive-head h1,.s-title{font-style:italic;text-transform:uppercase;text-shadow:0 5px 28px rgba(0,0,0,.45)}
+.page-header h1,.profile-head h1,.archive-head h1,.s-title{font-style:italic;text-transform:uppercase}
 .page-header h1{font-size:clamp(42px,6vw,72px)}
-.page-tag,.pill,.badge,.track-type,.finale-tag,.route-pill{border:1px solid rgba(53,162,255,.32);background:rgba(16,36,58,.8);color:#cfe5ff}
-.card,.rule-card,.points-card,.team-card,.profile-card,.player-card-shell,.season-card,.pitch-card,.stat-box,.step,.how-item,.join-card,.quick-callout,.toc,.race-detail,.upcoming-box,.selection-banner,.team-block,.standings-card{
-  background:linear-gradient(145deg,rgba(13,31,51,.96),rgba(5,13,24,.98));
-  border:1px solid var(--barl-line);border-radius:18px;box-shadow:0 18px 55px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.03)
-}
-.data-table{background:#06111e;border:1px solid var(--barl-line-strong);box-shadow:0 18px 55px rgba(0,0,0,.3)}
-.data-table thead th{background:linear-gradient(180deg,#10243a,#091625);color:#89a9d0;text-transform:uppercase;font-family:var(--barl-display);font-size:11px;letter-spacing:.05em}
-.data-table tbody tr{background:rgba(5,13,24,.72)}.data-table tbody tr:hover{background:rgba(22,119,255,.09)}
-.data-table tbody td{border-bottom:1px solid rgba(255,255,255,.055)}
+.page-tag,.pill,.badge,.track-type,.finale-tag,.route-pill{border:1px solid var(--barl-line);background:var(--barl-panel-raised);color:var(--barl-muted)}
 .car-badge,.home-number-art{filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))}
-.num-cell{font-family:var(--barl-display)!important;font-style:italic}.num-cell.yellow{color:var(--barl-yellow)!important}
-.tabs,.standings-tabs{background:#06101c;border:1px solid var(--barl-line);padding:4px;border-radius:10px}
-.tab-btn,.profile-tab{background:transparent;border:0!important;border-radius:7px}
-.tab-btn.active,.profile-tab.active{background:linear-gradient(135deg,var(--barl-blue),#234fff);color:white;box-shadow:0 6px 20px rgba(22,119,255,.24)}
-.btn-big,.btn-dark,.btn-claim,.btn-submit,.button,.submit-btn,button:not(.nav-hamburger):not(.profile-tab):not(.tab-btn),input[type="submit"]{background:linear-gradient(135deg,var(--barl-blue),#234fff);color:#fff;border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 26px rgba(22,119,255,.22)}
-.btn-big:hover,.btn-dark:hover,.btn-claim:hover,.btn-submit:hover,.button:hover,.submit-btn:hover,button:not(.nav-hamburger):not(.profile-tab):not(.tab-btn):hover{background:linear-gradient(135deg,#2693ff,#3158ff)}
-.site-footer{background:linear-gradient(180deg,#06101b,#020508);border-top:2px solid var(--barl-blue)}
+.data-table .num-cell.yellow{color:var(--barl-yellow)!important}
+.tabs,.standings-tabs{background:var(--barl-bg);border:1px solid var(--barl-line);padding:4px;border-radius:var(--barl-radius)}
 
 /* Homepage broadcast composition */
-html[data-barl-page="index"] .site-hero{padding:36px 24px 34px;background:linear-gradient(90deg,rgba(2,8,14,.94),rgba(4,14,25,.84)),url('assets/news/barl-season-1-launch.jpg') center/cover;border-bottom:2px solid var(--barl-blue)}
+html[data-barl-page="index"] .site-hero{padding:36px 24px 34px;background:linear-gradient(90deg,rgba(0,0,0,.94),rgba(0,0,0,.84)),url('assets/news/barl-season-1-launch.jpg') center/cover;border-bottom:2px solid var(--barl-line)}
 html[data-barl-page="index"] .site-hero-inner{max-width:1280px}
 html[data-barl-page="index"] .site-hero-headline{font-size:clamp(36px,5vw,72px);max-width:900px}
 html[data-barl-page="index"] .hero{padding:22px 24px 0;max-width:1280px}
 html[data-barl-page="index"] .hero>div{grid-template-columns:minmax(0,.85fr) minmax(0,1.45fr)!important;gap:16px!important}
-.next-race-card,.last-race-card{position:relative;min-height:430px;border:1px solid rgba(53,162,255,.65)!important;overflow:hidden;background:#07111e!important;box-shadow:0 22px 70px rgba(0,0,0,.42)}
-.next-race-card:before,.last-race-card:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,7,13,.05),rgba(2,7,13,.82));z-index:0}
-.next-race-card{background-image:linear-gradient(135deg,rgba(2,7,13,.38),rgba(2,7,13,.92)),url('assets/schedule/scenes/nashville.jpg')!important;background-size:cover!important;background-position:center!important}
-.last-race-card{background-image:linear-gradient(90deg,rgba(2,7,13,.95) 0%,rgba(2,7,13,.66) 52%,rgba(2,7,13,.20) 100%),url('assets/schedule/scenes/daytona.jpg')!important;background-size:cover!important;background-position:center!important}
+.next-race-card,.last-race-card{position:relative;min-height:430px;border:1px solid var(--barl-line)!important;overflow:hidden;background:var(--barl-panel)!important;box-shadow:none}
+.next-race-card:before,.last-race-card:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.82));z-index:0}
+.next-race-card{background-image:linear-gradient(135deg,rgba(0,0,0,.38),rgba(0,0,0,.92)),url('assets/schedule/scenes/nashville.jpg')!important;background-size:cover!important;background-position:center!important}
+.last-race-card{background-image:linear-gradient(90deg,rgba(0,0,0,.95) 0%,rgba(0,0,0,.66) 52%,rgba(0,0,0,.20) 100%),url('assets/schedule/scenes/daytona.jpg')!important;background-size:cover!important;background-position:center!important}
 .nrc-header,.lrc-header{position:relative;z-index:2;background:transparent!important;padding:24px 26px 0!important}
 .nrc-header-left,.lrc-header span{font-family:var(--barl-display)!important;color:var(--barl-blue2)!important;font-size:22px!important;font-style:italic!important}
 .lrc-header span{color:var(--barl-yellow)!important}
@@ -299,21 +307,21 @@ html[data-barl-page="index"] .hero>div{grid-template-columns:minmax(0,.85fr) min
 #last-race-sub{font-size:14px!important;color:#c2d2e7!important}
 #last-race-sub:after{content:"";display:block;width:min(420px,100%);height:150px;margin-top:14px;background:url('assets/trucks/88.webp') left center/contain no-repeat;filter:drop-shadow(0 12px 20px rgba(0,0,0,.5))}
 .section-block{padding-top:48px!important}.s-eyebrow{color:var(--barl-blue2)!important}.s-title{font-family:var(--barl-display)!important;font-size:clamp(30px,4vw,48px)!important}
-.storyline-card,.news-card{border:1px solid var(--barl-line)!important;background:linear-gradient(145deg,#0d1e31,#06101c)!important;box-shadow:0 16px 44px rgba(0,0,0,.28)}
+.storyline-card,.news-card{border:1px solid var(--barl-line)!important;background:var(--barl-panel)!important;box-shadow:none}
 .storyline-card:before{background:var(--barl-blue)!important}.storyline-card[data-intensity="heated"]:before{background:var(--barl-red)!important}
-.s-row{border-color:rgba(255,255,255,.06)!important}.s-row-hdr{background:#10243a!important}.s-row:not(.s-row-hdr):hover{background:rgba(22,119,255,.08)!important}
+.s-row{border-color:var(--barl-line)!important}.s-row-hdr{background:var(--barl-panel-raised)!important}.s-row:not(.s-row-hdr):hover{background:var(--barl-panel-raised)!important}
 .sched-list{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.sched-item{border:1px solid var(--barl-line)!important;border-radius:14px;padding:16px!important;background:linear-gradient(145deg,#0b1a2b,#06101b);position:relative;overflow:hidden}
-.sched-item:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,16,27,.96),rgba(6,16,27,.72));pointer-events:none}.sched-item>*{position:relative;z-index:1}
-.sched-num{color:var(--barl-blue2)!important}.badge-next{background:var(--barl-blue)!important;color:#fff!important}.badge-up{background:#132337!important;color:#9fb6d2!important}
+.sched-item{border:1px solid var(--barl-line)!important;border-radius:var(--barl-radius);padding:16px!important;background:var(--barl-panel);position:relative;overflow:hidden}
+.sched-item:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.96),rgba(0,0,0,.72));pointer-events:none}.sched-item>*{position:relative;z-index:1}
+.sched-num{color:var(--barl-muted)!important}.badge-next{background:var(--barl-yellow)!important;color:var(--barl-bg)!important}.badge-up{background:var(--barl-panel-raised)!important;color:var(--barl-muted)!important}
 
 /* Results / schedule / standings feel like broadcast boards */
-.race-rail{border:1px solid var(--barl-line-strong)!important;background:#06101b!important;box-shadow:0 18px 50px rgba(0,0,0,.28)}
-.race-pill{background:#07121f!important;border-color:rgba(255,255,255,.06)!important}.race-pill.active{background:linear-gradient(180deg,#12345d,#0a1a2d)!important;box-shadow:inset 0 -3px 0 var(--barl-blue)}
+.race-rail{border:1px solid var(--barl-line)!important;background:var(--barl-bg)!important;box-shadow:none}
+.race-pill{background:var(--barl-panel)!important;border-color:var(--barl-line)!important}.race-pill.active{background:var(--barl-panel-raised)!important;box-shadow:inset 0 -3px 0 var(--barl-yellow)}
 .rp-num{color:#dceaff!important}.race-pill.active .rp-num{color:var(--barl-yellow)!important}
 .race-detail-hdr .track-name{font-family:var(--barl-display)!important;font-size:clamp(30px,4vw,50px)!important;font-style:italic}
 .upcoming-box{min-height:320px;display:grid;place-items:center;align-content:center;background-size:cover!important;background-position:center!important}
-html[data-barl-page="schedule"] .race-row{background:linear-gradient(90deg,rgba(5,13,24,.95),rgba(5,13,24,.78));border:1px solid var(--barl-line)!important;box-shadow:0 14px 36px rgba(0,0,0,.22)}
+html[data-barl-page="schedule"] .race-row{background:linear-gradient(90deg,rgba(18,18,18,.95),rgba(18,18,18,.78));border:1px solid var(--barl-line)!important;box-shadow:0 14px 36px rgba(0,0,0,.22)}
 @media(max-width:900px){html[data-barl-page="index"] .hero>div{grid-template-columns:1fr!important}.next-race-card,.last-race-card{min-height:360px}.lrc-body{grid-template-columns:120px 1fr}.sched-list{grid-template-columns:1fr}.site-header .nav{height:64px}}
 @media(max-width:620px){html[data-barl-page="index"] .hero{padding-inline:14px}.lrc-body{grid-template-columns:95px 1fr;padding-inline:18px!important}.nrc-name{font-size:42px!important}#last-race-title{font-size:30px!important}#last-race-sub:after{height:105px}.site-header .nav-logo img{width:125px}}
 
@@ -356,7 +364,7 @@ html[data-barl-season-started="true"] #teamsWrap .car-card[hidden],
 html[data-barl-season-started="true"] #cupCatalogSection { display:none !important; }
 
 html[data-barl-page="index"] .nrc-name { font-size:clamp(32px,3.2vw,52px) !important; overflow-wrap:anywhere; }
-html[data-barl-page="index"] :is(.next-race-card,.last-race-card)::before { background-image:linear-gradient(180deg,rgba(2,7,13,.3),rgba(2,7,13,.9)),var(--race-scene,none) !important; background-size:cover !important; background-position:center !important; }
+html[data-barl-page="index"] :is(.next-race-card,.last-race-card)::before { background-image:linear-gradient(180deg,rgba(0,0,0,.3),rgba(0,0,0,.9)),var(--race-scene,none) !important; background-size:cover !important; background-position:center !important; }
 
 @media (max-width: 620px) {
   .site-header .ticker { height: auto; padding: 8px 16px; }

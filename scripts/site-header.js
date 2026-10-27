@@ -6,16 +6,16 @@
   document.documentElement.dataset.barlPage = page.replace('.html', '') || 'index';
   const fontLink = document.createElement('link');
   fontLink.rel = 'stylesheet';
-  fontLink.href = 'https://fonts.googleapis.com/css2?family=Audiowide&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap';
+  fontLink.href = 'https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap';
   document.head.append(fontLink);
   const themeLink = document.createElement('link');
   themeLink.rel = 'stylesheet';
-  themeLink.href = 'barl-theme.css?v=10';
+  themeLink.href = 'barl-theme.css?v=11';
   document.head.append(themeLink);
   if (page === 'index.html') {
     const dashboardStyles = document.createElement('link');
     dashboardStyles.rel = 'stylesheet';
-    dashboardStyles.href = 'dashboard.css?v=2';
+    dashboardStyles.href = 'dashboard.css?v=3';
     document.head.append(dashboardStyles);
   }
   const activePage = ['profiles.html', 'career.html', 'driver.html'].includes(page) ? 'claim.html' : page;

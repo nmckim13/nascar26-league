@@ -437,7 +437,7 @@ img[src*="/driver-numbers/9/"] {
 
 /* BARL Logo */
 .nav-logo {
-  font-family: 'Audiowide', sans-serif !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
   font-size: 28px !important;
   letter-spacing: -1px !important;
   text-decoration: none !important;
@@ -737,7 +737,7 @@ body {
 .site-hero-headline {
   max-width: none;
   margin-bottom: 20px;
-  font-family: 'Audiowide', 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  font-family: 'Barlow Condensed', 'Impact', sans-serif;
   font-size: clamp(36px, 8vw, 64px);
   line-height: .98;
   letter-spacing: -.03em;
