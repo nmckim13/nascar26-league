@@ -1,0 +1,103 @@
+/* Race-night composition. Kept separate from the legacy shared page themes. */
+html[data-barl-page="index"] body { background: #040b12 !important; }
+html[data-barl-page="index"] body::before { content: none; }
+.broadcast { width: min(1280px, calc(100% - 48px)); margin: 0 auto; display: grid; grid-template-columns: 1.15fr 1fr .9fr; grid-template-areas: "strip strip strip" "winner winner winner" "standings next invite" "recap recap recap" "schedule schedule schedule" "stories stories stories" "news news news"; gap: 18px; }
+.broadcast > * { min-width: 0; }
+.broadcast .season-strip { grid-area: strip; display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 20px 0 0; color: #a4b9cc; font: 11px 'DM Mono', monospace; text-transform: uppercase; }
+.season-strip h1 { font: 700 12px 'Space Grotesk', sans-serif; letter-spacing: .08em; color: #f5f7fb; }
+.season-strip h1 span { color: #94a9be; }
+.broadcast .last-race-card { grid-area: winner; min-height: 440px; border-radius: 5px; border-color: #214360 !important; background: #07111e !important; }
+html[data-barl-page="index"] .broadcast .last-race-card::before { background-image: linear-gradient(90deg,rgba(2,7,13,.92),rgba(2,7,13,.38)),var(--race-scene,none) !important; }
+.broadcast .lrc-header { display: flex; justify-content: space-between; align-items: center; padding: 24px 30px 0 !important; }
+.broadcast .lrc-header span { background: #ef1535; color: white !important; padding: 7px 16px; transform: skew(-9deg); font: italic 800 14px 'Space Grotesk',sans-serif !important; letter-spacing: .06em; }
+.broadcast .lrc-header a { font-size: 11px; text-transform: uppercase; color: #d1deea; }
+html[data-barl-page="index"] .broadcast .lrc-body { display: grid; height: auto; grid-template-columns: minmax(0,.85fr) minmax(0,1.2fr); grid-template-areas: "copy truck" "number truck"; gap: 12px; padding: 25px 30px 12px !important; min-height: 330px; }
+.broadcast .winner-kicker { font: 10px 'DM Mono', monospace; color: #a9c0d3; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 10px; }
+html[data-barl-page="index"] .broadcast #last-race-title { font: italic 800 clamp(38px,5.2vw,74px)/.98 'Space Grotesk',sans-serif !important; text-transform: uppercase; letter-spacing: -.045em; overflow-wrap: normal; }
+.broadcast #last-race-sub { color: #c4d6e5 !important; font: 12px 'DM Mono',monospace !important; text-transform: uppercase; margin-top: 16px; }
+.broadcast #last-race-icon img { width: 120px; height: 90px; object-fit: contain; object-position: left center; }
+.broadcast #last-race-truck { height: 300px; width: 100%; object-fit: contain; filter: drop-shadow(0 22px 14px #000a); transform: scale(1.1); }
+.broadcast .winner-signoff { position: relative; margin: 0 30px 20px; color: #b8cddd; font: italic 10px 'DM Mono',monospace; text-transform: uppercase; letter-spacing: .3em; }
+.broadcast #standings { grid-area: standings; }
+.broadcast .next-race-card { grid-area: next; min-height: 330px; border-radius: 5px; background: #07111e !important; }
+html[data-barl-page="index"] .broadcast .next-race-card::before { background-image: linear-gradient(180deg,rgba(2,7,13,.55),rgba(2,7,13,.94)),var(--race-scene,none) !important; }
+.broadcast .nrc-header { padding: 20px 20px 0 !important; gap: 12px; }
+.broadcast .nrc-header-left { font: italic 800 18px 'Space Grotesk',sans-serif !important; }
+.broadcast .nrc-header-right { font: 10px 'DM Mono',monospace; }
+.broadcast .nrc-body { padding: 24px 20px !important; }
+html[data-barl-page="index"] .broadcast .nrc-name { font: italic 800 clamp(28px,3vw,43px)/1 'Space Grotesk',sans-serif !important; letter-spacing: -.035em; }
+.broadcast .nrc-sub { margin-top: 15px; font-size: 12px !important; }
+.broadcast .nrc-meta { font-size: 10px; gap: 10px; flex-wrap: wrap; color: #bed0df; }
+.broadcast .next-race-card > a { position: relative; margin: 0 20px 22px; }
+.broadcast .season-invite { grid-area: invite; background: linear-gradient(140deg,#112135,#070f1a); border: 1px solid #344253; border-top: 3px solid #ffc857; padding: 24px; border-radius: 5px; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.broadcast-kicker { color: #73b9ff; font: 10px 'DM Mono',monospace; text-transform: uppercase; letter-spacing: .12em; }
+.season-invite h2 { font: italic 800 clamp(26px,2.5vw,36px)/1.05 'Space Grotesk',sans-serif; text-transform: uppercase; letter-spacing: -.03em; }
+.season-invite h2 em { color: #ffc857; }
+.season-invite > p:not(.broadcast-kicker) { color: #b4c6d7; font-size: 13px; }
+.broadcast-cta { display: inline-block; background: #ffc857; color: #07101a; padding: 13px 18px; border-radius: 4px; font-size: 12px; font-weight: 800; text-transform: uppercase; transition: background .15s; }
+.broadcast-cta:hover { background: #ffda83; }
+.season-invite small { font-size: 11px; color: #9fb3c6; }
+.broadcast-text-link { display: inline-block; color: #c9e1f6; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+.broadcast a:focus-visible { outline: 2px solid #ffc857; outline-offset: 5px; }
+.broadcast a:hover { color: #ffc857; }
+.broadcast a.broadcast-cta:hover { color: #07101a; }
+.broadcast .race-recap { grid-area: recap; border: 1px solid #214360; border-left: 3px solid #ef1535; border-radius: 5px; padding: 24px; background: #091522; }
+.race-recap > div { display: grid; grid-template-columns: 1fr auto; column-gap: 30px; align-items: center; }
+.race-recap :is(.broadcast-kicker,h2,#recap-summary) { grid-column: 1; }
+.race-recap a { grid-column: 2; grid-row: 1 / 4; padding: 12px 18px; border: 1px solid #48657d; border-radius: 4px; }
+.race-recap h2 { font: italic 700 25px/1.1 'Space Grotesk',sans-serif; margin: 12px 0; text-transform: uppercase; }
+.race-recap #recap-summary { color: #a9bdce; font-size: 13px; margin-bottom: 18px; }
+.broadcast .page.section-block { width: 100%; max-width: none; padding: 20px !important; margin: 0; border: 1px solid #214360; border-radius: 5px; background: #07111d; }
+.broadcast .s-title { font: italic 800 24px/1.1 'Space Grotesk',sans-serif !important; margin: 0; letter-spacing: -.02em; }
+.broadcast .s-eyebrow { font-size: 9px !important; }
+.broadcast .s-hdr { margin-bottom: 16px; }
+.broadcast #home-standings-note { color: #a0b3c6 !important; font-size: 10px !important; }
+.broadcast .standings-card { border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.broadcast .s-row { padding: 9px 0; gap: 8px; }
+.broadcast .s-row-hdr { background: transparent !important; }
+.broadcast .s-row-hdr span { color: #9cb2c7; }
+.broadcast #driver-rows .s-row { grid-template-columns: 26px minmax(0,1fr) 38px; }
+.broadcast #driver-rows .home-number-art { width: 36px; height: 32px; margin-right: 8px; }
+.broadcast #driver-rows .s-row > span:nth-child(2) > span { font-size: 12px !important; }
+.broadcast #driver-rows .s-row > span:last-child { text-align: right; }
+.broadcast #driver-rows .s-row:first-child .home-rank { color: #ffc857; }
+.broadcast #tab-driver > a { color: #7cbcff !important; }
+.broadcast #schedule { grid-area: schedule; }
+.broadcast #schedule .sched-list { display: grid !important; grid-template-columns: repeat(8,minmax(0,1fr)); gap: 8px; }
+.broadcast #schedule .sched-item { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 12px !important; border-radius: 4px; }
+.broadcast #schedule .sched-item::before { content: none; }
+.broadcast #schedule .sched-num { text-align: left; font: 800 20px 'Space Grotesk',sans-serif; }
+.broadcast #schedule .sched-name { font-size: 12px; overflow-wrap: anywhere; }
+.broadcast #schedule .sched-sub { display: none; }
+.broadcast #schedule .badge { font-size: 8px; padding: 3px 6px; border: 0; }
+.broadcast #storylines { grid-area: stories; }
+.broadcast #news { grid-area: news; }
+.broadcast .storyline-grid { grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); }
+.broadcast .storyline-card { min-height: 170px; }
+.broadcast .storyline-card p, .broadcast .news-card p { color: #a8bacb; }
+.broadcast .news-card img { display: none; }
+.broadcast .news-card { border-radius: 4px; }
+.broadcast :is(#storylines,#news)[hidden] { display: none; }
+.broadcast .s-empty { color: #a6bbcd; }
+@media (max-width:1100px) {
+ .broadcast { grid-template-columns: 1fr 1fr; grid-template-areas: "strip strip" "winner winner" "standings next" "standings invite" "recap recap" "schedule schedule" "stories stories" "news news"; }
+ .broadcast #schedule .sched-list { grid-template-columns: repeat(4,minmax(0,1fr)); }
+}
+@media (max-width:650px) {
+ .broadcast { width: calc(100% - 28px); grid-template-columns: 1fr; grid-template-areas: "strip" "winner" "next" "invite" "standings" "recap" "schedule" "stories" "news"; gap: 14px; }
+ .broadcast .season-strip { align-items: flex-start; flex-direction: column; gap: 6px; padding-top: 16px; font-size: 10px; }
+ .season-strip h1 { font-size: 10px; }
+ .broadcast .last-race-card { min-height: 420px; }
+ .broadcast .lrc-header { padding: 20px 18px 0 !important; }
+ .broadcast .lrc-header span { font-size: 11px !important; padding: 7px 10px; }
+ .broadcast .lrc-header a { font-size: 9px; }
+ html[data-barl-page="index"] .broadcast .lrc-body { grid-template-columns: 1fr 72px; grid-template-areas: "copy number" "truck truck"; padding: 24px 18px 0 !important; gap: 18px 8px; }
+ html[data-barl-page="index"] .broadcast #last-race-title { font-size: 36px !important; }
+ .broadcast .winner-kicker { font-size: 8px; }
+ .broadcast #last-race-sub { font-size: 10px !important; }
+ .broadcast #last-race-truck { height: 180px; transform: none; }
+ .broadcast .winner-signoff { margin: 12px 18px 18px; font-size: 8px; letter-spacing: .15em; }
+ .broadcast .next-race-card { min-height: 300px; }
+ .race-recap > div { display: block; }
+ .broadcast #schedule .sched-list { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}

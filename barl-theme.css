@@ -210,7 +210,7 @@ html[data-barl-page="driver"] .portal { padding-top: 42px; }
 .site-footer .footer-links a:hover { color: var(--barl-yellow); }
 .site-footer .footer-meta { grid-column: 1 / -1; padding-top: 16px; border-top: 1px solid var(--barl-line); color: #4f4f5c; font-size: 10px; letter-spacing: .05em; text-transform: uppercase; }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .site-header .ticker-inner { justify-content: flex-start; }
   .site-header .nav-links,
   .site-header .nav-cta { display: none; }
@@ -251,6 +251,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opa
 .site-header .nav-logo img{width:155px;height:52px}
 .site-header .nav-links a{font-family:var(--barl-display);font-size:12px;color:#d2d8e4;padding:11px 14px;position:relative}
 .site-header .nav-links a.active{color:#fff}.site-header .nav-links a.active:after{content:"";position:absolute;height:3px;left:14px;right:14px;bottom:0;background:var(--barl-red);box-shadow:0 0 18px rgba(240,32,54,.7)}
+.site-header .nav-links a[href="join.html"] { color: var(--barl-yellow); }
 .site-header .nav-cta{background:linear-gradient(135deg,var(--barl-blue),#244cff);color:#fff;border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 28px rgba(22,119,255,.25)}
 .page-wrap,.page,.hero,html[data-barl-page="profiles"] main,html[data-barl-page="archive"] main,.shell,.portal{max-width:1280px!important}
 .page-header,.profile-head,.archive-head{padding-top:54px}
@@ -356,3 +357,12 @@ html[data-barl-season-started="true"] #cupCatalogSection { display:none !importa
 
 html[data-barl-page="index"] .nrc-name { font-size:clamp(32px,3.2vw,52px) !important; overflow-wrap:anywhere; }
 html[data-barl-page="index"] :is(.next-race-card,.last-race-card)::before { background-image:linear-gradient(180deg,rgba(2,7,13,.3),rgba(2,7,13,.9)),var(--race-scene,none) !important; background-size:cover !important; background-position:center !important; }
+
+@media (max-width: 620px) {
+  .site-header .ticker { height: auto; padding: 8px 16px; }
+  .site-header .ticker-inner { padding: 0; }
+  .site-header .ticker-item { flex-shrink: 1; font-size: 10px; white-space: normal; }
+  .site-header .ticker-item:first-child { width: 100%; }
+  .site-header .ticker-badge { flex-shrink: 0; }
+  .site-header .ticker-sep, .site-header .ticker-item + .ticker-sep + .ticker-item { display: none; }
+}

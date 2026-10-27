@@ -10,8 +10,14 @@
   document.head.append(fontLink);
   const themeLink = document.createElement('link');
   themeLink.rel = 'stylesheet';
-  themeLink.href = 'barl-theme.css?v=8';
+  themeLink.href = 'barl-theme.css?v=10';
   document.head.append(themeLink);
+  if (page === 'index.html') {
+    const dashboardStyles = document.createElement('link');
+    dashboardStyles.rel = 'stylesheet';
+    dashboardStyles.href = 'dashboard.css?v=2';
+    document.head.append(dashboardStyles);
+  }
   const activePage = ['profiles.html', 'career.html', 'driver.html'].includes(page) ? 'claim.html' : page;
   const links = [
     ['index.html', 'Home'],
@@ -20,6 +26,7 @@
     ['schedule.html', 'Schedule'],
     ['rules.html', 'Rules'],
     ['claim.html', 'Drivers'],
+    ['join.html', 'Season 2'],
   ];
   const linkMarkup = links.map(([href, label]) =>
     `<li><a href="${href}"${activePage === href ? ' class="active" aria-current="page"' : ''}>${label}</a></li>`
@@ -71,12 +78,22 @@
 
   const button = mount.querySelector('.nav-hamburger');
   const drawer = mount.querySelector('.nav-drawer');
-  button.addEventListener('click', () => {
-    const open = button.classList.toggle('open');
+  function setMenuOpen(open) {
+    button.classList.toggle('open', open);
     drawer.classList.toggle('open', open);
     if (open) drawer.style.top = `${mount.querySelector('.nav').getBoundingClientRect().bottom}px`;
     button.setAttribute('aria-expanded', String(open));
     button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  }
+  button.addEventListener('click', () => setMenuOpen(button.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && button.getAttribute('aria-expanded') === 'true') {
+      setMenuOpen(false);
+      button.focus();
+    }
+  });
+  document.addEventListener('click', event => {
+    if (!button.contains(event.target) && !drawer.contains(event.target)) setMenuOpen(false);
   });
 
   const footer = document.querySelector('footer');
