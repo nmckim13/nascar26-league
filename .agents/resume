@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+node_version="$(tr -d '\r\n' < "$repo_root/.node-version")"
+node="$HOME/.local/share/barl-orb/node-v$node_version/bin/node"
+
+# Check snapshot prerequisites without reinstalling or authenticating services.
+if [[ ! -x "$node" ]] || [[ "$("$node" --version)" != "v$node_version" ]]; then
+  echo 'Orb toolchain is missing; rerun .agents/setup.' >&2
+  exit 1
+fi
+cd "$repo_root"
+"$node" -e "require('sharp'); console.log('Orb dependencies ready.')"
+python3 --version

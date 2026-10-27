@@ -11,6 +11,31 @@ team and car catalog plus the imported roster, but it must not be published
 until all 24 driver identities and the complete positions 1-24 points schedule
 are approved. Public pages fail closed to a clear prelaunch state until then.
 
+## Orb Development
+
+Amp runs executable `.agents/setup` when preparing a fresh project snapshot.
+It installs the Node version pinned in `.node-version` (matching CI's Node 22
+major), checks Python 3 for static previews, and installs locked development
+dependencies with `npm ci`. The number-art builder's `sharp` dependency and its
+prebuilt image libraries are installed without running package lifecycle scripts.
+Subsequent orbs can reuse the prepared snapshot; warm setup uses npm's cache.
+
+The setup adds a repository-scoped login-shell hook so Amp and supervised
+services use the same Node installation. `.agents/resume` checks that Node and
+the image dependency are ready without installing packages or authenticating.
+Run `.agents/setup` manually to repair missing prerequisites.
+
+Use `npm test` for the existing league, rulebook, and claim-flow checks. The
+public HTML has no bundler or build step. Asset generators still require their
+source inputs; setup does not regenerate tracked artwork. Start preview servers
+with `amp orb service start` rather than backgrounding them in setup.
+
+Setup does not create an environment file, log in to external services, start
+databases, apply Supabase migrations, or change production data. Authenticated
+API testing still requires the server-side variables listed in `.env.example`;
+provide those through Amp secrets, never through the setup scripts. Static
+previews do not execute the Vercel `/api` handlers.
+
 ## Verify Locally
 
 From the repository root:

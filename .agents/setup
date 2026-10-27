@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_root"
+SECONDS=0
+
+echo '[setup] Checking system prerequisites'
+packages=()
+command -v curl >/dev/null || packages+=(curl)
+command -v tar >/dev/null || packages+=(tar)
+command -v xz >/dev/null || packages+=(xz-utils)
+command -v python3 >/dev/null || packages+=(python3)
+if ! dpkg-query -W -f='${Status}' ca-certificates 2>/dev/null | grep -q 'install ok installed'; then
+  packages+=(ca-certificates)
+fi
+if ((${#packages[@]})); then
+  sudo apt-get update -qq
+  sudo apt-get install -y --no-install-recommends "${packages[@]}"
+fi
+
+node_version="$(tr -d '\r\n' < .node-version)"
+node_home="$HOME/.local/share/barl-orb/node-v$node_version"
+echo "[setup] Preparing Node $node_version (${SECONDS}s)"
+if [[ ! -x "$node_home/bin/node" ]] || [[ "$("$node_home/bin/node" --version)" != "v$node_version" ]]; then
+  case "$(uname -m)" in
+    x86_64) arch=x64 ;;
+    aarch64) arch=arm64 ;;
+    *) echo 'Unsupported Node architecture' >&2; exit 1 ;;
+  esac
+  archive="node-v$node_version-linux-$arch.tar.xz"
+  download="$(mktemp -d)"
+  trap 'rm -rf "$download"' EXIT
+  curl --fail --silent --show-error --location --retry 2 "https://nodejs.org/dist/v$node_version/$archive" -o "$download/$archive"
+  curl --fail --silent --show-error --location --retry 2 "https://nodejs.org/dist/v$node_version/SHASUMS256.txt" -o "$download/SHASUMS256.txt"
+  (cd "$download"; grep "  $archive$" SHASUMS256.txt | sha256sum --check -)
+  mkdir -p "$node_home"
+  tar -xJf "$download/$archive" -C "$node_home" --strip-components=1
+fi
+export PATH="$node_home/bin:$PATH"
+
+# Amp and supervised services start new login shells after setup exits.
+marker="# nascar26-league orb toolchain: $repo_root"
+if ! grep -Fqx "$marker" "$HOME/.bash_profile" 2>/dev/null; then
+  cat >> "$HOME/.bash_profile" <<EOF
+
+$marker
+case "\$PWD/" in
+  "$repo_root/"*)
+    barl_node_version="\$(tr -d '\\r\\n' < "$repo_root/.node-version")"
+    barl_node_bin="\$HOME/.local/share/barl-orb/node-v\$barl_node_version/bin"
+    case ":\$PATH:" in
+      *":\$barl_node_bin:"*) ;;
+      *) export PATH="\$barl_node_bin:\$PATH" ;;
+    esac
+    unset barl_node_version barl_node_bin
+    ;;
+esac
+EOF
+fi
+
+echo "[setup] Installing locked development dependencies (${SECONDS}s)"
+npm ci --include=dev --ignore-scripts --prefer-offline --no-audit --no-fund
+node -e "const sharp = require('sharp'); console.log('sharp ' + sharp.versions.sharp + ' / libvips ' + sharp.versions.vips)"
+echo "[setup] Ready: $(node --version), $(python3 --version) (${SECONDS}s total)"
