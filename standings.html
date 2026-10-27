@@ -6,7 +6,7 @@
  <title>Standings | N26 Racing League</title>
  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="n26.css?v=barl-2026-4">
-<script src="./scripts/site-header.js?v=5" defer></script>
+<script src="./scripts/site-header.js?v=6" defer></script>
  <style>
  </style>
 </head>
@@ -46,7 +46,7 @@
  <div class="page-header">
  <div>
  <h1>Standings</h1>
- <p>Season 1 — updated after every race</p>
+ <p>Season 1 — drivers who have raced this season</p>
  </div>
  <div class="page-tag" id="races-run-label"></div>
  </div>
@@ -117,7 +117,7 @@
  N26 Racing League · Season 1 · Real Points. Real Racing. Real Trophies.
 </footer>
 
-<script src="./scripts/league-rules.js"></script>
+<script src="./scripts/league-rules.js?v=public-results-1"></script>
 <script src="./scripts/public-bootstrap.js?v=daytona-20260927"></script>
 <script src="./scripts/number-style-defaults.js"></script>
 <script>
@@ -160,9 +160,6 @@
  const races = display.races;
  const isNormalized = display.source === 'normalized';
    let claimsRaw = display.claims || [];
-   if (!claimsRaw.length && (!display.races?.length || display.season?.status === 'prelaunch' || display.season?.status === 'draft')) {
-     claimsRaw = await loadPreseasonRoster(display);
-   }
    const results = display.results;
 
  // Show only identities that have actually been claimed or imported.
@@ -171,7 +168,7 @@
  const completed = races.filter(r => r.status === 'completed');
  const completedIds = new Set(completed.map(r => r.id));
  const authoritativeStandings = isNormalized && display.ruleset && window.N26LeagueRules
-   ? window.N26LeagueRules.calculateSeasonStandings({
+   ? window.N26LeagueRules.calculatePublicSeasonStandings({
      entries: display.entries.map(entry => ({ driverId: entry.driver_id, teamId: (display.assignments || []).find(assignment => assignment.driver_id === entry.driver_id)?.team_id || null, entryStatus: entry.entry_status })),
      races,
      results,

@@ -10,7 +10,7 @@
   document.head.append(fontLink);
   const themeLink = document.createElement('link');
   themeLink.rel = 'stylesheet';
-  themeLink.href = 'barl-theme.css?v=7';
+  themeLink.href = 'barl-theme.css?v=8';
   document.head.append(themeLink);
   const activePage = ['profiles.html', 'career.html', 'driver.html'].includes(page) ? 'claim.html' : page;
   const links = [
@@ -30,9 +30,9 @@
   const headerMarkup = `
     <div class="ticker site-ticker">
       <div class="ticker-inner">
-        <div class="ticker-item"><span class="ticker-badge">Next Race</span> Race 2 — Nashville Superspeedway</div>
+        <div class="ticker-item"><span class="ticker-badge">Next Race</span> <span id="header-next-race">Live season schedule</span></div>
         <div class="ticker-sep"></div>
-        <div class="ticker-item"><span class="ticker-badge red">Daytona Winner</span> Nolan McKim · #88</div>
+        <div class="ticker-item"><span class="ticker-badge red">Last Race Winner</span> <span id="header-last-winner">Published race results</span></div>
       </div>
     </div>
     <nav class="nav site-nav" aria-label="Primary navigation">
@@ -43,6 +43,10 @@
     </nav>
     <div class="nav-drawer" id="nav-drawer">${drawerMarkup}<a href="auth.html" class="drawer-cta">Log In / Join →</a></div>`;
 
+  window.addEventListener('barl:home-summary', event => {
+    const winner = document.getElementById('header-last-winner');
+    if (winner) winner.textContent = `${event.detail.winnerName} · #${event.detail.number} · ${event.detail.race.track_short}`;
+  });
   const currentNav = document.querySelector('nav.nav');
   const currentDrawer = document.querySelector('.nav-drawer');
   const currentTicker = document.querySelector('.ticker');
@@ -54,6 +58,16 @@
   currentTicker?.remove();
   currentNav?.remove();
   currentDrawer?.remove();
+
+  window.__leagueDataReady?.then(data => {
+    const races = [...(data.races || [])].sort((a,b) => a.race_number - b.race_number);
+    const next = races.find(race => !['completed','voided'].includes(race.status));
+    if (next) document.getElementById('header-next-race').textContent = `Race ${next.race_number} — ${next.track_name}`;
+    const last = [...races].reverse().find(race => race.status === 'completed' && (data.results || []).some(result => result.race_id === race.id && result.start_status === 'started' && result.finish_status !== 'disqualified' && result.finish_position === 1));
+    const winner = (data.results || []).find(result => result.race_id === last?.id && result.start_status === 'started' && result.finish_status !== 'disqualified' && result.finish_position === 1);
+    const driver = (data.drivers || []).find(driver => driver.id === winner?.driver_id);
+    if (winner) document.getElementById('header-last-winner').textContent = `${driver?.display_name || driver?.gamertag || 'Winner'} · #${winner.car_number} · ${last.track_short}`;
+  }).catch(() => {});
 
   const button = mount.querySelector('.nav-hamburger');
   const drawer = mount.querySelector('.nav-drawer');

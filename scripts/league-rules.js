@@ -186,7 +186,8 @@ function calculateChampionshipPoints(races, results) {
     droppedRaceIds: dropped.map(score => score.raceId), countedRaces: counted.length };
 }
 
-function calculateSeasonStats({ entries, races, results, pointsByPosition, strict = true }) {
+function calculateSeasonStats({ entries, races, results, pointsByPosition, strict = true, pointsSource = 'rules' }) {
+  if (pointsSource === 'published' && strict) throw new Error('Certification must validate points against the rules.');
   const completedRaces = races.filter(isChampionshipRound);
   const raceById = new Map(races.map(race => [race.id, race]));
   const stats = new Map(entries.map(entry => [entry.driverId, {
@@ -243,12 +244,14 @@ function calculateSeasonStats({ entries, races, results, pointsByPosition, stric
     if ([stage1Points, stage2Points].some(value => !Number.isInteger(value) || value < 0)) {
       throw new Error(`Stage points must be non-negative integers for ${driver.driverId}.`);
     }
-    if (points !== undefined && points !== null && points !== expectedPoints) {
+    if (pointsSource !== 'published' && points !== undefined && points !== null && points !== expectedPoints) {
       throw new Error(`Stored points do not match the rules for race ${race.id}, position ${finishPosition}.`);
     }
+    const awardedPoints = pointsSource === 'published' ? (isDisqualified ? 0 : points) : expectedPoints;
+    if (!Number.isInteger(awardedPoints) || awardedPoints < 0) throw new Error('Published race points must be non-negative integers.');
     driver.starts += 1;
     driver.finishes.push(finishPosition);
-    driver.points += expectedPoints;
+    driver.points += awardedPoints;
     driver.stage1Points = (driver.stage1Points || 0) + (isDisqualified ? 0 : stage1Points);
     driver.stage2Points = (driver.stage2Points || 0) + (isDisqualified ? 0 : stage2Points);
     if (finishPosition === 1 && !isDisqualified) driver.wins += 1;
@@ -258,7 +261,7 @@ function calculateSeasonStats({ entries, races, results, pointsByPosition, stric
     if (!isDisqualified && Number.isInteger(startersCount) && startersCount >= 1) {
       driver.finishCredits += (startersCount + 1 - finishPosition) / startersCount;
     }
-    driver.raceResults.set(raceKey, { ...result, pointsEarned: expectedPoints });
+    driver.raceResults.set(raceKey, { ...result, pointsEarned: awardedPoints });
 
     const qualifyingStatus = race.qualifyingStatus || race.qualifying_status || 'not_recorded';
     if (qualifyingStatus === 'valid' && resultValue(result, 'qualifyingValid', 'qualifying_valid') === true) {
@@ -418,6 +421,26 @@ function calculateSeasonStandings(input) {
   return { completedRaces, drivers, teams };
 }
 
+// Public pages display the awarded points from published results, including
+// historical scoring versions. Strict commissioner certification stays rules-based.
+function calculatePublicSeasonStandings(input) {
+  const results = (input.results || []).filter(result =>
+    ['published', 'certified'].includes(resultValue(result, 'certificationStatus', 'certification_status')));
+  const races = (input.races || []).map(race => ({ ...race,
+    starters_count: race.startersCount ?? race.starters_count ?? results.filter(result =>
+      (result.raceId || result.race_id) === race.id && resultValue(result, 'startStatus', 'start_status') === 'started').length,
+  })).sort((a, b) => Number(a.race_number || 0) - Number(b.race_number || 0));
+  const completedIds = new Set(races.filter(isChampionshipRound).map(race => race.id));
+  const startedIds = new Set(results.filter(result => completedIds.has(result.raceId || result.race_id)
+    && resultValue(result, 'startStatus', 'start_status') === 'started').map(result => result.driverId || result.driver_id));
+  const entries = (input.entries || []).filter(entry => startedIds.has(entry.driverId));
+  const entryIds = new Set(entries.map(entry => entry.driverId));
+  return calculateSeasonStandings({ ...input, entries, races,
+    results: results.filter(result => entryIds.has(result.driverId || result.driver_id)),
+    strict: false, pointsSource: 'published',
+  });
+}
+
 function calculateMinimumFeasibleCap(ratings, teamSize = 3) {
   if (!Array.isArray(ratings) || ratings.length === 0 || ratings.length % teamSize !== 0) {
     throw new Error('Ratings must contain a non-empty multiple of the team size.');
@@ -549,6 +572,7 @@ const exportedRules = {
   calculateChampionshipPoints,
   calculateSeasonStats,
   calculateSeasonStandings,
+  calculatePublicSeasonStandings,
   calculateTeamStandings,
   rankDrivers,
   calculateMinimumFeasibleCap,

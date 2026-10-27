@@ -6,7 +6,7 @@
  <title>Results | N26 Racing League</title>
  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="n26.css?v=barl-2026-4">
-<script src="./scripts/site-header.js?v=5" defer></script>
+<script src="./scripts/site-header.js?v=6" defer></script>
  <style>
  /* Race rail */
  .race-rail {
@@ -169,8 +169,9 @@
 
  const completedIds = races.filter(r=>r.status==='completed').map(r=>r.id);
  completedIds.forEach(id => allResults[id]=[]);
+ const racedIds = new Set(display.results.filter(result => completedIds.includes(result.race_id) && result.start_status === 'started').map(result => result.driver_id));
  display.results
-   .filter(result => completedIds.includes(result.race_id))
+   .filter(result => completedIds.includes(result.race_id) && racedIds.has(result.driver_id))
  .sort((a, b) => (a.finish_position ?? 999) - (b.finish_position ?? 999))
    .forEach(r => { if(!allResults[r.race_id]) allResults[r.race_id]=[]; allResults[r.race_id].push(r); });
 

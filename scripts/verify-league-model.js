@@ -348,3 +348,31 @@ const fiveRounds = dropRaces.slice(0, 5);
 assert.equal(calculateChampionshipPoints(fiveRounds, dropResults.slice(2)).points, 75);
 assert.equal(calculateChampionshipPoints([...fiveRounds, { id: 'future', status: 'scheduled' }], dropResults).points, 105);
 console.log('Running standings verified after every round: best N-1 scores, exactly one drop.');
+
+// Public results may use a historical points version. Display awarded totals,
+// hide DNS-only/draft-only drivers, and keep commissioner certification strict.
+const publicInput = {
+  entries: ['a', 'b', 'dns-only', 'draft-only', 'dq'].map(driverId => ({ driverId })),
+  races: [{ id: 'p1', race_number: 1, status: 'completed', qualifying_status: 'canceled' },
+    { id: 'p2', race_number: 2, status: 'completed', qualifying_status: 'canceled' },
+    { id: 'p3', race_number: 3, status: 'upcoming' }],
+  results: [
+    { race_id: 'p1', driver_id: 'a', start_status: 'started', finish_position: 1, points_earned: 45, stage1_points: 3, certification_status: 'published' },
+    { race_id: 'p2', driver_id: 'a', start_status: 'started', finish_position: 1, points_earned: 35, certification_status: 'certified' },
+    { race_id: 'p2', driver_id: 'b', start_status: 'started', finish_position: 2, points_earned: 40, certification_status: 'published' },
+    { race_id: 'p1', driver_id: 'dq', start_status: 'started', finish_status: 'disqualified', finish_position: 2, points_earned: 0, certification_status: 'published' },
+    { race_id: 'p1', driver_id: 'dns-only', start_status: 'dns', finish_position: null, points_earned: 0, certification_status: 'published' },
+    { race_id: 'p2', driver_id: 'draft-only', start_status: 'started', finish_position: 1, points_earned: 55, certification_status: 'draft' },
+    { race_id: 'p3', driver_id: 'dns-only', start_status: 'started', finish_position: 1, points_earned: 55, certification_status: 'published' },
+  ], pointsByPosition: { 1: 55, 2: 35 },
+};
+const publicStandings = require('./league-rules').calculatePublicSeasonStandings(publicInput);
+assert.deepEqual(publicStandings.drivers.map(driver => driver.driverId), ['a', 'b', 'dq']);
+assert.equal(publicStandings.drivers[0].points, 45);
+assert.equal(publicStandings.drivers[0].rawPoints, 80);
+assert.equal(publicStandings.drivers[1].points, 40);
+assert.equal(publicStandings.drivers[2].starts, 1);
+assert.equal(publicStandings.completedRaces.length, 2);
+assert.throws(() => calculateSeasonStandings({ ...publicInput, strict: false }), /Stored points do not match/);
+assert.throws(() => calculateSeasonStandings({ ...publicInput, pointsSource: 'published' }), /Certification must validate/);
+console.log('Published standings verified: historical awarded points, starter-only eligibility and strict certification preserved.');

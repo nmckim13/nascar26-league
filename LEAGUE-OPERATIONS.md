@@ -63,3 +63,11 @@ After each completed championship round, driver points drop exactly one lowest t
 ## Public team presentation paused
 
 `teamsVisible = false` in `scripts/site-header.js` applies the `data-barl-teams="paused"` presentation mode. `barl-theme.css` hides team sections, owner standings, labels, contract/team panels and team-specific rule cards while retaining their rendering hooks. The car picker displays one combined grid. Team tables, assignments, historic results, calculation code and commissioner tools remain intact. Set the switch to `true` to restore the hidden presentation; review public copy before relaunching teams.
+
+## Published-season display
+
+Public standings use `calculatePublicSeasonStandings`: only drivers with a started, published/certified result in a completed championship round appear. DNS-only entries stay in the roster database but are omitted from the public directory, number grid, standings and race result lists. A driver appears automatically after their first published start.
+
+Public totals use stored awarded race points, including stage points already included in that total, and drop one lowest completed-round score. Historical points are not recalculated against a newer ruleset. Missing legacy starter counts are inferred from published starts for display. Strict commissioner certification continues validating stored points against its ruleset and still requires explicit result rows.
+
+The homepage has one standings renderer. Its winner name, number badge, truck and race scene come from the latest completed round with a published winner. The shared header uses the same season data instead of fixed race and driver text.
