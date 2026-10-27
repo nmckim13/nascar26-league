@@ -111,7 +111,7 @@
    const [entries, assignments, races, results, ratings, teams] = await Promise.all([
     publicGet(`/rest/v1/n26_season_entries?select=season_id,driver_id,entry_status&season_id=in.(${seasonIds})`),
     publicGet(`/rest/v1/n26_seat_assignments?select=season_id,driver_id,team_id,car_number,assignment_status,starts_at&season_id=in.(${seasonIds})&assignment_status=in.(active,transferred,ended)`),
-    publicGet(`/rest/v1/n26_season_races?select=id,season_id&season_id=in.(${seasonIds})`),
+    publicGet(`/rest/v1/n26_season_races?select=id,season_id,status,race_type,starters_count&season_id=in.(${seasonIds})`),
     publicGet('/rest/v1/n26_race_results?select=race_id,driver_id,team_id,car_number,start_status,finish_status,finish_position,points_earned,certification_status&certification_status=in.(published,certified)'),
     publicGet(`/rest/v1/n26_rating_snapshots?select=season_id,driver_id,official_ovr,certification_status&season_id=in.(${seasonIds})&certification_status=eq.certified`),
     publicGet('/rest/v1/n26_teams?select=id,name&order=name'),
@@ -138,7 +138,7 @@
     const assignments = history.assignments.filter(assignment => assignment.season_id === season.id && assignment.driver_id === driverId);
     const latestAssignment = [...assignments].sort((a, b) => String(a.starts_at).localeCompare(String(b.starts_at))).pop();
     const starts = results.filter(result => result.start_status !== 'dns').length;
-    const points = results.reduce((sum, result) => sum + Number(result.points_earned || 0), 0);
+    const points = window.N26LeagueRules.calculateChampionshipPoints(history.races.filter(race => race.season_id === season.id), results).points;
     const wins = results.filter(result => result.start_status !== 'dns' && result.finish_position === 1 && result.finish_status !== 'disqualified').length;
     const teamId = latestAssignment?.team_id || results.at(-1)?.team_id;
     const rating = history.ratings.find(candidate => candidate.season_id === season.id && candidate.driver_id === driverId);

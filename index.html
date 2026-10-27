@@ -675,18 +675,18 @@
     const seasons=await get('/rest/v1/n26_seasons?select=id&season_number=eq.1&limit=1'); if(!seasons[0])return;
     const sid=seasons[0].id;
     const [races,results,assignments,drivers,teams]=await Promise.all([
-      get('/rest/v1/n26_season_races?select=id,race_number,track_name,track_short,race_date,status&season_id=eq.'+sid+'&order=race_number'),
-      get('/rest/v1/n26_race_results?select=race_id,driver_id,team_id,car_number,finish_position,points_earned,start_status&certification_status=in.(published,certified)'),
+      get('/rest/v1/n26_season_races?select=id,race_number,track_name,track_short,race_date,status,race_type,starters_count&season_id=eq.'+sid+'&order=race_number'),
+      get('/rest/v1/n26_race_results?select=race_id,driver_id,team_id,car_number,finish_position,finish_status,points_earned,start_status&certification_status=in.(published,certified)'),
       get('/rest/v1/n26_seat_assignments?select=driver_id,team_id,car_number&season_id=eq.'+sid+'&assignment_status=eq.active'),
       get('/rest/v1/n26_drivers?select=id,display_name,first_name,last_name,gamertag'),
       get('/rest/v1/n26_teams?select=id,name&status=eq.active')
     ]);
-    const completed=races.filter(r=>r.status==='completed'), ids=new Set(completed.map(r=>r.id)); if(!completed.length)return;
+    const completed=races.filter(r=>r.status==='completed'&&r.race_type!=='exhibition'&&(r.starters_count==null||r.starters_count>=2)), ids=new Set(completed.map(r=>r.id)); if(!completed.length)return;
     const db=Object.fromEntries(drivers.map(d=>[d.id,d])), tb=Object.fromEntries(teams.map(t=>[t.id,t.name])), ab=Object.fromEntries(assignments.map(a=>[a.driver_id,a]));
-    const pts={}; results.filter(r=>ids.has(r.race_id)).forEach(r=>pts[r.driver_id]=(pts[r.driver_id]||0)+(r.points_earned||0));
+    const pts=Object.fromEntries([...new Set([...assignments.map(a=>a.driver_id),...results.filter(r=>ids.has(r.race_id)).map(r=>r.driver_id)])].map(id=>[id,window.N26LeagueRules.calculateChampionshipPoints(races,results.filter(r=>r.driver_id===id)).points]));
     const rows=Object.entries(pts).map(([id,p])=>{const d=db[id]||{},a=ab[id]||{};return{id,p,name:d.display_name||[d.first_name,d.last_name].filter(Boolean).join(' ')||d.gamertag||'Driver',car:a.car_number||'',team:tb[a.team_id]||''};}).sort((a,b)=>b.p-a.p);
     const de=document.getElementById('driver-rows'); if(de)de.innerHTML=rows.slice(0,10).map((d,i)=>'<div class="s-row"><span style="font-size:18px;font-weight:900">'+(i+1)+'</span><span><strong>'+d.name+'</strong><div class="s-team-lbl">#'+d.car+' · '+d.team+'</div></span><span style="font-size:16px;font-weight:900">'+d.p+'</span></div>').join('');
-    const teamPts={}; rows.forEach(d=>teamPts[d.team]=(teamPts[d.team]||0)+d.p);
+    const teamPts={}; results.filter(r=>ids.has(r.race_id)).forEach(r=>{const name=tb[r.team_id]||'';teamPts[name]=(teamPts[name]||0)+(r.points_earned||0);});
     const tr=Object.entries(teamPts).sort((a,b)=>b[1]-a[1]); const oe=document.getElementById('owner-rows'); if(oe)oe.innerHTML=tr.map(([n,p],i)=>'<div class="s-row"><span style="font-size:18px;font-weight:900">'+(i+1)+'</span><span style="font-weight:800">'+n+'</span><span style="font-size:16px;font-weight:900">'+p+'</span></div>').join('');
     const last=completed[completed.length-1], win=results.find(r=>r.race_id===last.id&&r.finish_position===1), wd=win?db[win.driver_id]:null;
     if(wd){const t=document.getElementById('last-race-title'),s=document.getElementById('last-race-sub'),i=document.getElementById('last-race-icon');if(t)t.textContent=wd.display_name||wd.gamertag;if(s)s.textContent=(last.track_short||last.track_name)+' · Car #'+win.car_number;if(i)i.innerHTML='<img src="assets/driver-numbers/'+win.car_number+'/choice-privileges.png" alt="#'+win.car_number+'">';}

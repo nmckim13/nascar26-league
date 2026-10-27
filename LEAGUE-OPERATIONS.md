@@ -55,3 +55,7 @@ Set these Vercel environment variables for the commissioner API:
 - `COMMISSIONER_DISCORD_ID`: optional Discord user ID used for manual-fallback mentions
 
 Never put `SUPABASE_SERVICE_ROLE_KEY` in HTML, browser JavaScript, GitHub, or a public Vercel variable.
+
+## Driver championship: best seven of eight
+
+After each completed championship round, driver points drop exactly one lowest total (finish plus both stages) from the completed rounds so far. After N rounds, the best N-1 scores count; after eight, the best seven count. After the opener everyone has zero counting points and full-season sporting tiebreakers determine the order. DNS and missing public result rows score zero, so one absence is covered, never two. Future, exhibition, voided and undersized rounds do not enter the pool; if only seven rounds are completed, the best six scores count. Strict certification still requires explicit result/DNS rows. Team points, race history, attendance and performance statistics retain every result. Existing full-season sporting tiebreakers apply after best-seven points. Public standings, profiles, season archives and rating certification share the same scoring calculation.
