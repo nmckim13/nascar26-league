@@ -55,12 +55,13 @@ git diff --check
 
 `npm test` also covers opening consecutive rounds through the commissioner API
 with a simulated Supabase transport. CI separately runs the actual result-entry
-and appeal-correction SQL plus claim promotion/account linking against a
-disposable PostgreSQL 15 database:
+and appeal-correction SQL, claim promotion/account linking, and season publishing
+and contract-budget checks against a disposable PostgreSQL 15 database:
 
 ```sh
 psql -X -v ON_ERROR_STOP=1 -d league_test -f scripts/verify-race-results.sql
 psql -X -v ON_ERROR_STOP=1 -d league_test -f scripts/verify-claim-sync.sql
+psql -X -v ON_ERROR_STOP=1 -d league_test -f scripts/verify-season-contracts.sql
 ```
 
 Use an empty local test database and a superuser for these SQL fixtures; never

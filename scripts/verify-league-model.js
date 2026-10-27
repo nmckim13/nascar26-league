@@ -73,6 +73,9 @@ const capSearch = calculateMinimumFeasibleCap([95, 93, 88, 82, 82, 80, 81, 75, 7
 assert.equal(capSearch.minimumMax, 237);
 assert.equal(calculateEqualLeagueCap(capSearch.minimumMax), 240);
 assert.equal(capSearch.combinationsChecked > 0, true);
+assert.equal(calculateEqualLeagueCap(180), 240);
+assert.equal(calculateEqualLeagueCap(240), 240);
+assert.equal(calculateEqualLeagueCap(241), 245);
 
 assert.equal(roundHalfUp(82.5), 83);
 assert.equal(calculateRating({ starts: 0 }).overall, 40);

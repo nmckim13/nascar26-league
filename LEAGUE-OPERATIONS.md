@@ -43,7 +43,9 @@ Public profiles read only published or certified seasons. Driver history is keye
 
 Before publishing the 24-driver season, approve a versioned points schedule that defines positions 13-24. The current draft intentionally has `points_schedule_status = pending_24_position_extension`; no missing values are inferred. Paste the complete 1-24 map and a new version into **Approve new points version**; it preserves positions 1-12, enforces non-increasing integer values, and moves the draft season to the new approved ruleset atomically.
 
-The publish operation is atomic: it refuses to open the season unless there are exactly 24 full-time entries and 24 active seats, verifies each of the eight teams has exactly three seats, requires the points schedule to be explicitly marked `approved`, and creates any missing Season 1 introductory contracts at 50 credits before locking the roster.
+The publish operation is atomic: it refuses to open the season unless there are exactly 24 full-time entries and 24 active seats, verifies each of the eight teams has exactly three seats, requires the points schedule to be explicitly marked `approved`, and creates any missing Season 1 introductory contracts at 60 credits before locking the roster. It verifies all current team contract totals against the season cap, including contracts created before publication. A failed publication rolls back its new contracts, signing transactions, and roster lock.
+
+Season 1 signing, transfers, and publication use a 240-credit fallback cap when the ruleset has no explicit `cap_credits`. An explicit ruleset cap is preserved and enforced, not silently raised. Future draft caps follow `max(240, 5 * ceil(M / 5))`, where M is the minimum feasible maximum team total from certified OVRs; the database requires at least 240 credits in multiples of five. Apply `20261027020000_season_contract_budget_consistency.sql` alongside the updated cap calculation before preparing or publishing another season. The migration does not reprice existing contracts, edit ruleset caps, or reopen published seasons.
 
 ## Deployment Variables
 

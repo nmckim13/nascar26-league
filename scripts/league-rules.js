@@ -489,7 +489,7 @@ function calculateMinimumFeasibleCap(ratings, teamSize = 3) {
   return { minimumMax: low, groups: bestGroups, combinationsChecked };
 }
 
-function calculateEqualLeagueCap(minimumMax, floorCap = 155) {
+function calculateEqualLeagueCap(minimumMax, floorCap = 240) {
   if (!Number.isFinite(minimumMax) || minimumMax < 0) throw new Error('Minimum feasible cap must be a non-negative number.');
   return Math.max(floorCap, 5 * Math.ceil(minimumMax / 5));
 }
