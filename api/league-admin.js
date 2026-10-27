@@ -171,7 +171,7 @@ function driverName(driver, carNumber) {
   return driver?.display_name || driver?.gamertag || `Car #${carNumber}`;
 }
 
-async function generateRaceContent(raceId, userId) {
+async function generateRaceStorylines(raceId, userId) {
   const raceRows = await supabaseRequest(`/rest/v1/n26_season_races?id=eq.${encodeURIComponent(raceId)}&select=*`);
   if (!raceRows.length) throw Object.assign(new Error('Race not found after results were saved.'), { status: 404 });
   const race = raceRows[0];
@@ -191,25 +191,6 @@ async function generateRaceContent(raceId, userId) {
   const runnerUpName = runnerUp ? driverName(driversById[runnerUp.driver_id], runnerUp.car_number) : null;
   const track = race.track_name || race.track_short || `Race ${race.race_number}`;
   const generatedAt = new Date().toISOString();
-  const marginCopy = runnerUpName ? ` ahead of ${runnerUpName}` : '';
-  const recap = {
-    season_id: race.season_id,
-    race_id: race.id,
-    headline: `${winnerName} Wins at ${track}`.slice(0, 160),
-    dek: `The #${winner.car_number} of ${winnerName} claimed the victory${marginCopy}. Review the full finishing order before publishing this recap.`.slice(0, 500),
-    body: classified.map((result, index) => `${index + 1}. ${driverName(driversById[result.driver_id], result.car_number)} — #${result.car_number} — ${Number(result.points_earned || 0)} points`).join('\n'),
-    image_url: '/assets/news/barl-season-1-launch.jpg',
-    status: 'draft',
-    published_at: null,
-    created_by: userId,
-    generation_kind: 'race_recap',
-    generated_at: generatedAt,
-    updated_at: generatedAt,
-  };
-  await supabaseRequest('/rest/v1/n26_news_articles?on_conflict=race_id,generation_kind', {
-    method: 'POST', headers: { Prefer: 'resolution=merge-duplicates,return=representation' }, body: JSON.stringify(recap),
-  });
-
   const points = Object.fromEntries([...new Set(seasonResults.map(result => result.driver_id))].map(driverId => [
     driverId, rules.calculateChampionshipPoints(seasonRaceRows,
       seasonResults.filter(result => result.driver_id === driverId && ['published', 'certified'].includes(result.certification_status))).points,
@@ -246,7 +227,7 @@ async function generateRaceContent(raceId, userId) {
   await supabaseRequest('/rest/v1/n26_storylines?on_conflict=source_race_id,generation_kind', {
     method: 'POST', headers: { Prefer: 'resolution=merge-duplicates,return=representation' }, body: JSON.stringify(storylines),
   });
-  return { recap_headline: recap.headline, storyline_count: storylines.length };
+  return { storyline_count: storylines.length };
 }
 
 async function handleAction(action, body, user) {
@@ -404,7 +385,7 @@ async function handleAction(action, body, user) {
         p_corrected_by: user.id,
       });
       let generated;
-      try { generated = await generateRaceContent(body.race_id, user.id); }
+      try { generated = await generateRaceStorylines(body.race_id, user.id); }
       catch (error) { throw new Error(`Results were saved, but automatic content generation failed: ${error.message}`); }
       return { results: result, generated };
     }
@@ -416,7 +397,7 @@ async function handleAction(action, body, user) {
         p_corrected_by: user.id,
       });
       let generated;
-      try { generated = await generateRaceContent(body.race_id, user.id); }
+      try { generated = await generateRaceStorylines(body.race_id, user.id); }
       catch (error) { throw new Error(`Corrections were saved, but automatic content generation failed: ${error.message}`); }
       return { results: result, generated };
     }

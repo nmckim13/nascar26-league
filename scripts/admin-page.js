@@ -453,14 +453,14 @@ async function init() {
     try {
       const results = JSON.parse(document.getElementById('resultJson').value);
       const response = await call('record_results', { race_id: document.getElementById('raceSelect').value, results });
-      setMessage('actionMessage', `${results.length} draft result rows saved. Generated “${response.generated.recap_headline}” and ${response.generated.storyline_count} review-ready storylines.`);
+      setMessage('actionMessage', `${results.length} draft result rows saved. The recap will publish automatically with the race results. Generated ${response.generated.storyline_count} review-ready storylines.`);
     } catch (error) { setMessage('actionMessage', error.message, true); }
   });
   document.getElementById('correctResults').addEventListener('click', async () => {
     try {
       const results = JSON.parse(document.getElementById('resultJson').value);
       const response = await call('correct_results', { race_id: document.getElementById('raceSelect').value, results });
-      setMessage('actionMessage', `${results.length} correction rows saved. The generated recap and ${response.generated.storyline_count} storylines were refreshed for review.`);
+      setMessage('actionMessage', `${results.length} correction rows saved and the published recap updated automatically. ${response.generated.storyline_count} storylines were refreshed for review.`);
     } catch (error) { setMessage('actionMessage', error.message, true); }
   });
   await refresh();
@@ -469,7 +469,7 @@ async function init() {
 async function runRaceAction(action) {
   try {
     await call(action, { race_id: document.getElementById('raceSelect').value });
-    setMessage('actionMessage', 'Race action completed.');
+    setMessage('actionMessage', action === 'publish_race' ? 'Race results and recap published. The appeal window is now open.' : 'Race action completed.');
     await refresh();
   } catch (error) { setMessage('actionMessage', error.message, true); }
 }

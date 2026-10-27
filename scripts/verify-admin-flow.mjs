@@ -73,3 +73,45 @@ try {
 } finally {
   globalThis.fetch = originalFetch;
 }
+
+// The database owns recap publication. Subsequent API storyline generation
+// must not overwrite that published article with an obsolete draft.
+try {
+  const recap = { headline: 'Corrected winner at Dover', status: 'published', published_at: '2026-10-27T18:00:00Z' };
+  const expectedRecap = { ...recap };
+  const race = { id: 'race', season_id: 'season', race_number: 6, track_name: 'Dover', status: 'completed', certification_status: 'appeal_window', race_type: 'championship', starters_count: 2 };
+  const results = [
+    { driver_id: 'winner', car_number: '88', finish_position: 1, finish_status: 'classified', start_status: 'started', points_earned: 55, certification_status: 'published' },
+    { driver_id: 'second', car_number: '20', finish_position: 2, finish_status: 'classified', start_status: 'started', points_earned: 35, certification_status: 'published' },
+  ];
+  globalThis.fetch = async (input, options = {}) => {
+    const path = new URL(input).pathname;
+    if (path === '/auth/v1/user') return Response.json({ id: 'commissioner' });
+    if (path === '/rest/v1/rpc/is_admin') return Response.json(true);
+    if (path === '/rest/v1/rpc/n26_upsert_race_results' || path === '/rest/v1/rpc/n26_correct_race_results') return Response.json(2);
+    if (path === '/rest/v1/n26_season_races') return Response.json([race]);
+    if (path === '/rest/v1/n26_race_results') return Response.json(results);
+    if (path === '/rest/v1/n26_drivers') return Response.json([{ id: 'winner', display_name: 'Nolan McKim' }, { id: 'second', display_name: 'Logan Boone' }]);
+    if (path === '/rest/v1/n26_storylines') return Response.json(JSON.parse(options.body));
+    if (path === '/rest/v1/n26_news_articles') {
+      Object.assign(recap, JSON.parse(options.body));
+      return Response.json([recap]);
+    }
+    throw new Error(`Unexpected request: ${input}`);
+  };
+  for (const action of ['record_results', 'correct_results']) {
+    let response;
+    let status;
+    await handler({ method: 'POST', headers: { authorization: 'Bearer test' }, body: { action, race_id: race.id, results } }, {
+      status(value) { status = value; return this; },
+      json(value) { response = value; },
+    });
+    assert.equal(status, 200, response.error);
+    assert.equal(response.result.results, 2);
+    assert.equal(response.result.generated.storyline_count, 3);
+    assert.deepEqual(recap, expectedRecap, `${action} overwrote the public recap`);
+  }
+  console.log('Admin result saves/corrections verified: storyline drafts do not overwrite published recaps.');
+} finally {
+  globalThis.fetch = originalFetch;
+}
