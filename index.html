@@ -410,7 +410,7 @@
   </div>
   <div class="sched-item">
    <div class="sched-num">6</div>
-   <div class="sched-info"><div class="sched-name">Iowa Speedway</div><div class="sched-sub">Race 6</div></div>
+   <div class="sched-info"><div class="sched-name">Dover Motor Speedway</div><div class="sched-sub">Race 6</div></div>
    <span class="badge badge-up">Upcoming</span>
   </div>
   <div class="sched-item">
@@ -420,7 +420,7 @@
   </div>
   <div class="sched-item">
    <div class="sched-num hot">8</div>
-   <div class="sched-info"><div class="sched-name">Chicagoland Speedway</div><div class="sched-sub">Season Finale · Race 8</div></div>
+   <div class="sched-info"><div class="sched-name">Rockingham Speedway</div><div class="sched-sub">Season Finale · Race 8</div></div>
    <span class="badge badge-up">Finale</span>
   </div>
  </div>
@@ -478,7 +478,9 @@
   document.getElementById('season-format-label').textContent = 'No Playoff Reset';
   document.querySelectorAll('.sched-item').forEach(item => {
    const number = item.querySelector('.sched-num')?.textContent.trim();
-   item.hidden = !races.some(race => String(race.race_number) === number);
+   const race = races.find(race => String(race.race_number) === number);
+   if (race) item.querySelector('.sched-name').textContent = race.track_name || race.track_short;
+   item.hidden = !race;
    item.style.display = item.hidden ? 'none' : '';
   });
   {
@@ -691,7 +693,7 @@
     const last=completed[completed.length-1], win=results.find(r=>r.race_id===last.id&&r.finish_position===1), wd=win?db[win.driver_id]:null;
     if(wd){const t=document.getElementById('last-race-title'),s=document.getElementById('last-race-sub'),i=document.getElementById('last-race-icon');if(t)t.textContent=wd.display_name||wd.gamertag;if(s)s.textContent=(last.track_short||last.track_name)+' · Car #'+win.car_number;if(i)i.innerHTML='<img src="assets/driver-numbers/'+win.car_number+'/choice-privileges.png" alt="#'+win.car_number+'">';}
     const next=races.find(r=>!['completed','voided'].includes(r.status)); if(next){const n=document.getElementById('next-race-name'),sub=document.getElementById('next-race-sub'),lab=document.getElementById('next-race-label');if(n)n.textContent=next.track_name;if(sub)sub.textContent='Race '+next.race_number+' · '+(next.race_date||'Date to be announced');if(lab)lab.textContent='Race '+next.race_number+' Of '+races.length;}
-    document.querySelectorAll('.sched-item').forEach(el=>{const num=Number(el.querySelector('.sched-num')?.textContent);const race=races.find(r=>r.race_number===num);if(!race)return;const badge=el.querySelector('.badge');if(badge){badge.textContent=race.status==='completed'?'Complete':race===next?'Next':'Upcoming';badge.className='badge '+(race===next?'badge-next':'badge-up');}});
+    document.querySelectorAll('.sched-item').forEach(el=>{const num=Number(el.querySelector('.sched-num')?.textContent);const race=races.find(r=>r.race_number===num);if(!race)return;const track=el.querySelector('.sched-name');if(track)track.textContent=race.track_name||race.track_short;const badge=el.querySelector('.badge');if(badge){badge.textContent=race.status==='completed'?'Complete':race===next?'Next':'Upcoming';badge.className='badge '+(race===next?'badge-next':'badge-up');}});
   }catch(e){console.error('BARL home live fallback failed',e);}
 })();
 </script>
