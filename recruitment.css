@@ -37,11 +37,11 @@ html[data-barl-page="join"] body.recruitment .recruit-copy h1 {
 .recruitment .recruit-button-outline:hover { background: var(--barl-panel-raised); }
 .recruitment .recruit-notice { margin-top: 20px; color: var(--recruit-muted); font-size: 12px; }
 .recruitment .recruit-notice::before { content: ''; display: inline-block; width: 7px; height: 7px; background: var(--recruit-yellow); margin-right: 9px; }
-.recruitment .recruit-visual { position: relative; isolation: isolate; min-width: 0; background: linear-gradient(90deg, var(--barl-bg), transparent 38%), linear-gradient(0deg, var(--barl-bg) 0%, transparent 60%), url('assets/schedule/scenes/charlotte.jpg') 58% center / cover; }
-.recruitment .recruit-visual::after { content: ''; position: absolute; inset: 0; z-index: -1; background: rgba(0, 0, 0, .28); }
-.recruitment .recruit-truck { position: absolute; height: auto; max-width: none; filter: drop-shadow(0 22px 16px rgba(0, 0, 0, .6)); }
-.recruitment .recruit-truck-front { width: 118%; left: -12%; bottom: 3%; z-index: 1; }
-.recruitment .recruit-truck-back { width: 70%; right: -17%; top: 7%; opacity: .86; }
+.recruitment .recruit-visual { position: relative; isolation: isolate; min-width: 0; display: flex; flex-direction: column; justify-content: center; padding: 48px 40px 100px; background: linear-gradient(90deg, var(--barl-bg), transparent 38%), linear-gradient(0deg, var(--barl-bg) 0%, transparent 60%), url('assets/schedule/scenes/charlotte.jpg') 58% center / cover; }
+.recruitment .recruit-visual::after { content: ''; position: absolute; inset: 0; z-index: -1; background: rgba(0, 0, 0, .62); }
+.recruitment .recruit-series-title { color: var(--recruit-yellow); font: italic 800 clamp(64px, 7vw, 104px)/1 var(--barl-display); text-transform: uppercase; letter-spacing: -.025em; }
+.recruitment .recruit-series-title span { display: block; color: var(--barl-text); font-size: clamp(24px, 2.6vw, 38px); letter-spacing: .025em; margin-block: 10px; }
+.recruitment .recruit-series-note { margin-top: 22px; color: #e5eaf0; font-size: 13px; }
 .recruitment .recruit-scene-caption { position: absolute; right: 24px; bottom: 22px; z-index: 2; border-left: 2px solid var(--recruit-yellow); padding-left: 14px; color: #d5dfe6; font-size: 9px; text-transform: uppercase; letter-spacing: .25em; line-height: 1.9; }
 .recruitment .recruit-beats { display: grid; grid-template-columns: repeat(3, 1fr); padding: 30px clamp(22px, 4vw, 64px); border-bottom: 2px solid var(--recruit-yellow); background: var(--barl-bg); }
 .recruitment .recruit-beats article { display: flex; gap: 20px; padding: 0 24px; border-left: 1px solid var(--barl-line); }
@@ -50,6 +50,29 @@ html[data-barl-page="join"] body.recruitment .recruit-copy h1 {
 .recruitment .recruit-step { font-size: 48px; line-height: 1; font-weight: 700; font-style: italic; color: transparent; -webkit-text-stroke: 1px #9aabb9; }
 .recruitment .recruit-beats h2 { font-size: 24px; font-weight: 700; font-style: italic; text-transform: uppercase; line-height: 1.15; margin: 2px 0 9px; }
 .recruitment .recruit-beats p { font-size: 12px; color: var(--recruit-muted); line-height: 1.6; }
+.recruitment .recruit-calendar { padding: 54px clamp(22px, 4vw, 64px); border-bottom: 1px solid var(--barl-line); scroll-margin-top: 96px; }
+.recruitment .recruit-calendar-heading { display: grid; grid-template-columns: 1.2fr 1fr; align-items: end; gap: 40px; margin-bottom: 30px; }
+.recruitment .recruit-calendar h2 { font: italic 800 clamp(38px, 4.6vw, 68px)/.98 var(--barl-display); letter-spacing: -.025em; text-transform: uppercase; }
+.recruitment .recruit-calendar h2 span { color: var(--recruit-yellow); }
+.recruitment .recruit-calendar-intro { font-size: 13px; line-height: 1.75; color: var(--recruit-muted); }
+.recruitment #calendar-disclaimer { margin-top: 16px; padding-left: 14px; border-left: 2px solid var(--recruit-yellow); font-size: 11px; }
+.recruitment #calendar-disclaimer strong { display: block; color: var(--barl-text); font-weight: 600; }
+.recruitment .recruit-rounds { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; list-style: none; }
+.recruitment .recruit-round { min-width: 0; background: var(--barl-panel); border: 1px solid var(--barl-line); border-radius: 4px; overflow: hidden; }
+.recruitment .recruit-round-bookend { border-color: var(--recruit-yellow); }
+.recruitment .recruit-round-scene { position: relative; aspect-ratio: 4 / 3; isolation: isolate; background: var(--barl-bg); }
+.recruitment .recruit-round-scene::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(0,0,0,.58), transparent 65%, rgba(0,0,0,.65)); }
+.recruitment .recruit-round-scene img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.recruitment .recruit-round-number { position: absolute; top: 12px; left: 16px; color: #fff; font: italic 800 clamp(48px, 5vw, 72px)/1 var(--barl-display); text-shadow: 0 2px 18px #000; }
+.recruitment .recruit-round-tag { position: absolute; bottom: 12px; left: 16px; max-width: calc(100% - 32px); padding: 5px 8px; color: var(--barl-bg); background: var(--recruit-yellow); font-size: 9px; font-weight: 700; text-transform: uppercase; }
+.recruitment .recruit-round-copy { padding: 20px 16px 24px; }
+.recruitment .recruit-round-type { color: var(--recruit-yellow); font-size: 9px; text-transform: uppercase; font-weight: 600; line-height: 1.6; }
+.recruitment .recruit-round-copy h3 { margin: 8px 0 12px; color: var(--barl-text); font: italic 700 clamp(25px, 2.4vw, 34px)/1 var(--barl-display); text-transform: uppercase; }
+.recruitment .recruit-round-copy > p:last-child { color: var(--recruit-muted); font-size: 12px; line-height: 1.65; }
+.recruitment .recruit-calendar-footer { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--barl-line); }
+.recruitment .recruit-calendar-footer .recruit-kicker { margin-bottom: 8px; }
+.recruitment .recruit-calendar-footer p:last-child { color: var(--recruit-muted); font-size: 12px; line-height: 1.65; max-width: 550px; }
+.recruitment .recruit-calendar-footer .recruit-button { flex-shrink: 0; }
 .recruitment .recruit-details { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 54px clamp(22px, 4vw, 64px); border-bottom: 1px solid var(--barl-line); scroll-margin-top: 96px; }
 .recruitment .recruit-details h2, .recruitment .recruit-live-intro h2 { font-size: clamp(28px, 3vw, 42px); font-weight: 700; font-style: italic; text-transform: uppercase; line-height: 1.05; letter-spacing: -.035em; }
 .recruitment .recruit-details p:not(.recruit-kicker) { color: var(--recruit-muted); line-height: 1.7; margin-bottom: 12px; font-size: 14px; }
@@ -96,15 +119,16 @@ html[data-barl-page="join"] body.recruitment .recruit-copy h1 {
   .recruitment .recruit-live-intro { grid-column: 1 / -1; }
   .recruitment .recruit-beats article { gap: 12px; padding-inline: 16px; }
   .recruitment .recruit-step { font-size: 36px; }
+  .recruitment .recruit-rounds { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .recruitment .recruit-round-scene { aspect-ratio: 16 / 9; }
+  .recruitment .recruit-calendar-footer { align-items: start; flex-direction: column; }
 }
 @media (max-width: 760px) {
   .recruitment .recruit-hero { grid-template-columns: 1fr; }
   .recruitment .recruit-copy { padding: 38px 22px 0; }
   html[data-barl-page="join"] body.recruitment .recruit-copy h1 { font-size: clamp(43px, 10.6vw, 76px); }
   .recruitment .recruit-intro { font-size: 15px; }
-  .recruitment .recruit-visual { height: clamp(260px, 65vw, 430px); background-position: center; }
-  .recruitment .recruit-truck-front { width: 88%; left: -1%; bottom: -7%; }
-  .recruitment .recruit-truck-back { width: 53%; right: -6%; top: 0; }
+  .recruitment .recruit-visual { min-height: 380px; padding: 42px 22px 100px; background-position: center; }
   .recruitment .recruit-scene-caption { bottom: 16px; right: 20px; font-size: 8px; }
   .recruitment .recruit-beats { grid-template-columns: 1fr; padding-block: 8px; }
   .recruitment .recruit-beats article, .recruitment .recruit-beats article:first-child { padding: 24px 0; border: 0; border-bottom: 1px solid var(--barl-line); gap: 24px; }
@@ -112,6 +136,12 @@ html[data-barl-page="join"] body.recruitment .recruit-copy h1 {
   .recruitment .recruit-step { font-size: 44px; }
   .recruitment .recruit-beats h2 { font-size: 24px; }
   .recruitment .recruit-beats p { font-size: 13px; }
+  .recruitment .recruit-calendar { padding-block: 36px; }
+  .recruitment .recruit-calendar-heading { grid-template-columns: 1fr; gap: 24px; }
+  .recruitment .recruit-rounds { grid-template-columns: 1fr; }
+  .recruitment .recruit-round-copy h3 { font-size: 32px; }
+  .recruitment .recruit-round-number { font-size: 64px; }
+  .recruitment .recruit-calendar-footer .recruit-button { width: 100%; }
   .recruitment .recruit-details { grid-template-columns: 1fr; padding-block: 36px; gap: 24px; }
   .recruitment .recruit-live { grid-template-columns: 1fr; padding-block: 24px; }
   .recruitment .recruit-summary { min-height: 240px; }

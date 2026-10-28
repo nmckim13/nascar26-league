@@ -123,6 +123,7 @@ async function calculateRatings(seasonId) {
   }
   const pointsByPosition = bundle.ruleset.points_by_position;
   const standings = rules.calculateSeasonStandings({
+    championshipFormat: bundle.ruleset.config?.championship_format,
     entries: activeEntries.map(entry => ({ driverId: entry.driver_id, teamId: null, entryStatus: entry.entry_status })),
     races: bundle.races,
     results: bundle.results.filter(result => result.certification_status === 'certified'),
@@ -175,7 +176,12 @@ async function generateRaceStorylines(raceId, userId) {
   const raceRows = await supabaseRequest(`/rest/v1/n26_season_races?id=eq.${encodeURIComponent(raceId)}&select=*`);
   if (!raceRows.length) throw Object.assign(new Error('Race not found after results were saved.'), { status: 404 });
   const race = raceRows[0];
-  const seasonRaceRows = await supabaseRequest(`/rest/v1/n26_season_races?season_id=eq.${encodeURIComponent(race.season_id)}&select=id,status,race_type,starters_count`);
+  const seasonRaceRows = await supabaseRequest(`/rest/v1/n26_season_races?season_id=eq.${encodeURIComponent(race.season_id)}&select=id,race_number,status,race_type,starters_count&order=race_number`);
+  const season = await getSeason(race.season_id);
+  const [rulesets, entries] = await Promise.all([
+    supabaseRequest(`/rest/v1/n26_rulesets?id=eq.${season.ruleset_id}&select=*`),
+    supabaseRequest(`/rest/v1/n26_season_entries?season_id=eq.${season.id}&select=*`),
+  ]);
   const seasonRaceIds = seasonRaceRows.map(item => item.id);
   const [raceResults, seasonResults, drivers] = await Promise.all([
     supabaseRequest(`/rest/v1/n26_race_results?race_id=eq.${encodeURIComponent(raceId)}&select=*&order=finish_position.asc`),
@@ -191,11 +197,12 @@ async function generateRaceStorylines(raceId, userId) {
   const runnerUpName = runnerUp ? driverName(driversById[runnerUp.driver_id], runnerUp.car_number) : null;
   const track = race.track_name || race.track_short || `Race ${race.race_number}`;
   const generatedAt = new Date().toISOString();
-  const points = Object.fromEntries([...new Set(seasonResults.map(result => result.driver_id))].map(driverId => [
-    driverId, rules.calculateChampionshipPoints(seasonRaceRows,
-      seasonResults.filter(result => result.driver_id === driverId && ['published', 'certified'].includes(result.certification_status))).points,
-  ]));
-  const championship = Object.entries(points).sort((a, b) => b[1] - a[1]);
+  const standings = rules.calculatePublicSeasonStandings({
+    championshipFormat: rulesets[0]?.config?.championship_format,
+    entries: entries.map(entry => ({ driverId: entry.driver_id, entryStatus: entry.entry_status })),
+    races: seasonRaceRows, results: seasonResults, pointsByPosition: rulesets[0]?.points_by_position,
+  });
+  const championship = standings.drivers.map(driver => [driver.driverId, driver.points]);
   const leader = championship[0];
   const second = championship[1];
   const leaderName = leader ? driverName(driversById[leader[0]], '') : winnerName;

@@ -269,7 +269,7 @@
 </div>
 
 <main class="broadcast">
- <div class="season-strip"><h1>Below Average Racing League <span> / Season 1</span></h1><span id="season-progress-label">Loading season…</span></div>
+ <div class="season-strip"><h1>Below Average Racing League <span id="home-season-label"> / Season 1</span></h1><span id="season-progress-label">Loading season…</span></div>
  <section class="last-race-card" aria-labelledby="last-race-title">
   <div class="lrc-header"><span>Latest race winner</span><a href="results.html">Race results ↗</a></div>
   <div class="lrc-body">
@@ -421,7 +421,7 @@
 </footer>
 
 <script src="./data/car-art.js?v=trucks-1"></script>
-<script src="./scripts/league-rules.js?v=public-results-1"></script>
+<script src="./scripts/league-rules.js?v=chase-20261028"></script>
 <script src="./scripts/public-bootstrap.js?v=daytona-20260927"></script>
 <script src="./scripts/number-style-defaults.js"></script>
 <script>
@@ -451,7 +451,20 @@
   const raceCountLabel = document.getElementById('season-race-count');
   if (raceCountLabel) raceCountLabel.textContent = `${leagueRaceCount} Races`;
   document.getElementById('season-total-races').textContent = `${leagueRaceCount} Races`;
-  document.getElementById('season-format-label').textContent = 'No Playoff Reset';
+  const isChase = display.ruleset?.config?.championship_format === 'chase_12_7_3';
+  document.getElementById('home-season-label').textContent = ` / ${display.season?.name || 'Season 1'}`;
+  document.getElementById('season-format-label').textContent = isChase ? 'Top 12 · Three-race Chase' : 'No Playoff Reset';
+  if (isChase) {
+    const list = document.querySelector('.sched-list');
+    const template = list.querySelector('.sched-item').cloneNode(true);
+    list.replaceChildren();
+    races.forEach(race => {
+      const item = template.cloneNode(true);
+      item.querySelector('.sched-num').textContent = race.race_number;
+      item.querySelector('.sched-sub').textContent = `Race ${race.race_number}${race.race_type === 'chase' ? ' · Chase' : ' · Regular season'}`;
+      list.appendChild(item);
+    });
+  }
   document.querySelectorAll('.sched-item').forEach(item => {
    const number = item.querySelector('.sched-num')?.textContent.trim();
    const race = races.find(race => String(race.race_number) === number);
@@ -468,6 +481,7 @@
 
   const authoritativeStandings = isNormalized && display.ruleset && window.N26LeagueRules
    ? window.N26LeagueRules.calculatePublicSeasonStandings({
+     championshipFormat: display.ruleset.config?.championship_format,
      entries: display.entries.map(entry => ({ driverId: entry.driver_id, teamId: (display.assignments || []).find(assignment => assignment.driver_id === entry.driver_id)?.team_id || null, entryStatus: entry.entry_status })),
      races,
      results,
@@ -478,7 +492,9 @@
   const completedIds = new Set((authoritativeStandings?.completedRaces || races.filter(r => r.status === 'completed')).map(r => r.id));
   const racesRun = completedIds.size;
   document.getElementById('season-progress-label').textContent = races.length ? `${racesRun} of ${races.length} races complete` : 'Season data not yet available';
-  document.getElementById('home-standings-note').textContent = racesRun ? `Best ${Math.max(0,racesRun-1)} of ${racesRun} completed races count · Drivers who have raced this season` : 'Standings appear after published race results';
+  document.getElementById('home-standings-note').textContent = racesRun ? isChase
+    ? `${authoritativeStandings?.chaseActive ? 'Chase: seeded reset + rounds 8–10' : 'Regular season: all race points count'} · No dropped scores`
+    : `Best ${Math.max(0,racesRun-1)} of ${racesRun} completed races count · Drivers who have raced this season` : 'Standings appear after published race results';
   const nextRace = races.find(r => !['completed', 'voided'].includes(r.status));
   const lastCompletedRace = [...(authoritativeStandings?.completedRaces || races.filter(race => completedIds.has(race.id)))].reverse().find(r => typeof r === 'object' && results.some(result => result.race_id === r.id && result.start_status === 'started' && result.finish_status !== 'disqualified' && result.finish_position === 1));
   updateNextRace(nextRace);

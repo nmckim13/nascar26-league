@@ -85,7 +85,7 @@
   <section id="teams" hidden><div class="profile-grid" id="team-grid"></div></section>
  </main>
  <footer class="footer"><div class="footer-links"><a href="index.html">Home</a><a href="standings.html">Standings</a><a href="profiles.html">Profiles</a><a href="results.html">Results</a><a href="schedule.html">Schedule</a><a href="rules.html">Rules</a><a href="claim.html">Roster</a></div>N26 Racing League · Permanent identities. Historical seats.</footer>
- <script src="./scripts/league-rules.js?v=public-results-1"></script>
+ <script src="./scripts/league-rules.js?v=chase-20261028"></script>
  <script src="./data/car-art.js?v=trucks-1"></script>
  <script src="./scripts/profile-car-card.js?v=trucks-1"></script>
  <script src="./scripts/public-bootstrap.js"></script>
@@ -107,13 +107,14 @@
    const seasons = await publicGet('/rest/v1/n26_seasons?select=id,season_number,name,ruleset_id,status&status=in.(open,in_progress,appeal_window,certified,archived)&order=season_number');
    if (!seasons.length) return { seasons: [], entries: [], assignments: [], races: [], results: [], ratings: [], drivers: [], teams: [] };
    const seasonIds = seasons.map(season => season.id).join(',');
-   const [entries, assignments, races, results, ratings, teams] = await Promise.all([
+   const [entries, assignments, races, results, ratings, teams, rulesets] = await Promise.all([
     publicGet(`/rest/v1/n26_season_entries?select=season_id,driver_id,entry_status&season_id=in.(${seasonIds})`),
     publicGet(`/rest/v1/n26_seat_assignments?select=season_id,driver_id,team_id,car_number,assignment_status,starts_at&season_id=in.(${seasonIds})&assignment_status=in.(active,transferred,ended)`),
-    publicGet(`/rest/v1/n26_season_races?select=id,season_id,status,race_type,starters_count&season_id=in.(${seasonIds})`),
+    publicGet(`/rest/v1/n26_season_races?select=id,season_id,race_number,status,race_type,starters_count&season_id=in.(${seasonIds})&order=race_number`),
     publicGet('/rest/v1/n26_race_results?select=race_id,driver_id,team_id,car_number,start_status,finish_status,finish_position,points_earned,certification_status&certification_status=in.(published,certified)'),
     publicGet(`/rest/v1/n26_rating_snapshots?select=season_id,driver_id,official_ovr,certification_status&season_id=in.(${seasonIds})&certification_status=eq.certified`),
     publicGet('/rest/v1/n26_teams?select=id,name&order=name'),
+    publicGet('/rest/v1/n26_rulesets?select=id,config,points_by_position'),
    ]);
    const raceIds = new Set(races.map(race => race.id));
    const publicResults = results.filter(result => raceIds.has(result.race_id));
@@ -125,7 +126,16 @@
    const drivers = driverIds.length
     ? await publicGet(`/rest/v1/n26_drivers?select=id,display_name,gamertag,first_name,last_name&id=in.(${driverIds.join(',')})`)
     : [];
-   return { seasons, entries, assignments, races, results: publicResults, ratings, drivers, teams };
+   const standings = Object.fromEntries(seasons.map(season => {
+    const ruleset = rulesets.find(row => row.id === season.ruleset_id);
+    return [season.id, window.N26LeagueRules.calculatePublicSeasonStandings({
+     championshipFormat: ruleset?.config?.championship_format,
+     entries: entries.filter(entry => entry.season_id === season.id).map(entry => ({ driverId: entry.driver_id, entryStatus: entry.entry_status })),
+     races: races.filter(race => race.season_id === season.id), results: publicResults,
+     pointsByPosition: ruleset?.points_by_position,
+    })];
+   }));
+   return { seasons, entries, assignments, races, results: publicResults, ratings, drivers, teams, standings };
   }
 
   function driverHistory(driverId, history, teamNames) {
@@ -137,7 +147,7 @@
     const assignments = history.assignments.filter(assignment => assignment.season_id === season.id && assignment.driver_id === driverId);
     const latestAssignment = [...assignments].sort((a, b) => String(a.starts_at).localeCompare(String(b.starts_at))).pop();
     const starts = results.filter(result => result.start_status !== 'dns').length;
-    const points = window.N26LeagueRules.calculateChampionshipPoints(history.races.filter(race => race.season_id === season.id), results).points;
+    const points = history.standings[season.id].drivers.find(driver => driver.driverId === driverId)?.points || 0;
     const wins = results.filter(result => result.start_status !== 'dns' && result.finish_position === 1 && result.finish_status !== 'disqualified').length;
     const teamId = latestAssignment?.team_id || results.at(-1)?.team_id;
     const rating = history.ratings.find(candidate => candidate.season_id === season.id && candidate.driver_id === driverId);
@@ -214,6 +224,7 @@
    const styleFor = (driverId, carNumber) => { const styles = styleModule.NUMBER_STYLES[String(carNumber)] || []; return styles.find(style => style.key === selectedStyles[`${driverId}:${carNumber}`]) || styles[0]; };
    const assignments = Object.fromEntries((data.assignments || []).map(assignment => [assignment.driver_id, assignment]));
    const standings = window.N26LeagueRules.calculatePublicSeasonStandings({
+    championshipFormat: data.ruleset.config?.championship_format,
     entries: (data.entries || []).map(entry => ({ driverId: entry.driver_id, teamId: (data.assignments || []).find(assignment => assignment.driver_id === entry.driver_id)?.team_id || null, entryStatus: entry.entry_status })),
     races: data.races || [], results: data.results || [], pointsByPosition: data.ruleset.points_by_position, strict: false,
    });

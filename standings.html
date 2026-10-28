@@ -45,7 +45,7 @@
  <div class="page-header">
  <div>
  <h1>Standings</h1>
- <p>Season 1 — drivers who have raced this season</p>
+ <p id="standings-season-label">Season 1 — drivers who have raced this season</p>
  </div>
  <div class="page-tag" id="races-run-label"></div>
  </div>
@@ -59,7 +59,7 @@
  <div id="standings-note" style="padding:8px 12px;font-size:11px;color:var(--muted);border-bottom:1px solid var(--border2);display:none;">
  Preseason order is based only on car number. Every driver begins tied at 0 points.
  </div>
- <p style="padding:8px 12px;color:var(--muted);font-size:12px">One lowest race score (finish points only), including a missed race, is dropped after every completed round. After 5 races your best 4 count; after 8 your best 7 count. Only one absence is covered.</p>
+ <p id="standings-format-note" style="padding:8px 12px;color:var(--muted);font-size:12px">One lowest race score (finish points only), including a missed race, is dropped after every completed round. After 5 races your best 4 count; after 8 your best 7 count. Only one absence is covered.</p>
  <div class="table-wrap"><table class="data-table">
  <thead>
  <tr>
@@ -69,7 +69,7 @@
  <th class="c">Wins</th>
  <th class="c hide-mobile">Top 5</th>
  <th class="c hide-mobile">Top 10</th>
- <th class="c hide-mobile">Dropped</th>
+ <th class="c hide-mobile" id="standings-adjustment-label">Dropped</th>
  <th class="c">Counting Pts</th>
  <th class="c">Behind</th>
  </tr>
@@ -116,7 +116,7 @@
  N26 Racing League · Season 1 · Real Points. Real Racing. Real Trophies.
 </footer>
 
-<script src="./scripts/league-rules.js?v=public-results-1"></script>
+<script src="./scripts/league-rules.js?v=chase-20261028"></script>
 <script src="./scripts/public-bootstrap.js?v=daytona-20260927"></script>
 <script src="./scripts/number-style-defaults.js"></script>
 <script>
@@ -168,6 +168,7 @@
  const completedIds = new Set(completed.map(r => r.id));
  const authoritativeStandings = isNormalized && display.ruleset && window.N26LeagueRules
    ? window.N26LeagueRules.calculatePublicSeasonStandings({
+     championshipFormat: display.ruleset.config?.championship_format,
      entries: display.entries.map(entry => ({ driverId: entry.driver_id, teamId: (display.assignments || []).find(assignment => assignment.driver_id === entry.driver_id)?.team_id || null, entryStatus: entry.entry_status })),
      races,
      results,
@@ -177,10 +178,18 @@
    : null;
  const completedForDisplay = authoritativeStandings?.completedRaces || completed;
  const racesRun = completedForDisplay.length;
+ const seasonLabel = display.season?.name || 'Season 1';
+ document.getElementById('standings-season-label').textContent = `${seasonLabel} — drivers who have raced this season`;
+ if (display.ruleset?.config?.championship_format === 'chase_12_7_3') {
+   document.getElementById('standings-adjustment-label').textContent = 'Chase seed';
+   document.getElementById('standings-format-note').textContent = authoritativeStandings?.chaseActive
+     ? 'Chase active: the top 12 regular-season full-time starters reset to NASCAR seed points. All points from rounds 8–10 count; no drops or eliminations. Non-qualifiers rank behind the Chase field.'
+     : 'All seven regular-season races count. The top 12 full-time drivers who start a regular-season race qualify for one seeded points reset before Round 8. All three Chase races count. No dropped scores.';
+ }
 
  const tickerText = document.getElementById('ticker-text');
  if (tickerText) tickerText.textContent =
- racesRun > 0 ? `Season 1 · ${racesRun} of ${races.length} races complete` : 'Season 1 · Preseason standings · Numerical order';
+ racesRun > 0 ? `${seasonLabel} · ${racesRun} of ${races.length} races complete` : `${seasonLabel} · Preseason standings · Numerical order`;
  document.getElementById('races-run-label').innerHTML =
  racesRun > 0 ? `After Race ${racesRun}: <span>${completedForDisplay[racesRun-1].track_short}</span>` : 'Preseason: <span>0 points</span>';
  document.getElementById('standings-note').style.display = racesRun === 0 ? 'block' : 'none';
@@ -207,6 +216,7 @@
        top10: driver.finishes.filter(finish => finish <= 10).length,
        racePts: driver.points,
        droppedPoints: driver.droppedPoints,
+       chaseSeed: driver.chaseSeed,
      };
    });
  } else {
@@ -230,7 +240,8 @@
  const tbody = document.getElementById('driver-tbody');
  tbody.innerHTML = drivers.map((d,i) => {
    const pos = i+1, total = d.racePts;
-   const behind = racesRun === 0 ? '<span style="color:var(--muted2)">—</span>' : pos===1 ? '<span style="color:var(--muted)">—</span>' : `-${leader-total}`;
+   const behind = racesRun === 0 || (authoritativeStandings?.chaseActive && !d.chaseSeed)
+     ? '<span style="color:var(--muted2)">—</span>' : pos===1 ? '<span style="color:var(--muted)">—</span>' : `-${leader-total}`;
    const driverName = d.name || d.gamertag || `Car #${d.car}`;
    return `<tr>
      <td><span class="num-cell ${pos<=3&&racesRun>0?'':'muted'}">${pos}</span></td>
@@ -243,7 +254,7 @@
      <td class="c"><span class="num-cell ${d.wins?'red':''}">${d.wins}</span></td>
      <td class="c hide-mobile">${d.top5}</td>
      <td class="c hide-mobile">${d.top10}</td>
-     <td class="c hide-mobile">${d.droppedPoints || 0}</td>
+     <td class="c hide-mobile">${display.ruleset?.config?.championship_format === 'chase_12_7_3' ? d.chaseSeed || '—' : d.droppedPoints || 0}</td>
      <td class="c"><span class="num-cell">${total}</span></td>
      <td class="c"><span style="color:var(--muted);font-size:13px">${behind}</span></td>
    </tr>`;

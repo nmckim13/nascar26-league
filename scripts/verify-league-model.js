@@ -389,3 +389,90 @@ assert.equal(publicStandings.completedRaces.length, 2);
 assert.throws(() => calculateSeasonStandings({ ...publicInput, strict: false }), /Stored points do not match/);
 assert.throws(() => calculateSeasonStandings({ ...publicInput, pointsSource: 'published' }), /Certification must validate/);
 console.log('Published standings verified: historical awarded points, starter-only eligibility and strict certification preserved.');
+
+// A 16-driver field puts full-time starters on both sides of the Chase cutoff.
+// The reserve wins the regular season but cannot take a qualifying place.
+const chaseEntries = Array.from({ length: 16 }, (_, index) => ({
+  driverId: `chase-${String(index + 1).padStart(2, '0')}`,
+  teamId: 'chase-team', entryStatus: index === 14 ? 'reserve' : 'full_time',
+}));
+const chaseRaces = Array.from({ length: 10 }, (_, index) => ({
+  id: `chase-r${index + 1}`, race_number: index + 1,
+  status: 'completed', starters_count: 15, qualifying_status: 'canceled',
+  race_type: index < 7 ? 'regular' : 'chase',
+}));
+const chaseSchedule = Object.fromEntries(Array.from({ length: 24 }, (_, index) => [index + 1, index === 0 ? 55 : 36 - index]));
+const chaseResults = chaseRaces.flatMap((race, raceIndex) => chaseEntries.map((entry, index) => {
+  let position = index === 14 ? 1 : index + 2;
+  if (raceIndex >= 7) {
+    // Round 8: #13 wins, #2 second, #1 third. Round 9: #2 wins,
+    // #1 DNS. Round 10: #13 wins, #1 twelfth, #2 DNS.
+    const orders = [
+      [12, 1, 0, 3, 4, 5, 6, 2, 7, 8, 9, 10, 11, 13, 14],
+      [1, 12, 3, 4, 5, 6, 7, 2, 8, 9, 10, 11, 13, 14],
+      [12, 3, 4, 5, 6, 7, 8, 2, 9, 10, 11, 0, 13, 14],
+    ];
+    position = orders[raceIndex - 7].indexOf(index) + 1;
+  }
+  const dns = index === 15 || position === 0;
+  return { race_id: race.id, driver_id: entry.driverId, team_id: 'chase-team',
+    start_status: dns ? 'dns' : 'started', finish_position: dns ? null : position,
+    points_earned: dns ? 0 : chaseSchedule[position], certification_status: 'certified' };
+}));
+const chaseInput = { entries: chaseEntries, races: chaseRaces, results: chaseResults,
+  pointsByPosition: chaseSchedule, championshipFormat: 'chase_12_7_3' };
+const chaseAt = rounds => calculateSeasonStandings({ ...chaseInput,
+  races: chaseRaces.map((race, index) => ({ ...race, status: index < rounds ? 'completed' : 'upcoming' })) });
+assert.equal(chaseAt(6).drivers.find(driver => driver.driverId === 'chase-01').points, 210);
+assert.equal(chaseAt(6).chaseActive, false);
+const reset = chaseAt(7);
+assert.equal(reset.chaseActive, true);
+assert.deepEqual(reset.drivers.filter(driver => driver.chaseQualified).map(driver => driver.driverId),
+  chaseEntries.slice(0, 12).map(entry => entry.driverId));
+assert.deepEqual(reset.drivers.slice(0, 12).map(driver => driver.points),
+  [2100, 2075, 2065, 2060, 2055, 2050, 2045, 2040, 2035, 2030, 2025, 2020]);
+assert.equal(reset.drivers.find(driver => driver.driverId === 'chase-15').chaseQualified, false);
+assert.equal(reset.drivers.find(driver => driver.driverId === 'chase-16').chaseQualified, false);
+assert.equal(chaseAt(8).drivers.find(driver => driver.driverId === 'chase-01').points, 2134);
+const chaseFinal = chaseAt(10);
+assert.equal(chaseFinal.drivers[0].driverId, 'chase-02');
+assert.equal(chaseFinal.drivers[0].points, 2165); // 2075 + 35 + 55 + DNS.
+assert.equal(chaseFinal.drivers.find(driver => driver.driverId === 'chase-01').points, 2159); // 2100 + 34 + DNS + 25.
+assert.equal(chaseFinal.drivers.find(driver => driver.driverId === 'chase-13').chaseQualified, false);
+assert.equal(chaseFinal.drivers.find(driver => driver.driverId === 'chase-13').rank > 12, true);
+assert.equal(chaseFinal.drivers.every(driver => driver.droppedPoints === 0 && driver.droppedRaceIds.length === 0), true);
+assert.equal(chaseFinal.teams[0].points, chaseResults.reduce((sum, result) => sum + result.points_earned, 0));
+assert.equal(chaseFinal.drivers.find(driver => driver.driverId === 'chase-01').rawPoints, 304); // 7×35 + 34 + 25.
+const publicChase = require('./league-rules').calculatePublicSeasonStandings(chaseInput);
+assert.deepEqual(publicChase.drivers.map(driver => [driver.driverId, driver.points, driver.rank]),
+  chaseFinal.drivers.filter(driver => driver.starts).map(driver => [driver.driverId, driver.points, driver.rank]));
+const correctedChase = calculateSeasonStandings({ ...chaseInput, results: chaseResults.map(result => {
+  if (result.race_id !== 'chase-r10') return result;
+  if (result.driver_id === 'chase-02') return { ...result, start_status: 'started', finish_position: 2, points_earned: 35 };
+  return result.finish_position >= 2 ? { ...result, finish_position: result.finish_position + 1,
+    points_earned: chaseSchedule[result.finish_position + 1] } : result;
+}) });
+assert.equal(correctedChase.drivers[0].points, 2200); // Correction adds to the original seed, never resets again.
+const correctedCutoff = calculateSeasonStandings({ ...chaseInput, results: chaseResults.map(result => {
+  if (result.race_id !== 'chase-r7') return result;
+  if (result.driver_id === 'chase-13') return { ...result, finish_position: 1, points_earned: 55 };
+  if (result.driver_id === 'chase-15') return { ...result, finish_position: 14, points_earned: 23 };
+  return result;
+}) });
+assert.equal(correctedCutoff.drivers.find(driver => driver.driverId === 'chase-13').chaseSeed, 9);
+assert.equal(correctedCutoff.drivers.find(driver => driver.driverId === 'chase-13').points, 2180); // 2035 + 55 + 35 + 55.
+assert.equal(correctedCutoff.drivers.find(driver => driver.driverId === 'chase-12').chaseQualified, false);
+const dqChase = calculateSeasonStandings({ ...chaseInput, results: chaseResults.map(result =>
+  result.race_id === 'chase-r9' && result.driver_id === 'chase-02'
+    ? { ...result, finish_status: 'disqualified', points_earned: 0 } : result) });
+assert.equal(dqChase.drivers[0].driverId, 'chase-04');
+assert.equal(dqChase.drivers.find(driver => driver.driverId === 'chase-02').points, 2110);
+const unresolved = chaseRaces.map((race, index) => index === 6 ? { ...race, status: 'upcoming' } : race);
+assert.throws(() => calculateSeasonStandings({ ...chaseInput, races: unresolved }), /regular-season rounds must be resolved/);
+const voidedRegular = chaseRaces.map((race, index) => index === 6 ? { ...race, status: 'voided' } : race);
+assert.equal(calculateSeasonStandings({ ...chaseInput, races: voidedRegular }).chaseActive, true);
+const smallField = calculateSeasonStandings({ ...chaseInput, entries: chaseEntries.slice(0, 2),
+  results: chaseResults.filter(result => ['chase-01', 'chase-02'].includes(result.driver_id)) });
+assert.deepEqual(smallField.drivers.map(driver => driver.chaseSeed), [2, 1]);
+assert.equal(calculateSeasonStandings({ ...chaseInput, championshipFormat: undefined }).drivers.find(driver => driver.driverId === 'chase-01').points, 304);
+console.log('Season 2 Chase verified: no drops, top-12 full-time cutoff, NASCAR seeds, one reset, all three races, DNS/DQ, corrections, public/certified agreement and unchanged team totals.');

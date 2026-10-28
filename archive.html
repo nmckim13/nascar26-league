@@ -47,7 +47,7 @@
   <div class="archive-list" id="archive-list"><div class="empty">Loading season archive...</div></div>
  </main>
  <footer class="footer"><div class="footer-links"><a href="index.html">Home</a><a href="standings.html">Standings</a><a href="profiles.html">Profiles</a><a href="archive.html">Archive</a><a href="results.html">Results</a><a href="schedule.html">Schedule</a><a href="rules.html">Rules</a><a href="claim.html">Roster</a></div>N26 Racing League · Permanent identities. Historical seasons.</footer>
- <script src="./scripts/league-rules.js?v=public-results-1"></script>
+ <script src="./scripts/league-rules.js?v=chase-20261028"></script>
  <script>
   const SB_URL = 'https://txipxisumngvzkuqsysq.supabase.co';
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4aXB4aXN1bW5ndnprdXFzeXNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzExMTYsImV4cCI6MjEwNDY0NzExNn0.NxrJIAkWWfg-5ezHni_z56IRmLD9HHxM-VAALiT22io';
@@ -58,7 +58,7 @@
    const seasons = await get('/rest/v1/n26_seasons?select=id,season_number,name,ruleset_id,status,results_certified_at&status=in.(open,in_progress,appeal_window,certified,archived)&order=season_number.desc');
    if (!seasons.length) { document.getElementById('archive-list').innerHTML = '<div class="empty">No public seasons are available yet. Draft seasons remain private.</div>'; return; }
    const [rulesets, races, entries, assignments, results, drivers, teams] = await Promise.all([
-    get('/rest/v1/n26_rulesets?select=id,version,points_by_position,rating_weights').catch(() => []),
+    get('/rest/v1/n26_rulesets?select=id,version,points_by_position,rating_weights,config').catch(() => []),
     get('/rest/v1/n26_season_races?select=id,season_id,race_number,status,race_type,starters_count,qualifying_field_count,qualifying_status,certification_status&order=race_number'),
     get('/rest/v1/n26_season_entries?select=season_id,driver_id,entry_status'),
     get('/rest/v1/n26_seat_assignments?select=season_id,driver_id,team_id,car_number,assignment_status&assignment_status=eq.active'),
@@ -69,7 +69,8 @@
    const rulesetById = Object.fromEntries((rulesets || []).map(ruleset => [ruleset.id, ruleset]));
    const driverById = Object.fromEntries((drivers || []).map(driver => [driver.id, driver]));
    const teamById = Object.fromEntries((teams || []).map(team => [team.id, team.name]));
-   document.getElementById('ticker-text').textContent = `${seasons.length} public season${seasons.length === 1 ? '' : 's'} archived`;
+   const ticker = document.getElementById('ticker-text');
+   if (ticker) ticker.textContent = `${seasons.length} public season${seasons.length === 1 ? '' : 's'} archived`;
    document.getElementById('archive-list').innerHTML = seasons.map(season => {
     const ruleset = rulesetById[season.ruleset_id];
     const seasonRaces = races.filter(race => race.season_id === season.id);
@@ -85,6 +86,7 @@
     if (ruleset?.points_by_position) {
      try {
       championship = window.N26LeagueRules.calculatePublicSeasonStandings({
+       championshipFormat: ruleset.config?.championship_format,
        entries: seasonEntries,
        races: seasonRaces,
        results: seasonResults,

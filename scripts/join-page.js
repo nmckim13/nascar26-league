@@ -59,10 +59,11 @@ async function loadRecruitmentSummary() {
       || identity.display_name || identity.gamertag || `Car #${carNumber ?? '—'}`;
   };
 
-  // Match index.html: published awarded points, eligible championship rounds,
-  // one lowest score dropped, starters only, and the shared sporting tiebreaks.
+  // Match index.html: published awards, season-specific championship format,
+  // eligible starters, and the shared sporting tiebreaks.
   const standings = data.source === 'normalized' && data.ruleset
     ? window.N26LeagueRules.calculatePublicSeasonStandings({
+      championshipFormat: data.ruleset.config?.championship_format,
       entries: (data.entries || []).map(entry => ({
         driverId: entry.driver_id,
         teamId: (data.assignments || []).find(assignment => assignment.driver_id === entry.driver_id)?.team_id || null,
@@ -142,7 +143,9 @@ async function loadRecruitmentSummary() {
     });
   }
   document.getElementById('recruit-points-note').textContent = completedRaces.length && leaders.length
-    ? standings ? `Best ${Math.max(0, completedRaces.length - 1)} of ${completedRaces.length} completed races count.` : 'Published season points.'
+    ? data.ruleset?.config?.championship_format === 'chase_12_7_3'
+      ? `${standings.chaseActive ? 'Seeded Chase points + rounds 8–10' : 'All regular-season race points count'} · No dropped scores.`
+      : standings ? `Best ${Math.max(0, completedRaces.length - 1)} of ${completedRaces.length} completed races count.` : 'Published season points.'
     : 'Standings appear after published race results.';
   document.getElementById('recruit-data-note').textContent = data.source === 'prelaunch'
     ? 'No published season summary is available yet. Follow the season home for updates.'

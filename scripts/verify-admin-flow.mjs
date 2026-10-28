@@ -89,8 +89,11 @@ try {
     if (path === '/auth/v1/user') return Response.json({ id: 'commissioner' });
     if (path === '/rest/v1/rpc/is_admin') return Response.json(true);
     if (path === '/rest/v1/rpc/n26_upsert_race_results' || path === '/rest/v1/rpc/n26_correct_race_results') return Response.json(2);
+    if (path === '/rest/v1/n26_seasons') return Response.json([{ id: 'season', ruleset_id: 'rules' }]);
+    if (path === '/rest/v1/n26_rulesets') return Response.json([{ id: 'rules', points_by_position: { 1: 55, 2: 35 }, config: {} }]);
+    if (path === '/rest/v1/n26_season_entries') return Response.json(results.map(result => ({ driver_id: result.driver_id, entry_status: 'full_time' })));
     if (path === '/rest/v1/n26_season_races') return Response.json([race]);
-    if (path === '/rest/v1/n26_race_results') return Response.json(results);
+    if (path === '/rest/v1/n26_race_results') return Response.json(results.map(result => ({ ...result, race_id: race.id })));
     if (path === '/rest/v1/n26_drivers') return Response.json([{ id: 'winner', display_name: 'Nolan McKim' }, { id: 'second', display_name: 'Logan Boone' }]);
     if (path === '/rest/v1/n26_storylines') return Response.json(JSON.parse(options.body));
     if (path === '/rest/v1/n26_news_articles') {
@@ -112,6 +115,46 @@ try {
     assert.deepEqual(recap, expectedRecap, `${action} overwrote the public recap`);
   }
   console.log('Admin result saves/corrections verified: storyline drafts do not overwrite published recaps.');
+} finally {
+  globalThis.fetch = originalFetch;
+}
+
+// Raw totals favor the regular-season winner, but the Chase makes the other
+// driver champion. Ratings must use that championship order, not raw awards.
+try {
+  const races = Array.from({ length: 10 }, (_, index) => ({ id: `race-${index + 1}`,
+    race_number: index + 1, season_id: 'season', status: 'completed', starters_count: 2,
+    race_type: index < 7 ? 'regular' : 'chase', qualifying_status: 'canceled', certification_status: 'certified' }));
+  const results = races.flatMap((race, index) => ['regular-winner', 'chase-winner'].map((driver_id, driver) => {
+    const first = index < 7 ? driver === 0 : driver === 1;
+    return { id: `${race.id}-${driver}`, race_id: race.id, driver_id, start_status: 'started',
+      finish_position: first ? 1 : 2, points_earned: first ? 55 : 35, certification_status: 'certified', source_version: 1 };
+  }));
+  const tables = {
+    n26_seasons: [{ id: 'season', ruleset_id: 'rules', season_number: 2, rated_field_size: 2 }],
+    n26_rulesets: [{ id: 'rules', points_by_position: { 1: 55, 2: 35 }, config: { championship_format: 'chase_12_7_3' } }],
+    n26_season_races: races, n26_race_results: results,
+    n26_season_entries: ['regular-winner', 'chase-winner'].map(driver_id => ({ driver_id, entry_status: 'full_time' })),
+  };
+  globalThis.fetch = async (input, options = {}) => {
+    const path = new URL(input).pathname;
+    if (path === '/auth/v1/user') return Response.json({ id: 'commissioner' });
+    if (path === '/rest/v1/rpc/is_admin') return Response.json(true);
+    if (path === '/rest/v1/n26_rating_snapshots') return Response.json(JSON.parse(options.body));
+    return Response.json(tables[path.split('/').pop()] || []);
+  };
+  let response;
+  let status;
+  await handler({ method: 'POST', headers: { authorization: 'Bearer test' }, body: { action: 'calculate_ratings', season_id: 'season' } }, {
+    status(value) { status = value; return this; }, json(value) { response = value; },
+  });
+  assert.equal(status, 200, response.error);
+  assert.deepEqual(response.result.standings.drivers.map(driver => [driver.driverId, driver.points]),
+    [['chase-winner', 2240], ['regular-winner', 2205]]);
+  assert.equal(response.result.snapshots.find(row => row.driver_id === 'chase-winner').championship_finish, 100);
+  assert.ok(Math.abs(response.result.snapshots.find(row => row.driver_id === 'regular-winner').championship_finish
+    - (40 + 60 / Math.sqrt(2))) < 1e-10); // Second of two: 40 + 60√(1/2).
+  console.log('Admin ratings verified: Season 2 Chase order drives championship rating credits instead of raw season totals.');
 } finally {
   globalThis.fetch = originalFetch;
 }

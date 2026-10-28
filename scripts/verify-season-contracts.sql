@@ -28,6 +28,7 @@ create table public.n26_races (race_number integer, track_name text, track_short
 \ir ../supabase/migrations/20260909234213_roster_transfer_consents.sql
 \ir ../supabase/migrations/20260909234726_contract_continuity.sql
 \ir ../supabase/migrations/20260910006000_contract_annual_repricing.sql
+\ir ../supabase/migrations/20260910018000_freeze_rated_field_size.sql
 \ir ../supabase/migrations/20260910019000_future_season_roster_continuity.sql
 \ir ../supabase/migrations/20260910220000_starting_ovr_and_news.sql
 
@@ -39,7 +40,8 @@ declare
   number_row record;
 begin
   insert into public.n26_rulesets (version, name, points_by_position, rating_weights, config)
-  values ('contract-test', 'Contract test', '{"1":55,"2":35}', '{}', '{"points_schedule_status":"approved"}')
+  values ('contract-test', 'Contract test', '{"1":55,"2":35}', '{}',
+    '{"points_schedule_status":"approved","drop_rule":"lowest_finish","drop_count":1,"qualifying_required":true}')
   returning id into ruleset;
   insert into public.n26_seasons (season_number, name, ruleset_id)
   values (1, 'Contract test', ruleset) returning id into season;
@@ -145,6 +147,51 @@ begin
 end;
 $$;
 
+-- A pre-existing Season 2 draft must survive migration byte-for-byte. Give the
+-- old copying path a schedule unlike Season 2's to catch accidental backfills.
+insert into public.n26_season_races (season_id, race_number, track_name, track_short, race_type, race_date)
+select id, 1, 'Old exhibition', 'Old', 'exhibition', date '2026-01-01'
+from public.n26_seasons where season_number = 1;
+update public.n26_seasons set status = 'certified' where season_number = 1;
+select public.n26_create_draft_season(
+  (select id from public.n26_seasons where season_number = 1), 'Existing draft', 'existing-draft', 245);
+create temporary table before_chase_rulesets as select * from public.n26_rulesets;
+create temporary table before_chase_seasons as select * from public.n26_seasons;
+create temporary table before_chase_races as select * from public.n26_season_races;
+create temporary table before_chase_contracts as select * from public.n26_contracts;
+
+\ir ../supabase/migrations/20261028000000_season_two_chase.sql
+
+do $$
+begin
+  if exists ((select * from public.n26_rulesets except select * from before_chase_rulesets)
+    union all (select * from before_chase_rulesets except select * from public.n26_rulesets))
+    or exists ((select * from public.n26_seasons except select * from before_chase_seasons)
+    union all (select * from before_chase_seasons except select * from public.n26_seasons))
+    or exists ((select * from public.n26_season_races except select * from before_chase_races)
+    union all (select * from before_chase_races except select * from public.n26_season_races))
+    or exists ((select * from public.n26_contracts except select * from before_chase_contracts)
+    union all (select * from before_chase_contracts except select * from public.n26_contracts)) then
+    raise exception 'Chase migration rewrote existing league data';
+  end if;
+  begin
+    perform public.n26_create_draft_season(
+      (select id from public.n26_seasons where season_number = 1), 'Duplicate', 'duplicate', 240);
+    raise exception 'Existing Season 2 was silently replaced';
+  exception when unique_violation then
+    if sqlerrm <> 'The next season already exists' then raise; end if;
+  end;
+end;
+$$;
+-- Disposable fixture cleanup only, so the following test exercises creation.
+delete from public.n26_seat_assignments where season_id = (select id from public.n26_seasons where season_number = 2);
+delete from public.n26_season_entries where season_id = (select id from public.n26_seasons where season_number = 2);
+delete from public.n26_seasons where season_number = 2;
+delete from public.n26_rulesets where version = 'existing-draft';
+create temporary table prior_roster as
+select driver_id, team_id, car_number from public.n26_seat_assignments
+where season_id = (select id from public.n26_seasons where season_number = 1) and assignment_status = 'active';
+
 do $$
 declare
   season uuid := (select id from public.n26_seasons where season_number = 1);
@@ -223,6 +270,130 @@ begin
     end if;
   end loop;
   raise notice 'Season contracts verified: 24-driver publication, 60-credit contracts, 240-credit fallback/floor, explicit caps, existing contracts, rollback, transfers, future-season guards, and RPC grants.';
+end;
+$$;
+
+do $$
+declare
+  season public.n26_seasons := (select s from public.n26_seasons s where season_number = 2);
+  ruleset public.n26_rulesets;
+  later_season public.n26_seasons;
+  bad_ruleset uuid;
+  scenario integer;
+  outcome jsonb;
+begin
+  select * into ruleset from public.n26_rulesets where id = season.ruleset_id;
+  if ruleset.season_length <> 10 or ruleset.config->>'championship_format' <> 'chase_12_7_3'
+    or ruleset.config ?| array['drop_rule','drop_count']
+    or ruleset.config->>'qualifying_required' <> 'true'
+    or ruleset.config->>'cap_basis' <> 'minimum_feasible_undiscounted'
+    or ruleset.points_by_position <> '{"1":55,"2":35}'::jsonb
+    or ruleset.rating_weights <> '{}'::jsonb
+    or season.contract_market_status <> 'closed'
+    or exists (select 1 from public.n26_contracts where season_id = season.id) then
+    raise exception 'Season 2 rules, unrelated settings, or contract continuity changed';
+  end if;
+  if (select array_agg(track_short order by race_number) from public.n26_season_races where season_id = season.id)
+    is distinct from array['Daytona','Iowa','Dover','Watkins Glen','Rockingham','Bristol','Nashville','Phoenix','Charlotte','Chicagoland']
+    or exists (select 1 from public.n26_season_races where season_id = season.id
+      and (race_date is not null or status <> 'upcoming' or qualifying_status <> 'not_recorded'
+        or certification_status <> 'draft'
+        or race_type <> case when race_number <= 7 then 'regular' else 'chase' end)) then
+    raise exception 'Season 2 did not get its date-free ten-round 7/3 schedule';
+  end if;
+  if exists ((select driver_id, team_id, car_number from public.n26_seat_assignments where season_id = season.id
+      except select * from prior_roster)
+    union all (select * from prior_roster except select driver_id, team_id, car_number
+      from public.n26_seat_assignments where season_id = season.id)) then
+    raise exception 'Season 2 changed a copied driver/team/car identity';
+  end if;
+  if (select to_jsonb(r) from public.n26_rulesets r where version = 'contract-test') is distinct from
+    (select to_jsonb(r) from before_chase_rulesets r where version = 'contract-test') then
+    raise exception 'Draft creation changed its prior immutable ruleset';
+  end if;
+
+  -- Clone rulesets instead of editing historical versions. These direct status
+  -- transitions isolate the trigger; the successful RPC publication below also
+  -- exercises it through the real contract authority.
+  for scenario in 1..4 loop
+    insert into public.n26_rulesets (version, name, season_length, points_by_position, rating_weights, config)
+    values ('bad-chase-' || scenario, 'Invalid Chase', case when scenario = 1 then 8 else 10 end,
+      ruleset.points_by_position, ruleset.rating_weights,
+      case when scenario = 2 then ruleset.config - 'championship_format'
+        when scenario = 3 then ruleset.config || '{"drop_count":1}'::jsonb
+        when scenario = 4 then ruleset.config || '{"championship_format":"wrong_format"}'::jsonb
+        else ruleset.config end)
+    returning id into bad_ruleset;
+    update public.n26_seasons set ruleset_id = bad_ruleset where id = season.id;
+    begin
+      update public.n26_seasons set status = 'open', roster_lock_at = now() where id = season.id;
+      raise exception 'Season 2 accepted malformed rules, scenario %', scenario;
+    exception when check_violation then
+      if sqlerrm <> 'Season 2 requires the ten-race chase_12_7_3 ruleset with no drop rules' then raise; end if;
+    end;
+  end loop;
+  update public.n26_seasons set ruleset_id = ruleset.id where id = season.id;
+
+  for scenario in 1..5 loop
+    begin
+      case scenario
+        when 1 then delete from public.n26_season_races where season_id = season.id and race_number = 10;
+        when 2 then update public.n26_season_races set race_type = 'regular' where season_id = season.id and race_number = 8;
+        when 3 then update public.n26_season_races set track_name = 'Wrong track' where season_id = season.id and race_number = 3;
+        when 4 then update public.n26_season_races set race_number = 11 where season_id = season.id and race_number = 10;
+        when 5 then insert into public.n26_season_races (season_id, race_number, track_name, track_short)
+          values (season.id, 11, 'Extra race', 'Extra');
+      end case;
+      update public.n26_seasons set status = 'open', roster_lock_at = now() where id = season.id;
+      raise exception 'Season 2 accepted malformed schedule, scenario %', scenario;
+    exception when check_violation then
+      if sqlerrm <> 'Season 2 requires its approved ten-round schedule with seven regular and three Chase races' then raise; end if;
+      -- Exception subtransaction restores each schedule mutation.
+    end;
+  end loop;
+  if not exists (select 1 from public.n26_seasons where id = season.id and status = 'draft' and roster_lock_at is null) then
+    raise exception 'Rejected Season 2 publication changed status or lock';
+  end if;
+
+  -- Replace the disposable fixture's expired one-year deals with carried
+  -- two-season contracts without bypassing any signing triggers.
+  update public.n26_contracts set status = 'expired' where start_season = 1;
+  insert into public.n26_contracts (
+    season_id, driver_id, team_id, seat_assignment_id, base_rating, cap_charge_cents,
+    start_season, end_season, status, original_term_seasons
+  )
+  select (select id from public.n26_seasons where season_number = 1), driver_id, team_id,
+    id, 60, 6000, 1, 2, 'active', 2
+  from public.n26_seat_assignments where season_id = season.id and assignment_status = 'active';
+  -- Dates are editable, not a publication prohibition.
+  update public.n26_season_races set race_date = date '2027-01-01' where season_id = season.id;
+  update public.n26_season_races set race_type = 'regular' where season_id = season.id and race_number = 8;
+  begin
+    perform public.n26_publish_season(season.id);
+    raise exception 'Publication RPC bypassed the Season 2 schedule guard';
+  exception when check_violation then
+    if sqlerrm <> 'Season 2 requires its approved ten-round schedule with seven regular and three Chase races' then raise; end if;
+  end;
+  if not exists (select 1 from public.n26_seasons where id = season.id and status = 'draft' and roster_lock_at is null) then
+    raise exception 'Rejected publication RPC changed the season status or roster lock';
+  end if;
+  update public.n26_season_races set race_type = 'chase' where season_id = season.id and race_number = 8;
+  outcome := public.n26_publish_season(season.id);
+  if outcome->>'contracts_created' <> '0' or outcome->'season'->>'status' <> 'open'
+    or outcome->'season'->>'rated_field_size' <> '24' then
+    raise exception 'Valid Chase season did not publish with carried contracts';
+  end if;
+  update public.n26_seasons set status = 'certified' where id = season.id;
+  select * into later_season from public.n26_create_draft_season(season.id, 'Season 3', 'contract-test-s3', 245);
+  if (select config ? 'championship_format' or config->>'cap_credits' <> '245' or season_length <> 10
+      from public.n26_rulesets where id = later_season.ruleset_id)
+    or (select count(*) from public.n26_season_races where season_id = later_season.id) <> 10
+    or exists (select 1 from public.n26_season_races where season_id = later_season.id
+      and (race_type <> 'regular' or race_date is not null))
+    or (select count(*) from public.n26_seat_assignments where season_id = later_season.id and assignment_status = 'active') <> 24 then
+    raise exception 'Season 3 inherited Chase scoring or lost ordinary cloning/cap/roster behavior';
+  end if;
+  raise notice 'Season 2 Chase verified: no backfill, ten date-free rounds, 7/3 split, no drops, publish guards, carried contracts, and Season 3 format reset.';
 end;
 $$;
 set constraints all immediate;

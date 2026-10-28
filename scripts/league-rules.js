@@ -162,10 +162,13 @@ function isChampionshipRound(race) {
   return startersCount === undefined || startersCount === null || startersCount >= 2;
 }
 
-// Drop exactly one lowest completed race score throughout the season.
+// The legacy format drops one lowest score; the Chase counts every race award.
 // Missing results and explicit DNS rows both contribute zero; future, voided,
 // exhibition and undersized rounds never enter the scoring pool.
-function calculateChampionshipPoints(races, results) {
+function calculateChampionshipPoints(races, results, championshipFormat) {
+  if (championshipFormat && championshipFormat !== 'chase_12_7_3') {
+    throw new Error(`Unsupported championship format: ${championshipFormat}.`);
+  }
   const resultByRace = new Map(results.map(result => [result.raceId || result.race_id, result]));
   const scores = races.filter(isChampionshipRound).map(race => {
     const result = resultByRace.get(race.id);
@@ -173,7 +176,8 @@ function calculateChampionshipPoints(races, results) {
       || resultValue(result, 'finishStatus', 'finish_status') === 'disqualified';
     return { raceId: race.id, points: zero ? 0 : Number(resultValue(result, 'pointsEarned', 'points_earned') || 0) };
   }).sort((a, b) => b.points - a.points || String(a.raceId).localeCompare(String(b.raceId)));
-  const counted = scores.slice(0, Math.max(0, scores.length - 1));
+  const counted = championshipFormat === 'chase_12_7_3'
+    ? scores : scores.slice(0, Math.max(0, scores.length - 1));
   const dropped = scores.slice(counted.length);
   const rawPoints = scores.reduce((sum, score) => sum + score.points, 0);
   const droppedPoints = dropped.reduce((sum, score) => sum + score.points, 0);
@@ -400,12 +404,46 @@ function calculateTeamStandings(stats, races) {
 
 function calculateSeasonStandings(input) {
   const { completedRaces, stats } = calculateSeasonStats(input);
+  const championshipFormat = input.championshipFormat;
   const scoredDrivers = stats.map(driver => ({ ...driver,
-    ...calculateChampionshipPoints(completedRaces, [...driver.raceResults.values()]),
+    ...calculateChampionshipPoints(completedRaces, [...driver.raceResults.values()], championshipFormat),
   }));
-  const drivers = rankDrivers(scoredDrivers, completedRaces);
+  let drivers = rankDrivers(scoredDrivers, completedRaces);
+  let chaseActive = false;
+  if (championshipFormat === 'chase_12_7_3') {
+    const raceNumber = race => Number(race.raceNumber ?? race.race_number);
+    const regularRaces = input.races.filter(race => raceNumber(race) >= 1 && raceNumber(race) <= 7)
+      .sort((a, b) => raceNumber(a) - raceNumber(b));
+    chaseActive = regularRaces.length === 7
+      && regularRaces.every((race, index) => raceNumber(race) === index + 1
+        && ['completed', 'voided'].includes(race.status));
+    const chaseRaces = completedRaces.filter(race => raceNumber(race) >= 8 && raceNumber(race) <= 10);
+    if (chaseRaces.length && !chaseActive) throw new Error('All seven regular-season rounds must be resolved before the Chase.');
+    const regularStats = calculateSeasonStats({ ...input, races: regularRaces }).stats;
+    const seeds = rankDrivers(regularStats, regularRaces.filter(isChampionshipRound))
+      .filter(driver => driver.entryStatus === 'full_time' && driver.starts > 0).slice(0, 12);
+    const seedPoints = [2100, 2075, 2065, 2060, 2055, 2050, 2045, 2040, 2035, 2030, 2025, 2020];
+    const regularByDriver = new Map(regularStats.map(driver => [driver.driverId, driver]));
+    const chaseDrivers = scoredDrivers.map(driver => {
+      const seed = seeds.findIndex(candidate => candidate.driverId === driver.driverId);
+      const qualified = chaseActive && seed !== -1;
+      const chasePoints = calculateChampionshipPoints(chaseRaces, [...driver.raceResults.values()], championshipFormat).points;
+      return { ...driver, regularPoints: regularByDriver.get(driver.driverId).points,
+        chaseQualified: qualified, chaseSeed: qualified ? seed + 1 : null,
+        resetPoints: qualified ? seedPoints[seed] : 0, chasePoints,
+        points: qualified ? seedPoints[seed] + chasePoints : driver.points };
+    });
+    if (chaseActive) {
+      const qualifiers = rankDrivers(chaseDrivers.filter(driver => driver.chaseQualified), completedRaces);
+      const others = rankDrivers(chaseDrivers.filter(driver => !driver.chaseQualified), completedRaces)
+        .map(driver => ({ ...driver, rank: driver.rank + qualifiers.length, ratingRank: driver.ratingRank + qualifiers.length }));
+      drivers = [...qualifiers, ...others];
+    } else {
+      drivers = rankDrivers(chaseDrivers, completedRaces);
+    }
+  }
   const teams = calculateTeamStandings(drivers, completedRaces);
-  return { completedRaces, drivers, teams };
+  return { completedRaces, drivers, teams, chaseActive };
 }
 
 // Public pages display the awarded points from published results, including
@@ -416,7 +454,7 @@ function calculatePublicSeasonStandings(input) {
   const races = (input.races || []).map(race => ({ ...race,
     starters_count: race.startersCount ?? race.starters_count ?? results.filter(result =>
       (result.raceId || result.race_id) === race.id && resultValue(result, 'startStatus', 'start_status') === 'started').length,
-  })).sort((a, b) => Number(a.race_number || 0) - Number(b.race_number || 0));
+  })).sort((a, b) => Number(a.raceNumber ?? a.race_number ?? 0) - Number(b.raceNumber ?? b.race_number ?? 0));
   const completedIds = new Set(races.filter(isChampionshipRound).map(race => race.id));
   const startedIds = new Set(results.filter(result => completedIds.has(result.raceId || result.race_id)
     && resultValue(result, 'startStatus', 'start_status') === 'started').map(result => result.driverId || result.driver_id));

@@ -140,7 +140,8 @@ async function loadClaims() {
       if (publishedSeason && window.N26LeagueRules) {
         const bundle = await loadNormalizedSeasonData(publishedSeason);
         const standings = window.N26LeagueRules.calculatePublicSeasonStandings({
-          entries: bundle.entries.map(entry => ({ driverId: entry.driver_id })),
+          championshipFormat: bundle.ruleset.config?.championship_format,
+          entries: bundle.entries.map(entry => ({ driverId: entry.driver_id, entryStatus: entry.entry_status })),
           races: bundle.races, results: bundle.results, pointsByPosition: bundle.ruleset.points_by_position,
         });
         const racedIds = new Set(standings.drivers.map(driver => driver.driverId));

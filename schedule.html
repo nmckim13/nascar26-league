@@ -117,6 +117,12 @@
  .off-week-mark { font-family: var(--font-display, var(--font-cond)); font-size: 25px; color: rgba(255,255,255,.25); }
  .off-week-title { font-family: var(--font-cond); font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
  .off-week-date { color: var(--muted); font-size: 11px; text-transform: uppercase; }
+ .season-two-preview { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; padding: 24px; margin: 0 0 32px; border: 1px solid var(--border); border-left: 3px solid var(--yellow); background: var(--surface); }
+ .season-two-preview h2 { color: var(--white); font-size: 28px; line-height: 1.1; text-transform: uppercase; margin-bottom: 8px; }
+ .season-two-preview p { color: var(--off-white); font-size: 12px; line-height: 1.7; max-width: 600px; }
+ .season-two-preview a { display: inline-flex; padding: 14px 18px; min-height: 48px; align-items: center; color: var(--yellow); border: 1px solid var(--yellow); border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+ .season-two-preview a:hover { color: var(--bg); background: var(--yellow); }
+ .season-two-preview a:focus-visible { outline: 3px solid var(--yellow); outline-offset: 5px; }
  @media (max-width: 760px) {
  .schedule-grid { gap: 14px; }
  .race-row { grid-template-columns: 1fr; min-height: 430px; }
@@ -170,10 +176,15 @@
 <div class="page-wrap">
  <div class="page-header">
  <div>
- <h1>Season 1 Schedule</h1>
+ <h1 id="schedule-title">Season 1 Schedule</h1>
 <p id="schedule-summary">8 races · no playoff reset · Daytona to Rockingham</p>
  </div>
  </div>
+
+ <aside class="season-two-preview" aria-labelledby="season-two-preview-title">
+  <div><h2 id="season-two-preview-title">Season 2: O’Reilly Auto Parts Series.</h2><p>Seven regular-season races. The top 12 advance to a three-race Chase at Phoenix, Charlotte, and Chicagoland. One NASCAR-seeded reset. No dropped scores. Explore the proposed ten-round slate; dates are to be announced. The current official schedule continues below.</p></div>
+  <a href="join.html#season-2-schedule">Preview Season 2 tracks →</a>
+ </aside>
 
  <!-- REGULAR SEASON -->
  <div class="schedule-section">
@@ -299,13 +310,36 @@
  const display = await window.__leagueDataReady;
  const races = display.races;
  const isNormalized = display.source === 'normalized';
+ const isChase = display.ruleset?.config?.championship_format === 'chase_12_7_3';
+ const seasonName = display.season?.name || 'Season 1';
+ document.getElementById('schedule-title').textContent = `${seasonName} Schedule`;
  const scheduleText = display.source === 'prelaunch'
    ? 'Season 1 · Eight Sundays · September 27 to November 22'
-   : `Season 1 · ${races.length} Races · ${races[0]?.track_short || "Season opener"} to ${races.at(-1)?.track_short || "Season finale"}`;
- document.getElementById('schedule-ticker-summary').textContent = scheduleText;
+   : `${seasonName} · ${races.length} Races · ${races[0]?.track_short || "Season opener"} to ${races.at(-1)?.track_short || "Season finale"}`;
+ const ticker = document.getElementById('schedule-ticker-summary');
+ if (ticker) ticker.textContent = scheduleText;
  document.getElementById('schedule-summary').textContent = display.source === 'prelaunch'
    ? '8 races · Sundays at 2:00 PM Central · off November 8'
+   : isChase ? `${races.length} races · Top 12 Chase · No dropped scores · See each round for confirmed dates`
    : `${races.length} races · Sundays at 2:00 PM Central · off November 8`;
+ if (isChase) {
+   const regular = document.querySelector('.schedule-grid');
+   const chase = document.querySelector('#finale-section .schedule-grid');
+   const template = regular.querySelector('.race-row').cloneNode(true);
+   regular.replaceChildren();
+   chase.replaceChildren();
+   document.querySelector('.schedule-section .section-label span:first-child').textContent = 'Regular season';
+   races.forEach(race => {
+     const row = template.cloneNode(true);
+     row.id = `row-${race.race_number}`;
+     row.className = 'race-row';
+     row.querySelector('.rr-num').textContent = String(race.race_number).padStart(2, '0');
+     row.querySelector('.rr-round').textContent = race.race_type === 'chase' ? `Chase ${race.race_number - 7} of 3` : 'Regular season';
+     row.querySelector('.rr-meta').textContent = race.race_date || 'Date to be announced';
+     row.querySelector('.rr-status').id = `status-${race.race_number}`;
+     (race.race_type === 'chase' ? chase : regular).appendChild(row);
+   });
+ }
  const raceState = r => r.status === 'voided' ? 'Voided' : isNormalized && r.certification_status === 'appeal_window' ? 'Appeals open' : isNormalized && r.certification_status === 'certified' ? 'Final' : r.status === 'completed' ? 'Final' : null;
  let foundNext = false;
  races.forEach(r => {
@@ -345,9 +379,9 @@
  });
  {
    const tag = document.querySelector('#finale-section .finale-tag');
-   if (tag) tag.textContent = 'Season Finale';
+   if (tag) tag.textContent = isChase ? 'The Chase' : 'Season Finale';
    const label = document.querySelector('#finale-section .section-label span:last-child');
-   if (label) label.textContent = 'Race 8 · Championship';
+   if (label) label.textContent = isChase ? 'Races 8–10 · Championship' : 'Race 8 · Championship';
  }
  }
  syncSchedule().catch(() => {});
