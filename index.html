@@ -420,15 +420,15 @@
  N26 Racing League · Season 1 · B<span style="color:var(--yellow)">A</span>RL · Below Average Racing League
 </footer>
 
-<script src="./data/car-art.js?v=trucks-1"></script>
+<script src="./data/car-art.js?v=trucks-2"></script>
 <script src="./scripts/league-rules.js?v=chase-20261028"></script>
 <script src="./scripts/public-bootstrap.js?v=daytona-20260927"></script>
-<script src="./scripts/number-style-defaults.js"></script>
+<script src="./scripts/number-style-defaults.js?v=bright-20261028"></script>
 <script>
  const SB_URL = 'https://txipxisumngvzkuqsysq.supabase.co';
  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4aXB4aXN1bW5ndnprdXFzeXNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzExMTYsImV4cCI6MjEwNDY0NzExNn0.NxrJIAkWWfg-5ezHni_z56IRmLD9HHxM-VAALiT22io';
  const SB_HDR = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY };
- const TEAM_MAP = {'5':'Hendrick','9':'Hendrick','24':'Hendrick','48':'Hendrick','11':'JGR','19':'JGR','20':'JGR','54':'JGR','2':'Penske','12':'Penske','22':'Penske','23':'23XI','35':'23XI','45':'23XI','6':'RFK','17':'RFK','60':'RFK','7':'Spire','71':'Spire','77':'Spire','1':'Trackhouse','88':'Trackhouse','97':'Trackhouse','42':'Legacy Motor Club','43':'Legacy Motor Club','84':'Legacy Motor Club'};
+ const TEAM_MAP = {'5':'Hendrick','3':'Hendrick','9':'Hendrick','24':'Hendrick','48':'Hendrick','11':'JGR','19':'JGR','20':'JGR','54':'JGR','2':'Penske','12':'Penske','22':'Penske','23':'23XI','35':'23XI','45':'23XI','6':'RFK','17':'RFK','14':'RFK','60':'RFK','7':'Spire','71':'Spire','77':'Spire','1':'Trackhouse','88':'Trackhouse','93':'Trackhouse','97':'Trackhouse','42':'Legacy Motor Club','43':'Legacy Motor Club','84':'Legacy Motor Club'};
  let leagueRaceCount = 8;
 
  async function sbFetch(path) {

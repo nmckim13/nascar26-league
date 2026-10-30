@@ -4,11 +4,23 @@
   "commonPrompt": "Transform the supplied livery into ONE NASCAR CRAFTSMAN TRUCK SERIES racing pickup truck. Keep the reference's paint colors, sponsor identity and exact racing number, but CHANGE THE VEHICLE BODY substantially into a proper single-cab purpose-built racing pickup: taller squared cab and upright windshield, clearly separate flat covered pickup bed behind cab, wide rear fenders and short rear spoiler, blunt truck front with correct manufacturer grille. NOT a stock car, NOT a Camaro/Mustang/Camry coupe, NOT a street truck. Low racing stance, black steel racing wheels, slick Goodyear tires, front splitter, window net, roll cage and realistic race bodywork. Photoreal premium studio product rendering. Consistent front-left three-quarter angle, nose pointing left, driver's door and front grille both clearly visible. Entire truck fully in frame, centered, fills about 88% of canvas width and 48% of canvas height, wheel baseline around 75% canvas height. Landscape 3:2 canvas. Genuine transparent alpha background, no studio backdrop, no floor or reflection or shadow outside the vehicle, NO opaque black rectangle, no checkerboard pixels. All black body panels, tires and windows remain opaque. No separate title, no driver portrait, no human driver names; windshield banner BARL only, small CRAFTSMAN series contingency badge. Number must be exact and sponsor wordmarks clearly legible on hood and sides. ",
   "entries": [
     {
+      "n": "3",
+      "make": "Chevrolet Silverado",
+      "sponsor": "",
+      "scheme": "Refine Arthur's orange/black tiger Silverado to roughly 60% black and 40% orange: broader organic black bands, calm black hood center, lower sides, nose and roof, with vivid orange tapered tiger stripes. Remove both NAPA logos and all blue/yellow patches without adding a replacement sponsor. Keep prominent white 3, Silverado body, camera and framing; BARL windshield banner. Fully transparent outside vehicle, no floor, glow or cast shadow.",
+      "tool": "painter",
+      "references": ["https://ampcode.com/user-content/attachments/ffa09910a9ba3909c27849a99406fbff7200f0a77d52fc9660616921e3a01013-file.png"],
+      "source": "https://ampcode.com/user-content/attachments/133251a584b711842c98212c5583bcb551c6231243a5e504c433684b93daa937-file.png",
+      "image": "assets/trucks/3.webp"
+    },
+    {
       "n": "5",
       "make": "Chevrolet Silverado",
-      "sponsor": "HendrickCars.com",
-      "scheme": "royal blue nose, hood and roof, white side panels, red diagonal stripes; navy blue italic 5 with white and red trim",
-      "source": "/workspace/generated_images/exec-0fd665fe-3464-4c60-961f-60f4b0bf19f8.png",
+      "sponsor": "Zep",
+      "scheme": "Matt's requested custom livery: predominantly bright yellow hood, cab and bed, sweeping royal-blue hot-rod flames with yellow tongues and thin white pinstripes across nose, fenders and sides. Authentic blue/yellow Zep brandmark on hood and rear bedside. Blue slanted Hendrick-style 5 with white outlines on door and roof, BARL windshield banner. Preserve Silverado racing body, front-left three-quarter camera and full-truck framing. Transparent background without floor, cast shadow or glow; remove previous HendrickCars branding.",
+      "tool": "painter",
+      "references": ["assets/trucks/5.webp (previous HendrickCars version)", "assets/driver-numbers/5/hendrickcars-com.png", "https://zep.com/cdn/shop/files/Zep_Brandmark_Primary_1.png?v=1637596482&width=600"],
+      "source": "https://ampcode.com/user-content/attachments/77b9e5bca3b749c03a4390a87641fbb0f7e8e37316c297b7561c953709b1713e-file.png",
       "image": "assets/trucks/5.webp"
     },
     {
@@ -86,9 +98,11 @@
     {
       "n": "88",
       "make": "Chevrolet Silverado",
-      "sponsor": "Diet Mountain Dew / National Guard",
-      "scheme": "deep emerald green body with sweeping white hood and upper panels, thin red pinstripes, silver-white 88 outlined red, authentic Diet Mountain Dew wordmarks and NATIONAL GUARD rear sides",
-      "source": "/workspace/generated_images/exec-e256a2f5-3c52-4866-9694-d276265aaa93.png",
+      "sponsor": "7-Eleven",
+      "scheme": "Match Nolan's supplied NASCAR 26 screenshot: glossy white hood, roof and cab, broad orange rear sides, bright green splitter and rocker panels, red horizontal nose stripe, authentic 7-Eleven hood and rear-side logos. Door and roof decals use the supplied red Hendrick / Dale Earnhardt Jr #88: matching left-leaning rounded block 8s, pinched waist, rectangular counters, red fill, thin white outlines and black shadow. Preserve the 7-Eleven sponsor's 7. Craftsman windshield banner. Keep Silverado body, realistic front-left three-quarter camera and full-truck framing. Transparent background with no garage, people, interface, floor, glow or cast shadow.",
+      "tool": "painter",
+      "references": ["assets/driver-numbers/88/hendrick-red.png", "https://ampcode.com/user-content/attachments/c7924139c529cf06c73c1917960d84cb38f9e910880d6b5cae485fbcb48d2c49-file.png"],
+      "source": "https://ampcode.com/user-content/attachments/762b578f8f9da3678b9f727eee3ca7515b264f62aeca3fb2d507a876d5ef7edc-file.png",
       "image": "assets/trucks/88.webp"
     },
     {
@@ -114,6 +128,26 @@
       "scheme": "Travis Pastrana BRUNT workwear style: black body, vivid orange slashes and subtle tire-tread accents, white 42 with orange trim and black shadow exactly matching the isolated supplied 42 decal, white BRUNT wordmark",
       "source": "/workspace/generated_images/exec-5bfa49a8-1287-4c33-87b5-5bd6c945417d.png",
       "image": "assets/trucks/42.webp"
+    },
+    {
+      "n": "14",
+      "make": "Ram 1500",
+      "sponsor": "RAM",
+      "scheme": "Mini Tyrrell primary RAM scheme: yellow hood with black ram-head emblem, black cab/sides, white slanted door 14 and yellow roof 14, large yellow outlined ram head behind door, yellow splitter and rockers, NOTHING STOPS RAM bedside. Match the official on-track photo and door-number reference; front-left three-quarter illustration framing matches the existing #88 truck, but use the Ram-specific grille, body and headlights. BARL windshield banner. Fully transparent, no floor, cast shadow or glow.",
+      "tool": "painter",
+      "references": ["https://pbs.twimg.com/media/HBEKEzwXAAE5P7h.jpg?name=orig", "https://diecastcharv.com/wp-content/uploads/2026/02/slide35.jpg", "assets/trucks/88.webp"],
+      "source": "https://ampcode.com/user-content/attachments/33ab2a420dd76d5b2542c4171487fee4a693ad2274c660afc34c3137df6c8ef4-file.png",
+      "image": "assets/trucks/14.webp"
+    },
+    {
+      "n": "93",
+      "make": "Chevrolet Silverado",
+      "sponsor": "Piedmont Outfitters / Realtree",
+      "scheme": "Caleb Costner's white/camo scheme: distressed white hood, nose and front fenders with black speckles, white angular rocker sweeps, natural brown/olive/tan Realtree woodland camo on doors, roof, cab, bed and lower bumper, thin burnt-orange pinstripes. Matching burnt-orange 93 with white/black outlines on door and roof. Piedmont Outfitters hood badge and rear-side lettering, Realtree antler mark. BARL windshield banner. Retain the previous #93 illustration's Silverado body, front-left camera, size and framing; remove all blue and Lickety Lew's branding. Transparent background without floor, glow or cast shadow.",
+      "tool": "painter",
+      "references": ["https://pbs.twimg.com/media/HG7Jim8aMAAkeVk.jpg?name=orig", "https://ampcode.com/user-content/attachments/346af038731fa6c3d497023bb63bac32be09c6ff374d43297644d85e0ccb7ffc-file.png", "https://diecastcharv.com/wp-content/uploads/2026/04/slide298-1.jpg"],
+      "source": "https://ampcode.com/user-content/attachments/545cdd50b6e40f7eaa36fe3ea9a861ef3e75eff3db7f8c8cb8902e57ae889aab-file.png",
+      "image": "assets/trucks/93.webp"
     }
   ]
 }

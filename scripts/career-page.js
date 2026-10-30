@@ -1,4 +1,4 @@
-import { NUMBER_STYLES } from '../data/driver-number-styles.js';
+import { NUMBER_STYLES } from '../data/driver-number-styles.js?v=bright-20261028';
 
 const URL='https://txipxisumngvzkuqsysq.supabase.co';
 const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4aXB4aXN1bW5ndnprdXFzeXNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkwNzExMTYsImV4cCI6MjEwNDY0NzExNn0.NxrJIAkWWfg-5ezHni_z56IRmLD9HHxM-VAALiT22io';

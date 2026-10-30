@@ -1,5 +1,5 @@
 import { requireUser, supabase } from './supabase-auth.js';
-import { NUMBER_STYLES } from '../data/driver-number-styles.js';
+import { NUMBER_STYLES } from '../data/driver-number-styles.js?v=bright-20261028';
 
 let auth;
 const esc = value => String(value ?? '').replace(/[&<>'"]/g, character => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[character]));

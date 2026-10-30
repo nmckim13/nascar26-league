@@ -5,13 +5,13 @@ import {
 import { loadCurrentRosterSeason, loadPublishedSeason, loadSeasonRosterClaims, loadTeamCatalog, loadNormalizedSeasonData } from './league-public.js';
 
 const FALLBACK_TEAM_MAP = {
-  hms: ['5', '9', '24', '48'],
+  hms: ['5', '3', '24', '48'],
   jgr: ['11', '19', '20', '54'],
   penske: ['2', '12', '22'],
   '23xi': ['23', '35', '45'],
-  rfk: ['6', '17', '60'],
+  rfk: ['6', '17', '14'],
   spire: ['7', '71', '77'],
-  trackhouse: ['1', '88', '97'],
+  trackhouse: ['1', '88', '93'],
   lmc: ['42', '43', '84'],
 };
 

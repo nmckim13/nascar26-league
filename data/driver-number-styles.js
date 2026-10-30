@@ -8,12 +8,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-ross-chastain-cup-number-cards/"
     },
     {
-      "key": "1:busch-light",
-      "label": "BUSCH LIGHT",
-      "image": "assets/driver-numbers/1/busch-light.png",
-      "sourcePage": "https://diecastcharv.com/2026-ross-chastain-cup-number-cards/"
-    },
-    {
       "key": "1:busch-light-austin",
       "label": "BUSCH LIGHT | AUSTIN",
       "image": "assets/driver-numbers/1/busch-light-austin.png",
@@ -38,12 +32,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-ross-chastain-cup-number-cards/"
     },
     {
-      "key": "1:busch-light-music-city",
-      "label": "BUSCH LIGHT | MUSIC CITY",
-      "image": "assets/driver-numbers/1/busch-light-music-city.png",
-      "sourcePage": "https://diecastcharv.com/2026-ross-chastain-cup-number-cards/"
-    },
-    {
       "key": "1:busch-light-lime",
       "label": "BUSCH LIGHT LIME",
       "image": "assets/driver-numbers/1/busch-light-lime.png",
@@ -60,51 +48,9 @@ export const NUMBER_STYLES = {
       "label": "BUSCH LIGHT | FLAVOR SHOWDOWN",
       "image": "assets/driver-numbers/1/busch-light-flavor-showdown.png",
       "sourcePage": "https://diecastcharv.com/2026-ross-chastain-cup-number-cards/"
-    },
-    {
-      "key": "1:jockey-150th-anniversary",
-      "label": "JOCKEY | 150TH ANNIVERSARY",
-      "image": "assets/driver-numbers/1/jockey-150th-anniversary.png",
-      "sourcePage": "https://diecastcharv.com/2026-ross-chastain-cup-number-cards/"
-    },
-    {
-      "key": "1:wendy-s-watermelon-lemonade",
-      "label": "WENDY’S | WATERMELON LEMONADE",
-      "image": "assets/driver-numbers/1/wendy-s-watermelon-lemonade.png",
-      "sourcePage": "https://diecastcharv.com/2026-ross-chastain-cup-number-cards/"
     }
   ],
   "2": [
-    {
-      "key": "2:discount-tire",
-      "label": "DISCOUNT TIRE",
-      "image": "assets/driver-numbers/2/discount-tire.png",
-      "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
-    },
-    {
-      "key": "2:autotrader",
-      "label": "AUTOTRADER",
-      "image": "assets/driver-numbers/2/autotrader.png",
-      "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
-    },
-    {
-      "key": "2:menards-dark-green",
-      "label": "MENARDS | DARK GREEN",
-      "image": "assets/driver-numbers/2/menards-dark-green.png",
-      "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
-    },
-    {
-      "key": "2:menards-black",
-      "label": "MENARDS | BLACK",
-      "image": "assets/driver-numbers/2/menards-black.png",
-      "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
-    },
-    {
-      "key": "2:menards-menards-blue",
-      "label": "MENARDS | MENARDS BLUE",
-      "image": "assets/driver-numbers/2/menards-menards-blue.png",
-      "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
-    },
     {
       "key": "2:ppg-paints",
       "label": "PPG PAINTS",
@@ -112,40 +58,19 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
     },
     {
-      "key": "2:menards-yellow-green",
-      "label": "MENARDS | YELLOW GREEN",
-      "image": "assets/driver-numbers/2/menards-yellow-green.png",
-      "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
-    },
-    {
       "key": "2:snap-on",
       "label": "SNAP ON",
       "image": "assets/driver-numbers/2/snap-on.png",
       "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
-    },
+    }
+  ],
+  "3": [
     {
-      "key": "2:menards-medium-blue",
-      "label": "MENARDS | MEDIUM BLUE",
-      "image": "assets/driver-numbers/2/menards-medium-blue.png",
-      "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
-    },
-    {
-      "key": "2:menards-red",
-      "label": "MENARDS | RED",
-      "image": "assets/driver-numbers/2/menards-red.png",
-      "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
-    },
-    {
-      "key": "2:ppg-paints-patriotic",
-      "label": "PPG PAINTS | PATRIOTIC",
-      "image": "assets/driver-numbers/2/ppg-paints-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
-    },
-    {
-      "key": "2:menards-dark-marine-blue",
-      "label": "MENARDS | DARK MARINE BLUE",
-      "image": "assets/driver-numbers/2/menards-dark-marine-blue.png",
-      "sourcePage": "https://diecastcharv.com/2026-austin-cindric-cup-number-cards/"
+      "key": "3:arthur-tiger",
+      "label": "ARTHUR | TIGER STRIPE TRUCK",
+      "image": "assets/driver-numbers/3/arthur-tiger.png",
+      "sourcePage": "https://diecastcharv.com/2025-austin-dillon-cup-number-cards/",
+      "sourceImage": "https://diecastcharv.com/wp-content/uploads/2025/02/slide28-1.jpg"
     }
   ],
   "5": [
@@ -182,21 +107,9 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-brad-keselowski-cup-number-cards/"
     },
     {
-      "key": "6:graza",
-      "label": "GRAZA",
-      "image": "assets/driver-numbers/6/graza.png",
-      "sourcePage": "https://diecastcharv.com/2026-brad-keselowski-cup-number-cards/"
-    },
-    {
       "key": "6:consumer-cellular",
       "label": "CONSUMER CELLULAR",
       "image": "assets/driver-numbers/6/consumer-cellular.png",
-      "sourcePage": "https://diecastcharv.com/2026-brad-keselowski-cup-number-cards/"
-    },
-    {
-      "key": "6:trimble",
-      "label": "TRIMBLE",
-      "image": "assets/driver-numbers/6/trimble.png",
       "sourcePage": "https://diecastcharv.com/2026-brad-keselowski-cup-number-cards/"
     },
     {
@@ -209,12 +122,6 @@ export const NUMBER_STYLES = {
       "key": "6:fastenal-body-guard",
       "label": "FASTENAL BODY GUARD",
       "image": "assets/driver-numbers/6/fastenal-body-guard.png",
-      "sourcePage": "https://diecastcharv.com/2026-brad-keselowski-cup-number-cards/"
-    },
-    {
-      "key": "6:modelo",
-      "label": "MODELO",
-      "image": "assets/driver-numbers/6/modelo.png",
       "sourcePage": "https://diecastcharv.com/2026-brad-keselowski-cup-number-cards/"
     },
     {
@@ -264,12 +171,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-chase-elliott-cup-number-cards/"
     },
     {
-      "key": "9:unifirst",
-      "label": "UNIFIRST",
-      "image": "assets/driver-numbers/9/unifirst.png",
-      "sourcePage": "https://diecastcharv.com/2026-chase-elliott-cup-number-cards/"
-    },
-    {
       "key": "9:amazon-prime",
       "label": "AMAZON PRIME",
       "image": "assets/driver-numbers/9/amazon-prime.png",
@@ -308,21 +209,9 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-denny-hamlin-cup-number-cards/"
     },
     {
-      "key": "11:national-debt-relief",
-      "label": "NATIONAL DEBT RELIEF",
-      "image": "assets/driver-numbers/11/national-debt-relief.png",
-      "sourcePage": "https://diecastcharv.com/2026-denny-hamlin-cup-number-cards/"
-    },
-    {
       "key": "11:yahoo",
       "label": "YAHOO!",
       "image": "assets/driver-numbers/11/yahoo.png",
-      "sourcePage": "https://diecastcharv.com/2026-denny-hamlin-cup-number-cards/"
-    },
-    {
-      "key": "11:sport-clips",
-      "label": "SPORT CLIPS",
-      "image": "assets/driver-numbers/11/sport-clips.png",
       "sourcePage": "https://diecastcharv.com/2026-denny-hamlin-cup-number-cards/"
     },
     {
@@ -358,30 +247,6 @@ export const NUMBER_STYLES = {
   ],
   "12": [
     {
-      "key": "12:menards-black",
-      "label": "MENARDS | BLACK",
-      "image": "assets/driver-numbers/12/menards-black.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
-      "key": "12:menards-blue",
-      "label": "MENARDS | BLUE",
-      "image": "assets/driver-numbers/12/menards-blue.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
-      "key": "12:menards-peacock-blue",
-      "label": "MENARDS | PEACOCK BLUE",
-      "image": "assets/driver-numbers/12/menards-peacock-blue.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
-      "key": "12:pennzoil-menards",
-      "label": "PENNZOIL / MENARDS",
-      "image": "assets/driver-numbers/12/pennzoil-menards.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
       "key": "12:dent-wizard",
       "label": "DENT WIZARD",
       "image": "assets/driver-numbers/12/dent-wizard.png",
@@ -394,57 +259,9 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
     },
     {
-      "key": "12:discount-tire",
-      "label": "DISCOUNT TIRE",
-      "image": "assets/driver-numbers/12/discount-tire.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
-      "key": "12:menards-spruce-green",
-      "label": "MENARDS | SPRUCE GREEN",
-      "image": "assets/driver-numbers/12/menards-spruce-green.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
-      "key": "12:wurth",
-      "label": "WURTH",
-      "image": "assets/driver-numbers/12/wurth.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
-      "key": "12:menards-azure-blue",
-      "label": "MENARDS | AZURE BLUE",
-      "image": "assets/driver-numbers/12/menards-azure-blue.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
-      "key": "12:menards-green",
-      "label": "MENARDS | GREEN",
-      "image": "assets/driver-numbers/12/menards-green.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
-      "key": "12:menards-royal-blue",
-      "label": "MENARDS | ROYAL BLUE",
-      "image": "assets/driver-numbers/12/menards-royal-blue.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
-      "key": "12:bodyarmor-flash-i-v-patriotic",
-      "label": "BODYARMOR FLASH I.V. | PATRIOTIC",
-      "image": "assets/driver-numbers/12/bodyarmor-flash-i-v-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
       "key": "12:advance-auto-parts-patriotic",
       "label": "ADVANCE AUTO PARTS | PATRIOTIC",
       "image": "assets/driver-numbers/12/advance-auto-parts-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
-      "key": "12:wabash-ryan-newman-throwback",
-      "label": "WABASH | RYAN NEWMAN THROWBACK",
-      "image": "assets/driver-numbers/12/wabash-ryan-newman-throwback.png",
       "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
     },
     {
@@ -454,22 +271,19 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
     },
     {
-      "key": "12:menards-grass",
-      "label": "MENARDS | GRASS",
-      "image": "assets/driver-numbers/12/menards-grass.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
-    {
       "key": "12:bodyarmor-flash-i-v",
       "label": "BODYARMOR FLASH I.V.",
       "image": "assets/driver-numbers/12/bodyarmor-flash-i-v.png",
       "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
-    },
+    }
+  ],
+  "14": [
     {
-      "key": "12:menards-cardinal-red",
-      "label": "MENARDS | CARDINAL RED",
-      "image": "assets/driver-numbers/12/menards-cardinal-red.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-blaney-cup-number-cards/"
+      "key": "14:mini-tyrrell-ram",
+      "label": "MINI TYRRELL | RAM TRUCK",
+      "image": "assets/driver-numbers/14/mini-tyrrell-ram.png",
+      "sourcePage": "https://diecastcharv.com/2026-mini-tyrrell-truck-number-cards/",
+      "sourceImage": "https://diecastcharv.com/wp-content/uploads/2026/02/slide35.jpg"
     }
   ],
   "17": [
@@ -486,12 +300,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-chris-buescher-cup-number-cards/"
     },
     {
-      "key": "17:trimble",
-      "label": "TRIMBLE",
-      "image": "assets/driver-numbers/17/trimble.png",
-      "sourcePage": "https://diecastcharv.com/2026-chris-buescher-cup-number-cards/"
-    },
-    {
       "key": "17:kraft-artesano",
       "label": "KRAFT / ARTESANO",
       "image": "assets/driver-numbers/17/kraft-artesano.png",
@@ -501,12 +309,6 @@ export const NUMBER_STYLES = {
       "key": "17:farm-rich",
       "label": "FARM RICH",
       "image": "assets/driver-numbers/17/farm-rich.png",
-      "sourcePage": "https://diecastcharv.com/2026-chris-buescher-cup-number-cards/"
-    },
-    {
-      "key": "17:thomas-high-protein",
-      "label": "THOMAS’ HIGH PROTEIN",
-      "image": "assets/driver-numbers/17/thomas-high-protein.png",
       "sourcePage": "https://diecastcharv.com/2026-chris-buescher-cup-number-cards/"
     },
     {
@@ -540,12 +342,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-chris-buescher-cup-number-cards/"
     },
     {
-      "key": "17:oscar-mayer-rustik-oven",
-      "label": "OSCAR MAYER / RUSTIK OVEN",
-      "image": "assets/driver-numbers/17/oscar-mayer-rustik-oven.png",
-      "sourcePage": "https://diecastcharv.com/2026-chris-buescher-cup-number-cards/"
-    },
-    {
       "key": "17:trimble-liverpool-f-c",
       "label": "TRIMBLE / LIVERPOOL F.C.",
       "image": "assets/driver-numbers/17/trimble-liverpool-f-c.png",
@@ -567,12 +363,6 @@ export const NUMBER_STYLES = {
       "key": "17:minute-rice",
       "label": "MINUTE RICE",
       "image": "assets/driver-numbers/17/minute-rice.png",
-      "sourcePage": "https://diecastcharv.com/2026-chris-buescher-cup-number-cards/"
-    },
-    {
-      "key": "17:kleenex",
-      "label": "KLEENEX",
-      "image": "assets/driver-numbers/17/kleenex.png",
       "sourcePage": "https://diecastcharv.com/2026-chris-buescher-cup-number-cards/"
     },
     {
@@ -611,12 +401,6 @@ export const NUMBER_STYLES = {
       "key": "19:mobil-1",
       "label": "MOBIL 1",
       "image": "assets/driver-numbers/19/mobil-1.png",
-      "sourcePage": "https://diecastcharv.com/2026-chase-briscoe-cup-number-cards/"
-    },
-    {
-      "key": "19:bass-pro-shops-patriotic",
-      "label": "BASS PRO SHOPS | PATRIOTIC",
-      "image": "assets/driver-numbers/19/bass-pro-shops-patriotic.png",
       "sourcePage": "https://diecastcharv.com/2026-chase-briscoe-cup-number-cards/"
     },
     {
@@ -666,39 +450,15 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-joey-logano-cup-number-cards/"
     },
     {
-      "key": "22:pennzoil-ultra-platinum",
-      "label": "PENNZOIL ULTRA PLATINUM",
-      "image": "assets/driver-numbers/22/pennzoil-ultra-platinum.png",
-      "sourcePage": "https://diecastcharv.com/2026-joey-logano-cup-number-cards/"
-    },
-    {
       "key": "22:hunt-brothers-pizza",
       "label": "HUNT BROTHERS PIZZA",
       "image": "assets/driver-numbers/22/hunt-brothers-pizza.png",
       "sourcePage": "https://diecastcharv.com/2026-joey-logano-cup-number-cards/"
     },
     {
-      "key": "22:discount-tire",
-      "label": "DISCOUNT TIRE",
-      "image": "assets/driver-numbers/22/discount-tire.png",
-      "sourcePage": "https://diecastcharv.com/2026-joey-logano-cup-number-cards/"
-    },
-    {
-      "key": "22:shell-pennzoil-patriotic",
-      "label": "SHELL PENNZOIL | PATRIOTIC",
-      "image": "assets/driver-numbers/22/shell-pennzoil-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-joey-logano-cup-number-cards/"
-    },
-    {
       "key": "22:autotrader",
       "label": "AUTOTRADER",
       "image": "assets/driver-numbers/22/autotrader.png",
-      "sourcePage": "https://diecastcharv.com/2026-joey-logano-cup-number-cards/"
-    },
-    {
-      "key": "22:hunt-brothers-pizza-patriotic",
-      "label": "HUNT BROTHERS PIZZA | PATRIOTIC",
-      "image": "assets/driver-numbers/22/hunt-brothers-pizza-patriotic.png",
       "sourcePage": "https://diecastcharv.com/2026-joey-logano-cup-number-cards/"
     },
     {
@@ -710,27 +470,9 @@ export const NUMBER_STYLES = {
   ],
   "23": [
     {
-      "key": "23:robinhood",
-      "label": "ROBINHOOD",
-      "image": "assets/driver-numbers/23/robinhood.png",
-      "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
-    },
-    {
-      "key": "23:columbia-sportswear",
-      "label": "COLUMBIA SPORTSWEAR",
-      "image": "assets/driver-numbers/23/columbia-sportswear.png",
-      "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
-    },
-    {
-      "key": "23:hardee-s",
-      "label": "HARDEE’S",
-      "image": "assets/driver-numbers/23/hardee-s.png",
-      "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
-    },
-    {
-      "key": "23:wwe-chumba-casino",
-      "label": "WWE / CHUMBA CASINO",
-      "image": "assets/driver-numbers/23/wwe-chumba-casino.png",
+      "key": "23:shadyrays",
+      "label": "SHADYRAYS",
+      "image": "assets/driver-numbers/23/shadyrays.png",
       "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
     },
     {
@@ -740,27 +482,9 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
     },
     {
-      "key": "23:hardee-s-coca-cola",
-      "label": "HARDEE’S / COCA-COLA",
-      "image": "assets/driver-numbers/23/hardee-s-coca-cola.png",
-      "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
-    },
-    {
-      "key": "23:columbia-sportswear-patriotic",
-      "label": "COLUMBIA SPORTSWEAR | PATRIOTIC",
-      "image": "assets/driver-numbers/23/columbia-sportswear-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
-    },
-    {
       "key": "23:hardee-s-cal-yarborough-throwback",
       "label": "HARDEE’S | CAL YARBOROUGH THROWBACK",
       "image": "assets/driver-numbers/23/hardee-s-cal-yarborough-throwback.png",
-      "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
-    },
-    {
-      "key": "23:shadyrays",
-      "label": "SHADYRAYS",
-      "image": "assets/driver-numbers/23/shadyrays.png",
       "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
     },
     {
@@ -776,27 +500,9 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
     },
     {
-      "key": "23:coca-cola-soccer",
-      "label": "COCA-COLA | SOCCER",
-      "image": "assets/driver-numbers/23/coca-cola-soccer.png",
-      "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
-    },
-    {
-      "key": "23:chumba-casino",
-      "label": "CHUMBA CASINO",
-      "image": "assets/driver-numbers/23/chumba-casino.png",
-      "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
-    },
-    {
       "key": "23:cincor-tequila",
       "label": "CINCOR TEQUILA",
       "image": "assets/driver-numbers/23/cincor-tequila.png",
-      "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
-    },
-    {
-      "key": "23:columbia-pfg-2",
-      "label": "COLUMBIA | PFG 2",
-      "image": "assets/driver-numbers/23/columbia-pfg-2.png",
       "sourcePage": "https://diecastcharv.com/2026-bubba-wallace-cup-number-cards/"
     }
   ],
@@ -847,18 +553,6 @@ export const NUMBER_STYLES = {
       "key": "24:axalta-color-of-the-year-2",
       "label": "AXALTA | COLOR OF THE YEAR 2",
       "image": "assets/driver-numbers/24/axalta-color-of-the-year-2.png",
-      "sourcePage": "https://diecastcharv.com/2026-william-byron-cup-number-cards/"
-    },
-    {
-      "key": "24:hp",
-      "label": "HP",
-      "image": "assets/driver-numbers/24/hp.png",
-      "sourcePage": "https://diecastcharv.com/2026-william-byron-cup-number-cards/"
-    },
-    {
-      "key": "24:valvoline-restore-and-protect",
-      "label": "VALVOLINE | RESTORE & PROTECT",
-      "image": "assets/driver-numbers/24/valvoline-restore-and-protect.png",
       "sourcePage": "https://diecastcharv.com/2026-william-byron-cup-number-cards/"
     }
   ],
@@ -914,27 +608,9 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
     },
     {
-      "key": "42:dollar-tree-4",
-      "label": "DOLLAR TREE 4",
-      "image": "assets/driver-numbers/42/dollar-tree-4.png",
-      "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
-    },
-    {
       "key": "42:pyre-barker-fire-and-safety-80-years",
       "label": "PYRE BARKER FIRE & SAFETY | 80 YEARS",
       "image": "assets/driver-numbers/42/pyre-barker-fire-and-safety-80-years.png",
-      "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
-    },
-    {
-      "key": "42:pyre-barker-fire-and-safety-patriotic",
-      "label": "PYRE BARKER FIRE & SAFETY | PATRIOTIC",
-      "image": "assets/driver-numbers/42/pyre-barker-fire-and-safety-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
-    },
-    {
-      "key": "42:raid",
-      "label": "RAID",
-      "image": "assets/driver-numbers/42/raid.png",
       "sourcePage": "https://diecastcharv.com/2026-john-hunter-nemecheck-cup-number-cards/"
     }
   ],
@@ -943,30 +619,6 @@ export const NUMBER_STYLES = {
       "key": "43:advent-health",
       "label": "ADVENT HEALTH",
       "image": "assets/driver-numbers/43/advent-health.png",
-      "sourcePage": "https://diecastcharv.com/2026-erik-jones-cup-number-cards/"
-    },
-    {
-      "key": "43:advent-health-darlington-throwback-1994-wally-dallenbach-stp-pontiac",
-      "label": "ADVENT HEALTH | DARLINGTON THROWBACK | 1994 WALLY DALLENBACH STP PONTIAC",
-      "image": "assets/driver-numbers/43/advent-health-darlington-throwback-1994-wally-dallenbach-stp-pontiac.png",
-      "sourcePage": "https://diecastcharv.com/2026-erik-jones-cup-number-cards/"
-    },
-    {
-      "key": "43:advent-health-patriotic",
-      "label": "ADVENT HEALTH | PATRIOTIC",
-      "image": "assets/driver-numbers/43/advent-health-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-erik-jones-cup-number-cards/"
-    },
-    {
-      "key": "43:dollar-tree-patriotic",
-      "label": "DOLLAR TREE | PATRIOTIC",
-      "image": "assets/driver-numbers/43/dollar-tree-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-erik-jones-cup-number-cards/"
-    },
-    {
-      "key": "43:dollar-tree-throwback",
-      "label": "DOLLAR TREE | THROWBACK",
-      "image": "assets/driver-numbers/43/dollar-tree-throwback.png",
       "sourcePage": "https://diecastcharv.com/2026-erik-jones-cup-number-cards/"
     }
   ],
@@ -1002,27 +654,9 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-tyler-reddick-cup-number-cards/"
     },
     {
-      "key": "45:xfinity",
-      "label": "XFINITY",
-      "image": "assets/driver-numbers/45/xfinity.png",
-      "sourcePage": "https://diecastcharv.com/2026-tyler-reddick-cup-number-cards/"
-    },
-    {
       "key": "45:siriusxm",
       "label": "SIRIUSXM",
       "image": "assets/driver-numbers/45/siriusxm.png",
-      "sourcePage": "https://diecastcharv.com/2026-tyler-reddick-cup-number-cards/"
-    },
-    {
-      "key": "45:comparion-insurance",
-      "label": "COMPARION INSURANCE",
-      "image": "assets/driver-numbers/45/comparion-insurance.png",
-      "sourcePage": "https://diecastcharv.com/2026-tyler-reddick-cup-number-cards/"
-    },
-    {
-      "key": "45:supply-house",
-      "label": "SUPPLY HOUSE",
-      "image": "assets/driver-numbers/45/supply-house.png",
       "sourcePage": "https://diecastcharv.com/2026-tyler-reddick-cup-number-cards/"
     },
     {
@@ -1048,12 +682,6 @@ export const NUMBER_STYLES = {
       "label": "PALA CASINO",
       "image": "assets/driver-numbers/45/pala-casino.png",
       "sourcePage": "https://diecastcharv.com/2026-tyler-reddick-cup-number-cards/"
-    },
-    {
-      "key": "45:jordan-brand-space-jam-30th",
-      "label": "JORDAN BRAND | SPACE JAM 30TH",
-      "image": "assets/driver-numbers/45/jordan-brand-space-jam-30th.png",
-      "sourcePage": "https://diecastcharv.com/2026-tyler-reddick-cup-number-cards/"
     }
   ],
   "48": [
@@ -1061,12 +689,6 @@ export const NUMBER_STYLES = {
       "key": "48:ally-bank",
       "label": "ALLY BANK",
       "image": "assets/driver-numbers/48/ally-bank.png",
-      "sourcePage": "https://diecastcharv.com/2026-alex-bowman-cup-number-cards/"
-    },
-    {
-      "key": "48:ally-bank-patriotic",
-      "label": "ALLY BANK | PATRIOTIC",
-      "image": "assets/driver-numbers/48/ally-bank-patriotic.png",
       "sourcePage": "https://diecastcharv.com/2026-alex-bowman-cup-number-cards/"
     }
   ],
@@ -1084,18 +706,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-ty-gibbs-cup-number-cards/"
     },
     {
-      "key": "54:ampm",
-      "label": "AMPM",
-      "image": "assets/driver-numbers/54/ampm.png",
-      "sourcePage": "https://diecastcharv.com/2026-ty-gibbs-cup-number-cards/"
-    },
-    {
-      "key": "54:siriusxm",
-      "label": "SIRIUSXM",
-      "image": "assets/driver-numbers/54/siriusxm.png",
-      "sourcePage": "https://diecastcharv.com/2026-ty-gibbs-cup-number-cards/"
-    },
-    {
       "key": "54:zep",
       "label": "ZEP",
       "image": "assets/driver-numbers/54/zep.png",
@@ -1103,6 +713,13 @@ export const NUMBER_STYLES = {
     }
   ],
   "60": [
+    {
+      "key": "60:ryan-preece-chrome",
+      "label": "RYAN PREECE | CHROME",
+      "image": "assets/driver-numbers/60/ryan-preece-chrome.png",
+      "sourcePage": "https://www.nascar.com/drivers/ryan-preece",
+      "sourceImage": "https://www.nascar.com/wp-content/uploads/sites/7/2026/01/26/60@10x.png"
+    },
     {
       "key": "60:coca-cola",
       "label": "COCA-COLA",
@@ -1164,12 +781,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-ryan-preece-cup-number-cards/"
     },
     {
-      "key": "60:trimble",
-      "label": "TRIMBLE",
-      "image": "assets/driver-numbers/60/trimble.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-preece-cup-number-cards/"
-    },
-    {
       "key": "60:scott-1000",
       "label": "SCOTT 1000",
       "image": "assets/driver-numbers/60/scott-1000.png",
@@ -1206,21 +817,9 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-ryan-preece-cup-number-cards/"
     },
     {
-      "key": "60:force-factor",
-      "label": "FORCE FACTOR",
-      "image": "assets/driver-numbers/60/force-factor.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-preece-cup-number-cards/"
-    },
-    {
       "key": "60:oikos",
       "label": "OIKOS",
       "image": "assets/driver-numbers/60/oikos.png",
-      "sourcePage": "https://diecastcharv.com/2026-ryan-preece-cup-number-cards/"
-    },
-    {
-      "key": "60:international-delight",
-      "label": "INTERNATIONAL DELIGHT",
-      "image": "assets/driver-numbers/60/international-delight.png",
       "sourcePage": "https://diecastcharv.com/2026-ryan-preece-cup-number-cards/"
     }
   ],
@@ -1244,21 +843,9 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-michael-mcdowell-cup-number-cards/"
     },
     {
-      "key": "71:modo-casino-lone-star",
-      "label": "MODO CASINO | LONE STAR",
-      "image": "assets/driver-numbers/71/modo-casino-lone-star.png",
-      "sourcePage": "https://diecastcharv.com/2026-michael-mcdowell-cup-number-cards/"
-    },
-    {
       "key": "71:gobowling",
       "label": "GOBOWLING",
       "image": "assets/driver-numbers/71/gobowling.png",
-      "sourcePage": "https://diecastcharv.com/2026-michael-mcdowell-cup-number-cards/"
-    },
-    {
-      "key": "71:garner-trucking",
-      "label": "GARNER TRUCKING",
-      "image": "assets/driver-numbers/71/garner-trucking.png",
       "sourcePage": "https://diecastcharv.com/2026-michael-mcdowell-cup-number-cards/"
     },
     {
@@ -1271,12 +858,6 @@ export const NUMBER_STYLES = {
       "key": "71:delaware-life-patriotic",
       "label": "DELAWARE LIFE | PATRIOTIC",
       "image": "assets/driver-numbers/71/delaware-life-patriotic.png",
-      "sourcePage": "https://diecastcharv.com/2026-michael-mcdowell-cup-number-cards/"
-    },
-    {
-      "key": "71:nefco",
-      "label": "NEFCO",
-      "image": "assets/driver-numbers/71/nefco.png",
       "sourcePage": "https://diecastcharv.com/2026-michael-mcdowell-cup-number-cards/"
     }
   ],
@@ -1291,12 +872,6 @@ export const NUMBER_STYLES = {
       "key": "77:miner-docks",
       "label": "MINER DOCKS",
       "image": "assets/driver-numbers/77/miner-docks.png",
-      "sourcePage": "https://diecastcharv.com/2026-carson-hocevar-cup-number-cards/"
-    },
-    {
-      "key": "77:chili-s-ride-the-dente-white",
-      "label": "CHILI’S RIDE THE DENTE | WHITE",
-      "image": "assets/driver-numbers/77/chili-s-ride-the-dente-white.png",
       "sourcePage": "https://diecastcharv.com/2026-carson-hocevar-cup-number-cards/"
     },
     {
@@ -1326,19 +901,26 @@ export const NUMBER_STYLES = {
   ],
   "84": [
     {
-      "key": "84:carvana",
-      "label": "CARVANA",
-      "image": "assets/driver-numbers/84/carvana.png",
-      "sourcePage": "https://diecastcharv.com/2026-jimmie-johnson-cup-number-cards/"
-    },
-    {
       "key": "84:carvana-sunset",
       "label": "CARVANA | SUNSET",
       "image": "assets/driver-numbers/84/carvana-sunset.png",
       "sourcePage": "https://diecastcharv.com/2026-jimmie-johnson-cup-number-cards/"
+    },
+    {
+      "key": "84:carvana",
+      "label": "CARVANA",
+      "image": "assets/driver-numbers/84/carvana.png",
+      "sourcePage": "https://diecastcharv.com/2026-jimmie-johnson-cup-number-cards/"
     }
   ],
   "88": [
+    {
+      "key": "88:hendrick-red",
+      "label": "HENDRICK 88 | RED / WHITE",
+      "image": "assets/driver-numbers/88/hendrick-red.png",
+      "sourcePage": "https://diecastcharv.com/dale-earnhardt-jr-cup-number-cards/",
+      "sourceImage": "https://diecastcharv.com/wp-content/uploads/2017/08/slide567.jpg"
+    },
     {
       "key": "88:red-bull",
       "label": "RED BULL",
@@ -1349,12 +931,6 @@ export const NUMBER_STYLES = {
       "key": "88:wendy-s",
       "label": "WENDY’S",
       "image": "assets/driver-numbers/88/wendy-s.png",
-      "sourcePage": "https://diecastcharv.com/2026-connor-zilisch-cup-number-cards/"
-    },
-    {
-      "key": "88:jockey-150th-anniversary",
-      "label": "JOCKEY | 150TH ANNIVERSARY",
-      "image": "assets/driver-numbers/88/jockey-150th-anniversary.png",
       "sourcePage": "https://diecastcharv.com/2026-connor-zilisch-cup-number-cards/"
     },
     {
@@ -1380,21 +956,18 @@ export const NUMBER_STYLES = {
       "label": "RED BULL | MILITARY",
       "image": "assets/driver-numbers/88/red-bull-military.png",
       "sourcePage": "https://diecastcharv.com/2026-connor-zilisch-cup-number-cards/"
-    },
+    }
+  ],
+  "93": [
     {
-      "key": "88:superfile-trackhouse-moto",
-      "label": "SUPERFILE | TRACKHOUSE MOTO",
-      "image": "assets/driver-numbers/88/superfile-trackhouse-moto.png",
-      "sourcePage": "https://diecastcharv.com/2026-connor-zilisch-cup-number-cards/"
+      "key": "93:caleb-costner-piedmont-realtree",
+      "label": "CALEB COSTNER | PIEDMONT / REALTREE TRUCK",
+      "image": "assets/driver-numbers/93/caleb-costner-piedmont-realtree.png",
+      "sourcePage": "https://diecastcharv.com/2026-caleb-costner-truck-number-cards/",
+      "sourceImage": "https://diecastcharv.com/wp-content/uploads/2026/04/slide298-1.jpg"
     }
   ],
   "97": [
-    {
-      "key": "97:superfile",
-      "label": "SUPERFILE",
-      "image": "assets/driver-numbers/97/superfile.png",
-      "sourcePage": "https://diecastcharv.com/2026-shane-van-gisbergen-cup-number-cards/"
-    },
     {
       "key": "97:red-bull",
       "label": "RED BULL",
@@ -1408,18 +981,6 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-shane-van-gisbergen-cup-number-cards/"
     },
     {
-      "key": "97:weathertech",
-      "label": "WEATHERTECH",
-      "image": "assets/driver-numbers/97/weathertech.png",
-      "sourcePage": "https://diecastcharv.com/2026-shane-van-gisbergen-cup-number-cards/"
-    },
-    {
-      "key": "97:tootsie-s-orchid-lounge",
-      "label": "TOOTSIE’S ORCHID LOUNGE",
-      "image": "assets/driver-numbers/97/tootsie-s-orchid-lounge.png",
-      "sourcePage": "https://diecastcharv.com/2026-shane-van-gisbergen-cup-number-cards/"
-    },
-    {
       "key": "97:red-bull-military",
       "label": "RED BULL | MILITARY",
       "image": "assets/driver-numbers/97/red-bull-military.png",
@@ -1429,18 +990,6 @@ export const NUMBER_STYLES = {
       "key": "97:wendy-s",
       "label": "WENDY’S",
       "image": "assets/driver-numbers/97/wendy-s.png",
-      "sourcePage": "https://diecastcharv.com/2026-shane-van-gisbergen-cup-number-cards/"
-    },
-    {
-      "key": "97:mitti-by-safety-culture",
-      "label": "MITTI BY SAFETY CULTURE",
-      "image": "assets/driver-numbers/97/mitti-by-safety-culture.png",
-      "sourcePage": "https://diecastcharv.com/2026-shane-van-gisbergen-cup-number-cards/"
-    },
-    {
-      "key": "97:superfile-trackhouse-moto",
-      "label": "SUPERFILE | TRACKHOUSE MOTO",
-      "image": "assets/driver-numbers/97/superfile-trackhouse-moto.png",
       "sourcePage": "https://diecastcharv.com/2026-shane-van-gisbergen-cup-number-cards/"
     }
   ]

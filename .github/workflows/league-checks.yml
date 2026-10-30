@@ -20,6 +20,7 @@ jobs:
           node scripts/verify-claim-flow.js
           node scripts/verify-admin-flow.mjs
           node scripts/verify-season-interest.mjs
+          node scripts/verify-number-art.mjs
       - name: Check JavaScript syntax
         run: |
           node --check api/league-admin.js
