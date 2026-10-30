@@ -823,6 +823,15 @@ export const NUMBER_STYLES = {
       "sourcePage": "https://diecastcharv.com/2026-ryan-preece-cup-number-cards/"
     }
   ],
+  "66": [
+    {
+      "key": "66:logan-iracing",
+      "label": "LOGAN | BLUE IRACING TRUCK",
+      "image": "assets/driver-numbers/66/logan-iracing.png",
+      "sourcePage": "https://www.iracing.com/",
+      "sourceImage": "https://ampcode.com/user-content/attachments/baa888b186d44cccc1a71358ce5b209d6ea97ac75be7bea6ff07fb8b3f4edb67-file.png"
+    }
+  ],
   "71": [
     {
       "key": "71:modo-casino-patriotic",
@@ -965,6 +974,15 @@ export const NUMBER_STYLES = {
       "image": "assets/driver-numbers/93/caleb-costner-piedmont-realtree.png",
       "sourcePage": "https://diecastcharv.com/2026-caleb-costner-truck-number-cards/",
       "sourceImage": "https://diecastcharv.com/wp-content/uploads/2026/04/slide298-1.jpg"
+    }
+  ],
+  "94": [
+    {
+      "key": "94:max-iracing",
+      "label": "MAX | WHITE IRACING TRUCK",
+      "image": "assets/driver-numbers/94/max-iracing.png",
+      "sourcePage": "https://www.iracing.com/",
+      "sourceImage": "https://ampcode.com/user-content/attachments/dd3dc7bb674fec0fa854c63fe39339cd575f704f11d9b0b0680734b5456374d6-file.png"
     }
   ],
   "97": [

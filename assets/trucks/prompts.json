@@ -122,6 +122,30 @@
       "image": "assets/trucks/23.webp"
     },
     {
+      "n": "94",
+      "make": "Toyota Tundra",
+      "sponsor": "iRacing",
+      "scheme": "Match Max's supplied NASCAR 26 screenshot livery AND original #94: royal-blue nose, front fenders and bed sides, red roof/cab and door panel, sweeping white iRacing driver silhouette on rear side, white iRacing wordmarks and hood emblem. White #94 with dark outlines on door and roof; replace every #23 decal. BARL windshield banner; no Hardee's branding. Preserve Toyota Tundra body, front-left camera and full-truck framing. Fully transparent outside the truck, no floor or glow. Trim alpha silhouette and resize into the standard 1536x1024 canvas with safe margins; WebP quality 86.",
+      "tool": "painter",
+      "references": ["https://ampcode.com/user-content/attachments/818690baaad68800ebc64ec612e1b0b1df22f7ea5c9ee0d44a242a4f0a3c842b-image.png", "https://ampcode.com/user-content/attachments/ead2d452a940fa435c40284c685c410aa4158fccac3013e79c9187b8dfcf1a99-file.png"],
+      "source": "https://ampcode.com/user-content/attachments/86ed37b897aef09abe3998a9b283f7495a42ac7bf2e49d12442c8191f1be6082-file.png",
+      "numberSource": "https://ampcode.com/user-content/attachments/dd3dc7bb674fec0fa854c63fe39339cd575f704f11d9b0b0680734b5456374d6-file.png",
+      "numberProcessing": "Preserve generated transparent counters and apply the shared number normalizer: 288px visible numeral height centered on a 640x384 RGBA PNG.",
+      "image": "assets/trucks/94.webp"
+    },
+    {
+      "n": "66",
+      "make": "Chevrolet Silverado",
+      "sponsor": "iRacing",
+      "scheme": "Logan's predominantly glossy black Chevrolet Silverado with electric-green and royal-blue angular racing stripes. White iRacing wordmarks and red/blue driver emblem on hood and bedside. Large matching blue #66 on door and roof with crisp white outlines, BARL windshield banner. Replace the prior Tundra body with Silverado grille/headlights, gold bowties on nose/cab, SILVERADO bumper and Chevrolet Performance contingency badge; remove all Toyota/TRD marks. Preserve the prior livery, camera and framing. Fully transparent outside the truck, no glow or shadow; opaque black panels. Trim alpha silhouette and resize into the standard 1536x1024 canvas with safe margins; WebP quality 86.",
+      "tool": "painter",
+      "references": ["https://ampcode.com/user-content/attachments/340f09af9b93daf6b14c048dc1d62417cff719bf3abab4ae0ad4b46b8ac7c0a4-file.png", "assets/trucks/3.webp"],
+      "source": "https://ampcode.com/user-content/attachments/2d33eb3230901d03c13cd67d7aaea8acd2d8243705af8678c84626735a044b6c-file.png",
+      "numberSource": "https://ampcode.com/user-content/attachments/baa888b186d44cccc1a71358ce5b209d6ea97ac75be7bea6ff07fb8b3f4edb67-file.png",
+      "numberProcessing": "Isolate the first substantial alpha-connected six, duplicate it with a 429px horizontal offset so both digits match, and run the shared number-art normalizer. Transparent counters retained; final 640x384 PNG has 288px visible numeral height.",
+      "image": "assets/trucks/66.webp"
+    },
+    {
       "n": "42",
       "make": "Chevrolet Silverado",
       "sponsor": "BRUNT Workwear",

@@ -14,7 +14,9 @@ window.BARLCarArt = Object.freeze({
   '42': { vehicleImage: 'assets/trucks/42.webp', model: 'Silverado', sponsor: 'BRUNT Workwear', make: 'Chevrolet', color: '#f36b24' },
   '54': { vehicleImage: 'assets/trucks/54.webp', model: 'Tundra', sponsor: 'SAIA', make: 'Toyota', color: '#f24045' },
   '60': { vehicleImage: 'assets/trucks/60.webp', model: 'F-150', sponsor: 'Kroger', make: 'Ford', color: '#3d8dff' },
+  '66': { vehicleImage: 'assets/trucks/66.webp', model: 'Silverado', sponsor: 'iRacing', make: 'Chevrolet', color: '#53ed16' },
   '88': { vehicleImage: 'assets/trucks/88.webp', model: 'Silverado', sponsor: '7-Eleven', make: 'Chevrolet', color: '#00c83c' },
   '93': { vehicleImage: 'assets/trucks/93.webp', model: 'Silverado', sponsor: 'Piedmont Outfitters / Realtree', make: 'Chevrolet', color: '#e2552a' },
+  '94': { vehicleImage: 'assets/trucks/94.webp', model: 'Tundra', sponsor: 'iRacing', make: 'Toyota', color: '#1759ff' },
   '97': { vehicleImage: 'assets/trucks/97.webp', model: 'Silverado', sponsor: 'SuperFile', make: 'Chevrolet', color: '#c8ef38' },
 });

@@ -23,11 +23,13 @@ window.BARL_NUMBER_IMAGES = {
   "48": "assets/driver-numbers/48/ally-bank.png",
   "54": "assets/driver-numbers/54/monster-energy.png",
   "60": "assets/driver-numbers/60/ryan-preece-chrome.png",
+  "66": "assets/driver-numbers/66/logan-iracing.png",
   "71": "assets/driver-numbers/71/modo-casino-patriotic.png",
   "77": "assets/driver-numbers/77/chili-s-ride-the-dente-black.png",
   "84": "assets/driver-numbers/84/carvana-sunset.png",
   "88": "assets/driver-numbers/88/hendrick-red.png",
   "93": "assets/driver-numbers/93/caleb-costner-piedmont-realtree.png",
+  "94": "assets/driver-numbers/94/max-iracing.png",
   "97": "assets/driver-numbers/97/red-bull.png"
 };
 window.BARL_NUMBER_STYLE_KEYS = new Set([
@@ -160,6 +162,7 @@ window.BARL_NUMBER_STYLE_KEYS = new Set([
   "60:simpletire",
   "60:thornton-s",
   "60:oikos",
+  "66:logan-iracing",
   "71:modo-casino-patriotic",
   "71:b-laster",
   "71:delaware-life",
@@ -182,6 +185,7 @@ window.BARL_NUMBER_STYLE_KEYS = new Set([
   "88:weathertech",
   "88:red-bull-military",
   "93:caleb-costner-piedmont-realtree",
+  "94:max-iracing",
   "97:red-bull",
   "97:safety-culture",
   "97:red-bull-military",

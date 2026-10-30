@@ -20,9 +20,11 @@ const PREFERRED_DEFAULTS = {
   '43': '43:advent-health',
   '48': '48:ally-bank',
   '60': '60:ryan-preece-chrome',
+  '66': '66:logan-iracing',
   '84': '84:carvana-sunset',
   '88': '88:hendrick-red',
   '93': '93:caleb-costner-piedmont-realtree',
+  '94': '94:max-iracing',
 };
 
 // Verified background regions, measured on the normalized 512px artwork.
@@ -45,6 +47,20 @@ const COUNTER_SEEDS = {
 };
 
 const CUSTOM_STYLES = [
+  {
+    "key": "94:max-iracing",
+    "label": "MAX | WHITE IRACING TRUCK",
+    "image": "assets/driver-numbers/94/max-iracing.png",
+    "sourcePage": "https://www.iracing.com/",
+    "sourceImage": "https://ampcode.com/user-content/attachments/dd3dc7bb674fec0fa854c63fe39339cd575f704f11d9b0b0680734b5456374d6-file.png"
+  },
+  {
+    "key": "66:logan-iracing",
+    "label": "LOGAN | BLUE IRACING TRUCK",
+    "image": "assets/driver-numbers/66/logan-iracing.png",
+    "sourcePage": "https://www.iracing.com/",
+    "sourceImage": "https://ampcode.com/user-content/attachments/baa888b186d44cccc1a71358ce5b209d6ea97ac75be7bea6ff07fb8b3f4edb67-file.png"
+  },
   {
     "key": "3:arthur-tiger",
     "label": "ARTHUR | TIGER STRIPE TRUCK",

@@ -6,7 +6,7 @@ import vm from 'node:vm';
 import { NUMBER_STYLES } from '../data/driver-number-styles.js';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
-const APPROVED_NUMBERS = ['1', '2', '3', '5', '6', '7', '9', '11', '12', '14', '17', '19', '20', '22', '23', '24', '35', '42', '43', '45', '48', '54', '60', '71', '77', '84', '88', '93', '97'];
+const APPROVED_NUMBERS = ['1', '2', '3', '5', '6', '7', '9', '11', '12', '14', '17', '19', '20', '22', '23', '24', '35', '42', '43', '45', '48', '54', '60', '66', '71', '77', '84', '88', '93', '94', '97'];
 
 function paeth(a, b, c) {
   const p = a + b - c;
@@ -229,9 +229,13 @@ for (const [number, styles] of Object.entries(NUMBER_STYLES)) {
 }
 vm.runInContext(await fs.readFile(path.join(ROOT, 'data/car-art.js'), 'utf8'), context);
 vm.runInContext(await fs.readFile(path.join(ROOT, 'scripts/profile-car-card.js'), 'utf8'), context);
-const maxCard = numbers.BARLCarCards.render({ driverId: 'max', name: 'Max Hunter', number: '23', season: 1 });
-assert.ok(maxCard.includes('src="assets/driver-numbers/23/shadyrays.png"'));
-assert.ok(maxCard.includes('src="assets/trucks/23.webp"'), 'Truck illustration must not change with the number mark');
+const maxHistoricalCard = numbers.BARLCarCards.render({ driverId: 'max', name: 'Max Hunter', number: '23', season: 1 });
+assert.ok(maxHistoricalCard.includes('src="assets/driver-numbers/23/shadyrays.png"'));
+assert.ok(maxHistoricalCard.includes('src="assets/trucks/23.webp"'), 'Historical #23 must retain its own artwork');
+const maxCard = numbers.BARLCarCards.render({ driverId: 'max', name: 'Max Hunter', number: '94', season: 1 });
+assert.ok(maxCard.includes('src="assets/driver-numbers/94/max-iracing.png"'), 'An old #23 selection must not leak into Max’s new #94');
+assert.ok(maxCard.includes('src="assets/trucks/94.webp"'));
+await fs.access(path.join(ROOT, 'assets/trucks/94.webp'));
 const nolanCard = numbers.BARLCarCards.render({ driverId: '4a926a39-ea23-47c0-a493-f070567dfa6a', name: 'Nolan McKim', number: '88', season: 1 });
 assert.ok(nolanCard.includes('src="assets/driver-numbers/88/hendrick-red.png"'));
 assert.ok(nolanCard.includes('src="assets/trucks/88.webp"'));
@@ -249,6 +253,15 @@ assert.ok(arthurCard.includes('src="assets/trucks/3.webp"'), 'Arthur’s #3 badg
 assert.ok(arthurCard.includes('<span>Chevrolet Silverado</span>'), 'Sponsor-free trucks must not show an empty sponsor separator');
 assert.ok(!arthurCard.includes('NAPA'), 'Arthur’s sponsor must be removed from labels as well as artwork');
 await fs.access(path.join(ROOT, 'assets/trucks/3.webp'));
+
+const loganCard = numbers.BARLCarCards.render({ driverId: 'logan', name: 'Logan Boone', number: '66', season: 1 });
+assert.ok(loganCard.includes('src="assets/driver-numbers/66/logan-iracing.png"'));
+assert.ok(loganCard.includes('src="assets/trucks/66.webp"'));
+assert.ok(loganCard.includes('Chevrolet Silverado / iRacing'));
+assert.ok(!loganCard.includes('Toyota'), 'Logan’s card manufacturer must match his Chevrolet truck');
+await fs.access(path.join(ROOT, 'assets/trucks/66.webp'));
+assert.ok(maxCard.includes('Toyota Tundra / iRacing'), 'Max’s card sponsor must match his iRacing paint scheme');
+assert.ok(!maxCard.includes('Hardee'), 'Max’s old sponsor must not remain in the card label');
 
 process.stdout.write(`Number-art check passed: ${styleCount} approved transparent PNGs across ${APPROVED_NUMBERS.length} cars; all site references are vetted.\n`);
 process.stdout.write('Uniform sizing verified: every style has 288px visible height, matching baseline, and centered artwork on a 640x384 canvas.\n');
